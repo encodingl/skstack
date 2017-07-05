@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+    {% load mytags %}
+</head>
+
+<body>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">执行结果</h3>
+
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+        <div class="box-body">
+        {% for d in ret %}
+        <p class="text-color">{{ d|res_splict|safe }}</p><br>
+        {% endfor %}
+        </div>
+        <!-- /.box-body -->
+      
+        <div class="box-footer">
+          <i class="fa fa-info-circle"></i>
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+  </div>
+  <script>
+  //初始化文字颜色  
+  $(document).ready(function(){  
+      var colorConfig = { "green": ["ok", "SUCCESS"],"yellow": ["changed","WARNING" ],  "red": ["unreachable", "failed","FAILED","Errno"] };  
+      jQuery(".text-color").html(function () {  
+          var text = jQuery(this).html();  
+          jQuery.each(colorConfig, function (color, values) {  
+              jQuery.each(values, function (i, item) { 
+            	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+
+            	   
+            	   text = text.replace(re,function(result){
+            		   return '<font color="' + color + '">' + result + '</font>'
+            	   });
+            	   
+            	   var re2 = new RegExp(item,"g");
+            	   text = text.replace(re2,function(result){
+            		   return '<font color="' + color + '">' + result + '</font>'
+            	   });
+            	   
+              });  
+          });  
+          return text;  
+      });  
+  });
+  </script>
+</body>
+</html>
