@@ -3,4 +3,5 @@
 .settings/
 gitpush.sh
 *.pyc
+/tmp/*
 
