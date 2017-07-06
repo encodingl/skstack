@@ -39,9 +39,10 @@
                                 {% for job in alljob %}
                                     <tr class="even gradeA">
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ job.id }}" name="job_check" /></td>
-                                        <input type="hidden" name="u_name" value="{{ job.name }}">
-                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ job.id }}">{{ job.name }}</li></a></td>
-                                        <td>{{ job.playbook }}</td>
+                                   	    <td>{{ job.name }}</td>
+                                       
+                                        <input type="hidden" name="u_name" value="{{ job.playbook }}">
+                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu_detail(this.value)" value="{{ job.id }}">{{ job.playbook }}</li></a></td>                                       
                                         <td>{{ job.project }}</td>
                                         <td>{{ job.online_status }}</td>
                                         <td class="text-center" data-editable='false'>
@@ -109,6 +110,38 @@ function tanchu(n){
     area: ['600px', '400px'],
     shadeClose: true, //点击遮罩关闭
     content: ['/sktask/job/edit/' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('保存成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('修改失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+<script>
+function tanchu_detail(n){
+    layer.open({
+    type: 2,
+    title: 'playbook浏览',
+    closeBtn: 1,
+    area: ['600px', '400px'],
+    shadeClose: true, //点击遮罩关闭
+    content: ['/sktask/job/detail/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();

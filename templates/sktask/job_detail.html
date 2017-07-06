@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail result</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+    {% load mytags %}
+</head>
+
+<body>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+
+ <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ obj.name }}</h3>
+
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+        <div class="box-body">
+       
+        <p class="text-color"><pre>{{ obj.content }}</pre></p>
+       
+        </div>
+        <!-- /.box-body -->
+      
+        <div class="box-footer">
+          
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+  </div>
+
+</body>
+</html>

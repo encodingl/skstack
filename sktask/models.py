@@ -18,9 +18,9 @@ class history(models.Model):
     time_task_start=models.DateTimeField(u'开始时间',null=True)
     time_task_finished=models.DateTimeField(u'结束时间', auto_now_add=True,null=True)
     cmd_object = models.CharField(u"操作对象",max_length=50,null=True)
-    cmd = models.CharField(u"执行命令",max_length=50)
+    cmd = models.CharField(u"执行命令",max_length=200)
     cmd_result = models.CharField(u"命令结果",max_length=10)
-    cmd_detail = models.CharField(u"命令结果",max_length=5000,null=True, blank=True)
+    cmd_detail = models.CharField(u"结果详情",max_length=5000,null=True, blank=True)
         
     def __unicode__(self):
         return self.cmd_result

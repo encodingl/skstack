@@ -4,7 +4,7 @@
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import job,job,extravars
+from models import job,extravars,project
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
@@ -88,4 +88,24 @@ def job_edit(request, ids):
     else:
         obj_f = Job_form(instance=obj)      
     return render_to_response("sktask/job_edit.html", locals(), RequestContext(request))
+
+@login_required
+@permission_verify()
+def job_detail(request, ids):
+    proj_base_dir = get_dir("pro_path")
+    obj={}  
+    obj_job = get_object(job, id=ids)
+    obj_playbook=obj_job.playbook
+    obj_project = get_object(project, name=obj_job.project)
+    obj_pro_path=obj_project.path
+    pkfile = proj_base_dir +  obj_pro_path + "/" + obj_playbook
+    print pkfile
+    
+    obj["name"] = obj_playbook
+    with open(pkfile, 'r') as f:
+        obj["content"] = f.read()
+    print obj["content"]
+
+ 
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
 

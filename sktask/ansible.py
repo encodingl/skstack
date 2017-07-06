@@ -35,7 +35,7 @@ def index(request):
     
     return render(request, 'sktask/ansible.html', locals())
 
-"""
+
 @login_required()
 @permission_verify()
 def playbook(request):
@@ -139,7 +139,7 @@ def playbook(request):
                         logging.info(d)
                     logging.info("==========ansible tasks end============")
         return render(request, 'sktask/result.html', locals())
-"""
+
 
 @login_required()
 @permission_verify()
@@ -199,7 +199,7 @@ def ansible_command(request):
         history.objects.create(**dic_his)
         return render(request, 'sktask/result.html', locals())
 
-"""
+
 @login_required()
 @permission_verify()
 def host_sync(request):
@@ -224,4 +224,3 @@ def host_sync(request):
     logging.info("Task: sync cmdb info to ansible hosts")
     logging.info("==========ansible tasks end============")
     return HttpResponse("ok")
-"""

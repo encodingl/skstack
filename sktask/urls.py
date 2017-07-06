@@ -8,10 +8,10 @@ from . import views, ansible, shell, history,project,job,extravars,inventories,t
 urlpatterns = [
     url(r'ansible/$', ansible.index, name='ansible'),
     url(r'^shell/$', shell.index, name='shell'),
-#     url(r'^scripts/exec/$', shell.exec_scripts, name='exec_scripts'),
-#     url(r'^playbook/$', ansible.playbook, name='playbook'),
+    url(r'^scripts/exec/$', shell.exec_scripts, name='exec_scripts'),
+    url(r'^playbook/$', ansible.playbook, name='playbook'),
     url(r'^ansible/command/$', ansible.ansible_command, name='acommand'),
-#     url(r'^host/sync/$', ansible.host_sync, name='host_sync'),
+    url(r'^host/sync/$', ansible.host_sync, name='host_sync'),
     
     url(r'^history/$', history.index, name='history'),
     url(r'^history/detail/(?P<ids>\d+)/$', history.detail, name='history_detail'),
@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^job/add/$', job.job_add, name='job_add'),
     
     url(r'^job/edit/(?P<ids>\d+)/$', job.job_edit, name='job_edit'),
+    url(r'^job/detail/(?P<ids>\d+)/$', job.job_detail, name='job_detail'),
     
 
 # 

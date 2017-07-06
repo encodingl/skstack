@@ -39,7 +39,7 @@ def index(request):
     proj_base_dir = get_dir("pro_path")
 
     inventory = get_ansible_config("inventory")
-    print inventory
+   
     temp_name = "sktask/setup-header.html"
 
     all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)

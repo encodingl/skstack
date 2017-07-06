@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>detail result</title>
     {% include 'link_css.html' %}
     {% include 'head_script.html' %}
     {% load mytags %}
@@ -21,14 +21,14 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">执行结果</h3>
+          <h3 class="box-title">{{ obj_cmd }}</h3>
 
           <div class="box-tools pull-right">
           </div>
         </div>
         <div class="box-body">
         {% for d in ret %}
-        <p class="text-color">{{ d|res_splict|safe }}</p><br>
+        <p class="text-color">{{ d }}</p>
         {% endfor %}
         </div>
         <!-- /.box-body -->

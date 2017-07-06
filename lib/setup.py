@@ -61,7 +61,7 @@ def get_AnsibleHostsDic(args):
     list_group_key=[]
     pattern=r'^\s*\[.+\]'
     
-    f2=open(args).read()
+ 
     
 
     f=open(args)

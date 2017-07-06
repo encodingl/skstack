@@ -26,6 +26,9 @@ def index(request):
 @permission_verify()
 def detail(request, ids):  
     obj = get_object(history, id=ids)
+    obj_cmd = obj.cmd
     ret=obj.cmd_detail 
-    ret=ret.split("\\n")    
+   
+    ret=ret.split("\\n")   
+ 
     return render_to_response('sktask/history_detail.html', locals(), RequestContext(request))

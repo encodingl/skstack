@@ -6217,3 +6217,336 @@ TemplateDoesNotExist: skskcmdb/group.html
 20170705 18:10:46 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
   using=using)
 
+20170706 10:46:24 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 13:49:19 ERROR Internal Server Error: /sktask/ansible/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/ansible.py", line 36, in index
+    return render(request, 'sktask/ansible.html', locals())
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 67, in render
+    template_name, context, request=request, using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 97, in render_to_string
+    return template.render(context, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/backends/django.py", line 95, in render
+    return self.template.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 206, in render
+    return self._render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 197, in _render
+    return self.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader_tags.py", line 173, in render
+    return compiled_parent._render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 197, in _render
+    return self.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader_tags.py", line 69, in render
+    result = block.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py", line 513, in render
+    six.reraise(*exc_info)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py", line 499, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/urlresolvers.py", line 600, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/urlresolvers.py", line 508, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'playbook' with arguments '()' and keyword arguments '{}' not found. 0 pattern(s) tried: []
+20170706 13:52:14 ERROR Internal Server Error: /sktask/ansible/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/ansible.py", line 36, in index
+    return render(request, 'sktask/ansible.html', locals())
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 67, in render
+    template_name, context, request=request, using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 97, in render_to_string
+    return template.render(context, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/backends/django.py", line 95, in render
+    return self.template.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 206, in render
+    return self._render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 197, in _render
+    return self.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader_tags.py", line 173, in render
+    return compiled_parent._render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 197, in _render
+    return self.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader_tags.py", line 69, in render
+    result = block.nodelist.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 992, in render
+    bit = node.render_annotated(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 959, in render_annotated
+    return self.render(context)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py", line 513, in render
+    six.reraise(*exc_info)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py", line 499, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/urlresolvers.py", line 600, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/urlresolvers.py", line 508, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'host_sync' with arguments '()' and keyword arguments '{}' not found. 0 pattern(s) tried: []
+20170706 14:02:09 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 14:17:43 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 14:28:00 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 14:49:33 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:20:07 ERROR Internal Server Error: /sktask/task/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 39, in _wrapped_view
+    print '%s---->matchUrl:%s' %(request.user,str(matchUrl))
+IOError: [Errno 32] Broken pipe
+20170706 16:21:16 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:44:15 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:44:42 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:57:56 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:58:36 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 16:59:13 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:01:05 ERROR Internal Server Error: /sktask/job/detail/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/job.py", line 110, in job_detail
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 45, in render_to_response
+    using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 114, in render_to_string
+    template_name, context, context_instance, dirs, dictionary)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 231, in render_to_string
+    t = self.get_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 190, in get_template
+    template, origin = self.find_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 157, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loaders/base.py", line 46, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 189, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 231, in compile_nodelist
+    return parser.parse()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 487, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'res_split'
+20170706 17:04:26 ERROR Internal Server Error: /sktask/job/detail/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/job.py", line 110, in job_detail
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 45, in render_to_response
+    using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 114, in render_to_string
+    template_name, context, context_instance, dirs, dictionary)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 231, in render_to_string
+    t = self.get_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 190, in get_template
+    template, origin = self.find_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 157, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loaders/base.py", line 46, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 189, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 231, in compile_nodelist
+    return parser.parse()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 487, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'res_split'
+20170706 17:07:02 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:07:04 ERROR Internal Server Error: /sktask/job/detail/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/job.py", line 110, in job_detail
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 45, in render_to_response
+    using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 114, in render_to_string
+    template_name, context, context_instance, dirs, dictionary)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 231, in render_to_string
+    t = self.get_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 190, in get_template
+    template, origin = self.find_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 157, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loaders/base.py", line 46, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 189, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 231, in compile_nodelist
+    return parser.parse()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 487, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'res_split'
+20170706 17:11:55 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:14:02 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:22:21 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:26:10 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:26:17 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-06 17:26:14) while time zone support is active.
+  RuntimeWarning)
+
+20170706 17:26:17 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py:112: Warning: Data truncated for column 'cmd' at row 1
+  return self.cursor.execute(query, args)
+
+20170706 17:30:08 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:30:17 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-06 17:30:14) while time zone support is active.
+  RuntimeWarning)
+
+20170706 17:33:28 ERROR Internal Server Error: /sktask/job/detail/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/job.py", line 110, in job_detail
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 45, in render_to_response
+    using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 114, in render_to_string
+    template_name, context, context_instance, dirs, dictionary)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 231, in render_to_string
+    t = self.get_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 190, in get_template
+    template, origin = self.find_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 157, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loaders/base.py", line 46, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 189, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 231, in compile_nodelist
+    return parser.parse()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 487, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'res_split'
+20170706 17:34:11 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170706 17:34:12 ERROR Internal Server Error: /sktask/job/detail/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/sktask/job.py", line 110, in job_detail
+    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py", line 45, in render_to_response
+    using=using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loader.py", line 114, in render_to_string
+    template_name, context, context_instance, dirs, dictionary)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 231, in render_to_string
+    t = self.get_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 190, in get_template
+    template, origin = self.find_template(template_name, dirs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/engine.py", line 157, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/loaders/base.py", line 46, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 189, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 231, in compile_nodelist
+    return parser.parse()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/base.py", line 487, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'res_split'
+20170706 17:35:23 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-06 17:35:20) while time zone support is active.
+  RuntimeWarning)
+
+20170706 17:35:23 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py:112: Warning: Data truncated for column 'cmd_object' at row 1
+  return self.cursor.execute(query, args)
+
