@@ -1,6 +1,5 @@
-# Adminset
-<img src="https://travis-ci.org/guohongze/adminset.svg?branch=master"></img><br>
-The open source operation platform : CMDB, project deploy, DevOps , Monitor. <br>
+# skipper
+The open source operation platform : CMDB, project deploy, DevOps  . <br>
 开源DevOps平台：资产管理、项目部署、自动运维、系统监控
 # Requirements
 #### 服务器
@@ -16,8 +15,8 @@ smartmontools<br>
 
 ## 服务端说明
 #### step1:准备
-请将服务器端安装在centos7上
-git clone https://github.com/guohongze/adminset.git<br>
+请将服务器端安装在centosi6 or 7上
+git clone http://gitlab.szyy.com/opergroup/skipper.git<br>
 yum install ansible -y<br>
 yum install smartmontools -y<br>
 yum install python python-devel -y<br>
