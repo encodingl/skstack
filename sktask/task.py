@@ -58,21 +58,23 @@ def job_search(request):
     """
     
     iUser = UserInfo.objects.get(username=request.user)
-    role_job_permission = RoleJob.objects.get(name=iUser.role_job)
-  
-    role_job_permission_list = role_job_permission.permission.all()
-    matchJob = []
-    for j in role_job_permission_list:
-        matchJob.append(j)
+    if not iUser.is_superuser:
+        role_job_permission = RoleJob.objects.get(name=iUser.role_job)
+      
+        role_job_permission_list = role_job_permission.permission.all()
+        matchJob = []
+        for j in role_job_permission_list:
+            matchJob.append(j)
     
-    project_id = request.POST.get('pid')
-    obj = job.objects.filter(project=project_id,name__in=matchJob,online_status='1').values('id','name','playbook')
-
-
-    obj_list = list(obj)
-
+        project_id = request.POST.get('pid')
+        obj = job.objects.filter(project=project_id,name__in=matchJob,online_status='1').values('id','name','playbook')
+     
+    else:
+        obj = job.objects.all().values('id','name','playbook')
+        
+   
+    obj_list = list(obj)    
     obj_json = json.dumps(obj_list)
-
     return  HttpResponse(obj_json)
 
 @login_required()
