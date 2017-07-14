@@ -14,7 +14,7 @@ smartmontools<br>
 
 
 ## 服务端说明
-#### step0:前置配置 安装python虚拟机
+#### step0:前置配置 安装python虚拟机.为了不影响其他python应用环境强烈建议安装python虚拟机
 virtualenv venv-skipper --python=/usr/local/bin/python
 
 #### step1:准备
@@ -40,9 +40,9 @@ ssh-copy-id -i /root/.ssh/id_rsa.pub {客户机IP}<br>
 ansible和shell管理客户机需要此配置
 
 #### step5:运行
-######切换到python虚拟机环境
+切换到python虚拟机环境<br>
 source /home/pythonenv/venv-skipper/bin/activate<br>
-######执行如下命令
+再执行如下命令<br>
 easy_install pip <br>
 pip install -r requirements.txt<br>
 python manage.py makemigrations<br>
