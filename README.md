@@ -24,17 +24,15 @@ git clone http://gitlab.szyy.com/opergroup/skipper.git<br>
 yum install ansible -y<br>
 yum install smartmontools -y<br>
 yum install python python-devel -y<br>
-mkdir /etc/ansible/scripts<br>
-mkdir /etc/ansible/playbook<br>
 #### step2:数据库
 yum install -y mariadb-server mariadb-devel<br>
 service mariadb start<br>
 chkconfig mariadb on<br>
 mysql<br>
-CREATE DATABASE adminset DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE skipper DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 #### step3:配置
-cd adminset<br>
-编辑adminset.conf文件填写mysql数据库信息
+cd skipper<br>
+编辑skipper.conf文件填写mysql数据库信息
 #### step4:配置免密钥登陆客机
 ssh-keygen (可选)<br>
 ssh-copy-id -i /root/.ssh/id_rsa.pub {客户机IP}<br>
@@ -72,7 +70,7 @@ http://your_server_ip:8000/cmdb/get/host/?token=your_token&name=host_name <br>
 http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=group_name <br>
 http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 # dashboard
-<img src="https://github.com/guohongze/adminset/blob/master/static/dist/img/demo.png"></img>
+<img src="https://github.com/guohongze/skipper/blob/master/static/dist/img/demo.png"></img>
 # 安全
 建议不要将程序启动在有公网可以直接访问的设备上，如果需要请使用VPN。<br>
 建议生产环境中使用https配置服务器<br>
