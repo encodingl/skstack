@@ -20,6 +20,7 @@ virtualenv venv-skipper --python=/usr/local/bin/python
 #### step1:准备
 请将服务器端安装在centosi6 or 7上
 git clone http://gitlab.szyy.com/opergroup/skipper.git<br>
+若上调命令不行请使用如下命令克隆代码 git clone git@gitlab.szyy.com:/var/opt/gitlab/git-data/repositories/opergroup/skipper.git<br>
 yum install ansible -y<br>
 yum install smartmontools -y<br>
 yum install python python-devel -y<br>
