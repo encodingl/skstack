@@ -4,4 +4,6 @@
 gitpush.sh
 *.pyc
 /tmp/*
+00*.py
+
 
