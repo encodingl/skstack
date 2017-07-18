@@ -6898,3 +6898,10 @@ IOError: [Errno 5] Input/output error
 
 20170714 16:47:22 WARNING Not Found: /favicon.ico
 20170714 16:47:22 WARNING Not Found: /favicon.ico
+20170718 10:36:19 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170718 10:36:19 WARNING Not Found: /favicon.ico
+20170718 10:57:38 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+

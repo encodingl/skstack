@@ -23,6 +23,7 @@ from billiard.util import INFO
 import sys
 from .models import history
 from datetime import datetime
+from sktask.models import ONLINE_STATUS
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -45,7 +46,7 @@ def index(request):
     all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)
     
     
-    all_projects = project.objects.all()
+    all_projects = project.objects.filter(online_status=1)
 
     
     return render_to_response('sktask/task.html', locals(), RequestContext(request))
