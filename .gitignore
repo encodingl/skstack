@@ -7,4 +7,5 @@ gitpush.sh
 00*.py
 *.log
 /log/
+ignoreupdate.sh
 
