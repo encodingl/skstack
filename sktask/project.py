@@ -65,14 +65,20 @@ def project_add(request):
 @login_required()
 @permission_verify()
 def project_del(request):
-    temp_name = "sktask/setup-header.html"
+#    temp_name = "sktask/setup-header.html"
+    project_id = request.GET.get('id', '')
+    if project_id:
+        project.objects.filter(id=project_id).delete()
+    
     if request.method == 'POST':
         project_items = request.POST.getlist('project_check', [])
         if project_items:
             for n in project_items:
                 project.objects.filter(id=n).delete()
-    allproject = project.objects.all()
-    return render_to_response("sktask/project.html", locals(), RequestContext(request))
+    return HttpResponse(u'删除成功')
+ #   allproject = project.objects.all()
+    
+ #   return render_to_response("sktask/project.html", locals(), RequestContext(request))
 
 
 @login_required()

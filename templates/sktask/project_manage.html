@@ -54,9 +54,7 @@
 
                             </tbody>
                   </table>
-                <div class="btn-group">
-						 <button class="btn btn-danger" style="width: 60pt;font-size: medium" onclick="return checkSubmit()"><b>删除</b></button>
-                  </div>
+
                 </div>
             </div>
         </form>
@@ -130,5 +128,21 @@ function tanchu(n){
         }
   });
 }
+</script>
+<script>
+    $(document).ready(function(){
+        $('.project_del').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确定删除?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                            row.remove()
+                        }
+                )
+            }
+        });
+    });
 </script>
 {% endblock %}

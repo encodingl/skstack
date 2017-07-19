@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -57,7 +60,13 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+class UserGroup(models.Model):
+    name = models.CharField(max_length=64)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
+    desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
 
+    def __unicode__(self):
+        return self.name
+    
 class UserInfo(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True, db_index=True)
     email = models.EmailField(max_length=255)
@@ -69,7 +78,10 @@ class UserInfo(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
+    usergroup = models.ManyToManyField(UserGroup,null=True,blank=True)
 
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
+
+

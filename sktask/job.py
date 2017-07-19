@@ -57,11 +57,15 @@ def job_add(request):
 @permission_verify()
 def job_del(request):
     temp_name = "sktask/setup-header.html"
+    job_id = request.GET.get('id', '')
+    if job_id:
+        job.objects.filter(id=job_id).delete()
     if request.method == 'POST':
         job_items = request.POST.getlist('job_check', [])
         if job_items:
             for n in job_items:
                 job.objects.filter(id=n).delete()
+    
     alljob = job.objects.all()
     return render_to_response("sktask/job_index.html", locals(), RequestContext(request))
 

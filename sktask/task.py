@@ -71,7 +71,8 @@ def job_search(request):
         obj = job.objects.filter(project=project_id,name__in=matchJob,online_status='1').values('id','name','playbook')
      
     else:
-        obj = job.objects.all().values('id','name','playbook')
+        project_id = request.POST.get('pid')
+        obj = job.objects.filter(project=project_id).values('id','name','playbook')
         
    
     obj_list = list(obj)    

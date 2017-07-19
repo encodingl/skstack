@@ -6905,3 +6905,205 @@ IOError: [Errno 5] Input/output error
 20170718 10:57:38 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
   using=using)
 
+20170718 17:09:30 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170718 17:09:47 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-18 17:09:45) while time zone support is active.
+  RuntimeWarning)
+
+20170718 17:10:07 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-18 17:10:07) while time zone support is active.
+  RuntimeWarning)
+
+20170718 17:10:14 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1453: RuntimeWarning: DateTimeField history.time_task_start received a naive datetime (2017-07-18 17:10:14) while time zone support is active.
+  RuntimeWarning)
+
+20170718 17:16:00 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py:67: UserWarning: A {% csrf_token %} was used in a template, but the context did not provide the value.  This is usually caused by not using RequestContext.
+  "A {% csrf_token %} was used in a template, but the context "
+
+20170719 11:09:44 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 11:15:25 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 11:20:01 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py:67: UserWarning: A {% csrf_token %} was used in a template, but the context did not provide the value.  This is usually caused by not using RequestContext.
+  "A {% csrf_token %} was used in a template, but the context "
+
+20170719 11:20:22 ERROR Internal Server Error: /skaccounts/role/delete/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/role.py", line 69, in role_del
+    RoleList.objects.filter(id=ids).delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 600, in delete
+    deleted, _rows_count = collector.delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/deletion.py", line 292, in delete
+    count = qs._raw_delete(using=self.using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 614, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/subqueries.py", line 81, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 848, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/utils.py", line 95, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py", line 112, in execute
+    return self.cursor.execute(query, args)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+ProgrammingError: (1146, "Table 'skipper.skaccounts_userinfo_usergroup' doesn't exist")
+20170719 11:22:24 ERROR Internal Server Error: /skaccounts/user/delete/2/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/user.py", line 87, in user_del
+    get_user_model().objects.filter(id=ids).delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 600, in delete
+    deleted, _rows_count = collector.delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/deletion.py", line 292, in delete
+    count = qs._raw_delete(using=self.using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 614, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/subqueries.py", line 81, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 848, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/utils.py", line 95, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py", line 112, in execute
+    return self.cursor.execute(query, args)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+ProgrammingError: (1146, "Table 'skipper.skaccounts_userinfo_usergroup' doesn't exist")
+20170719 11:22:29 ERROR Internal Server Error: /skaccounts/user/delete/2/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/user.py", line 87, in user_del
+    get_user_model().objects.filter(id=ids).delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 600, in delete
+    deleted, _rows_count = collector.delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/deletion.py", line 292, in delete
+    count = qs._raw_delete(using=self.using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 614, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/subqueries.py", line 81, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 848, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/utils.py", line 95, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py", line 112, in execute
+    return self.cursor.execute(query, args)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+ProgrammingError: (1146, "Table 'skipper.skaccounts_userinfo_usergroup' doesn't exist")
+20170719 11:36:23 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 11:42:53 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 11:54:54 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 11:56:35 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:02:17 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:03:20 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:08:40 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:10:32 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:15:24 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/shortcuts.py:45: RemovedInDjango110Warning: The context_instance argument of render_to_string is deprecated.
+  using=using)
+
+20170719 14:16:19 WARNING /home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/template/defaulttags.py:67: UserWarning: A {% csrf_token %} was used in a template, but the context did not provide the value.  This is usually caused by not using RequestContext.
+  "A {% csrf_token %} was used in a template, but the context "
+
+20170719 14:16:42 ERROR Internal Server Error: /skaccounts/role/delete/1/
+Traceback (most recent call last):
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/permission.py", line 46, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/root/workspace/skipper/skaccounts/role.py", line 69, in role_del
+    RoleList.objects.filter(id=ids).delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 600, in delete
+    deleted, _rows_count = collector.delete()
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/deletion.py", line 292, in delete
+    count = qs._raw_delete(using=self.using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/query.py", line 614, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/subqueries.py", line 81, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 848, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/utils.py", line 95, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/django/db/backends/mysql/base.py", line 112, in execute
+    return self.cursor.execute(query, args)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "/home/pythonenv/venv-adminset/lib/python2.7/site-packages/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+ProgrammingError: (1146, "Table 'skipper.skaccounts_userinfo_usergroup' doesn't exist")

@@ -133,4 +133,20 @@ function tanchu(n){
   });
 }
 </script>
+<script>
+    $(document).ready(function(){
+        $('.extravars_del').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确定删除?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                            row.remove()
+                        }
+                )
+            }
+        });
+    });
+</script>
 {% endblock %}

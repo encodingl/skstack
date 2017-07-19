@@ -56,6 +56,9 @@ def extravars_add(request):
 @permission_verify()
 def extravars_del(request):
     temp_name = "sktask/setup-header.html"
+    extravars_id = request.GET.get('id', '')
+    if extravars_id:
+        extravars.objects.filter(id=extravars_id).delete()
     if request.method == 'POST':
         extravars_items = request.POST.getlist('extravars_check', [])
         if extravars_items:
