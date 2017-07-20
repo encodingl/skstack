@@ -22,7 +22,7 @@
         </div>
         <div class="box-body">
         {% for d in ret %}
-        <p class="text-color">{{ d|res_splict|safe }}</p><br>
+        <p class="text-color">{{ d|res_splict|safe }}</p>
         {% endfor %}
         </div>
         <!-- /.box-body -->
@@ -38,7 +38,7 @@
 
   </div>
   <script>
-  //初始化文字颜色  
+  //初始化文字颜色palybook result  
   $(document).ready(function(){  
       var colorConfig = { "green": ["ok", ],"yellow": ["changed", ],  "red": ["unreachable", "failed"] };  
       jQuery(".text-color").html(function () {  
@@ -46,6 +46,27 @@
           jQuery.each(colorConfig, function (color, values) {  
               jQuery.each(values, function (i, item) { 
             	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+
+            	   
+            	   text = text.replace(re,function(result){
+            		   return '<font color="' + color + '">' + result + '</font>'
+            	   });
+            	   
+              });  
+          });  
+          return text;  
+      });  
+  });
+  </script>
+  <script>
+  //初始化文字颜色  shell result
+  $(document).ready(function(){  
+      var colorConfig = { "green": ["SUCCESS", ],"yellow": [],  "red": [] };  
+      jQuery(".text-color").html(function () {  
+          var text = jQuery(this).html();  
+          jQuery.each(colorConfig, function (color, values) {  
+              jQuery.each(values, function (i, item) { 
+            	   var re =new RegExp(item,"g");
 
             	   
             	   text = text.replace(re,function(result){

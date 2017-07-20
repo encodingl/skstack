@@ -27,9 +27,9 @@
           </div>
         </div>
         <div class="box-body">
-        {% for d in ret %}
-        <p class="text-color">{{ d }}</p>
-        {% endfor %}
+        
+        <p class="text-color">{{ ret|res_splict|safe }}</p>
+        
         </div>
         <!-- /.box-body -->
       

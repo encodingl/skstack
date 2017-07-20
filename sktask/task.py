@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from models import project,job,extravars
 import os
+import re
 from skconfig.views import get_dir,get_ansible_config
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
@@ -120,7 +121,15 @@ def playbook(request):
                 
         
     playbook_dir = proj_base_dir +  p_obj
-    cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+    if j_obj.endswith('.yml'):
+        cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+    elif j_obj.endswith('.ans'):
+        cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+    else:
+        ret.append("您定义的job任务脚本不符合规范，playbook脚本名称必须以yml结尾，shell封装的ansible命令任务脚本ans结尾")
+        
+        return render(request, 'sktask/result.html', locals())
+        
     
 
     try:
@@ -128,9 +137,10 @@ def playbook(request):
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         
         data = pcmd.communicate()
+        print data
+#         ret.append(data)
+        ret=data
     
-
-        ret.append(data)
     except:
         exinfo=sys.exc_info()
         logging.error(exinfo)
@@ -144,7 +154,7 @@ def playbook(request):
              'cmd_object':h_obj,
              'cmd':cmd,
              'cmd_result':retcode,
-             'cmd_detail':ret,                
+             'cmd_detail':ret[0],                
              'time_task_start':time_start,
 #                  'time_task_finished':time_finished,
              'task_name':j_obj}
@@ -179,14 +189,22 @@ def playbook_back(request):
                 
         
     playbook_dir = proj_base_dir +  p_obj
-    cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+    if j_obj.endswith('.yml'):
+        cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+    elif j_obj.endswith('.ans'):
+        cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+    else:
+        ret.append("您定义的job任务脚本不符合规范，playbook脚本名称必须以yml结尾，shell封装的ansible命令任务脚本ans结尾")
+        
+        return render(request, 'sktask/result.html', locals())
+  
    
     try:
         time_start= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         data = pcmd.communicate()
 
-        ret.append(data)
+        ret=data
     
         obj_json = json.dumps(ret)
     except:
@@ -202,7 +220,7 @@ def playbook_back(request):
              'cmd_object':h_obj,
              'cmd':cmd,
              'cmd_result':retcode,
-             'cmd_detail':ret,                
+             'cmd_detail':ret[0],                
              'time_task_start':time_start,
 #                  'time_task_finished':time_finished,
              'task_name':j_obj}

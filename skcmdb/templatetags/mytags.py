@@ -15,7 +15,7 @@ def int2str(value):
 
 
 @register.filter(name='res_splict')
-def res_split(value):
+def res_splict(value):
     """
     将结果格式化换行
     """
@@ -26,6 +26,10 @@ def res_split(value):
                 data = v.replace('\n', '<br>')
                 res.append(data)
         return res
+    elif isinstance(value, basestring): 
+        data = value.replace('\n', '<br>')
+        
+        return data
     else:
         return value
 

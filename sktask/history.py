@@ -11,6 +11,7 @@ from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from skcmdb.api import get_object
 from django.forms.models import model_to_dict  
+import re
 
 
 @login_required()
@@ -27,8 +28,17 @@ def index(request):
 def detail(request, ids):  
     obj = get_object(history, id=ids)
     obj_cmd = obj.cmd
-    ret=obj.cmd_detail 
+    ret=obj.cmd_detail
+    ret=ret.encode('utf-8')
+    
+    print type(ret)
+    print "ret1:%s" % ret
+
+ 
+ 
+#     ret=ret.split("\\n") 
+#     print "ret2:%s" % ret
+#     print type(ret[0])
    
-    ret=ret.split("\\n")   
  
     return render_to_response('sktask/history_detail.html', locals(), RequestContext(request))
