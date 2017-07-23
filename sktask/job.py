@@ -108,7 +108,7 @@ def job_detail(request, ids):
     obj["name"] = obj_playbook
     with open(pkfile, 'r') as f:
         obj["content"] = f.read()
-    print obj["content"]
+   
 
  
     return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))

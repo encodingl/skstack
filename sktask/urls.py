@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from . import views, ansible, shell, history,project,job,extravars,inventories,task
+from . import views, ansible, shell, history, job, extravars, inventories, task
+from sktask import project
 
 
 

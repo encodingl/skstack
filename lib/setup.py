@@ -103,11 +103,31 @@ def get_AnsibleHostsDic(args):
     list_group_key.sort()    
     return dic_list,list_key_set,list_group_key
   
+def get_IpList(args):
+
+    list_ip=[]
+    ip_pattern=r'([0-9]{1,3}\.){3}[0-9]{1,3}'
+    
+ 
+    
+
+    f=open(args)
+
+    for line in f:
+        m=re.search(ip_pattern,line)
+        if(m is not None):
+            ip=m.group()
+            list_ip.append(ip)
+            
+            
+    f.close()
+  
+    return list_ip
         
 if __name__ == "__main__":
-    get_AnsibleHostsDic('/etc/ansible/hosts-prd')
-    a=get_hostsFile("/etc/ansible")
-    print a
+    dic_list,list_key_set,list_group_key=get_AnsibleHostsDic('/etc/ansible/hosts-prd')
+    list_ip=get_IpList('/etc/ansible/hosts-prd')
+    print list_ip
    
     
     

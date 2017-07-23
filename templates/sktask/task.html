@@ -79,7 +79,7 @@
 							  	 
 													               
 					                <select id="ansible_hosts" name="ansible_hosts" class="form-control" data-placeholder="ansible hosts" size="15"   style="width: 100%;">
-					                    {% for hosts in all_group_key %}
+					                    {% for hosts in all_ansible_hosts %}
 					                        <option value="{{ hosts }}">{{hosts}}</option>
 					                    {% endfor %}
 				                	 </select>

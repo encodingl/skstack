@@ -13,7 +13,7 @@ from skaccounts.permission import permission_verify
 from skaccounts.models import RoleJob,UserInfo
 import logging
 from lib.log import log
-from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic
+from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList
 from .models import history
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
@@ -46,6 +46,8 @@ def index(request):
 
     all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)
     
+    all_ansible_hosts_ip = get_IpList(inventory)
+    all_ansible_hosts = all_group_key + all_ansible_hosts_ip
     
     all_projects = project.objects.filter(online_status=1)
 
