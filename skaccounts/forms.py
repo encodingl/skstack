@@ -3,7 +3,7 @@
 # update by guohongze@126.com
 from django import forms
 from django.contrib import auth
-from models import UserInfo, RoleList, PermissionList,RoleJob
+from models import UserInfo, RoleList, PermissionList,RoleJob,AuditFlow
 
 
 class LoginUserForm(forms.Form):
@@ -183,3 +183,16 @@ class RoleJobForm(forms.ModelForm):
         self.fields['name'].error_messages = {'required':u'请输入名称'}
         self.fields['permission'].label = u'job权限'
         self.fields['permission'].required = False
+        
+class AuditFlow_form(forms.ModelForm):
+    class Meta:
+        model = AuditFlow
+        exclude = ("id",)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'level': forms.TextInput(attrs={'class': 'form-control'}),
+            'user_l1': forms.Select(attrs={'class': 'form-control'}),
+            'user_l2': forms.Select(attrs={'class': 'form-control'}),
+            'user_l3': forms.Select(attrs={'class': 'form-control'}),
+         
+        }   

@@ -8,7 +8,11 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from sktask.models import job
 
 # Create your models here.
-
+AuditFlow_LEVEL = (
+    (str(1), u"一层审核"),
+    (str(2), u"二层审核"),
+    (str(3), u"三层审核"),
+    )
 
 class PermissionList(models.Model):
     name = models.CharField(max_length=64)
@@ -84,4 +88,11 @@ class UserInfo(AbstractBaseUser):
         if self.is_active and self.is_superuser:
             return True
 
-
+class AuditFlow(models.Model):
+    name = models.CharField(u"登录用户",max_length=50)
+    level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
+    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l1')
+    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l2')
+    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l3')
+    def __unicode__(self):
+        return self.name
