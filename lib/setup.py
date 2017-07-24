@@ -56,53 +56,31 @@ def get_hostsFile(args):
     return files_list
 
 def get_AnsibleHostsDic(args):
-    dic={}
-    list_key=[]
-    list_group_key=[]
-    pattern=r'^\s*\[.+\]'
-    
- 
-    
+    dic = {}
+    pattern = r'^\[.+\]'
 
     f=open(args)
-
     for line in f:
-        m=re.search(pattern,line)
-        if(m is not None):
-            g=m.group().strip().strip('[').strip(']')
-            
-            
-            p=r'\s*\[%s\](.*?)\n\s*\[.*\]' % g
-            
-            f1=open(args)
-            fstr=f1.read()
-            
-            h=re.findall(p,fstr,re.S)
-           
-            f1.close()
-            if  h:
-                h=h[0].split('\n')
-                for i in h:
-                    if i=='':
-                        h.remove(i)
-    #             print "%s:%s" % (g,h)
-                dic[g] = h
-
-            
-            
-            
-    f.close()
-    
-    dic_list = sorted(dic.items(), key=lambda d:d[0])
-#     print dic_list
-    for key in dic_list:
-        list_key.append(key[0][0])
-        list_group_key.append(key[0])
+        temp = line.split()
+        if temp:
+            m = re.search(pattern,line)
+            if (m is not None):
+                g = m.group().strip().strip('[').strip(']')
+                dic[g] = []
+            else:
+                dic[g].append(line)
+    list_key = []
+    dic_list = dic.items()
+    list_group_key = dic.keys()
+    for key in list_group_key:
+        list_key.append(key[0])
     list_key_set=list(set(list_key))
     list_key_set.sort()
-    list_group_key.sort()    
+    list_group_key.sort()
+
     return dic_list,list_key_set,list_group_key
-  
+
+
 def get_IpList(args):
 
     list_ip=[]
