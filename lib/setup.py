@@ -57,18 +57,18 @@ def get_hostsFile(args):
 
 def get_AnsibleHostsDic(args):
     dic = {}
-    pattern = r'^\[.+\]'
+    pattern = r'^\s*\[.+\]'
 
-    f=open(args)
-    for line in f:
-        temp = line.split()
-        if temp:
-            m = re.search(pattern,line)
-            if (m is not None):
-                g = m.group().strip().strip('[').strip(']')
-                dic[g] = []
-            else:
-                dic[g].append(line)
+    with open(args) as f:
+        for line in f:
+            temp = line.split()
+            if temp:
+                m = re.search(pattern,line)
+                if (m is not None):
+                    g = m.group().strip().strip('[').strip(']')
+                    dic[g] = []
+                else:
+                    dic[g].append(line)
     list_key = []
     dic_list = dic.items()
     list_group_key = dic.keys()
