@@ -8,5 +8,8 @@ gitpush.sh
 *.log
 /log/
 ignoreupdate.sh
-/skdeploy/
+.idea
+.gitignore
+
+
 
