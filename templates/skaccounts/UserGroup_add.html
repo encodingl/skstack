@@ -1,9 +1,4 @@
 {% extends 'base.html' %}
-{% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
-{% endblock %}
 {% block content %}
 
 
@@ -40,11 +35,11 @@
           </div>
         </div>
         <div class="box-body">
-      <form action="{% url 'Project_add' %}" method="post">
+      <form action="{% url 'UserGroup_add' %}" method="post">
         {% csrf_token %}
-        {{ tpl_Project_form.as_p }}
+        {{ tpl_UserGroup_form.as_p }}
         <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'Project_index' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+        <a href="{% url 'UserGroup_index' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
       </form>
         </div>
         <!-- /.box-body -->
@@ -58,12 +53,4 @@
     </section>
 
   </div>
-      <script>
-        var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
-              nonSelectedListLabel: '可选',
-              selectedListLabel: '已选',
-              preserveSelectionOnMove: 'moved',
-              moveOnSelect: false,
-        });
-    </script>
 {% endblock %}

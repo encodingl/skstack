@@ -5,11 +5,6 @@
     <title>Title</title>
     {% include 'link_css.html' %}
     {% include 'head_script.html' %}
-{% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
-{% endblock %}
 </head>
 <body>
 <div class="content-wrapper">
@@ -23,9 +18,9 @@
         <div class="box box-info">
             <!-- /.box-header -->
             <!-- form start -->
-          <form action="{% url 'Project_edit' ids %}" method="post">
+          <form action="{% url 'ProjectGroup_edit' ids %}" method="post">
             {% csrf_token %}
-            {{ tpl_Project_form.as_p }}
+            {{ tpl_ProjectGroup_form.as_p }}
             <input type="hidden" name="id" value="{{ obj.id }}">
             <input type="submit" class="btn btn-primary" style="width: 60pt" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
       
@@ -47,14 +42,6 @@
             parent.$("#handle_status").val('2');
             parent.layer.close(index);
         }
-</script>
-<script>
-var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
-      nonSelectedListLabel: '可选',
-      selectedListLabel: '已选',
-      preserveSelectionOnMove: 'moved',
-      moveOnSelect: false,
-});
 </script>
 </body>
 </html>

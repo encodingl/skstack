@@ -23,9 +23,9 @@
         <div class="box box-info">
             <!-- /.box-header -->
             <!-- form start -->
-          <form action="{% url 'Project_edit' ids %}" method="post">
+          <form action="{% url 'TaskCommit_add' ids %}" method="post">
             {% csrf_token %}
-            {{ tpl_Project_form.as_p }}
+            {{ tpl_TaskCommit_form.as_p }}
             <input type="hidden" name="id" value="{{ obj.id }}">
             <input type="submit" class="btn btn-primary" style="width: 60pt" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
       
@@ -48,14 +48,7 @@
             parent.layer.close(index);
         }
 </script>
-<script>
-var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
-      nonSelectedListLabel: '可选',
-      selectedListLabel: '已选',
-      preserveSelectionOnMove: 'moved',
-      moveOnSelect: false,
-});
-</script>
+
 </body>
 </html>
 

@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
-
 from .forms import Environment_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
@@ -22,12 +21,17 @@ import sys
 from datetime import datetime
 
 
+git_path = get_dir("git_path")
+level = get_dir("log_level")
+log_path = get_dir("log_path")
+log("setup.log", level, log_path)
 
 @login_required()
 @permission_verify()
 def Environment_index(request):
-    temp_name = "skdeploy/skdeploy-header.html"
-    allproject = Environment.objects.all()
+    temp_name = "skdeploy/skdeploy-header.html"    
+    tpl_all = Environment.objects.all()
+    
     return render_to_response('skdeploy/Environment_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -35,9 +39,17 @@ def Environment_index(request):
 def Environment_add(request):
     temp_name = "skdeploy/skdeploy-header.html"
     if request.method == "POST":
-        Environment_form = Environment_form(request.POST)
-        if Environment_form.is_valid():
-            Environment_form.save()
+        tpl_Environment_form = Environment_form(request.POST)
+        if tpl_Environment_form.is_valid():
+            env_dir=git_path+request.POST.get('name_english')
+            try:
+                
+                os.makedirs(env_dir)
+            except:
+                exinfo=sys.exc_info()
+                logging.error(exinfo)
+                
+            tpl_Environment_form.save()
             tips = u"增加成功！"
             display_control = ""
         else:
@@ -46,7 +58,7 @@ def Environment_add(request):
         return render_to_response("skdeploy/Environment_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
-        Environment_form = Environment_form()
+        tpl_Environment_form = Environment_form()
         return render_to_response("skdeploy/Environment_add.html", locals(), RequestContext(request))
 
 
@@ -62,7 +74,7 @@ def Environment_del(request):
         Environment.objects.filter(id=Environment_id).delete()
     
     if request.method == 'POST':
-        Environment_items = request.POST.getlist('Environment_check', [])
+        Environment_items = request.POST.getlist('x_check', [])
         if Environment_items:
             for n in Environment_items:
                 Environment.objects.filter(id=n).delete()
@@ -74,25 +86,27 @@ def Environment_del(request):
 
 @login_required()
 @permission_verify()
-# def Environment_edit(request, ids):
-#     obj = Environment.objects.get(id=ids)
-#     allproject = Environment.objects.all()
-#     return render_to_response("skdeploy/Environment_edit.html", locals(), RequestContext(request))
-
 def Environment_edit(request, ids):
     status = 0
-#     asset_types = online_status
     obj = get_object(Environment, id=ids)
-#     obj = Environment.objects.get(id=ids)
+    
     if request.method == 'POST':
-        obj_f = Environment_form(request.POST, instance=obj)
-        if obj_f.is_valid():
-            obj_f.save()
+        tpl_Environment_form = Environment_form(request.POST, instance=obj)
+        if tpl_Environment_form.is_valid():
+            env_dir=git_path+request.POST.get('name_english')
+            try:
+                
+                os.makedirs(env_dir)
+            except:
+                exinfo=sys.exc_info()
+                logging.error(exinfo)
+        
+            tpl_Environment_form.save()
             status = 1
         else:
             status = 2
     else:
-        obj_f = Environment_form(instance=obj)      
+        tpl_Environment_form = Environment_form(instance=obj)      
     return render_to_response("skdeploy/Environment_edit.html", locals(), RequestContext(request))
 
 

@@ -4,7 +4,7 @@
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import AuditFlow,Environment,Project,ProjectGroup,TaskStatus
+from models import AuditFlow,ProjectGroup,Project,ProjectGroup,TaskStatus
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
@@ -26,8 +26,9 @@ from datetime import datetime
 @login_required()
 @permission_verify()
 def ProjectGroup_index(request):
-    temp_name = "skdeploy/skdeploy-header.html"
-    allproject = ProjectGroup.objects.all()
+    temp_name = "skdeploy/skdeploy-header.html"    
+    tpl_all = ProjectGroup.objects.all()
+    print tpl_all
     return render_to_response('skdeploy/ProjectGroup_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -35,9 +36,9 @@ def ProjectGroup_index(request):
 def ProjectGroup_add(request):
     temp_name = "skdeploy/skdeploy-header.html"
     if request.method == "POST":
-        ProjectGroup_form = ProjectGroup_form(request.POST)
-        if ProjectGroup_form.is_valid():
-            ProjectGroup_form.save()
+        tpl_ProjectGroup_form = ProjectGroup_form(request.POST)
+        if tpl_ProjectGroup_form.is_valid():
+            tpl_ProjectGroup_form.save()
             tips = u"增加成功！"
             display_control = ""
         else:
@@ -46,7 +47,7 @@ def ProjectGroup_add(request):
         return render_to_response("skdeploy/ProjectGroup_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
-        ProjectGroup_form = ProjectGroup_form()
+        tpl_ProjectGroup_form = ProjectGroup_form()
         return render_to_response("skdeploy/ProjectGroup_add.html", locals(), RequestContext(request))
 
 
@@ -62,7 +63,7 @@ def ProjectGroup_del(request):
         ProjectGroup.objects.filter(id=ProjectGroup_id).delete()
     
     if request.method == 'POST':
-        ProjectGroup_items = request.POST.getlist('ProjectGroup_check', [])
+        ProjectGroup_items = request.POST.getlist('x_check', [])
         if ProjectGroup_items:
             for n in ProjectGroup_items:
                 ProjectGroup.objects.filter(id=n).delete()
@@ -74,28 +75,17 @@ def ProjectGroup_del(request):
 
 @login_required()
 @permission_verify()
-# def ProjectGroup_edit(request, ids):
-#     obj = ProjectGroup.objects.get(id=ids)
-#     allproject = ProjectGroup.objects.all()
-#     return render_to_response("skdeploy/ProjectGroup_edit.html", locals(), RequestContext(request))
-
 def ProjectGroup_edit(request, ids):
     status = 0
-#     asset_types = online_status
     obj = get_object(ProjectGroup, id=ids)
-#     obj = ProjectGroup.objects.get(id=ids)
+    
     if request.method == 'POST':
-        obj_f = ProjectGroup_form(request.POST, instance=obj)
-        if obj_f.is_valid():
-            obj_f.save()
+        tpl_ProjectGroup_form = ProjectGroup_form(request.POST, instance=obj)
+        if tpl_ProjectGroup_form.is_valid():
+            tpl_ProjectGroup_form.save()
             status = 1
         else:
             status = 2
     else:
-        obj_f = ProjectGroup_form(instance=obj)      
+        tpl_ProjectGroup_form = ProjectGroup_form(instance=obj)      
     return render_to_response("skdeploy/ProjectGroup_edit.html", locals(), RequestContext(request))
-
-
-
-
-    
