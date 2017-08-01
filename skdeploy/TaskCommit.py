@@ -20,11 +20,13 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
+from gittle import Gittle
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)
 git_path = get_dir("git_path")
+
 
 @login_required()
 @permission_verify()
@@ -33,8 +35,6 @@ def TaskCommit_index(request):
     tpl_all = Project.objects.all()
     print tpl_all
     return render_to_response('skdeploy/TaskCommit_index.html', locals(), RequestContext(request))
-
-
 
 @login_required()
 @permission_verify()
@@ -59,26 +59,20 @@ def TaskCommit_undo(request):
 def TaskCommit_add(request, ids):
     status = 0
     obj = get_object(Project, id=ids)
+    obj_project_id = obj.id
     obj_project=obj.name
     obj_project_group=obj.group
     obj_env=obj.env
     obj_branch="master"
-    obj_user=request.user
-    
-    
-    
-    print git_path
-    print obj_env
-    print obj_project
+    obj_user=request.user    
     obj_path = git_path + str(obj_env) + "/" + str(obj_project)
-    print obj_path
+    obj_git_url=obj.repo_url 
     
-
-    obj_git_url=obj.repo_url
- 
-
-    
+    print type(obj_pre_deploy)
+#     repo = Gittle(obj_path, origin_uri=obj_git_url)
+#     repo.pull()
     dic_init={'project':obj_project,
+              'project_id':obj_project_id,
              'project_group':obj_project_group,
              'env':obj_env,
              'user_commit':obj_user,
@@ -93,17 +87,13 @@ def TaskCommit_add(request, ids):
             status = 1
         else:
             status = 2
-    else:
-        
-        tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)
-        
-        
-        list_tumple_tags=get_git_tag(obj_path,obj_git_url)
-        list_tumple_tags1=[('v1.1.4.982f1656', 'v1.1.4.982f1656'), ('v1.0.0.20160414', 'v1.0.0.20160414')]
-        
-        
+    else:  
+        tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
+        list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
         tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
-       
+        
+    
+    
     return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
 
 

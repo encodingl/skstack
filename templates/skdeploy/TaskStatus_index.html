@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mytags %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
 {% endblock %}
@@ -49,12 +50,12 @@
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.title }}</li></a></td>
                                         <td>{{ x.project}}</td>
                                         <td>{{ x.project_group }}</td>
-                                        <td>{{ x.evn }}</td>
+                                        <td>{{ x.env }}</td>
                                         <td>{{ x.user_commit }}</td>
                                         <td>{{ x.branch }}</td>
                                         <td>{{ x.commit_id }}</td>
-                                        <td>{{ x.created_at }}</td>
-                                        <td>{{ x.finished_at }}</td>
+                                        <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ x.finished_at|date:"Y-m-d H:i:s" }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>

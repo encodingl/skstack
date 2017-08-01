@@ -26,6 +26,8 @@ level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)
 git_path = get_dir("git_path")
+proj_base_dir = get_dir("pro_path")
+
 
 @login_required()
 @permission_verify()
@@ -105,8 +107,11 @@ def Project_edit(request, ids):
             obj_env_id=request.POST.get('env') 
             obj_project_name = request.POST.get('name')                  
             obj_env_eng=Environment.objects.get(id=obj_env_id)
+            obj_pre_deploy = obj.pre_deploy 
             
             repo_path = git_path+obj_env_eng.name_english+"/"+obj_project_name
+            proj_dir = proj_base_dir+obj_env_eng.name_english+"/"+obj_project_name
+            print proj_dir
         
             try:
                 if os.path.exists(repo_path):
@@ -114,6 +119,13 @@ def Project_edit(request, ids):
                
                 repo_url = request.POST.get('repo_url')
                 repo = Gittle.clone(repo_url, repo_path)
+                
+                if os.path.exists(proj_dir):
+                    shutil.rmtree(proj_dir)
+                    os.mkdir(proj_dir)
+                os.chdir(proj_dir)
+                with open("pre_deploy_file.sh","a+") as f:
+                    f.write(obj_pre_deploy)
 
             except:
                 exinfo=sys.exc_info()

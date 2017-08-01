@@ -25,6 +25,7 @@ git_path = get_dir("git_path")
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)
+proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
@@ -41,10 +42,12 @@ def Environment_add(request):
     if request.method == "POST":
         tpl_Environment_form = Environment_form(request.POST)
         if tpl_Environment_form.is_valid():
-            env_dir=git_path+request.POST.get('name_english')
+            env_git_dir=git_path+request.POST.get('name_english')
+            env_proj_dir=proj_base_dir+request.POST.get('name_english')
             try:
                 
-                os.makedirs(env_dir)
+                os.makedirs(env_git_dir)
+                os.makedirs(env_proj_dir)
             except:
                 exinfo=sys.exc_info()
                 logging.error(exinfo)
@@ -93,10 +96,18 @@ def Environment_edit(request, ids):
     if request.method == 'POST':
         tpl_Environment_form = Environment_form(request.POST, instance=obj)
         if tpl_Environment_form.is_valid():
-            env_dir=git_path+request.POST.get('name_english')
+            env_git_dir=git_path+request.POST.get('name_english')
+            env_proj_dir=proj_base_dir+request.POST.get('name_english')
+            print env_proj_dir
             try:
                 
-                os.makedirs(env_dir)
+                os.mkdir(env_git_dir)
+                
+            except:
+                exinfo=sys.exc_info()
+                logging.error(exinfo)
+            try:
+                os.mkdir(env_proj_dir)
             except:
                 exinfo=sys.exc_info()
                 logging.error(exinfo)

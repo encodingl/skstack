@@ -120,6 +120,7 @@ class TaskStatus(models.Model):
     updated_at_l2 = models.DateTimeField(u'l2审核时间', null=True)
     updated_at_l3 = models.DateTimeField(u'l3审核时间', null=True)
     finished_at = models.DateTimeField(u'完成时间',null=True)
+    project_id = models.CharField(u"项目id",max_length=50,null=True,blank=True)
     def __unicode__(self):
-        return self.project_id
+        return self.title
     
