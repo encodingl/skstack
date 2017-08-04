@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
+from lib.file import new_file
 from gittle import Gittle
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
@@ -107,7 +108,7 @@ def Project_edit(request, ids):
             obj_env_id=request.POST.get('env') 
             obj_project_name = request.POST.get('name')                  
             obj_env_eng=Environment.objects.get(id=obj_env_id)
-            obj_pre_deploy = obj.pre_deploy 
+             
             
             repo_path = git_path+obj_env_eng.name_english+"/"+obj_project_name
             proj_dir = proj_base_dir+obj_env_eng.name_english+"/"+obj_project_name
@@ -119,18 +120,24 @@ def Project_edit(request, ids):
                
                 repo_url = request.POST.get('repo_url')
                 repo = Gittle.clone(repo_url, repo_path)
-                
                 if os.path.exists(proj_dir):
                     shutil.rmtree(proj_dir)
-                    os.mkdir(proj_dir)
+                os.mkdir(proj_dir)
                 os.chdir(proj_dir)
-                with open("pre_deploy_file.sh","a+") as f:
-                    f.write(obj_pre_deploy)
+                new_file("pre_deploy.sh", obj.pre_deploy)
+                new_file("post_deploy.sh", obj.post_deploy)
+                new_file("pre_release.sh", obj.post_deploy)
+                new_file("post_release.sh", obj.post_deploy)
+               
+            
 
             except:
                 exinfo=sys.exc_info()
                 logging.error(exinfo)
-
+                
+            
+            
+         
                 
             tpl_Project_form.save()
             status = 1

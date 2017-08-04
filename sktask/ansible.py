@@ -17,8 +17,8 @@ from datetime import datetime
 
 # var info
 ansible_dir = get_dir("a_path")
-# roles_dir = get_dir("r_path")
-# playbook_dir = get_dir("p_path")
+roles_dir = get_dir("r_path")
+playbook_dir = get_dir("p_path")
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)

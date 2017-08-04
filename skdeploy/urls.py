@@ -28,6 +28,8 @@ urlpatterns = [
      url(r'^TaskCommit/$', TaskCommit.TaskCommit_index, name='TaskCommit_index'),
      url(r'^TaskCommit/undo/$', TaskCommit.TaskCommit_undo, name='TaskCommit_undo'),
      url(r'^TaskCommit/add/(?P<ids>\d+)/$', TaskCommit.TaskCommit_add, name='TaskCommit_add'),
+     url(r'^TaskCommit/check/$', TaskCommit.TaskCommit_check, name='TaskCommit_check'),
+     url(r'^TaskCommit/checkstatus/$', TaskCommit.TaskCommit_checkstatus, name='TaskCommit_checkstatus'),
  
     
 ]
