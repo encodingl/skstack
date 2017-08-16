@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -39,19 +38,12 @@ log("setup.log", level, log_path)
 @permission_verify()
 def index(request):
     proj_base_dir = get_dir("pro_path")
-
-    inventory = get_ansible_config("inventory")
-   
+    inventory = get_ansible_config("inventory")   
     temp_name = "sktask/setup-header.html"
-
-    all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)
-    
+    all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)   
     all_ansible_hosts_ip = get_IpList(inventory)
-    all_ansible_hosts = all_group_key + all_ansible_hosts_ip
-    
-    all_projects = project.objects.filter(online_status=1)
-
-    
+    all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
+    all_projects = project.objects.filter(online_status=1)    
     return render_to_response('sktask/task.html', locals(), RequestContext(request))
 
 @login_required()

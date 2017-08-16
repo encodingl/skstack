@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
-from lib.git import get_git_tag
+from lib.lib_git import get_git_tag
 from .forms import TaskCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
@@ -24,6 +24,8 @@ from gittle import Gittle
 import redis
 import time
 import json
+from lib.lib_config import get_redis_config
+from lib.lib_skdeploy import adv_task_step
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -73,7 +75,8 @@ def TaskCommit_add(request, ids):
     
 
     repo = Gittle(obj_path, origin_uri=obj_git_url)
-    repo.pull()
+    
+    repo.pull
     dic_init={'project':obj_project,
               'project_id':obj_project_id,
              'project_group':obj_project_group,
@@ -96,41 +99,56 @@ def TaskCommit_add(request, ids):
         tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
         
     
-    
     return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
 def TaskCommit_check(request):
-   obj_env=request.POST.get('env') 
-   print type(obj_env)
-   obj_project = request.POST.get('project')  
-   redis_chanel = obj_project + obj_env
-   conn = redis.Redis(host='127.0.0.1',password='redis0619')
-   conn.set(redis_chanel,"30")     
-   time.sleep(3) 
-   conn.set(redis_chanel,"60") 
-   time.sleep(3) 
-   conn.set(redis_chanel,"100")
-   ret=conn.get(redis_chanel)
-   print ret 
-   obj_json = json.dumps(ret)
-   return  HttpResponse(obj_json)  
+    obj_env=request.POST.get('env') 
+    obj_project = request.POST.get('project')  
+    obj_git_commit = request.POST.get('commit_id')
+    redis_chanel = obj_project + obj_env
+    redis_chanel_message = redis_chanel+"message"
+    redis_host,redis_port,redis_db,redis_password = get_redis_config()
+    conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
+    
+    result_pre_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="pre_deploy.sh")
+    conn.set(redis_chanel_message,result_pre_deploy) 
+    if result_pre_deploy == "success":     
+        conn.set(redis_chanel,"30") 
+    else:
+        conn.set(redis_chanel,"10")
+        ret=conn.get(redis_chanel_message)
+        obj_json = json.dumps(ret)
+        return  HttpResponse(obj_json) 
+          
+    obj_path = git_path + obj_env + "/" + obj_project  
+     
+     
+    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")   
+    conn.set(redis_chanel_message,result_post_deploy) 
+    if result_post_deploy == "success":     
+        conn.set(redis_chanel,"100") 
+    else:
+        conn.set(redis_chanel,"70")
+        ret=conn.get(redis_chanel_message)
+        obj_json = json.dumps(ret)
+        return  HttpResponse(obj_json)  
 
    
 
 @login_required()
 @permission_verify()
 def TaskCommit_checkstatus(request):
-   obj_env=request.POST.get('env') 
-   obj_project = request.POST.get('project')  
-   redis_chanel=obj_project+obj_env
-   conn = redis.Redis(host='127.0.0.1',password='redis0619')
-   ret=conn.get(redis_chanel) 
-   print "ret status :%s" % ret 
-   obj_json = json.dumps(ret)
-   return  HttpResponse(obj_json)   
+    obj_env=request.POST.get('env') 
+    obj_project = request.POST.get('project')  
+    redis_chanel=obj_project+obj_env
+    conn = redis.Redis(host='127.0.0.1',password='redis0619')
+    ret=conn.get(redis_chanel) 
+    print "ret status :%s" % ret 
+    obj_json = json.dumps(ret)
+    return  HttpResponse(obj_json)   
 
 
     
