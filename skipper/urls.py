@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^skconfig/', include('skconfig.urls')),
     url(r'^skaccounts/', include('skaccounts.urls')),
     url(r'^skdomain/', include('skdomain.urls')),
+    url(r'^skapi/', include('skapi.urls')),
 #     url(r'^skdeploy/', include('skdeploy.urls')),
 ]
