@@ -29,7 +29,7 @@ def idc_add(request):
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/idc_add.html", locals(), RequestContext(request))
+        return render_to_response("skcmdb/opssa_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
         idc_form = IdcForm()

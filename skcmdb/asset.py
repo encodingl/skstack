@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from forms import AssetForm
-from models import Host, Idc, HostGroup, ASSET_STATUS, ASSET_TYPE
+from models import Host, Idc, HostGroup, ASSET_STATUS, ASSET_TYPE, Ops_sa, Env, YwGroup, HostType, MiddleType
 from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
 from django.db.models import Q
 from skcmdb.api import get_object
@@ -21,13 +21,22 @@ sys.setdefaultencoding('utf8')
 def asset(request):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()
+    sa_info = Ops_sa.objects.all()
+    env_info = Env.objects.all()
+    ywgroup_info = YwGroup.objects.all()
+    hosttype_info = HostType.objects.all()
+    middletype_info = MiddleType.objects.all()
+
     host_list = Host.objects.all()
     group_info = HostGroup.objects.all()
     asset_types = ASSET_TYPE
     asset_status = ASSET_STATUS
     idc_name = request.GET.get('idc', '')
-    group_name = request.GET.get('group', '')
-    asset_type = request.GET.get('asset_type', '')
+    sa_name = request.GET.get('sa', '')
+    env_name = request.GET.get('env', '')
+    ywgroup_name = request.GET.get('ywgroup', '')
+    hosttype_name = request.GET.get('hosttype', '')
+    middletype_name = request.GET.get('middletype', '')
     status = request.GET.get('status', '')
     keyword = request.GET.get('keyword', '')
     export = request.GET.get("export", '')
@@ -49,11 +58,20 @@ def asset(request):
     if idc_name:
         asset_find = asset_find.filter(idc__name__contains=idc_name)
 
-    if group_name:
-        asset_find = asset_find.filter(group__name__contains=group_name)
+    if sa_name:
+        asset_find = asset_find.filter(sa__name__contains=sa_name)
 
-    if asset_type:
-        asset_find = asset_find.filter(asset_type__contains=asset_type)
+    if env_name:
+        asset_find = asset_find.filter(env__name__contains=env_name)
+
+    if ywgroup_name:
+        asset_find = asset_find.filter(ywgroup__name__contains=ywgroup_name)
+
+    if hosttype_name:
+        asset_find = asset_find.filter(hosttype__name__contains=hosttype_name)
+
+    if middletype_name:
+        asset_find = asset_find.filter(middletype__name__contains=middletype_name)
 
     if status:
         asset_find = asset_find.filter(status__contains=status)
@@ -181,6 +199,5 @@ def asset_edit(request, ids):
             status = 2
     else:
         af = AssetForm(instance=obj)
-       
 
     return render_to_response('skcmdb/asset_edit.html', locals(), RequestContext(request))

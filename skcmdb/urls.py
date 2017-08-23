@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from skcmdb import api, idc, asset, group
+from skcmdb import api, idc, asset, group,ops
 
 
 urlpatterns = [
@@ -9,7 +9,35 @@ urlpatterns = [
     url(r'^asset/add/$', asset.asset_add, name='asset_add'),
     url(r'^asset/del/$', asset.asset_del, name='asset_del'),
     url(r'^asset/edit/(?P<ids>\d+)/$', asset.asset_edit, name='asset_edit'),
-    # url(r'^asset/save/$', asset.asset_save, name='asset_save'),
+    url(r'asset/app_list$', ops.app_list, name='app_list'),
+    url(r'^asset/app_add/$', ops.app_add, name='app_add'),
+    url(r'^asset/app_del/$', ops.app_del, name='app_del'),
+    url(r'^asset/app_edit/(?P<ids>\d+)/$', ops.app_edit, name='app_edit'),
+    url(r'asset/opssa_list/$', ops.opssa_list, name='opssa_list'),
+    url(r'asset/opssa_add/$', ops.opssa_add, name='opssa_add'),
+    url(r'asset/opssa_del/$', ops.opssa_del, name='opssa_del'),
+    url(r'^asset/opssa_edit/(?P<ids>\d+)/$', ops.opssa_edit, name='opssa_edit'),
+    url(r'asset/opssa_save$', ops.opssa_save, name='opssa_save'),
+    url(r'asset/env_list/$', ops.env_list, name='env_list'),
+    url(r'asset/env_add/$', ops.env_add, name='env_add'),
+    url(r'asset/env_del/$', ops.env_del, name='env_del'),
+    url(r'^asset/env_edit/(?P<ids>\d+)/$', ops.env_edit, name='env_edit'),
+    url(r'asset/env_save$', ops.env_save, name='env_save'),
+    url(r'asset/ywgroup_list/$', ops.ywgroup_list, name='ywgroup_list'),
+    url(r'asset/ywgroup_add/$', ops.ywgroup_add, name='ywgroup_add'),
+    url(r'asset/ywgroup_del/$', ops.ywgroup_del, name='ywgroup_del'),
+    url(r'^asset/ywgroup_edit/(?P<ids>\d+)/$', ops.ywgroup_edit, name='ywgroup_edit'),
+    url(r'asset/ywgroup_save$', ops.ywgroup_save, name='ywgroup_save'),
+    url(r'asset/hosttype_list/$', ops.hosttype_list, name='hosttype_list'),
+    url(r'asset/hosttype_add/$', ops.hosttype_add, name='hosttype_add'),
+    url(r'asset/hosttype_del/$', ops.hosttype_del, name='hosttype_del'),
+    url(r'^asset/hosttype_edit/(?P<ids>\d+)/$', ops.hosttype_edit, name='hosttype_edit'),
+    url(r'asset/hosttype_save$', ops.hosttype_save, name='hosttype_save'),
+    url(r'asset/middletype_list/$', ops.middletype_list, name='middletype_list'),
+    url(r'asset/middletype_add/$', ops.middletype_add, name='middletype_add'),
+    url(r'asset/middletype_del/$', ops.middletype_del, name='middletype_del'),
+    url(r'^asset/middletype_edit/(?P<ids>\d+)/$', ops.middletype_edit, name='middletype_edit'),
+    url(r'asset/middletype_save$', ops.middletype_save, name='middletype_save'),
     url(r'^group/$', group.group, name='group'),
     url(r'^group/del/$', group.group_del, name='group_del'),
     url(r'^group/add/$', group.group_add, name='group_add'),
@@ -17,7 +45,6 @@ urlpatterns = [
     url(r'^group/save/$', group.group_save, name='group_save'),
     url(r'^idc/$', idc.idc, name='idc'),
     url(r'^idc/add/$', idc.idc_add, name='idc_add'),
-    # url(r'^idc/add/mini/$', idc.idc_add_mini, name='idc_add_mini'),
     url(r'^idc/del/$', idc.idc_del, name='idc_del'),
     url(r'^idc/save/$', idc.idc_save, name='idc_save'),
     url(r'^idc/edit/(?P<ids>\d+)/$', idc.idc_edit, name='idc_edit'),
