@@ -32,7 +32,7 @@ def opssa_add(request):
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/Opssa_add.html", locals(), RequestContext(request))
+        return render_to_response("skcmdb/opssa_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
         Opssa_form = OpssaForm()
