@@ -36,7 +36,7 @@ def opssa_add(request):
     else:
         display_control = "none"
         Opssa_form = OpssaForm()
-        return render_to_response("skcmdb/Opssa_add.html", locals(), RequestContext(request))
+        return render_to_response("skcmdb/opssa_add.html", locals(), RequestContext(request))
 
 
 @login_required()
