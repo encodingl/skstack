@@ -218,6 +218,7 @@ class AppForm(forms.ModelForm):
             'ywgroup': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
+            'belong_ip': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'hosttype': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'status': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),

@@ -120,7 +120,7 @@
                             <th>运行环境</th>
                             <th>业务分组</th>
                             <th>状态</th>
-                            <th>备注信息</th>
+                            <th>所属主机</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -137,12 +137,12 @@
                                 <td>{{ app.env }}</td>
                                 <td>{{ app.ywgroup }}</td>
                                 <td>{{ app.status }}</td>
-                                <td>{{ app.descrition }}</td>
+                                <td>{{ app.belong_ip }}</td>
                                 <td class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">
                                         <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
-                                            value="{{ host.id }}">编辑
+                                            value="{{ app.id }}">编辑
                                         </li>
                                     </a>
                                     <a value="{% url 'app_del' %}?id={{ app.id }}"
