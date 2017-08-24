@@ -451,7 +451,6 @@ def app_edit(request, ids):
     status = 0
     app_types = ASSET_TYPE
     obj = get_object(App, id=ids)
-
     if request.method == 'POST':
         af = AppForm(request.POST, instance=obj)
         if af.is_valid():
@@ -461,5 +460,4 @@ def app_edit(request, ids):
             status = 2
     else:
         af = AppForm(instance=obj)
-
     return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))

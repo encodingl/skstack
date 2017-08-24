@@ -199,5 +199,4 @@ def asset_edit(request, ids):
             status = 2
     else:
         af = AssetForm(instance=obj)
-
     return render_to_response('skcmdb/asset_edit.html', locals(), RequestContext(request))

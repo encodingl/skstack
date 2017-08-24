@@ -119,8 +119,8 @@
                             <th>负责人</th>
                             <th>运行环境</th>
                             <th>业务分组</th>
-                            <th>主机类型</th>
                             <th>状态</th>
+                            <th>备注信息</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -131,13 +131,13 @@
                                 </td>
                                 <td><a href="#">
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
-                                        value="{{ host.id }}"> {{ app.name }}</li>
+                                        value="{{ app.id }}"> {{ app.name }}</li>
                                 </a></td>
                                 <td>{{ app.sa }}</td>
                                 <td>{{ app.env }}</td>
                                 <td>{{ app.ywgroup }}</td>
-                                <td>{{ app.hosttype }}</td>
                                 <td>{{ app.status }}</td>
+                                <td>{{ app.descrition }}</td>
                                 <td class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">
@@ -187,11 +187,11 @@
     function tanchu(n) {
         layer.open({
             type: 2,
-            title: '修改主机信息',
+            title: '修改APP信息',
             closeBtn: 1,
             area: ['700px', '550px'],
             shadeClose: true, //点击遮罩关闭
-            content: ['/skcmdb/app_edit/' + n,],
+            content: ['/skcmdb/asset/app_edit/' + n,],
             end: function () {
                 var handle_status = $("#handle_status").val();
                 if (handle_status == '1') {
