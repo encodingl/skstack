@@ -13,12 +13,12 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="{% url 'hosttype_del' %}" method="post">
-                    {% csrf_token %}
+        <form action="{% url 'hostgroup_del' %}" method="post">
+                {% csrf_token %}
             <div class="box">
                 <div class="box-header">
                     <div class="btn-group">
-						 <a href="{% url 'hosttype_add' %}"><li class="btn btn-success" ><b>添加类型</b></li></a>
+						 <a href="{% url 'hostgroup_add' %}"><li class="btn btn-success" ><b>添加主机类型</b></li></a>
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -35,11 +35,11 @@
                             </thead>
                             <tbody>
                                 {% if obj_info %}
-                                {% for idc in obj_info %}
+                                {% for g in obj_info %}
                                     <tr class="even gradeA">
-                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ idc.id }}" name="idc_check" /></td>
-                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ idc.id }}"> {{ idc.name }}</li></a></td>
-                                         <td>{{ idc.descrition }}</td>
+                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ g.id }}" name="g_check" /></td>
+                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ g.id }}"> {{ g.name }}</li></a></td>
+                                        <td>{{ g.desc }}</td>
                                     </tr>
                                 {% endfor %}
                                 {% else %}
@@ -48,7 +48,7 @@
                             </tbody>
                   </table>
                     <div class="btn-group">
-						 <button class="btn btn-danger" style="width: 60pt;font-size: medium" onclick="return checkSubmit()"><b>删除</b></button>
+						 <button class="btn btn-danger " onclick="return checkSubmit()"><b>删除组</b></button>
                     </div>
                 </div>
             </div>
@@ -75,10 +75,7 @@ function checkAll(sender, checkClass) {
 <script>
   $(function () {
 {#    $("#example1").DataTable();#}
-
-
-  });
-var Table = $('#dataform').DataTable({
+    $('#dataform').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -86,9 +83,7 @@ var Table = $('#dataform').DataTable({
       "info": true,
       "autoWidth": true
     });
-
-
-
+  });
 </script>
 <script>
 function checkSubmit() {
@@ -101,23 +96,13 @@ function checkSubmit() {
 function tanchu(n){
   layer.open({
   type: 2,
-  title: '类型信息修改',
+  title: '类型名称信息修改',
   area: ['600px', '450px'],
   shadeClose: true, //点击遮罩关闭
-  content: ['/skcmdb/asset/hosttype_edit/' + n,],
+  content: ['/skcmdb/asset/hostgroup_edit/' + n,],
   end:function(){
         var handle_status = $("#handle_status").val();
         if ( handle_status == '1' ) {
-            Table.destroy();
-            Table = $('#dataform').DataTable({
-              "paging": true,
-              "lengthChange": true,
-              "searching": true,
-              "ordering": true,
-              "info": true,
-              "autoWidth": true
-            });
-
             layer.msg('保存成功！',{
                 icon: 1,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）

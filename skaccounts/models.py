@@ -77,12 +77,13 @@ class UserInfo(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     nickname = models.CharField(max_length=64, null=True)
+    type = models.IntegerField(null=True)
     role = models.ForeignKey(RoleList, null=True, blank=True)
     role_job = models.ForeignKey(RoleJob, null=True, blank=True)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-    usergroup = models.ManyToManyField(UserGroup,null=True,blank=True)
+    #usergroup = models.ManyToManyField(UserGroup,null=True,blank=True)
 
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:

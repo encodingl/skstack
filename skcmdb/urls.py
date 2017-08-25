@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from skcmdb import api, idc, asset, group,ops
+from skcmdb import api, idc, asset,ops
 
 
 urlpatterns = [
@@ -28,21 +28,16 @@ urlpatterns = [
     url(r'asset/ywgroup_del/$', ops.ywgroup_del, name='ywgroup_del'),
     url(r'^asset/ywgroup_edit/(?P<ids>\d+)/$', ops.ywgroup_edit, name='ywgroup_edit'),
     url(r'asset/ywgroup_save$', ops.ywgroup_save, name='ywgroup_save'),
-    url(r'asset/hosttype_list/$', ops.hosttype_list, name='hosttype_list'),
-    url(r'asset/hosttype_add/$', ops.hosttype_add, name='hosttype_add'),
-    url(r'asset/hosttype_del/$', ops.hosttype_del, name='hosttype_del'),
-    url(r'^asset/hosttype_edit/(?P<ids>\d+)/$', ops.hosttype_edit, name='hosttype_edit'),
-    url(r'asset/hosttype_save$', ops.hosttype_save, name='hosttype_save'),
+    url(r'asset/hostgroup_list/$', ops.hostgroup_list, name='hostgroup_list'),
+    url(r'asset/hostgroup_add/$', ops.hostgroup_add, name='hostgroup_add'),
+    url(r'asset/hostgroup_del/$', ops.hostgroup_del, name='hostgroup_del'),
+    url(r'^asset/hostgroup_edit/(?P<ids>\d+)/$', ops.hostgroup_edit, name='hostgroup_edit'),
+    url(r'asset/hostgroup_save$', ops.hostgroup_save, name='hostgroup_save'),
     url(r'asset/middletype_list/$', ops.middletype_list, name='middletype_list'),
     url(r'asset/middletype_add/$', ops.middletype_add, name='middletype_add'),
     url(r'asset/middletype_del/$', ops.middletype_del, name='middletype_del'),
     url(r'^asset/middletype_edit/(?P<ids>\d+)/$', ops.middletype_edit, name='middletype_edit'),
     url(r'asset/middletype_save$', ops.middletype_save, name='middletype_save'),
-    url(r'^group/$', group.group, name='group'),
-    url(r'^group/del/$', group.group_del, name='group_del'),
-    url(r'^group/add/$', group.group_add, name='group_add'),
-    url(r'^group/edit/(?P<ids>\d+)/$', group.group_edit, name='group_edit'),
-    url(r'^group/save/$', group.group_save, name='group_save'),
     url(r'^idc/$', idc.idc, name='idc'),
     url(r'^idc/add/$', idc.idc_add, name='idc_add'),
     url(r'^idc/del/$', idc.idc_del, name='idc_del'),

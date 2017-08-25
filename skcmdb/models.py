@@ -56,7 +56,7 @@ class Ops_sa(models.Model):
         return self.name
 
 class Env(models.Model):
-    name = models.CharField(u"* 环境列表", max_length=30, unique=True)
+    name = models.CharField(u"* 环境名称", max_length=30, unique=True)
     address = models.CharField(u"所在地址", max_length=30, null=True, blank=True)
     descrition = models.CharField(u"描述", max_length=30, null=True, blank=True)
 
@@ -72,15 +72,8 @@ class YwGroup(models.Model):
         return self.name
 
 
-class HostType(models.Model):
-    name = models.CharField(u"* 主机类型名称", max_length=30, unique=True)
-    descrition = models.CharField(u"描述", max_length=30, null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
 class MiddleType(models.Model):
-    name = models.CharField(u"* 中间件名称", max_length=30, unique=True)
+    name = models.CharField(u"* 主机组名称", max_length=30, unique=True)
     descrition = models.CharField(u"描述", max_length=30, null=True, blank=True)
 
     def __unicode__(self):
@@ -103,7 +96,6 @@ class Host(models.Model):
     sa = models.ForeignKey(Ops_sa, verbose_name=u"负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
-    hosttype = models.ForeignKey(HostType, verbose_name=u"主机类型", on_delete=models.SET_NULL, null=True, blank=True)
     middletype = models.ForeignKey(MiddleType, verbose_name=u"设备类型", on_delete=models.SET_NULL, null=True, blank=True)
     asset_no = models.CharField(u"资产编号", max_length=50, null=True, blank=True)
     asset_type = models.CharField(u"设备类型", choices=ASSET_TYPE, max_length=30, null=True, blank=True)
@@ -128,7 +120,6 @@ class App(models.Model):
     sa = models.ForeignKey(Ops_sa, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belong_ip = models.ForeignKey(Host, verbose_name=u"所主主机", on_delete=models.SET_NULL, null=True, blank=True)
-    hosttype = models.ForeignKey(HostType, verbose_name=u"主机类型", on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 

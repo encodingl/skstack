@@ -3,7 +3,7 @@
 
 from django import forms
 from django.forms.widgets import *
-from .models import Host, Idc, HostGroup, Ops_sa ,Env, YwGroup, HostType, MiddleType,App
+from .models import Host, Idc, HostGroup, Ops_sa ,Env, YwGroup, MiddleType,App
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -142,25 +142,6 @@ class YwGroupForm(forms.ModelForm):
             'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
         }
 
-class HostTypeForm(forms.ModelForm):
-    def clean(self):
-        cleaned_data = super(HostTypeForm, self).clean()
-        value = cleaned_data.get('name')
-        try:
-            HostType.objects.get(name=value)
-            self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
-        except HostType.DoesNotExist:
-            pass
-        return cleaned_data
-
-    class Meta:
-        model = HostType
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-        }
 
 class MiddleTypeForm(forms.ModelForm):
     def clean(self):
@@ -183,9 +164,9 @@ class MiddleTypeForm(forms.ModelForm):
         }
 
 
-class GroupForm(forms.ModelForm):
+class HostGroupForm(forms.ModelForm):
     def clean(self):
-        cleaned_data = super(GroupForm, self).clean()
+        cleaned_data = super(HostGroupForm, self).clean()
         value = cleaned_data.get('name')
         try:
             HostGroup.objects.get(name=value)

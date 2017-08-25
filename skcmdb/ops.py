@@ -7,15 +7,16 @@ from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
-from skcmdb.forms import IdcForm, OpssaForm,EnvForm, YwGroupForm, HostTypeForm, MiddleTypeForm, AssetForm, AppForm
-from skcmdb.models import Ops_sa,Env, YwGroup, HostType, MiddleType, ASSET_STATUS,App, ASSET_TYPE
+from skcmdb.forms import IdcForm, OpssaForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm
+from skcmdb.models import Ops_sa,Env, YwGroup, MiddleType, ASSET_STATUS,App, ASSET_TYPE,HostGroup
+from skaccounts.models import UserInfo
 
 
 @login_required()
 @permission_verify()
 def opssa_list(request):
     temp_name = "skcmdb/cmdb-header.html"
-    opssa_info = Ops_sa.objects.all()
+    opssa_info = UserInfo.objects.filter(type=1)
     return render_to_response('skcmdb/opssa_list.html', locals(), RequestContext(request))
 
 
@@ -221,18 +222,18 @@ def ywgroup_save(request):
 
 @login_required()
 @permission_verify()
-def hosttype_list(request):
+def hostgroup_list(request):
     temp_name = "skcmdb/cmdb-header.html"
-    obj_info = HostType.objects.all()
-    return render_to_response('skcmdb/hosttype_list.html', locals(), RequestContext(request))
+    obj_info = HostGroup.objects.all()
+    return render_to_response('skcmdb/hostgroup_list.html', locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
-def hosttype_add(request):
+def hostgroup_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
-        obj_form = HostTypeForm(request.POST)
+        obj_form = HostGroupForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
             tips = u"增加成功！"
@@ -240,50 +241,49 @@ def hosttype_add(request):
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/hosttype_add.html", locals(), RequestContext(request))
+        return render_to_response("skcmdb/hostgroup_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
-        obj_form = HostTypeForm()
-        return render_to_response("skcmdb/hosttype_add.html", locals(), RequestContext(request))
+        obj_form = HostGroupForm()
+        return render_to_response("skcmdb/hostgroup_add.html", locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
-def hosttype_del(request):
+def hostgroup_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
-        obj_items = request.POST.getlist('idc_check', [])
+        obj_items = request.POST.getlist('g_check', [])
         if obj_items:
             for n in obj_items:
-                HostType.objects.filter(id=n).delete()
-    obj_info = HostType.objects.all()
-    return render_to_response("skcmdb/hosttype_list.html", locals(), RequestContext(request))
+                HostGroup.objects.filter(id=n).delete()
+    obj_info = HostGroup.objects.all()
+    return render_to_response("skcmdb/hostgroup_list.html", locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
-def hosttype_edit(request, ids):
-    obj = HostType.objects.get(id=ids)
-    allidc = HostType.objects.all()
-    return render_to_response("skcmdb/hosttype_edit.html", locals(), RequestContext(request))
+def hostgroup_edit(request, ids):
+    obj = HostGroup.objects.get(id=ids)
+    return render_to_response("skcmdb/hostgroup_edit.html", locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
-def hosttype_save(request):
+def hostgroup_save(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         id = request.POST.get('id')
         name = request.POST.get('name')
-        descrition = request.POST.get('descrition')
-        obj_item = HostType.objects.get(id=id)
+        desc = request.POST.get('descrition')
+        obj_item = HostGroup.objects.get(id=id)
         obj_item.name = name
-        obj_item.descrition = descrition
+        obj_item.desc = desc
         obj_item.save()
         status = 1
     else:
         status = 2
-    return render_to_response("skcmdb/hosttype_edit.html", locals(), RequestContext(request))
+    return render_to_response("skcmdb/hostgroup_edit.html", locals(), RequestContext(request))
 
 
 @login_required()
