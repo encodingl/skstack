@@ -3,7 +3,7 @@
 
 from django import forms
 from django.forms.widgets import *
-from .models import Host, Idc, HostGroup, Ops_sa ,Env, YwGroup, MiddleType,App
+from .models import Host, Idc, HostGroup,Env, YwGroup, MiddleType,App
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -32,7 +32,7 @@ class AssetForm(forms.ModelForm):
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'ywgroup': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'hosttype': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
+            'group': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'middletype': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'asset_no': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'asset_type': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
@@ -74,29 +74,6 @@ class IdcForm(forms.ModelForm):
             'ip_range': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
             'jigui': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
             'bandwidth': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-        }
-
-
-class OpssaForm(forms.ModelForm):
-    def clean(self):
-        cleaned_data = super(OpssaForm, self).clean()
-        value = cleaned_data.get('name')
-        try:
-            Ops_sa.objects.get(name=value)
-            self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
-        except Ops_sa.DoesNotExist:
-            pass
-        return cleaned_data
-
-    class Meta:
-        model = Ops_sa
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'tel': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'mail': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
         }
 
 

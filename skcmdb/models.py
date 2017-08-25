@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 from django.db import models
 
+from skaccounts.models import UserInfo
 
 ASSET_STATUS = (
     (str(1), u"使用中"),
@@ -19,14 +20,6 @@ ASSET_TYPE = (
     (str(4), u"网络设备"),
     (str(5), u"其他")
     )
-
-
-class UserInfo(models.Model):
-    username = models.CharField(max_length=30,null=True)
-    password = models.CharField(max_length=30,null=True)
-
-    def __unicode__(self):
-        return self.username
 
 
 class Idc(models.Model):
@@ -46,14 +39,6 @@ class Idc(models.Model):
         verbose_name = u'数据中心'
         verbose_name_plural = verbose_name
 
-class Ops_sa(models.Model):
-    name = models.CharField(u"* 运维负责人", max_length=30, unique=True)
-    tel = models.CharField(u"联系电话", max_length=30, null=True,blank=True)
-    mail = models.EmailField(u"电子邮件",max_length=255,null=True,blank=True)
-    descrition = models.CharField(u"描述", max_length=30, null=True,blank=True)
-
-    def __unicode__(self):
-        return self.name
 
 class Env(models.Model):
     name = models.CharField(u"* 环境名称", max_length=30, unique=True)
@@ -92,11 +77,11 @@ class Host(models.Model):
     hostname = models.CharField(max_length=50, verbose_name=u"* 主机名", unique=True)
     ip = models.GenericIPAddressField(u"* IP地址", max_length=15, unique=True)
     other_ip = models.CharField(u"其它IP", max_length=100, null=True, blank=True)
-    group = models.ForeignKey(HostGroup, verbose_name=u"设备组", on_delete=models.SET_NULL, null=True, blank=True)
-    sa = models.ForeignKey(Ops_sa, verbose_name=u"负责人", on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(HostGroup, verbose_name=u"主机分组", on_delete=models.SET_NULL, null=True, blank=True)
+    sa = models.ForeignKey(UserInfo, verbose_name=u"负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
-    middletype = models.ForeignKey(MiddleType, verbose_name=u"设备类型", on_delete=models.SET_NULL, null=True, blank=True)
+    middletype = models.ForeignKey(MiddleType, verbose_name=u"主机类型", on_delete=models.SET_NULL, null=True, blank=True)
     asset_no = models.CharField(u"资产编号", max_length=50, null=True, blank=True)
     asset_type = models.CharField(u"设备类型", choices=ASSET_TYPE, max_length=30, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
@@ -117,7 +102,7 @@ class Host(models.Model):
 class App(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* APP名称", unique=True)
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
-    sa = models.ForeignKey(Ops_sa, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
+    sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belong_ip = models.ForeignKey(Host, verbose_name=u"所主主机", on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)

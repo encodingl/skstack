@@ -88,6 +88,8 @@ class UserInfo(AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
+    # def __unicode__(self):
+    #     return self.nickname
 
 class AuditFlow(models.Model):
     name = models.CharField(u"登录用户",max_length=50)

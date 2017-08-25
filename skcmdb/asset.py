@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from forms import AssetForm
-from models import Host, Idc, HostGroup, ASSET_STATUS, ASSET_TYPE, Ops_sa, Env, YwGroup, MiddleType
+from models import Host, Idc, HostGroup, ASSET_STATUS, ASSET_TYPE, Env, YwGroup, MiddleType
 from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
 from django.db.models import Q
 from skcmdb.api import get_object

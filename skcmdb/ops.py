@@ -7,8 +7,8 @@ from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
-from skcmdb.forms import IdcForm, OpssaForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm
-from skcmdb.models import Ops_sa,Env, YwGroup, MiddleType, ASSET_STATUS,App, ASSET_TYPE,HostGroup
+from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm
+from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App, ASSET_TYPE,HostGroup
 from skaccounts.models import UserInfo
 
 
