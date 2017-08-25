@@ -22,68 +22,6 @@ def opssa_list(request):
 
 @login_required()
 @permission_verify()
-def opssa_add(request):
-    temp_name = "skcmdb/cmdb-header.html"
-    if request.method == "POST":
-        Opssa_form = OpssaForm(request.POST)
-        if Opssa_form.is_valid():
-            Opssa_form.save()
-            tips = u"增加成功！"
-            display_control = ""
-        else:
-            tips = u"增加失败！"
-            display_control = ""
-        return render_to_response("skcmdb/opssa_add.html", locals(), RequestContext(request))
-    else:
-        display_control = "none"
-        Opssa_form = OpssaForm()
-        return render_to_response("skcmdb/opssa_add.html", locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def opssa_del(request):
-    temp_name = "skcmdb/cmdb-header.html"
-    if request.method == 'POST':
-        Opssa_items = request.POST.getlist('idc_check', [])
-        if Opssa_items:
-            for n in Opssa_items:
-                Ops_sa.objects.filter(id=n).delete()
-    opssa_info = Ops_sa.objects.all()
-    return render_to_response("skcmdb/opssa_list.html", locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def opssa_edit(request, ids):
-    obj = Ops_sa.objects.get(id=ids)
-    allidc = Ops_sa.objects.all()
-    return render_to_response("skcmdb/opssa_edit.html", locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def opssa_save(request):
-    temp_name = "skcmdb/cmdb-header.html"
-    if request.method == 'POST':
-        id = request.POST.get('id')
-        name = request.POST.get('name')
-        tel = request.POST.get('tel')
-        descrition = request.POST.get('descrition')
-        obj_item = Ops_sa.objects.get(id=id)
-        obj_item.name = name
-        obj_item.tel = tel
-        obj_item.descrition = descrition
-        obj_item.save()
-        status = 1
-    else:
-        status = 2
-    return render_to_response("skcmdb/opssa_edit.html", locals(), RequestContext(request))
-
-
-
-@login_required()
-@permission_verify()
 def env_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = Env.objects.all()
@@ -357,16 +295,16 @@ def middletype_save(request):
 @permission_verify()
 def app_list(request):
     temp_name = "skcmdb/cmdb-header.html"
-    sa_info = Ops_sa.objects.all()
+    sa_info = UserInfo.objects.filter(type=1)
     env_info = Env.objects.all()
     ywgroup_info = YwGroup.objects.all()
-    hosttype_info = HostType.objects.all()
+    hostgroup_info = HostGroup.objects.all()
     status_info = ASSET_STATUS
 
     sa_name = request.GET.get('sa', '')
     env_name = request.GET.get('env', '')
     ywgroup_name = request.GET.get('ywgroup', '')
-    hosttype_name = request.GET.get('hosttype', '')
+    hostgroup_name = request.GET.get('hostgroup', '')
     status = request.GET.get('status', '')
     keyword = request.GET.get('keyword', '')
 
@@ -382,8 +320,8 @@ def app_list(request):
     if ywgroup_name:
         app_find = app_find.filter(ywgroup__name__contains=ywgroup_name)
 
-    if hosttype_name:
-        app_find = app_find.filter(hosttype__name__contains=hosttype_name)
+    if hostgroup_name:
+        app_find = app_find.filter(hosttype__name__contains=hostgroup_name)
 
     if status:
         app_find = app_find.filter(status__contains=status)

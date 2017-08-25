@@ -158,16 +158,6 @@ class HostGroupForm(forms.ModelForm):
 
 
 class AppForm(forms.ModelForm):
-    def clean(self):
-        cleaned_data = super(AppForm, self).clean()
-        value = cleaned_data.get('name')
-        try:
-            App.objects.get(name=value)
-            self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
-        except App.DoesNotExist:
-            pass
-        return cleaned_data
-
     class Meta:
         model = App
         exclude = ("id",)
@@ -176,8 +166,7 @@ class AppForm(forms.ModelForm):
             'ywgroup': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'belong_ip': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'hosttype': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
+            'belong_ip': SelectMultiple(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'status': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
         }

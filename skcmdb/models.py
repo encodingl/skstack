@@ -99,17 +99,19 @@ class Host(models.Model):
     def __unicode__(self):
         return self.ip
 
+
 class App(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* APP名称", unique=True)
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
-    belong_ip = models.ForeignKey(Host, verbose_name=u"所主主机", on_delete=models.SET_NULL, null=True, blank=True)
+    belong_ip = models.ManyToManyField(Host)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
-    descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
+    descrition =  models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
+
 
 
 class IpSource(models.Model):

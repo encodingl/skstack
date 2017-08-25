@@ -27,6 +27,7 @@
                                 <input type="checkbox" onclick="checkAll(this, 'item1');" />
                             </th>
                                     <th>姓名</th>
+                                    <th>账号</th>
                                     <th>电子邮件</th>
                                 </tr>
                             </thead>
@@ -36,6 +37,7 @@
                                     <tr class="even gradeA">
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ idc.id }}" name="idc_check" /></td>
                                         <td>{{ idc.nickname }}</td>
+                                        <td>{{ idc.username }}</td>
                                         <td>{{ idc.email }}</td>
                                     </tr>
                                 {% endfor %}

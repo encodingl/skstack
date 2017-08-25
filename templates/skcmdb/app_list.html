@@ -30,10 +30,10 @@
                             <select name="sa" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">负责人</option>
                                 {% for idc in sa_info %}
-                                {% ifequal idc.name sa_name %}
-                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
+                                {% ifequal idc.nickname sa_name %}
+                                <option value="{{ idc.nickname }}" selected> {{ idc.nickname|slice:":20" }}</option>
                                 {% else %}
-                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
+                                <option value="{{ idc.nickname }}"> {{ idc.nickname|slice:":20" }}</option>
                                 {% endifequal %}
                                 {% endfor %}
                             </select>
@@ -67,8 +67,8 @@
 
                         <label>
                             <select name="hosttype" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">主机类型</option>
-                                {% for idc in hosttype_info %}
+                                <option value="">主机分组</option>
+                                {% for idc in  hostgroup_info %}
                                 {% ifequal idc.name hosttype_name %}
                                 <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
                                 {% else %}
@@ -116,11 +116,11 @@
                                        data-editable='false' onclick="check_all('app_form')">
                             </th>
                             <th>APP名称</th>
+                            <th>所属主机</th>
                             <th>负责人</th>
                             <th>运行环境</th>
                             <th>业务分组</th>
                             <th>状态</th>
-                            <th>所属主机</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -133,11 +133,11 @@
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                         value="{{ app.id }}"> {{ app.name }}</li>
                                 </a></td>
+                                <td>{{ app.belong_ip }}</td>
                                 <td>{{ app.sa }}</td>
                                 <td>{{ app.env }}</td>
                                 <td>{{ app.ywgroup }}</td>
                                 <td>{{ app.status }}</td>
-                                <td>{{ app.belong_ip }}</td>
                                 <td class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">
