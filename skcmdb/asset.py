@@ -10,6 +10,7 @@ from skcmdb.api import pages, str2gb
 import csv, datetime
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
+from skaccounts.models import UserInfo
 from django.views.decorators.csrf import csrf_exempt
 import sys
 reload(sys)
@@ -21,7 +22,7 @@ sys.setdefaultencoding('utf8')
 def asset(request):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()
-    sa_info = Ops_sa.objects.all()
+    sa_info = UserInfo.objects.filter(type=1)
     env_info = Env.objects.all()
     ywgroup_info = YwGroup.objects.all()
     hosttype_info = HostGroup.objects.all()
