@@ -312,7 +312,7 @@ def app_list(request):
 
 
     if sa_name:
-        app_find = app_find.filter(sa__name__contains=sa_name)
+        app_find = app_find.filter(sa__nickname__contains=sa_name)
 
     if env_name:
         app_find = app_find.filter(env__name__contains=env_name)
