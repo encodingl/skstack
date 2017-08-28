@@ -43,7 +43,7 @@
                             <select name="sa" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">负责人</option>
                                 {% for idc in sa_info %}
-                                {% ifequal idc.name sa_name %}
+                                {% ifequal idc.nickname sa_name %}
                                 <option value="{{ idc.nickname }}" selected> {{ idc.nickname|slice:":20" }}</option>
                                 {% else %}
                                 <option value="{{ idc.nickname }}"> {{ idc.nickname|slice:":20" }}</option>
