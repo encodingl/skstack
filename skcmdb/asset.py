@@ -69,7 +69,7 @@ def asset(request):
         asset_find = asset_find.filter(ywgroup__name__contains=ywgroup_name)
 
     if hosttype_name:
-        asset_find = asset_find.filter(hosttype__name__contains=hosttype_name)
+        asset_find = asset_find.filter(group__name__contains=hosttype_name)
 
     if middletype_name:
         asset_find = asset_find.filter(middletype__name__contains=middletype_name)
