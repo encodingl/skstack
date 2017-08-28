@@ -2,7 +2,6 @@
 import json
 
 from django.http import HttpResponse
-from skapi.models import Applist
 from skcmdb.models import App
 
 

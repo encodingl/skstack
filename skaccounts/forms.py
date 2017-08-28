@@ -151,7 +151,7 @@ class RoleListForm(forms.ModelForm):
         exclude = ("id",)
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'permission': forms.SelectMultiple(attrs={'class': 'form-control', 'size':'10', 'multiple': 'multiple'}),
+            'permission': forms.SelectMultiple(attrs={'class': 'form-control', 'size':'10','multiple': 'multiple'}),
         }
 
     def __init__(self,*args,**kwargs):

@@ -83,13 +83,13 @@ class UserInfo(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-    #usergroup = models.ManyToManyField(UserGroup,null=True,blank=True)
+    usergroup = models.ManyToManyField(UserGroup,blank=True)
 
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
-    # def __unicode__(self):
-    #     return self.nickname
+    def __unicode__(self):
+        return self.username
 
 class AuditFlow(models.Model):
     name = models.CharField(u"登录用户",max_length=50)

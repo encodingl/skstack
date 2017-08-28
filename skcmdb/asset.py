@@ -60,7 +60,7 @@ def asset(request):
         asset_find = asset_find.filter(idc__name__contains=idc_name)
 
     if sa_name:
-        asset_find = asset_find.filter(sa__name__contains=sa_name)
+        asset_find = asset_find.filter(sa__nickname__contains=sa_name)
 
     if env_name:
         asset_find = asset_find.filter(env__name__contains=env_name)
@@ -190,7 +190,6 @@ def asset_edit(request, ids):
     status = 0
     asset_types = ASSET_TYPE
     obj = get_object(Host, id=ids)
-
     if request.method == 'POST':
         af = AssetForm(request.POST, instance=obj)
         if af.is_valid():
