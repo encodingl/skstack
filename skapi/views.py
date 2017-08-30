@@ -6,7 +6,6 @@ from skcmdb.models import App
 
 
 def grafana(request):
-    print "grafana"
     return HttpResponse("ok")
 
 
@@ -22,10 +21,10 @@ def grafana_search(request):
             result = target_dict.get('result','')
             if result == 'appname':
                 applist = App.objects.filter(status=1)
-                data = [{'text': i.name, 'value': i.id} for i in applist]
+                data = [{'text': i.name, 'value': i.name} for i in applist]
             if result == 'ip':
                 method = target_dict.get('method','')
-                app = App.objects.get(id=method)
+                app = App.objects.get(name=method)
                 iplist = app.belong_ip.all()
                 data = [{'text': i.ip, 'value': i.id} for i in iplist]
             return HttpResponse(json.dumps(data),content_type="application/json")
