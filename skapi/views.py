@@ -26,7 +26,7 @@ def grafana_search(request):
                 method = target_dict.get('method','')
                 app = App.objects.get(name=method)
                 iplist = app.belong_ip.all()
-                data = [{'text': i.ip, 'value': i.id} for i in iplist]
+                data = [{'text': i.ip, 'value': i.name} for i in iplist]
             return HttpResponse(json.dumps(data),content_type="application/json")
         except:
             return HttpResponse("args error")
