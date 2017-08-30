@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from forms import AssetForm
-from models import Host, Idc, HostGroup, ASSET_STATUS, ASSET_TYPE, Env, YwGroup, MiddleType
+from models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType
 from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
 from django.db.models import Q
 from skcmdb.api import get_object
@@ -30,7 +30,6 @@ def asset(request):
 
     host_list = Host.objects.all()
     group_info = HostGroup.objects.all()
-    asset_types = ASSET_TYPE
     asset_status = ASSET_STATUS
     idc_name = request.GET.get('idc', '')
     sa_name = request.GET.get('sa', '')

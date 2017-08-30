@@ -13,15 +13,6 @@ ASSET_STATUS = (
     (str(4), u"其它"),
     )
 
-ASSET_TYPE = (
-    (str(1), u"物理机"),
-    (str(2), u"虚拟机"),
-    (str(3), u"容器"),
-    (str(4), u"网络设备"),
-    (str(5), u"其他")
-    )
-
-
 class Idc(models.Model):
     name = models.CharField(u"机房名称", max_length=30, null=True)
     address = models.CharField(u"机房地址", max_length=100, null=True)
@@ -83,7 +74,7 @@ class Host(models.Model):
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
     middletype = models.ForeignKey(MiddleType, verbose_name=u"主机类型", on_delete=models.SET_NULL, null=True, blank=True)
     asset_no = models.CharField(u"资产编号", max_length=50, null=True, blank=True)
-    asset_type = models.CharField(u"设备类型", choices=ASSET_TYPE, max_length=30, null=True, blank=True)
+    # asset_type = models.CharField(u"设备类型", choices=ASSET_TYPE, max_length=30, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     os = models.CharField(u"操作系统", max_length=100, null=True, blank=True)
     vendor = models.CharField(u"设备厂商", max_length=50, null=True, blank=True)
