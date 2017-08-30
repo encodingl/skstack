@@ -97,7 +97,7 @@ class Host(models.Model):
     memo = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
-        return self.ip
+        return self.hostname
 
 
 class App(models.Model):

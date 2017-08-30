@@ -30,6 +30,7 @@
                                 <input type="checkbox" onclick="checkAll(this, 'item1');" />
                             </th>
                                     <th>类型名称</th>
+                                    <th>主机数量</th>
                                     <th>描述</th>
                                 </tr>
                             </thead>
@@ -39,6 +40,7 @@
                                     <tr class="even gradeA">
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ g.id }}" name="g_check" /></td>
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ g.id }}"> {{ g.name }}</li></a></td>
+                                        <td>{{ g.host_set.count }}</td>
                                         <td>{{ g.desc }}</td>
                                     </tr>
                                 {% endfor %}

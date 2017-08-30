@@ -392,10 +392,13 @@ def app_edit(request, ids):
     if request.method == 'POST':
         af = AppForm(request.POST, instance=obj)
         if af.is_valid():
+            print af.cleaned_data['belong_ip']
+
             af.save()
             status = 1
         else:
             status = 2
     else:
         af = AppForm(instance=obj)
+
     return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))

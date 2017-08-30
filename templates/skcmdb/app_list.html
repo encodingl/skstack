@@ -127,18 +127,22 @@
                         <tbody>
                         {% for app in apps.object_list %}
                             <tr class="even gradeX">
-                                <td><input type="checkbox" id="id" class="i-checks" value="{{ app.id }}" name="id"/>
+                                <td style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks" value="{{ app.id }}" name="id"/>
                                 </td>
-                                <td><a href="#">
+                                <td style="vertical-align:middle"><a href="#">
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                         value="{{ app.id }}"> {{ app.name }}</li>
                                 </a></td>
-                                <td>{{ app.belong_ip }}</td>
-                                <td>{{ app.sa }}</td>
-                                <td>{{ app.env }}</td>
-                                <td>{{ app.ywgroup }}</td>
-                                <td>{{ app.status }}</td>
-                                <td class="text-center" data-editable='false'>
+                                <td style="vertical-align:middle">
+                                    {% for i in app.belong_ip.all %}
+                                        {{ i|get_ip }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td style="vertical-align:middle">{{ app.sa|get_nickname }}</td>
+                                <td style="vertical-align:middle">{{ app.env }}</td>
+                                <td style="vertical-align:middle">{{ app.ywgroup }}</td>
+                                <td style="vertical-align:middle">{{ app.status }}</td>
+                                <td style="vertical-align:middle" class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">
                                         <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
