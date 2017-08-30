@@ -213,7 +213,7 @@ def hostgroup_save(request):
     if request.method == 'POST':
         id = request.POST.get('id')
         name = request.POST.get('name')
-        desc = request.POST.get('descrition')
+        desc = request.POST.get('desc')
         obj_item = HostGroup.objects.get(id=id)
         obj_item.name = name
         obj_item.desc = desc
