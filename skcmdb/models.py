@@ -57,7 +57,7 @@ class MiddleType(models.Model):
 
 
 class HostGroup(models.Model):
-    name = models.CharField(u"组名", max_length=30, unique=True)
+    name = models.CharField(u"* 组名", max_length=30, unique=True)
     desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
 
     def __unicode__(self):

@@ -187,7 +187,6 @@ def asset_del(request):
 @permission_verify()
 def asset_edit(request, ids):
     status = 0
-    asset_types = ASSET_TYPE
     obj = get_object(Host, id=ids)
     if request.method == 'POST':
         af = AssetForm(request.POST, instance=obj)

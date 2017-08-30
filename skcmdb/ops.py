@@ -387,7 +387,6 @@ def app_del(request):
 @permission_verify()
 def app_edit(request, ids):
     status = 0
-    app_types = ASSET_TYPE
     obj = get_object(App, id=ids)
     if request.method == 'POST':
         af = AppForm(request.POST, instance=obj)
