@@ -39,4 +39,7 @@ def get_ip(get_ip):
 
 @register.filter(name='get_nickname')
 def get_nickname(get_nickname):
-    return get_nickname.nickname
+    if get_nickname:
+        return get_nickname.nickname
+    else:
+        return get_nickname

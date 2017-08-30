@@ -14,7 +14,7 @@ ASSET_STATUS = (
     )
 
 class Idc(models.Model):
-    name = models.CharField(u"机房名称", max_length=30, null=True)
+    name = models.CharField(u"* 机房名称", max_length=30, null=True)
     address = models.CharField(u"机房地址", max_length=100, null=True)
     tel = models.CharField(u"机房电话", max_length=30, null=True)
     contact = models.CharField(u"客户经理", max_length=30, null=True)
@@ -74,7 +74,6 @@ class Host(models.Model):
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
     middletype = models.ForeignKey(MiddleType, verbose_name=u"主机类型", on_delete=models.SET_NULL, null=True, blank=True)
     asset_no = models.CharField(u"资产编号", max_length=50, null=True, blank=True)
-    # asset_type = models.CharField(u"设备类型", choices=ASSET_TYPE, max_length=30, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     os = models.CharField(u"操作系统", max_length=100, null=True, blank=True)
     vendor = models.CharField(u"设备厂商", max_length=50, null=True, blank=True)
