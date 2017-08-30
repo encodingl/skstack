@@ -304,12 +304,10 @@ def app_list(request):
     sa_name = request.GET.get('sa', '')
     env_name = request.GET.get('env', '')
     ywgroup_name = request.GET.get('ywgroup', '')
-    hostgroup_name = request.GET.get('hostgroup', '')
     status = request.GET.get('status', '')
     keyword = request.GET.get('keyword', '')
 
     app_find = App.objects.all()
-
 
     if sa_name:
         app_find = app_find.filter(sa__nickname__contains=sa_name)
@@ -320,26 +318,18 @@ def app_list(request):
     if ywgroup_name:
         app_find = app_find.filter(ywgroup__name__contains=ywgroup_name)
 
-    if hostgroup_name:
-        app_find = app_find.filter(hosttype__name__contains=hostgroup_name)
-
     if status:
         app_find = app_find.filter(status__contains=status)
 
     if keyword:
         app_find = app_find.filter(
-            Q(hostname__contains=keyword) |
-            Q(ip__contains=keyword) |
-            Q(other_ip__contains=keyword) |
-            Q(os__contains=keyword) |
-            Q(vendor__contains=keyword) |
-            Q(cpu_model__contains=keyword) |
-            Q(cpu_num__contains=keyword) |
-            Q(memory__contains=keyword) |
-            Q(disk__contains=keyword) |
-            Q(sn__contains=keyword) |
-            Q(position__contains=keyword) |
-            Q(memo__contains=keyword))
+            Q(name__contains=keyword)|
+            Q(ywgroup__name__contains=keyword)|
+            Q(sa__nickname__contains=keyword) |
+            Q(env__name__contains=keyword)    |
+            Q(status__contains=keyword) |
+            Q(descrition__contains=keyword)
+        )
 
     app_list, p, apps, page_range, current_page, show_first, show_end = pages(app_find, request)
     return render_to_response('skcmdb/app_list.html', locals(), RequestContext(request))

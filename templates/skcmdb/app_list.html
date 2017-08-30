@@ -66,19 +66,6 @@
                         </label>
 
                         <label>
-                            <select name="hosttype" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">主机分组</option>
-                                {% for idc in  hostgroup_info %}
-                                {% ifequal idc.name hosttype_name %}
-                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
-                                {% else %}
-                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
-                                {% endifequal %}
-                                {% endfor %}
-                            </select>
-                        </label>
-
-                        <label>
                             <select name="status" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">状态</option>
                                 {% for s in status_info %}

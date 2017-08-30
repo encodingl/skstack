@@ -35,11 +35,12 @@ def asset(request):
     sa_name = request.GET.get('sa', '')
     env_name = request.GET.get('env', '')
     ywgroup_name = request.GET.get('ywgroup', '')
-    hosttype_name = request.GET.get('hosttype', '')
+    hostgroup_name = request.GET.get('hostgroup', '')
     middletype_name = request.GET.get('middletype', '')
     status = request.GET.get('status', '')
     keyword = request.GET.get('keyword', '')
     export = request.GET.get("export", '')
+    print "export=",export
     group_id = request.GET.get("group_id", '')
     idc_id = request.GET.get("idc_id", '')
     asset_id_all = request.GET.getlist("id", '')
@@ -67,8 +68,8 @@ def asset(request):
     if ywgroup_name:
         asset_find = asset_find.filter(ywgroup__name__contains=ywgroup_name)
 
-    if hosttype_name:
-        asset_find = asset_find.filter(group__name__contains=hosttype_name)
+    if hostgroup_name:
+        asset_find = asset_find.filter(group__name__contains=hostgroup_name)
 
     if middletype_name:
         asset_find = asset_find.filter(middletype__name__contains=middletype_name)
