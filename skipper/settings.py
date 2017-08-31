@@ -126,6 +126,19 @@ else:
         }
     }
 
+DATABASES['jump_db'] = {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': config.get('jump_db', 'database'),
+    'USER': config.get('jump_db', 'user'),
+    'PASSWORD': config.get('jump_db', 'password'),
+    'HOST': config.get('jump_db', 'host'),
+    'PORT': config.getint('jump_db', 'port'),
+}
+
+DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
+DATABASE_APPS_MAPPING = {
+    'skapi': 'jump_db',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

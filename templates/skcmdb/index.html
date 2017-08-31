@@ -131,14 +131,14 @@
                                     <li name="export" class="btn btn-success search-btn-excel"><b>&nbsp;导出&nbsp;</b>
                                     </li>
                                 </a>
-                                <a href="#" onclick="return export_excel()">
-                                    <li name="export" class="btn btn-success search-btn-excel"><b>&nbsp;导入&nbsp;</b>
+                                <a href="#">
+                                    <li ame="import" class="btn btn-success search-btn-excel" onclick="return import_asset(this.value)"
+                                        value="1"><b>&nbsp;导入&nbsp;</b>
                                     </li>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div id="export"></div>
                 </div>
 
                 <!-- /.box-header -->
@@ -240,6 +240,34 @@
                     });
                 } else if (handle_status == '2') {
                     layer.msg('修改失败！', {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        history.go(0);
+                    });
+                }
+            }
+        });
+    }
+    function import_asset(n) {
+        layer.open({
+            type: 2,
+            title: '从跳板机导入主机信息',
+            closeBtn: 1,
+            area: ['700px', '550px'],
+            shadeClose: true, //点击遮罩关闭
+            content: ['/skcmdb/asset/edit/' + n,],
+            end: function () {
+                var handle_status = $("#handle_status").val();
+                if (handle_status == '1') {
+                    layer.msg('导入成功！', {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        history.go(0);
+                    });
+                } else if (handle_status == '2') {
+                    layer.msg('导入失败！', {
                         icon: 2,
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
