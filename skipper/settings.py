@@ -135,7 +135,7 @@ DATABASES['jump_db'] = {
     'PORT': config.getint('jump_db', 'port'),
 }
 
-DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
+#DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
 DATABASE_APPS_MAPPING = {
     'skapi': 'jump_db',
 }
