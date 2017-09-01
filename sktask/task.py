@@ -131,7 +131,7 @@ def playbook(request):
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         
         data = pcmd.communicate()
-        print data
+       
 #         ret.append(data)
         ret=data
     

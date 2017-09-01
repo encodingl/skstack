@@ -3,6 +3,7 @@
 
 from gittle import Gittle
 
+from git  import Git
 
 def get_git_tag(repo_path,repo_url):
     repo = Gittle(repo_path,origin_uri=repo_url)
@@ -20,9 +21,13 @@ if __name__ == "__main__":
     repo_url="git@gitlab.szyy.com:opergroup/skipper.git"
     repo_path="/opt/data/gitsource/prod/skipper"
     repo = Gittle(repo_path, origin_uri=repo_url)
+    g = Git(repo_path)
     print repo.active_branch
-    repo.checkout("v0.1.0.000")
-    print repo.active_branch
+    g.checkout("v0.1.0.000")
+    
+#     repo.switch_branch("feature.skdeploy")
+#     repo.checkout("v0.1.0.001")
+
 
     
     

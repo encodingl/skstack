@@ -13,17 +13,7 @@ import datetime
 from _mysql import NULL
 from celery.bin.control import status
 
-TASK_STATUS = (
-    (str(0), u"新建提交"),
-    (str(1), u"l1审核通过"),
-    (str(2), u"l1审核拒绝"),
-    (str(3), u"上线完成"),
-    (str(4), u"上线失败"),
-    (str(5), u"l2审核通过"),
-    (str(6), u"l2审核拒绝"),
-    (str(7), u"l3审核通过"),
-    (str(8), u"l3审核拒绝"),
-    )
+
 
 PROJECT_STATUS = (
     (str("no"), u"停用"),
@@ -48,6 +38,18 @@ PROJECT_REPO_TYPE = (
 TASK_ACTION = (
     (str(0), u"上线"),
     (str(2), u"回滚"),
+    )
+
+TASK_STATUS = (
+    (str(0), u"新建提交"),
+    (str(1), u"l1审核通过"),
+    (str(2), u"l1审核拒绝"),
+    (str(3), u"上线完成"),
+    (str(4), u"上线失败"),
+    (str(5), u"l2审核通过"),
+    (str(6), u"l2审核拒绝"),
+    (str(7), u"l3审核通过"),
+    (str(8), u"l3审核拒绝"),
     )
 
 PROJECT_AUDIT_ENABLE = (
@@ -109,12 +111,12 @@ class TaskStatus(models.Model):
     env = models.CharField(u"环境名称",max_length=50,null=True,blank=True)
     project_group = models.CharField(u"项目分组",max_length=50,null=True,blank=True)
     action = models.CharField(u"动作", choices=TASK_ACTION, max_length=30, null=True, blank=True)
-    status = models.CharField(u"激活状态", choices=TASK_STATUS, max_length=30, null=True, blank=True)  
-    link_id = models.CharField(u"本次上线的软链号",max_length=50)
+    status = models.CharField(u"状态", choices=TASK_STATUS, max_length=30, null=True, blank=True)  
+    link_id = models.CharField(u"当前上线的软链号",max_length=50)
     ex_link_id = models.CharField(u"上一次上线的软链号",max_length=50)
     commit_id = models.CharField(u"git commit id",max_length=50)
     branch = models.CharField(u"上线的分支",max_length=50)
-    enable_rollback = models.CharField(u"能否回滚此版本:0no 1yes",max_length=50)
+    enable_rollback = models.CharField(u"能否回滚此版本:",max_length=50)
     created_at = models.DateTimeField(u'提单时间', auto_now_add=True,null=True)
     updated_at_l1 = models.DateTimeField(u'l1审核时间', null=True)
     updated_at_l2 = models.DateTimeField(u'l2审核时间', null=True)

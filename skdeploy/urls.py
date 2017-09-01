@@ -20,10 +20,18 @@ urlpatterns = [
      url(r'^Environment/add/$', Environment.Environment_add, name='Environment_add'),
      url(r'^Environment/edit/(?P<ids>\d+)/$', Environment.Environment_edit, name='Environment_edit'),
          
-     url(r'^TaskStatus/$', TaskStatus.TaskStatus_index, name='TaskStatus_index'),
+     
      url(r'^TaskStatus/del/$', TaskStatus.TaskStatus_del, name='TaskStatus_del'),
-     url(r'^TaskStatus/add/$', TaskStatus.TaskStatus_add, name='TaskStatus_add'),
-     url(r'^TaskStatus/edit/(?P<ids>\d+)/$', TaskStatus.TaskStatus_edit, name='TaskStatus_edit'),
+     url(r'^TaskStatus/release/(?P<ids>\d+)/$', TaskStatus.TaskStatus_release, name='TaskStatus_release'),
+     url(r'^TaskStatus/release/run/$', TaskStatus.TaskStatus_release_run, name='TaskStatus_release_run'),
+     url(r'^TaskStatus/release/status/$', TaskStatus.TaskStatus_release_status, name='TaskStatus_release_status'),
+     
+     url(r'^TaskStatus/rollback/run/$', TaskStatus.TaskStatus_rollback_run, name='TaskStatus_rollback_run'),
+     url(r'^TaskStatus/rollback/add/(?P<ids>\d+)/$', TaskStatus.TaskStatus_rollback_add, name='TaskStatus_rollback_add'),
+    
+     url(r'^TaskStatus/detail/(?P<ids>\d+)/$', TaskStatus.TaskStatus_detail, name='TaskStatus_detail'),
+     url(r'^TaskStatus/$', TaskStatus.TaskStatus_index, name='TaskStatus_index'),
+  
      
      url(r'^TaskCommit/$', TaskCommit.TaskCommit_index, name='TaskCommit_index'),
      url(r'^TaskCommit/undo/$', TaskCommit.TaskCommit_undo, name='TaskCommit_undo'),

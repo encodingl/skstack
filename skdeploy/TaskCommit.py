@@ -26,6 +26,7 @@ import time
 import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
+from git  import Git
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -68,31 +69,36 @@ def TaskCommit_add(request, ids):
     obj_project=obj.name
     obj_project_group=obj.group
     obj_env=obj.env
+   
     obj_branch="master"
     obj_user=request.user    
     obj_path = git_path + str(obj_env) + "/" + str(obj_project)
     obj_git_url=obj.repo_url 
-    
+    obj_title = str(obj_project) + "-" + str(obj_env)
+   
 
     repo = Gittle(obj_path, origin_uri=obj_git_url)
     
     repo.pull
-    dic_init={'project':obj_project,
+    dic_init={'title':obj_title,
+              'project':obj_project,
               'project_id':obj_project_id,
              'project_group':obj_project_group,
              'env':obj_env,
              'user_commit':obj_user,
              'branch':obj_branch,
+             'status':"0",
+               
              
              }
     
     if request.method == 'POST':
-        tpl_TaskCommit_form = TaskCommit_form(request.POST, initial=dic_init)
+        tpl_TaskCommit_form = TaskCommit_form(request.POST)
         if tpl_TaskCommit_form.is_valid():
             tpl_TaskCommit_form.save()
             status = 1
         else:
-            status = 2
+            status = 3
     else:  
         tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
         list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
@@ -113,29 +119,53 @@ def TaskCommit_check(request):
     redis_host,redis_port,redis_db,redis_password = get_redis_config()
     conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
     
-    result_pre_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="pre_deploy.sh")
-    conn.set(redis_chanel_message,result_pre_deploy) 
-    if result_pre_deploy == "success":     
+    result_pre_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="pre_deploy.sh")  
+    
+    if result_pre_deploy == "success": 
+        result_pre_deploy = "pre_deploy task %s" % result_pre_deploy
+        conn.set(redis_chanel_message,result_pre_deploy)     
         conn.set(redis_chanel,"30") 
     else:
-        conn.set(redis_chanel,"10")
+        conn.set(redis_chanel,"5")
         ret=conn.get(redis_chanel_message)
+        result_pre_deploy = "pre_deploy task %s" % result_pre_deploy
+        conn.set(redis_chanel_message,result_pre_deploy) 
         obj_json = json.dumps(ret)
         return  HttpResponse(obj_json) 
-          
+    
+    result_pre_deploy=conn.get(redis_chanel_message)
+    
+         
     obj_path = git_path + obj_env + "/" + obj_project  
+    g = Git(obj_path)  
+    g.checkout(obj_git_commit)
+    conn.set(redis_chanel,"60")
+    conn.set(redis_chanel_message,"git checkout success")
+    
+    result_git_task=conn.get(redis_chanel_message)
+
      
      
-    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")   
-    conn.set(redis_chanel_message,result_post_deploy) 
+    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")        
     if result_post_deploy == "success":     
         conn.set(redis_chanel,"100") 
+        result_post_deploy = "post_deploy task %s" % result_post_deploy
+        conn.set(redis_chanel_message,result_post_deploy) 
+        ret="ok"
+        obj_json = json.dumps(ret)
+        result_post_deploy=conn.get(redis_chanel_message)
+       
+        return  HttpResponse(obj_json) 
     else:
-        conn.set(redis_chanel,"70")
+        conn.set(redis_chanel,"65")
         ret=conn.get(redis_chanel_message)
+        result_post_deploy = "post_deploy task %s" % result_post_deploy
+        conn.set(redis_chanel_message,result_post_deploy)
         obj_json = json.dumps(ret)
         return  HttpResponse(obj_json)  
-
+    
+    
+    
    
 
 @login_required()
@@ -144,9 +174,17 @@ def TaskCommit_checkstatus(request):
     obj_env=request.POST.get('env') 
     obj_project = request.POST.get('project')  
     redis_chanel=obj_project+obj_env
-    conn = redis.Redis(host='127.0.0.1',password='redis0619')
-    ret=conn.get(redis_chanel) 
-    print "ret status :%s" % ret 
+    redis_chanel_message = redis_chanel+"message"
+    ret={}
+    redis_host,redis_port,redis_db,redis_password = get_redis_config()
+    conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
+    ret["redis_chanel"]=conn.get(redis_chanel) 
+    ret["redis_chanel_message"]=conn.get(redis_chanel_message)
+    if "faild" in ret["redis_chanel_message"] or ret["redis_chanel"] == "100" :
+        conn.delete(redis_chanel)
+        print conn.get(redis_chanel)
+        conn.delete(redis_chanel_message)
+    
     obj_json = json.dumps(ret)
     return  HttpResponse(obj_json)   
 

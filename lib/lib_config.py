@@ -31,6 +31,7 @@ def get_config_var(args):
         a_path = config.get('config', 'ansible_path')
         pro_path = config.get('config', 'project_base_path')
         git_path = config.get('config', 'git_base_path')
+        release_path = config.get('config', 'release_base_path')
         token = config.get('token', 'token')
         log_path = config.get('log', 'log_path')
         log_level = config.get('log', 'log_level')
@@ -47,6 +48,8 @@ def get_config_var(args):
         return log_level
     if args == "git_path":
         return git_path
+    if args == "release_path":
+        return release_path
 
 if __name__ == "__main__":
     x = get_redis_config()

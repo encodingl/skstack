@@ -58,7 +58,7 @@ class Project_form(forms.ModelForm):
 class TaskCommit_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id",)
+        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id","status")
         
         widgets = {         
             'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
@@ -67,35 +67,59 @@ class TaskCommit_form(forms.ModelForm):
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_commit': forms.HiddenInput(attrs={'class': 'form-control'}),
             'branch': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
             'commit_id': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.HiddenInput(attrs={'class': 'form-control'}),
  
         }    
 
         
-        
-class TaskStatus_form(forms.ModelForm):
-    class Meta:
-        model = TaskStatus
-        exclude = ("id",)
 
-        
-class TaskStatus_form2(forms.ModelForm):
+
+class TaskStatus_release_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        exclude = ("id",)
+        fields = ("project","project_id","env","commit_id",)
+        
+        widgets = {         
+            'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'project_id': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'commit_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+ 
+        }  
+               
+class TaskStatus_detail_form(forms.ModelForm):
+    class Meta:
+        model = TaskStatus
+        fields = ("project","env","desc","link_id","ex_link_id","updated_at_l1","updated_at_l2","updated_at_l3","finished_at",)
         widgets = {
-            'user_commit': forms.TextInput(attrs={'class': 'form-control'}),
-            'action': forms.TextInput(attrs={'class': 'form-control'}),
-            'status': forms.TextInput(attrs={'class': 'form-control'}), 
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'link_id': forms.TextInput(attrs={'class': 'form-control'}), 
-            'ex_link_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'commit_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'branch': forms.TextInput(attrs={'class': 'form-control'}),
-            'enable_rollback': forms.TextInput(attrs={'class': 'form-control'}), 
-            'created_at': forms.TextInput(attrs={'class': 'form-control'}),
+            'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+            'link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'ex_link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'updated_at_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'updated_at_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'updated_at_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
  
         }    
+
+
+class TaskStatus_rollback_form(forms.ModelForm):
+    class Meta:
+        model = TaskStatus
+        fields = ("project","project_id","env","desc")
+        
+        widgets = {         
+            'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'project_id': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+        
+ 
+        }  
+        
 

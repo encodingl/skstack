@@ -33,3 +33,7 @@ def res_splict(value):
     else:
         return value
 
+
+@register.filter(name='displayName')
+def displayName(value, arg):
+    return apply(eval('value.get_'+arg+'_display'), ())
