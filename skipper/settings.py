@@ -126,14 +126,14 @@ else:
         }
     }
 
-DATABASES['jumpserver_db'] = {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': config.get('jumpserver_db', 'database'),
-    'USER': config.get('jumpserver_db', 'user'),
-    'PASSWORD': config.get('jumpserver_db', 'password'),
-    'HOST': config.get('jumpserver_db', 'host'),
-    'PORT': config.getint('jumpserver_db', 'port'),
-}
+# DATABASES['jumpserver_db'] = {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'NAME': config.get('jumpserver_db', 'database'),
+#     'USER': config.get('jumpserver_db', 'user'),
+#     'PASSWORD': config.get('jumpserver_db', 'password'),
+#     'HOST': config.get('jumpserver_db', 'host'),
+#     'PORT': config.getint('jumpserver_db', 'port'),
+# }
 
 DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
 DATABASE_APPS_MAPPING = {
