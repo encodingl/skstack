@@ -3,7 +3,7 @@
 
 from django import forms
 from django.forms.widgets import *
-from .models import Host, Idc, HostGroup,Env, YwGroup, MiddleType,App
+from .models import Host, Idc, HostGroup,Env, YwGroup, MiddleType,App, DbSource
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -175,26 +175,26 @@ class AppForm(forms.ModelForm):
         }
 
 
-# class DbSourceForm(forms.ModelForm):
-#
-#     def clean(self):
-#         cleaned_data = super(DbSourceForm, self).clean()
-#         value = cleaned_data.get('name')
-#         try:
-#             HostGroup.objects.get(name=value)
-#             self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
-#         except HostGroup.DoesNotExist:
-#             pass
-#         return cleaned_data
-#
-#     class Meta:
-#         model = DbSource
-#         exclude = ("id",)
-#         widgets = {
-#             'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机名称'}),
-#             'host': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机ip'}),
-#             'user': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'用户名'}),
-#             'password': PasswordInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'密码'}),
-#             'port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'默认3306'}),
-#             'db': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'数据库名'}),
-#         }
+class DbSourceForm(forms.ModelForm):
+
+    def clean(self):
+        cleaned_data = super(DbSourceForm, self).clean()
+        value = cleaned_data.get('name')
+        try:
+            HostGroup.objects.get(name=value)
+            self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
+        except HostGroup.DoesNotExist:
+            pass
+        return cleaned_data
+
+    class Meta:
+        model = DbSource
+        exclude = ("id",)
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机名称'}),
+            'host': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机ip'}),
+            'user': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'用户名'}),
+            'password': PasswordInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'密码'}),
+            'port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'默认3306'}),
+            'db': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'数据库名'}),
+        }
