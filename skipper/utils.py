@@ -39,19 +39,15 @@ class DatabaseAppsRouter(object):
                 return False
         return None
 
-    # for Django 1.4 - Django 1.6
     def allow_syncdb(self, db, model):
         """Make sure that apps only appear in the related database."""
-
         if db in DATABASE_MAPPING.values():
             return DATABASE_MAPPING.get(model._meta.app_label) == db
         elif model._meta.app_label in DATABASE_MAPPING:
             return False
         return None
 
-    # Django 1.7 - Django 1.11
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        print db, app_label, model_name, hints
         if db in DATABASE_MAPPING.values():
             return DATABASE_MAPPING.get(app_label) == db
         elif app_label in DATABASE_MAPPING:

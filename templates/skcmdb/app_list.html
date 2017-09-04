@@ -107,6 +107,8 @@
                             <th>负责人</th>
                             <th>运行环境</th>
                             <th>业务分组</th>
+                            <th>Web端口</th>
+                            <th>Dubbo端口</th>
                             <th>状态</th>
                             <th class="text-center">功能</th>
                         </tr>
@@ -114,7 +116,8 @@
                         <tbody>
                         {% for app in apps.object_list %}
                             <tr class="even gradeX">
-                                <td style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks" value="{{ app.id }}" name="id"/>
+                                <td style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks"
+                                                                         value="{{ app.id }}" name="id"/>
                                 </td>
                                 <td style="vertical-align:middle"><a href="#">
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
@@ -128,6 +131,8 @@
                                 <td style="vertical-align:middle">{{ app.sa|get_nickname }}</td>
                                 <td style="vertical-align:middle">{{ app.env }}</td>
                                 <td style="vertical-align:middle">{{ app.ywgroup }}</td>
+                                <td style="vertical-align:middle">{{ app.web_port }}</td>
+                                <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
                                 <td style="vertical-align:middle">{{ app.status }}</td>
                                 <td style="vertical-align:middle" class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}

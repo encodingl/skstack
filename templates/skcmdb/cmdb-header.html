@@ -46,7 +46,17 @@
                         <b>机房管理</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium" id="job_index"><a href="{% url 'idc' %}"><b>机房列表</b></a></li>
+                        <li style="font-size: medium" id="idc_list"><a href="{% url 'idc' %}"><b>机房列表</b></a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
+
+                <li class="dropdown" style="font-size: medium" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>数据同步</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium" id="dbsource_list"><a href="{% url 'dbsource_list' %}"><b>数据源列表</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>

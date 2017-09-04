@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
+
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
 from skaccounts.models import UserInfo
@@ -96,6 +98,8 @@ class App(models.Model):
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机",blank=True)
+    web_port = models.IntegerField(verbose_name=u"WEB端口号",null=True, blank=True)
+    dubbo_port = models.IntegerField(verbose_name=u"DUBBO端口号", null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     descrition =  models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
@@ -125,5 +129,17 @@ class InterFace(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class DbSource(models.Model):
+    name = models.CharField(max_length=30, verbose_name=u"* 名称",unique=True)
+    host = models.GenericIPAddressField(max_length=30,verbose_name=u"主机ip",null=True)
+    user = models.CharField(max_length=30,verbose_name=u"用户名",null=True,blank=True)
+    password = models.CharField(max_length=30,verbose_name=u"密码",null=True,blank=True)
+    port = models.IntegerField(default=3306,verbose_name=u"端口号",null=True,blank=True)
+    db = models.CharField(max_length=30,verbose_name=u"数据库名",null=True,blank=True)
+
+    def __unicode__(self):
+        return self.user
 
 

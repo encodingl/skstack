@@ -31,3 +31,4 @@ def grafana_search(request):
         except:
             return HttpResponse("args error")
     return HttpResponse("args error")
+

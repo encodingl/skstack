@@ -7,8 +7,8 @@ from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
-from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm
-from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup
+from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm
+from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup, DbSource
 from skaccounts.models import UserInfo
 
 
@@ -381,8 +381,6 @@ def app_edit(request, ids):
     if request.method == 'POST':
         af = AppForm(request.POST, instance=obj)
         if af.is_valid():
-            print af.cleaned_data['belong_ip']
-
             af.save()
             status = 1
         else:
@@ -391,3 +389,58 @@ def app_edit(request, ids):
         af = AppForm(instance=obj)
 
     return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))
+
+
+
+@login_required()
+@permission_verify()
+def dbsource_list(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    obj_info = DbSource.objects.all()
+    return render_to_response('skcmdb/dbsource_list.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def dbsource_add(request):
+    print "data=",request.method
+    temp_name = "skcmdb/cmdb-header.html"
+    if request.method == "POST":
+        obj_form = DbSourceForm(request.POST)
+        if obj_form.is_valid():
+            obj_form.save()
+            tips = u"增加成功！"
+            display_control = ""
+        else:
+            tips = u"增加失败！"
+            display_control = ""
+    else:
+        display_control = "none"
+        obj_form = DbSourceForm()
+    return render_to_response("skcmdb/dbsource_add.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def dbsource_del(request):
+    id = request.GET.get('id', '')
+    if id:
+        DbSource.objects.filter(id=id).delete()
+    return HttpResponse(u'删除成功')
+
+
+@login_required()
+@permission_verify()
+def dbsource_edit(request, ids):
+    obj = DbSource.objects.get(id=ids)
+    status = 0
+    if request.method == "POST":
+        form = DbSourceForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            status = 1
+        # else:
+        #     status = 2
+    else:
+        form = DbSourceForm(instance=obj)
+    return render_to_response("skcmdb/dbsource_edit.html", locals(), RequestContext(request))
