@@ -105,7 +105,6 @@
                             <th>APP名称</th>
                             <th>所属主机</th>
                             <th>负责人</th>
-                            <th>运行环境</th>
                             <th>业务分组</th>
                             <th>Web端口</th>
                             <th>Dubbo端口</th>
@@ -129,7 +128,6 @@
                                     {% endfor %}
                                 </td>
                                 <td style="vertical-align:middle">{{ app.sa|get_nickname }}</td>
-                                <td style="vertical-align:middle">{{ app.env }}</td>
                                 <td style="vertical-align:middle">{{ app.ywgroup }}</td>
                                 <td style="vertical-align:middle">{{ app.web_port }}</td>
                                 <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
