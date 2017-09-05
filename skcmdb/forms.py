@@ -11,17 +11,6 @@ sys.setdefaultencoding('utf8')
 
 class AssetForm(forms.ModelForm):
 
-    # 验证字段
-    # def clean(self):
-    #     cleaned_data = super(AssetForm, self).clean()
-    #     value = cleaned_data.get('hostname')
-    #     try:
-    #         Host.objects.get(hostname=value)
-    #         self._errors['hostname'] = self.error_class(["%s的信息已经存在" % value])
-    #     except Host.DoesNotExist:
-    #         pass
-    #     return cleaned_data
-
     class Meta:
         model = Host
         exclude = ("id",)
@@ -163,7 +152,7 @@ class AppForm(forms.ModelForm):
         model = App
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px','placeholder': u'必填项'}),
             'ywgroup': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),

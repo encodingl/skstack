@@ -1,0 +1,89 @@
+{% load mytags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+</head>
+
+<body>
+<div class="content-wrapper">
+
+
+    <section class="content">
+
+        <div id="dialog">
+            <div class="box">
+                <form action="{% url 'app_edit' ids %}" method="POST">
+                    {% csrf_token %}
+                    <div style="float: left;width: 50%;padding: 10px;">
+                        <label>APP名称1-1:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+
+                    <div style="float: left;width: 50%;padding: 10px;">
+                        <label>APP名称1-2:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+
+                        <div style="float:right;width: 50%;padding: 10px">
+                        <label>APP名称2-1:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+
+                    <div style="float:right;width: 50%;padding: 10px">
+                        <label>APP名称2-2:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+
+                    <div style="float: left;width: 50%;padding: 10px;">
+                        <label>APP名称1111:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+
+                    <div style="float:right;width: 50%;padding: 10px">
+                        <label>APP名称222:</label>
+                        <div>
+                            {{ af.name }}
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-info pull-left" style="width: 120px"><b>保存</b></button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+{#回传参数至父层#}
+<script type="text/javascript">
+    var index = parent.layer.getFrameIndex(window.name);
+    var success = {{ status }};
+    if (success == '1') {
+        parent.$("#handle_status").val('1');
+        parent.layer.close(index);
+    } else if (success == '2') {
+        parent.$("#handle_status").val('2');
+        parent.layer.close(index);
+    }
+</script>
+</body>
+</html>

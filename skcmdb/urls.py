@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'asset/$', asset.asset, name='cmdb'),
     url(r'^asset/add/$', asset.asset_add, name='asset_add'),
     url(r'^asset/del/$', asset.asset_del, name='asset_del'),
+    url(r'^asset/asset_import/$', asset.asset_import, name='asset_import'),
     url(r'^asset/edit/(?P<ids>\d+)/$', asset.asset_edit, name='asset_edit'),
     url(r'asset/app_list$', ops.app_list, name='app_list'),
     url(r'^asset/app_add/$', ops.app_add, name='app_add'),

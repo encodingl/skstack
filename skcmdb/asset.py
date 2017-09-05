@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from forms import AssetForm
-from models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType
+from lib.utils import mysql_execute, ASSET_TYPE
+from models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType, DbSource
 from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
 from django.db.models import Q
 from skcmdb.api import get_object
@@ -204,3 +205,26 @@ def asset_edit(request, ids):
     else:
         af = AssetForm(instance=obj)
     return render_to_response('skcmdb/asset_edit.html', locals(), RequestContext(request))
+
+
+@login_required
+@permission_verify()
+def asset_import(request):
+    dbsource_info = DbSource.objects.all()
+    local_idc_info = Idc.objects.all()
+    local_group_info = HostGroup.objects.all()
+    local_type_info = MiddleType.objects.all()
+
+    dbsource = request.GET.get('dbsource',dbsource_info[0].name)
+    if dbsource:
+        source_idc_info = mysql_execute(dbsource,"select name from jasset_idc")
+        source_group_info = mysql_execute(dbsource,"select name from jasset_assetgroup")
+        source_type_info = ASSET_TYPE
+
+
+
+
+
+    if request.method == 'POST':
+        pass
+    return render_to_response('skcmdb/asset_import.html', locals(), RequestContext(request))
