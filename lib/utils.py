@@ -21,7 +21,7 @@ ASSET_TYPE = (
 def mysql_execute(dbsource,sql):
     db = DbSource.objects.get(name=dbsource)
     config = {'host': db.host, 'user': db.user, 'passwd': db.password, 'port': db.port, 'db': db.db}
-    db = MySQLdb.connect(**config)
+    db = MySQLdb.connect(charset='utf8',**config)
     cursor  = db.cursor()
     cursor.execute(sql)
     return cursor.fetchall()
