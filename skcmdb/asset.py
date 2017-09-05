@@ -210,21 +210,36 @@ def asset_edit(request, ids):
 @login_required
 @permission_verify()
 def asset_import(request):
-    dbsource_info = DbSource.objects.all()
     local_idc_info = Idc.objects.all()
     local_group_info = HostGroup.objects.all()
     local_type_info = MiddleType.objects.all()
 
-    dbsource = request.GET.get('dbsource',dbsource_info[0].name)
+    dbsource_info = DbSource.objects.all()
+    dbsource = request.GET.get('dbsource','')
+
     if dbsource:
-        source_idc_info = mysql_execute(dbsource,"select name from jasset_idc")
-        source_group_info = mysql_execute(dbsource,"select name from jasset_assetgroup")
+        source_idc_info = mysql_execute(dbsource, "select name from jasset_idc")
+        source_group_info = mysql_execute(dbsource, "select name from jasset_assetgroup")
         source_type_info = ASSET_TYPE
 
-
-
-
+    if request.method == 'GET':
+        idc = request.GET.get('idc','')
+        hosttype = request.GET.get('hosttype','')
+        hostgroup = request.GET.get('hostgroup','')
+        l_idc = request.GET.get('l_idc', '')
+        l_type = request.GET.get('l_type', '')
+        l_hostgroup = request.GET.get('l_hostgroup', '')
 
     if request.method == 'POST':
-        pass
+        idc = request.POST.get('idc','')
+        hosttype = request.POST.get('hosttype','')
+        hostgroup = request.POST.get('hostgroup','')
+        l_idc = request.POST.get('l_idc', '')
+        l_type = request.POST.get('l_type', '')
+        l_hostgroup = request.POST.get('l_hostgroup', '')
+
+        asset_list = mysql_execute(dbsource, "select * from jasset_asset where ")
+
+
+
     return render_to_response('skcmdb/asset_import.html', locals(), RequestContext(request))

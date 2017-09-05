@@ -14,7 +14,7 @@
     <section class="content">
         <div id="dialog">
             <div class="box">
-                <form class="form-horizontal" action="#" method="POST">
+                <form class="form-horizontal" action="#" method="POST" id="form">
                     {% csrf_token %}
                     <div class="box-header">
                         <div class="col-sm-2" style="padding-left: 0">
@@ -22,7 +22,7 @@
                                 <select name="dbsource" class="form-control m-b input-sm" onchange="change_info()">
                                     <option value="">请选择数据源</option>
                                     {% for i in dbsource_info %}
-                                    {% ifequal i.name dbsource_name %}
+                                    {% ifequal i.name dbsource %}
                                     <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
@@ -36,7 +36,7 @@
                         <div class="col-sm-5" style="padding-left: 0px">
                             <b>选择导入类型:&nbsp;&nbsp; </b>
                             <label>
-                                <select name="idc" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="idc" class="form-control m-b input-sm">
                                     <option value="">选择机房</option>
                                     {% for i in source_idc_info %}
                                     {% ifequal i.0 idc_name %}
@@ -49,10 +49,10 @@
                             </label>
 
                             <label>
-                                <select name="middletype" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="hosttype" class="form-control m-b input-sm">
                                     <option value="">选择主机分组</option>
                                     {% for i in source_group_info %}
-                                    {% ifequal i.0 middletype_name %}
+                                    {% ifequal i.0 hosttype %}
                                     <option value="{{ i.0 }}" selected> {{ i.0|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.0 }}"> {{ i.0|slice:":20" }}</option>
@@ -62,10 +62,10 @@
                             </label>
 
                             <label>
-                                <select name="hostgroup" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="hostgroup" class="form-control m-b input-sm">
                                     <option value="">选择主机类型</option>
                                     {% for i in source_type_info %}
-                                    {% ifequal i hosttype_name %}
+                                    {% ifequal i hostgroup %}
                                     <option value="{{ i }}" selected> {{ i|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i }}"> {{ i|slice:":20" }}</option>
@@ -79,10 +79,10 @@
                         <div class="col-sm-5" style="padding-left: 0px">
                             <b>导入本地类型:&nbsp;&nbsp;</b>
                             <label>
-                                <select name="idc" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="l_idc" class="form-control m-b input-sm">
                                     <option value="">选择机房</option>
                                     {% for i in local_idc_info %}
-                                    {% ifequal i.name idc_name %}
+                                    {% ifequal i.name l_idc %}
                                     <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
@@ -92,10 +92,10 @@
                             </label>
 
                             <label>
-                                <select name="type" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="l_type" class="form-control m-b input-sm">
                                     <option value="">选择主机分组</option>
                                     {% for i in local_type_info %}
-                                    {% ifequal i.name middletype_name %}
+                                    {% ifequal i.name l_type %}
                                     <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
@@ -105,10 +105,10 @@
                             </label>
 
                             <label>
-                                <select name="hostgroup" class="form-control m-b input-sm" onchange="change_info()">
+                                <select name="l_hostgroup" class="form-control m-b input-sm">
                                     <option value="">选择主机类型</option>
                                     {% for i in local_group_info %}
-                                    {% ifequal i.name hosttype_name %}
+                                    {% ifequal i.name l_hostgroup %}
                                     <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
@@ -134,6 +134,14 @@
 
 </div>
 {#回传参数至父层#}
+<script>
+    function change_info() {
+        var args = $("#form").serialize();
+        window.location = "{% url 'asset_import' %}?" + args
+    }
+</script>
+
+
 <script type="text/javascript">
     var index = parent.layer.getFrameIndex(window.name);
     var success = {{ status }};

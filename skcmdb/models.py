@@ -133,7 +133,7 @@ class InterFace(models.Model):
 
 class DbSource(models.Model):
     name = models.CharField(max_length=30, verbose_name=u"* 名称",unique=True)
-    host = models.GenericIPAddressField(max_length=30,verbose_name=u"主机ip",null=True)
+    host = models.GenericIPAddressField(max_length=30,verbose_name=u"* 主机ip",null=True)
     user = models.CharField(max_length=30,verbose_name=u"用户名",null=True,blank=True)
     password = models.CharField(max_length=30,verbose_name=u"密码",null=True,blank=True)
     port = models.IntegerField(default=3306,verbose_name=u"端口号",null=True,blank=True)
