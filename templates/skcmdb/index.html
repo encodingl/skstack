@@ -156,7 +156,6 @@
                             <th>CPU数量</th>
                             <th>内存(G)</th>
                             <th>磁盘(G)</th>
-                            <th>设备状态</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -174,7 +173,6 @@
                                 <td>{{ host.cpu_num }}</td>
                                 <td>{{ host.memory }}</td>
                                 <td>{{ host.disk }}</td>
-                                <td>{{ host.status }}</td>
                                 <td class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">

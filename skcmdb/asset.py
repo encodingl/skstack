@@ -217,11 +217,6 @@ def asset_import(request):
     dbsource_info = DbSource.objects.all()
     dbsource = request.GET.get('dbsource','')
 
-    if dbsource:
-        source_idc_info = mysql_execute(dbsource, "select name from jasset_idc")
-        source_group_info = mysql_execute(dbsource, "select name from jasset_assetgroup")
-        source_type_info = ASSET_TYPE
-
     if request.method == 'GET':
         idc = request.GET.get('idc','')
         hosttype = request.GET.get('hosttype','')
@@ -230,16 +225,22 @@ def asset_import(request):
         l_type = request.GET.get('l_type', '')
         l_hostgroup = request.GET.get('l_hostgroup', '')
 
-    if request.method == 'POST':
-        idc = request.POST.get('idc','')
-        hosttype = request.POST.get('hosttype','')
-        hostgroup = request.POST.get('hostgroup','')
-        l_idc = request.POST.get('l_idc', '')
-        l_type = request.POST.get('l_type', '')
-        l_hostgroup = request.POST.get('l_hostgroup', '')
+    if dbsource:
+        source_idc_info = mysql_execute(dbsource, "select name from jasset_idc")
+        source_group_info = mysql_execute(dbsource, "select name from jasset_assetgroup")
+        source_type_info = ASSET_TYPE
 
-        asset_list = mysql_execute(dbsource, "select * from jasset_asset where ")
-
+        if request.method == 'POST':
+            idc = request.POST.get('idc','')
+            hosttype = request.POST.get('hosttype','')
+            hostgroup = request.POST.get('hostgroup','')
+            l_idc = request.POST.get('l_idc', '')
+            l_type = request.POST.get('l_type', '')
+            l_hostgroup = request.POST.get('l_hostgroup', '')
+            sql='''select a.hostname,a.ip,a.system_type,a.cpu,a.memory,a.disk,b.name from jasset_asset as a,jasset_idc as b,jasset_AssetGroup as c,jasset_asset_group as d where c.name="%s" and c.id=d.assetgroup_id and a.id=d.asset_id and a.idc_id=b.id and b.name="%s" and a.asset_type="%s"";''' % (hosttype,idc,int(hostgroup) if hostgroup else '' )
+            print sql
+            asset_list = mysql_execute(dbsource,sql)
+            print asset_list
 
 
     return render_to_response('skcmdb/asset_import.html', locals(), RequestContext(request))

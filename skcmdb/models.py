@@ -13,7 +13,8 @@ ASSET_STATUS = (
     (str(2), u"未使用"),
     (str(3), u"故障"),
     (str(4), u"其它"),
-    )
+)
+
 
 class Idc(models.Model):
     name = models.CharField(u"* 机房名称", max_length=30, null=True)
@@ -40,6 +41,7 @@ class Env(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class YwGroup(models.Model):
     name = models.CharField(u"* 小组名称", max_length=30, unique=True)
@@ -97,21 +99,29 @@ class App(models.Model):
     ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
-    belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机",blank=True)
-    web_port = models.IntegerField(verbose_name=u"WEB端口号",null=True, blank=True)
+    belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机", blank=True)
+    web_port = models.IntegerField(verbose_name=u"WEB端口号", null=True, blank=True)
     dubbo_port = models.IntegerField(verbose_name=u"DUBBO端口号", null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
-    descrition =  models.TextField(u"备注信息", max_length=200, null=True, blank=True)
+    descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
 
+class KafkaTopic(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"* App名称", unique=True)
+    belongapp = models.ForeignKey(App, verbose_name=u"所属App", null=True, blank=True)
+    descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 
 class IpSource(models.Model):
     net = models.CharField(max_length=30)
-    subnet = models.CharField(max_length=30,null=True)
-    describe = models.CharField(max_length=30,null=True)
+    subnet = models.CharField(max_length=30, null=True)
+    describe = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.net
@@ -119,10 +129,10 @@ class IpSource(models.Model):
 
 class InterFace(models.Model):
     name = models.CharField(max_length=30)
-    vendor = models.CharField(max_length=30,null=True)
-    bandwidth = models.CharField(max_length=30,null=True)
-    tel = models.CharField(max_length=30,null=True)
-    contact = models.CharField(max_length=30,null=True)
+    vendor = models.CharField(max_length=30, null=True)
+    bandwidth = models.CharField(max_length=30, null=True)
+    tel = models.CharField(max_length=30, null=True)
+    contact = models.CharField(max_length=30, null=True)
     startdate = models.DateField()
     enddate = models.DateField()
     price = models.IntegerField(verbose_name=u'价格')
@@ -132,14 +142,12 @@ class InterFace(models.Model):
 
 
 class DbSource(models.Model):
-    name = models.CharField(max_length=30, verbose_name=u"* 名称",unique=True)
-    host = models.GenericIPAddressField(max_length=30,verbose_name=u"* 主机ip",null=True)
-    user = models.CharField(max_length=30,verbose_name=u"用户名",null=True,blank=True)
-    password = models.CharField(max_length=30,verbose_name=u"密码",null=True,blank=True)
-    port = models.IntegerField(default=3306,verbose_name=u"端口号",null=True,blank=True)
-    db = models.CharField(max_length=30,verbose_name=u"数据库名",null=True,blank=True)
+    name = models.CharField(max_length=30, verbose_name=u"* 名称", unique=True)
+    host = models.GenericIPAddressField(max_length=30, verbose_name=u"主机ip", null=True)
+    user = models.CharField(max_length=30, verbose_name=u"用户名", null=True, blank=True)
+    password = models.CharField(max_length=30, verbose_name=u"密码", null=True, blank=True)
+    port = models.IntegerField(default=3306, verbose_name=u"端口号", null=True, blank=True)
+    db = models.CharField(max_length=30, verbose_name=u"数据库名", null=True, blank=True)
 
     def __unicode__(self):
         return self.user
-
-

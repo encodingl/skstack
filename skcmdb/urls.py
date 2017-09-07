@@ -1,8 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from skcmdb import api, idc, asset,ops
-
+from skcmdb import api, idc, asset, ops
 
 urlpatterns = [
     url(r'asset/$', asset.asset, name='cmdb'),
@@ -14,6 +13,7 @@ urlpatterns = [
     url(r'^asset/app_add/$', ops.app_add, name='app_add'),
     url(r'^asset/app_del/$', ops.app_del, name='app_del'),
     url(r'^asset/app_edit/(?P<ids>\d+)/$', ops.app_edit, name='app_edit'),
+    url(r'asset/app_list$', ops.kafka_list, name='kafka_list'),
     url(r'asset/opssa_list/$', ops.opssa_list, name='opssa_list'),
     url(r'asset/env_list/$', ops.env_list, name='env_list'),
     url(r'asset/env_add/$', ops.env_add, name='env_add'),

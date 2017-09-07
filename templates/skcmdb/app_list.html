@@ -104,11 +104,9 @@
                             </th>
                             <th>APP名称</th>
                             <th>所属主机</th>
-                            <th>负责人</th>
-                            <th>业务分组</th>
+                            <th>Kafka列表</th>
                             <th>Web端口</th>
                             <th>Dubbo端口</th>
-                            <th>状态</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -127,11 +125,9 @@
                                         {{ i|get_ip }}<br>
                                     {% endfor %}
                                 </td>
-                                <td style="vertical-align:middle">{{ app.sa|get_nickname }}</td>
-                                <td style="vertical-align:middle">{{ app.ywgroup }}</td>
+                                <td style="vertical-align:middle">{{ app.kafka }}</td>
                                 <td style="vertical-align:middle">{{ app.web_port }}</td>
                                 <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
-                                <td style="vertical-align:middle">{{ app.status }}</td>
                                 <td style="vertical-align:middle" class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">

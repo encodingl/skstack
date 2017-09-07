@@ -22,10 +22,10 @@
                                 <select name="dbsource" class="form-control m-b input-sm" onchange="change_info()">
                                     <option value="">请选择数据源</option>
                                     {% for i in dbsource_info %}
-                                    {% ifequal i.name dbsource %}
-                                    <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
+                                    {% ifequal i.id|int2str dbsource %}
+                                    <option value="{{ i.id }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
-                                    <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
+                                    <option value="{{ i.id }}"> {{ i.name|slice:":20" }}</option>
                                     {% endifequal %}
                                     {% endfor %}
                                 </select>
@@ -39,7 +39,7 @@
                                 <select name="idc" class="form-control m-b input-sm">
                                     <option value="">选择机房</option>
                                     {% for i in source_idc_info %}
-                                    {% ifequal i.0 idc_name %}
+                                    {% ifequal i.0 idc %}
                                     <option value="{{ i.0 }}" selected> {{ i.0|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.0 }}"> {{ i.0|slice:":20" }}</option>
@@ -65,10 +65,10 @@
                                 <select name="hostgroup" class="form-control m-b input-sm">
                                     <option value="">选择主机类型</option>
                                     {% for i in source_type_info %}
-                                    {% ifequal i hostgroup %}
-                                    <option value="{{ i }}" selected> {{ i|slice:":20" }}</option>
+                                    {% ifequal i.0|int2str hostgroup %}
+                                    <option value="{{ i.0 }}" selected> {{ i.1|slice:":20" }}</option>
                                     {% else %}
-                                    <option value="{{ i }}"> {{ i|slice:":20" }}</option>
+                                    <option value="{{ i.0 }}"> {{ i.1|slice:":20" }}</option>
                                     {% endifequal %}
                                     {% endfor %}
                                 </select>

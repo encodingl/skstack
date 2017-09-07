@@ -8,7 +8,7 @@ from django.template import RequestContext
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
 from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm
-from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup, DbSource
+from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup, DbSource, KafkaTopic
 from skaccounts.models import UserInfo
 
 
@@ -389,6 +389,15 @@ def app_edit(request, ids):
         af = AppForm(instance=obj)
 
     return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))
+
+
+@login_required
+@permission_verify()
+def kafka_list(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    kafka_info = KafkaTopic.objects.all()
+    return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
+
 
 
 
