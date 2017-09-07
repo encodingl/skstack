@@ -113,19 +113,19 @@
                         <tbody>
                         {% for app in apps.object_list %}
                             <tr class="even gradeX">
-                                <td style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks"
+                                <td width="2%" style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks"
                                                                          value="{{ app.id }}" name="id"/>
                                 </td>
-                                <td width="5%" style="vertical-align:middle"><a href="#">
+                                <td width="15%" style="vertical-align:middle"><a href="#">
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                         value="{{ app.id }}"> {{ app.name }}</li>
                                 </a></td>
-                                <td style="vertical-align:middle">
+                                <td width="20%" style="vertical-align:middle">
                                     {% for i in app.belong_ip.all %}
                                         {{ i|get_ip }}<br>
                                     {% endfor %}
                                 </td>
-                                <td style="vertical-align:middle">
+                                <td width="30%" style="vertical-align:middle">
                                     {% for i in app.kafka.all %}
                                         {{ i|get_item }}<br>
                                     {% endfor %}
