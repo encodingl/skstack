@@ -125,7 +125,11 @@
                                         {{ i|get_ip }}<br>
                                     {% endfor %}
                                 </td>
-                                <td style="vertical-align:middle">{{ app.kafka }}</td>
+                                <td style="vertical-align:middle">
+                                    {% for i in app.kafka.all %}
+                                        {{ i|get_item }}<br>
+                                    {% endfor %}
+                                </td>
                                 <td style="vertical-align:middle">{{ app.web_port }}</td>
                                 <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
                                 <td style="vertical-align:middle" class="text-center" data-editable='false'>

@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
-
 from skaccounts.models import UserInfo
 
 ASSET_STATUS = (
@@ -94,24 +93,24 @@ class Host(models.Model):
         return self.hostname
 
 
-class App(models.Model):
-    name = models.CharField(max_length=50, verbose_name=u"* APP名称", unique=True)
-    ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
-    sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
-    env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
-    belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机", blank=True)
-    web_port = models.IntegerField(verbose_name=u"WEB端口号", null=True, blank=True)
-    dubbo_port = models.IntegerField(verbose_name=u"DUBBO端口号", null=True, blank=True)
-    status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
+class KafkaTopic(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"* App名称", unique=True)
     descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
 
-class KafkaTopic(models.Model):
-    name = models.CharField(max_length=50, verbose_name=u"* App名称", unique=True)
-    belongapp = models.ForeignKey(App, verbose_name=u"所属App", null=True, blank=True)
+class App(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"* APP名称", unique=True)
+    ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
+    sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
+    env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
+    belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机", blank=True)
+    kafka = models.ManyToManyField(KafkaTopic, verbose_name=u"Kafka列表", blank=True)
+    web_port = models.IntegerField(verbose_name=u"Web端口号", null=True, blank=True)
+    dubbo_port = models.IntegerField(verbose_name=u"Dubbo端口号", null=True, blank=True)
+    status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
