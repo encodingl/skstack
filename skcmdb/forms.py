@@ -67,23 +67,12 @@ class IdcForm(forms.ModelForm):
 
 
 class EnvForm(forms.ModelForm):
-    def clean(self):
-        cleaned_data = super(EnvForm, self).clean()
-        value = cleaned_data.get('name')
-        try:
-            Env.objects.get(name=value)
-            self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
-        except Env.DoesNotExist:
-            pass
-        return cleaned_data
-
     class Meta:
         model = Env
         exclude = ("id",)
-
         widgets = {
             'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'address': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
+            'address': Select(attrs={'class': 'form-control','style': 'width:450px;'}),
             'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
         }
 

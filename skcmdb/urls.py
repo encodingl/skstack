@@ -20,7 +20,6 @@ urlpatterns = [
     url(r'asset/env_add/$', ops.env_add, name='env_add'),
     url(r'asset/env_del/$', ops.env_del, name='env_del'),
     url(r'^asset/env_edit/(?P<ids>\d+)/$', ops.env_edit, name='env_edit'),
-    url(r'asset/env_save$', ops.env_save, name='env_save'),
     url(r'asset/ywgroup_list/$', ops.ywgroup_list, name='ywgroup_list'),
     url(r'asset/ywgroup_add/$', ops.ywgroup_add, name='ywgroup_add'),
     url(r'asset/ywgroup_del/$', ops.ywgroup_del, name='ywgroup_del'),

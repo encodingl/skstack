@@ -62,32 +62,32 @@ def env_del(request):
     obj_info = Env.objects.all()
     return render_to_response("skcmdb/env_list.html", locals(), RequestContext(request))
 
+#
+# @login_required()
+# @permission_verify()
+# def env_edit(request, ids):
+#     obj = Env.objects.get(id=ids)
+#     return render_to_response("skcmdb/env_edit.html", locals(), RequestContext(request))
 
-@login_required()
+
+@login_required
 @permission_verify()
 def env_edit(request, ids):
-    obj = Env.objects.get(id=ids)
-    return render_to_response("skcmdb/env_edit.html", locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def env_save(request):
-    temp_name = "skcmdb/cmdb-header.html"
+    status = 0
+    obj = get_object(Env, id=ids)
     if request.method == 'POST':
-        id = request.POST.get('id')
-        name = request.POST.get('name')
-        address = request.POST.get('address')
-        descrition = request.POST.get('descrition')
-        obj_item = Env.objects.get(id=id)
-        obj_item.name = name
-        obj_item.address = address
-        obj_item.descrition = descrition
-        obj_item.save()
-        status = 1
+        af = EnvForm(request.POST, instance=obj)
+        print af.errors
+        if af.is_valid():
+            print af.errors
+            af.save()
+            status = 1
+        else:
+            status = 2
     else:
-        status = 2
-    return render_to_response("skcmdb/env_edit.html", locals(), RequestContext(request))
+        af = EnvForm(instance=obj)
+
+    return render_to_response('skcmdb/env_edit.html', locals(), RequestContext(request))
 
 
 @login_required()

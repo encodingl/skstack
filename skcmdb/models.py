@@ -35,7 +35,8 @@ class Idc(models.Model):
 
 class Env(models.Model):
     name = models.CharField(u"* 环境名称", max_length=30, unique=True)
-    address = models.CharField(u"所在地址", max_length=30, null=True, blank=True)
+    #address = models.CharField(u"所在地址", max_length=30, null=True, blank=True)
+    #address = models.ForeignKey(Idc, verbose_name=u"所在机房", on_delete=models.SET_NULL, null=True, blank=True)
     descrition = models.CharField(u"描述", max_length=30, null=True, blank=True)
 
     def __unicode__(self):

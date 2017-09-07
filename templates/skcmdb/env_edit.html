@@ -12,63 +12,59 @@
 
     <section class="content">
 
-<div id="dialog">
-        <div class="box box-info">
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form class="form-horizontal" action="{% url 'env_save' %}" method="POST">
-                      {% csrf_token %}
-                <div class="box-body">
-                <div class="form-group">
-                  <label for="name" class="col-sm-2 control-label">环境名称:</label>
+        <div id="dialog">
+            <div class="box box-info">
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" action="{% url 'env_edit' ids %}" method="POST">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">环境名称:</label>
+                            <div class="col-sm-10">
+                                {{ af.name }}
+                            </div>
+                        </div>
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" value="{{ obj.name }}">
-                  </div>
-                </div>
+                        <div class="form-group">
+                            <label for="address" class="col-sm-2 control-label">所在地址:</label>
+                            <div class="col-sm-10">
+                                {{ af.address }}
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                  <label for="address" class="col-sm-2 control-label">所在地址:</label>
+                        <div class="form-group">
+                            <label for="descrition" class="col-sm-2 control-label">描述:</label>
+                            <div class="col-sm-10">
+                                {{ af.descrition }}
+                            </div>
+                            <input type="hidden" name="id" value="{{ obj.id }}">
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">保存</button>
+                        </div>
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="address" value="{{ obj.address }}">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="contact" class="col-sm-2 control-label">描述:</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="descrition" value="{{ obj.descrition }}">
-                  </div>
-
-                <input type="hidden" name="id" value="{{ obj.id }}">
-                </div>
-                  <!-- /.box-body -->
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-info pull-right">保存</button>
-                </div>
-
-              </div>
-            </form>
-</div>
-    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
 
     </section>
 
-  </div>
+</div>
 {#回传参数至父层#}
 <script type="text/javascript">
-        var index = parent.layer.getFrameIndex(window.name);
-        var success = {{ status }};
-        if ( success == '1' ) {
-            parent.$("#handle_status").val('1');
-              parent.layer.close(index);
-        } else if( success == '2' ) {
-            parent.$("#handle_status").val('2');
-            parent.layer.close(index);
-        }
+    var index = parent.layer.getFrameIndex(window.name);
+    var success = {{ status }};
+    if (success == '1') {
+        parent.$("#handle_status").val('1');
+        parent.layer.close(index);
+    } else if (success == '2') {
+        parent.$("#handle_status").val('2');
+        parent.layer.close(index);
+    }
 </script>
 </body>
 </html>
