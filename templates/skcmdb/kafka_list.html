@@ -41,9 +41,9 @@
                                     <tr class="even gradeA">
                                         <td width="5%"><input type="checkbox" id="u_id" class="item1" value="{{ i.id }}"
                                                    name="idc_check"/></td>
-                                        <td width="20%">{{ i.name }}</td>
-                                        <td width="20%">{{ i.app_set.all.0.name }}</td>
-                                        <td width="35%">{{ i.descrition }}</td>
+                                        <td width="30%">{{ i.name }}</td>
+                                        <td width="15%">{{ i.app_set.all.0.name }}</td>
+                                        <td width="50%">{{ i.descrition }}</td>
                                     </tr>
                                 {% endfor %}
                             {% else %}
