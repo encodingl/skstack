@@ -10,6 +10,8 @@ from skcmdb.api import pages, get_object
 from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm
 from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup, DbSource, KafkaTopic
 from skaccounts.models import UserInfo
+import commands,os
+from subprocess import Popen, PIPE, STDOUT, call
 
 
 @login_required()
@@ -396,9 +398,31 @@ def app_edit(request, ids):
 def kafka_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     kafka_info = KafkaTopic.objects.all()
+
     return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
 
 
+@login_required
+@permission_verify()
+def kafka_update(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    cmd = "ssh 10.8.45.103 /opt/soft/kafka/bin/kafka-topics.sh --zookeeper 10.8.45.103:2181 --list"
+    code, result = commands.getstatusoutput(cmd)
+    if code == 0:
+        data = result.split('\n')
+        s_result = []
+        f_result = []
+        for d in data:
+            (obj,status) = KafkaTopic.objects.get_or_create(name=d)
+            if status:
+                s_result.append(d)
+        kafka_info = KafkaTopic.objects.all()
+        for kafka in kafka_info:
+            if kafka.name not in data:
+                KafkaTopic.objects.get(name=kafka.name).delete()
+                f_result.append(kafka.name)
+    kafka_info = KafkaTopic.objects.all()
+    return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
 
 
 @login_required()
