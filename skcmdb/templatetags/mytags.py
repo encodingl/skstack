@@ -33,7 +33,7 @@ def res_splict(value):
     else:
         return value
 
-@register.filter(name='get_item')
+@register.filter(name='get_ip')
 def get_ip(get_ip):
     return get_ip.ip
 
