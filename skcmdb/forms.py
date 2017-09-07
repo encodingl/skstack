@@ -157,6 +157,7 @@ class AppForm(forms.ModelForm):
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'belong_ip': SelectMultiple(attrs={'class': 'form-control', 'style': 'width:530px;'}),
+            'kafka': SelectMultiple(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'web_port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'dubbo_port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'status': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
