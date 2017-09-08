@@ -34,7 +34,7 @@ class Idc(models.Model):
 
 
 class Env(models.Model):
-    name = models.CharField(u"* 环境名称", max_length=30)
+    name = models.CharField(u"* 环境名称", max_length=30, unique=True)
     address = models.ForeignKey(Idc, verbose_name=u"所在机房", on_delete=models.SET_NULL, null=True, blank=True)
     descrition = models.CharField(u"描述", max_length=30, null=True, blank=True)
 
@@ -94,7 +94,7 @@ class Host(models.Model):
 
 
 class KafkaTopic(models.Model):
-    name = models.CharField(max_length=50, verbose_name=u"* App名称", unique=True)
+    name = models.CharField(max_length=50, verbose_name=u"* App名称")
     descrition = models.TextField(u"备注信息", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
