@@ -62,13 +62,6 @@ def env_del(request):
     obj_info = Env.objects.all()
     return render_to_response("skcmdb/env_list.html", locals(), RequestContext(request))
 
-#
-# @login_required()
-# @permission_verify()
-# def env_edit(request, ids):
-#     obj = Env.objects.get(id=ids)
-#     return render_to_response("skcmdb/env_edit.html", locals(), RequestContext(request))
-
 
 @login_required
 @permission_verify()

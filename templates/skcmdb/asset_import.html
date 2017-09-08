@@ -122,7 +122,7 @@
 
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-info pull-left" style="width: 120px"><b>开始导入数据</b></button>
+                        <button type="button"  class="btn btn-info pull-left js-submit" style="width: 120px"><b>开始导入数据</b></button>
                     </div>
                     <!-- /.box-footer -->
                 </form>
@@ -143,6 +143,15 @@
 
 
 <script type="text/javascript">
+    $(function(){
+        $(document).on("click", ".js-submit", function(){
+
+            return false;
+        })
+    })
+
+
+
     var index = parent.layer.getFrameIndex(window.name);
     var success = {{ status }};
     if (success == '1') {

@@ -65,13 +65,12 @@
                     type: "post",
                     data: "",
                     url: "{% url 'kafka_update' %}",
-                    success: function () {
-                        alert('更新成功.');
-                        parent.location.reload();
+                    success: function (data,status) {
+                        alert("数据" + data + "\n状态:" + status +"更新成功.");
+{#                        parent.location.reload();#}
                     }
                 });
             });
-
         });
     </script>
 
