@@ -413,7 +413,9 @@ def kafka_update(request):
         for d in l_data:
             if d not in data:
                 KafkaTopic.objects.get(name=d).delete()
-    return HttpResponse(u'更新成功')
+        return HttpResponse(u'更新成功.')
+    return HttpResponse(u'更新失败!!!')
+
 
 
 @login_required()
