@@ -403,17 +403,16 @@ def kafka_update(request):
     code, result = commands.getstatusoutput(cmd)
     if code == 0:
         data = result.split('\n')
-        s_result = []
-        f_result = []
+        l = list(KafkaTopic.objects.values_list('name'))
+        l_data = []
+        for i in l:
+            l_data.append(i[0])
         for d in data:
-            (obj,status) = KafkaTopic.objects.get_or_create(name=d)
-            if status:
-                s_result.append(d)
-        kafka_info = KafkaTopic.objects.all()
-        for kafka in kafka_info:
-            if kafka.name not in data:
-                KafkaTopic.objects.get(name=kafka.name).delete()
-                f_result.append(kafka.name)
+            if d not in l_data:
+                KafkaTopic.objects.create(name=d)
+        for d in l_data:
+            if d not in data:
+                KafkaTopic.objects.get(name=d).delete()
     kafka_info = KafkaTopic.objects.all()
     return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
 
