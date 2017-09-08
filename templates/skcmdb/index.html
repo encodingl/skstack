@@ -171,7 +171,7 @@
                                 </a></td>
                                 <td>{{ host.ip }}</td>
                                 <td>{{ host.os }}</td>
-                                <td>{{ host.cpu_num }}</td>
+                                <td>{{ host.cpu_model|get_cpu_core|default_if_none:"" }}</td>
                                 <td>{{ host.memory }}</td>
                                 <td>{{ host.disk }}</td>
                                 <td class="text-center" data-editable='false'>
