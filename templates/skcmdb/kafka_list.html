@@ -40,7 +40,7 @@
                                 {% for i in kafka_info %}
                                     <tr class="even gradeA">
                                         <td width="5%"><input type="checkbox" id="u_id" class="item1" value="{{ i.id }}"
-                                                   name="idc_check"/></td>
+                                                              name="idc_check"/></td>
                                         <td width="30%">{{ i.name }}</td>
                                         <td width="15%">{{ i.app_set.all.0.name }}</td>
                                         <td width="50%">{{ i.descrition }}</td>
@@ -65,11 +65,16 @@
                     type: "post",
                     data: "",
                     url: "{% url 'kafka_update' %}",
-                    success: function (data,status) {
+                    success: function (data, status) {
                         alert(data);
                         parent.location.reload();
+                    },
+                    error: function () {
+                        //请求出错处理
+                        alert("更新 Error!");
                     }
-                });
+                })
+                ;
             });
         });
     </script>

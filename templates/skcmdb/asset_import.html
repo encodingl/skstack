@@ -83,7 +83,7 @@
                                     <option value="">选择机房</option>
                                     {% for i in local_idc_info %}
                                     {% ifequal i.name l_idc %}
-                                    <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
+                                    <option id="l_idc" value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                     {% else %}
                                     <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
                                     {% endifequal %}
@@ -122,7 +122,7 @@
 
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button type="button"  class="btn btn-info pull-left js-submit" style="width: 120px"><b>开始导入数据</b></button>
+                        <input class="btn btn-success asset_import" type="button" value="开始导入数据">
                     </div>
                     <!-- /.box-footer -->
                 </form>
@@ -139,19 +139,28 @@
         var args = $("#form").serialize();
         window.location = "{% url 'asset_import' %}?" + args
     }
+
+    $(document).ready(function () {
+        $('.asset_import').click(function () {
+            var args = $("#form").serialize();
+            $.ajax({
+                type: "post",
+                data: "",
+                url: "{% url 'asset_import' %}?" + args,
+                success: function (data, status) {
+                    alert(data);
+                },
+                error: function () {
+                    //请求出错处理
+                    alert("出错啦!!!");
+                }
+            })
+            ;
+        });
+    });
+
 </script>
-
-
 <script type="text/javascript">
-    $(function(){
-        $(document).on("click", ".js-submit", function(){
-
-            return false;
-        })
-    })
-
-
-
     var index = parent.layer.getFrameIndex(window.name);
     var success = {{ status }};
     if (success == '1') {
