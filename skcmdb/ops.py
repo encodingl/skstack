@@ -413,8 +413,7 @@ def kafka_update(request):
         for d in l_data:
             if d not in data:
                 KafkaTopic.objects.get(name=d).delete()
-    kafka_info = KafkaTopic.objects.all()
-    return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
+    return HttpResponse(u'更新成功')
 
 
 @login_required()
