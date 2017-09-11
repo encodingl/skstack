@@ -173,7 +173,7 @@
                                 <td>{{ host.os }}</td>
                                 <td>{{ host.cpu_model|get_cpu_core|default_if_none:"" }}</td>
                                 <td>{{ host.memory }}</td>
-                                <td>{{ host.disk }}</td>
+                                <td>{{ host.disk|get_disk_info }}{% if host.disk %}G{% endif %}</td>
                                 <td class="text-center" data-editable='false'>
                                     {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">

@@ -2,6 +2,7 @@
 
 
 from django import template
+import ast
 
 register = template.Library()
 
@@ -52,3 +53,18 @@ def get_nickname(get_nickname):
 def get_cpu_core(cpu_info):
     cpu_core = cpu_info.split('* ')[1] if cpu_info and '*' in cpu_info else cpu_info
     return cpu_core
+
+@register.filter(name='get_disk_info')
+def get_disk_info(disk_info):
+    try:
+        disk_size = 0
+        if disk_info:
+            disk_dic = ast.literal_eval(disk_info)
+            for disk, size in disk_dic.items():
+                disk_size += size
+            disk_size = int(disk_size)
+        else:
+            disk_size = ''
+    except Exception:
+        disk_size = disk_info
+    return disk_size
