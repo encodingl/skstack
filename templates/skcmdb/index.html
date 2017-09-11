@@ -95,7 +95,7 @@
                             <select name="hostgroup" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">主机类型</option>
                                 {% for idc in hosttype_info %}
-                                {% ifequal idc.name hosttype_name %}
+                                {% ifequal idc.name hostgroup_name %}
                                 <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
                                 {% else %}
                                 <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>

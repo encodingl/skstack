@@ -107,7 +107,7 @@ class App(models.Model):
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belong_ip = models.ManyToManyField(Host, verbose_name=u"所属主机", blank=True)
-    kafka = models.ManyToManyField(KafkaTopic, verbose_name=u"Kafka列表", null=True, blank=True)
+    kafka = models.ManyToManyField(KafkaTopic, verbose_name=u"Kafka列表", blank=True)
     web_port = models.IntegerField(verbose_name=u"Web端口号", null=True, blank=True)
     dubbo_port = models.IntegerField(verbose_name=u"Dubbo端口号", null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)

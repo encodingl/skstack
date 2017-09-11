@@ -391,7 +391,6 @@ def app_edit(request, ids):
 def kafka_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     kafka_info = KafkaTopic.objects.all()
-
     return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
 
 
