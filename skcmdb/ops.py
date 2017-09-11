@@ -457,10 +457,13 @@ def dbsource_del(request):
 @permission_verify()
 def dbsource_edit(request, ids):
     obj = DbSource.objects.get(id=ids)
+    pwd = obj.password
     status = 0
     if request.method == "POST":
         form = DbSourceForm(request.POST, instance=obj)
         if form.is_valid():
+            if not obj.password:
+                obj.password = pwd
             form.save()
             status = 1
         # else:
