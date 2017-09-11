@@ -17,13 +17,13 @@ ASSET_STATUS = (
 
 class Idc(models.Model):
     name = models.CharField(u"* 机房名称", max_length=30, null=True)
-    address = models.CharField(u"机房地址", max_length=100, null=True)
-    tel = models.CharField(u"机房电话", max_length=30, null=True)
-    contact = models.CharField(u"客户经理", max_length=30, null=True)
-    contact_phone = models.CharField(u"移动电话", max_length=30, null=True)
-    jigui = models.CharField(u"机柜信息", max_length=30, null=True)
-    ip_range = models.CharField(u"IP范围", max_length=30, null=True)
-    bandwidth = models.CharField(u"接入带宽", max_length=30, null=True)
+    address = models.CharField(u"机房地址", max_length=100, null=True, blank=True)
+    tel = models.CharField(u"机房电话", max_length=30, null=True, blank=True)
+    contact = models.CharField(u"客户经理", max_length=30, null=True, blank=True)
+    contact_phone = models.CharField(u"移动电话", max_length=30, null=True, blank=True)
+    jigui = models.CharField(u"机柜信息", max_length=30, null=True, blank=True)
+    ip_range = models.CharField(u"IP范围", max_length=30, null=True, blank=True)
+    bandwidth = models.CharField(u"接入带宽", max_length=30, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
