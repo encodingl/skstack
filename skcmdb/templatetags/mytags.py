@@ -68,3 +68,8 @@ def get_disk_info(disk_info):
     except Exception:
         disk_size = disk_info
     return disk_size
+
+
+@register.filter(name='displayName')
+def displayName(value, arg):
+    return apply(eval('value.get_'+arg+'_display'), ())
