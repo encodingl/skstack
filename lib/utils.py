@@ -23,9 +23,10 @@ def mysql_execute(dbsource,sql):
     db = MySQLdb.connect(**config)
     cursor  = db.cursor()
     cursor.execute(sql)
+    data = cursor.fetchall()
     cursor.close()
     db.close()
-    return cursor.fetchall()
+    return data
 
 
 
