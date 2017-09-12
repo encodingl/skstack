@@ -5,7 +5,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>SK</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Skipper</b></span>
+      <span class="logo-lo"><b>Skipper</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -16,11 +16,54 @@
       </a>
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-                <li style="font-size: medium" id="asset"><a href="{% url 'cmdb' %}"><b>主机管理</b></a></li>
+                <li class="dropdown" style="font-size: medium" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>清单列表</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium" id="asset"><a href="{% url 'cmdb' %}"><b>主机清单</b></a></li>
+                        <li style="font-size: medium" id="app_list"><a href="{% url 'app_list' %}"><b>App清单</b></a></li>
+                        <li style="font-size: medium" id="kafka_list"><a href="{% url 'kafka_list' %}"><b>Kafka清单</b></a></li>
+                    </ul>
+                </li>
                 <li class="divider"></li>
-                <li style="font-size: medium" id="idc"><a href="{% url 'idc' %}"><b>机房管理</b></a></li>
+
+                <li class="dropdown" style="font-size: medium" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>主机管理</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium" id="sa"><a href="{% url 'opssa_list' %}"><b>运维负责人</b></a></li>
+                        <li style="font-size: medium" id="env"><a href="{% url 'env_list' %}"><b>运行环境</b></a></li>
+                        <li style="font-size: medium" id="ywgroup"><a href="{% url 'ywgroup_list' %}"><b>业务分组</b></a></li>
+                        <li style="font-size: medium" id="middletype"><a href="{% url 'middletype_list' %}"><b>主机分组</b></a></li>
+                        <li style="font-size: medium" id="hostgroup"><a href="{% url 'hostgroup_list' %}"><b>主机类型</b></a></li>
+                    </ul>
+                </li>
                 <li class="divider"></li>
-                <li style="font-size: medium" id="group"><a href="{% url 'group' %}"><b>属组管理</b></a></li>
+
+                <li class="dropdown" style="font-size: medium" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>机房管理</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium" id="idc_list"><a href="{% url 'idc' %}"><b>机房列表</b></a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
+
+                <li class="dropdown" style="font-size: medium" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>数据同步</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium" id="dbsource_list"><a href="{% url 'dbsource_list' %}"><b>数据源列表</b></a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
+
+                <li style="font-size: medium" id="asset"><a href="{% url 'cmdb' %}"><b>其他分类</b></a></li>
+                <li class="divider"></li>
           </ul>
         </div>
       <!-- Navbar Right Menu -->

@@ -72,11 +72,13 @@ class UserInfo(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     nickname = models.CharField(max_length=64, null=True)
+    type = models.IntegerField(null=True)
     role = models.ForeignKey(RoleList, null=True, blank=True)
     role_job = models.ForeignKey(RoleJob, null=True, blank=True)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
+<<<<<<< HEAD
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
@@ -88,6 +90,16 @@ class UserGroup(models.Model):
     def __unicode__(self):
         return self.name
     
+=======
+    usergroup = models.ManyToManyField(UserGroup,blank=True)
+
+    def has_perm(self, perm, obj=None):
+        if self.is_active and self.is_superuser:
+            return True
+    def __unicode__(self):
+        return self.username
+
+>>>>>>> feature.skcmdb
 class AuditFlow(models.Model):
     name = models.CharField(u"名称",max_length=50)
     level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)

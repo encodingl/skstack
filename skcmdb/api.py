@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # 2017.3 update by guohongze@126.com
 from django.http import HttpResponse
-from models import Host, HostGroup, ASSET_TYPE, ASSET_STATUS
+from models import Host, HostGroup
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.views.decorators.csrf import csrf_exempt
 from skconfig.views import get_dir
@@ -81,7 +81,7 @@ def pages(post_objects, request):
     page public function , return page's object tuple
     分页公用函数，返回分页的对象元组
     """
-    paginator = Paginator(post_objects, 20)
+    paginator = Paginator(post_objects, 1000)
     try:
         current_page = int(request.GET.get('page', '1'))
     except ValueError:

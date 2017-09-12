@@ -2,12 +2,10 @@
 import json
 
 from django.http import HttpResponse
-
-from skapi.models import Applist
+from skcmdb.models import App
 
 
 def grafana(request):
-    print "grafana"
     return HttpResponse("ok")
 
 
@@ -16,14 +14,21 @@ def grafana_search(request):
         return HttpResponse("")
 
     if request.method == 'POST':
-        json_data = json.loads(request.body)
-        target_data = json_data['target']
-        method = json.loads(target_data).get('method','')
-    if method == 'appname':
-        applist = Applist.objects.filter(is_active=1)
-        data = [{'text': i.name, 'value': i.name} for i in applist]
-        return HttpResponse(json.dumps(data),content_type="application/json")
-    else:
-        return HttpResponse("args error")
-
+        try:
+            print "result=",request.body
+            json_data = json.loads(request.body)
+            target_dict = json.loads(json_data['target'])
+            result = target_dict.get('result','')
+            if result == 'appname':
+                applist = App.objects.filter(status=1)
+                data = [{'text': i.name, 'value': i.name} for i in applist]
+            if result == 'ip':
+                method = target_dict.get('method','')
+                app = App.objects.get(name=method)
+                iplist = app.belong_ip.all()
+                data = [{'text': i.ip, 'value': i.ip} for i in iplist]
+            return HttpResponse(json.dumps(data),content_type="application/json")
+        except:
+            return HttpResponse("args error")
+    return HttpResponse("args error")
 

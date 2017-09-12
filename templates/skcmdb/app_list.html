@@ -17,28 +17,15 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="" method="post" id="asset_form">
+        <form action="" method="post" id="app_form">
             <div class="box">
                 <div class="box-header">
                     <div class="col-sm-2" style="padding-left: 0">
-                        <a href="{% url 'asset_add' %}">
-                            <li class="btn btn-success"><b>添加主机</b></li>
+                        <a href="{% url 'app_add' %}">
+                            <li class="btn btn-success"><b>添加App</b></li>
                         </a>
                     </div>
                     <div class="col-sm-5" style="padding-left: 0px">
-                        <label>
-                            <select name="idc" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">机房列表</option>
-                                {% for idc in idc_info %}
-                                {% ifequal idc.name idc_name %}
-                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
-                                {% else %}
-                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
-                                {% endifequal %}
-                                {% endfor %}
-                            </select>
-                        </label>
-
                         <label>
                             <select name="sa" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">负责人</option>
@@ -79,35 +66,9 @@
                         </label>
 
                         <label>
-                            <select name="middletype" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">主机分组</option>
-                                {% for idc in middletype_info %}
-                                {% ifequal idc.name middletype_name %}
-                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
-                                {% else %}
-                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
-                                {% endifequal %}
-                                {% endfor %}
-                            </select>
-                        </label>
-
-                        <label>
-                            <select name="hostgroup" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">主机类型</option>
-                                {% for idc in hosttype_info %}
-                                {% ifequal idc.name hostgroup_name %}
-                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
-                                {% else %}
-                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
-                                {% endifequal %}
-                                {% endfor %}
-                            </select>
-                        </label>
-
-                        <label>
                             <select name="status" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">状态</option>
-                                {% for s in asset_status %}
+                                {% for s in status_info %}
                                 {% ifequal s.0|int2str status %}
                                 <option value="{{ s.0 }}" selected> {{ s.1 }}</option>
                                 {% else %}
@@ -117,7 +78,7 @@
                             </select>
                         </label>
                     </div>
-                    <div class="col-sm-4 col-sm-offset-1" style="padding-right: 0;">
+                    <div class="col-sm-4" style="padding-right: 0;">
                         <div class="input-group inline-group padding-right: 10px">
                             <input type="text" class="form-control m-b " id="search_input" name="keyword"
                                    value="{{ keyword }}" placeholder="Search">
@@ -127,16 +88,6 @@
                                         class="btn btn-primary " onclick="change_info()">
                                     <b>&nbsp;搜索&nbsp;</b>
                                 </button>
-                                <a href="#" onclick="return export_excel()">
-                                    <li name="export" class="btn btn-success search-btn-excel"><b>&nbsp;导出&nbsp;</b>
-                                    </li>
-                                </a>
-                                <a href="#">
-                                    <li ame="import" class="btn btn-success search-btn-excel"
-                                        onclick="return import_asset(this.value)"
-                                        value="1"><b>&nbsp;导入&nbsp;</b>
-                                    </li>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -149,54 +100,61 @@
                         <tr>
                             <th>
                                 <input id="checkall" type="checkbox" class="i-checks" name="checkall" value="checkall"
-                                       data-editable='false' onclick="check_all('asset_form')">
+                                       data-editable='false' onclick="check_all('app_form')">
                             </th>
-                            <th>主机名</th>
-                            <th>IP地址</th>
-                            <th>操作系统</th>
-                            <th>CPU数量</th>
-                            <th>内存(G)</th>
-                            <th>磁盘(G)</th>
+                            <th>App名称</th>
+                            <th>所属主机</th>
+                            <th>Kafka列表</th>
+                            <th>Web端口</th>
+                            <th>Dubbo端口</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for host in assets.object_list %}
+                        {% for app in apps.object_list %}
                             <tr class="even gradeX">
-                                <td><input type="checkbox" id="id" class="i-checks" value="{{ host.id }}" name="id"/>
+                                <td width="2%" style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks"
+                                                                         value="{{ app.id }}" name="id"/>
                                 </td>
-                                <td><a href="#">
+                                <td width="15%" style="vertical-align:middle"><a href="#">
                                     <li style="list-style-type:none" onclick="return tanchu(this.value)"
-                                        value="{{ host.id }}"> {{ host.hostname }}</li>
+                                        value="{{ app.id }}"> {{ app.name }}</li>
                                 </a></td>
-                                <td>{{ host.ip }}</td>
-                                <td>{{ host.os }}</td>
-                                <td>{{ host.cpu_model|get_cpu_core|default_if_none:"" }}</td>
-                                <td>{{ host.memory }}</td>
-                                <td>{{ host.disk|get_disk_info }}{% if host.disk %}G{% endif %}</td>
-                                <td class="text-center" data-editable='false'>
-                                    {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
+                                <td width="20%" style="vertical-align:middle">
+                                    {% for i in app.belong_ip.all %}
+                                        {{ i|get_ip }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td width="30%" style="vertical-align:middle">
+                                    {% for i in app.kafka.all %}
+                                        {{ i|get_item }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td style="vertical-align:middle">{{ app.web_port }}</td>
+                                <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
+                                <td style="vertical-align:middle" class="text-center" data-editable='false'>
+                                    {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                     <a href="#">
                                         <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
-                                            value="{{ host.id }}">编辑
+                                            value="{{ app.id }}">编辑
                                         </li>
                                     </a>
-                                    <a value="{% url 'asset_del' %}?id={{ host.id }}"
-                                       class="btn btn-sm btn-danger asset_del">删除</a>
+                                    <a value="{% url 'app_del' %}?id={{ app.id }}"
+                                       class="btn btn-sm btn-danger app_del">删除</a>
                                 </td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                     <div class="btn-group">
-                        <input type="button" id="asset_del" class="btn btn-danger" name="del_button" value="批量删除"/>
+                        <input type="button" id="app_del" class="btn btn-danger" name="del_button" value="批量删除"/>
                     </div>
                 </div>
             </div>
         </form>
     </section>
     <!-- /.content -->
-    {#用于接收asset_edit.html中layui子层的传值#}
+    {#用于接收app_edit.html中layui子层的传值#}
     <input id="handle_status" value="" hidden="hidden">
 </div>
 <script>
@@ -223,11 +181,11 @@
     function tanchu(n) {
         layer.open({
             type: 2,
-            title: '修改主机信息',
+            title: '修改APP信息',
             closeBtn: 1,
             area: ['700px', '550px'],
             shadeClose: true, //点击遮罩关闭
-            content: ['/skcmdb/asset/edit/' + n,],
+            content: ['/skcmdb/asset/app_edit/' + n,],
             end: function () {
                 var handle_status = $("#handle_status").val();
                 if (handle_status == '1') {
@@ -248,53 +206,25 @@
             }
         });
     }
-    function import_asset(n) {
-        layer.open({
-            type: 2,
-            title: '从跳板机导入主机信息',
-            closeBtn: 1,
-            area: ['700px', '550px'],
-            shadeClose: true, //点击遮罩关闭
-            content: ['/skcmdb/asset/asset_import/',],
-            end: function () {
-                var handle_status = $("#handle_status").val();
-                if (handle_status == '1') {
-                    layer.msg('导入成功！', {
-                        icon: 1,
-                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                    }, function () {
-                        history.go(0);
-                    });
-                } else if (handle_status == '2') {
-                    layer.msg('导入失败！', {
-                        icon: 2,
-                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                    }, function () {
-                        history.go(0);
-                    });
-                }
-            }
-        });
-    }
 </script>
 <script>
     function change_info() {
-        var args = $("#asset_form").serialize();
+        var args = $("#app_form").serialize();
 
-        window.location = "{% url 'cmdb' %}?" + args
+        window.location = "{% url 'app_list' %}?" + args
     }
 
     function export_excel() {
-        var asset_id_all = getIDall();
-        if (asset_id_all == '') {
+        var app_id_all = getIDall();
+        if (app_id_all == '') {
             if (confirm('您没有勾选，是否导出全部信息？')) {
-                var args = $("#asset_form").serialize();
+                var args = $("#app_form").serialize();
                 window.location = "{% url 'cmdb' %}?export=all&" + args
             } else {
                 return false;
             }
         } else {
-            var args = $("#asset_form").serialize();
+            var args = $("#app_form").serialize();
             window.location = "{% url 'cmdb' %}?export=true&" + args
         }
     }
@@ -306,7 +236,7 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('.asset_del').click(function () {
+        $('.app_del').click(function () {
             var row = $(this).closest('tr');
             if (confirm("确定删除?")) {
                 $.get(
@@ -319,17 +249,17 @@
             }
         });
 
-        $('#asset_del').click(function () {
-            var asset_id_all = getIDall();
-            if (asset_id_all == '') {
+        $('#app_del').click(function () {
+            var app_id_all = getIDall();
+            if (app_id_all == '') {
                 alert("请至少选择一行!");
                 return false;
             }
             if (confirm("确定删除?")) {
                 $.ajax({
                     type: "post",
-                    data: {asset_id_all: asset_id_all, csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    url: "{% url 'asset_del' %}?arg=batch",
+                    data: {app_id_all: app_id_all, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    url: "{% url 'app_del' %}?arg=batch",
                     success: function () {
                         parent.location.reload();
                     }

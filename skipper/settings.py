@@ -126,6 +126,19 @@ else:
         }
     }
 
+# DATABASES['jumpserver_db'] = {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'NAME': config.get('jumpserver_db', 'database'),
+#     'USER': config.get('jumpserver_db', 'user'),
+#     'PASSWORD': config.get('jumpserver_db', 'password'),
+#     'HOST': config.get('jumpserver_db', 'host'),
+#     'PORT': config.getint('jumpserver_db', 'port'),
+# }
+
+DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
+DATABASE_APPS_MAPPING = {
+    'skapi': 'jumpserver_db',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -188,3 +201,29 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'skaccounts.UserInfo'
 LOGIN_URL = '/skaccounts/login/'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'INFO' if DEBUG else 'INFO',
+        },
+    },
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.exmail.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'monitor.sz@mljr.com'
+EMAIL_HOST_PASSWORD = 'error#MONITOR1234'
+DEFAULT_FROM_EMAIL = 'Monitor<monitor@mljr.com>'
