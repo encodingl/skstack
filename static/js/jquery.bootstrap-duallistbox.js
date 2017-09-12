@@ -425,7 +425,7 @@
         this.container.find('.removeall > i, .remove > i').removeClass('glyphicon glyphicon-arrow-left').addClass('icon-arrow-left');
       } else {
         this.container.removeClass('row-fluid bs2compatible').addClass('row');
-        this.container.find('.box1, .box2').removeClass('span6').addClass('col-md-6');
+        this.container.find('.box1, .box2').removeClass('span6').addClass('col-sm-6');
         this.container.find('.clear1, .clear2').removeClass('btn-mini').addClass('btn-default btn-xs');
         this.container.find('input, select').addClass('form-control');
         this.container.find('.btn').addClass('btn-default');

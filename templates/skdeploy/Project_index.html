@@ -11,12 +11,12 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="{% url 'project_del' %}" method="post">
+        <form action="{% url 'Project_del' %}" method="post">
                 {% csrf_token %}
             <div class="box">
                 <div class="box-header">
                   <div class="btn-group">
-						 <a href="{% url 'project_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
+						 <a href="{% url 'Project_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -27,30 +27,36 @@
                             <th>
                                 <input type="checkbox" onclick="checkAll(this, 'item1');" />
                             </th>
-                                    <th>项目名</th>
-                                    <th>项目路径</th>
-                                    <th>是否激活</th>    
+                                    <th>名称</th>
+                                    <th>描述</th> 
+                                    <th>环境</th>
+                                    <th>分组</th>
+                                    <th>审核激活</th> 
+                                    <th>上线激活</th>      
                                     <th class="text-center">功能</th>                            
                                 </tr>
                             </thead>
                             <tbody>
-                                {% if allproject %}
-                                {% for project in allproject %}
+                               {% if tpl_all %}
+                                {% for x in tpl_all %}
                                     <tr class="even gradeA">
-                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ project.id }}" name="project_check" /></td>
-                                        <input type="hidden" name="u_name" value="{{ project.name }}">
-                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ project.id }}">{{ project.name }}</li></a></td>
-                                        <td>{{ project.path }}</td>
-                                        <td>{{ project.online_status }}</td>
+                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}" name="x_check" /></td>
+                                        <input type="hidden" name="u_name" value="{{ x.name }}">
+                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
+                                        <td>{{ x.desc }}</td>
+                                        <td>{{ x.env }}</td>
+                                        <td>{{ x.group }}</td>
+                                        <td>{{ x.audit_enable }}</td>
+                                        <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ project.id }}">编辑</li></a>
-                                        <a value="{% url 'project_del' %}?id={{ project.id }}" class="btn btn-sm btn-danger project_del">删除</a>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
+                                        <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
                                     </tr>
                                 {% endfor %}
                                 {% else %}
                                     <p>No Item are available.</p>
-                                {% endif %}
+                               {% endif %}
 
                             </tbody>
                   </table>
@@ -61,8 +67,9 @@
 
     </section>
         <!-- /.content -->
-      </div>
+</div>
 <input id="handle_status" value="" hidden="hidden">
+
 <script>
 function checkAll(sender, checkClass) {
     var checkItems = document.getElementsByTagName('input');
@@ -78,7 +85,6 @@ function checkAll(sender, checkClass) {
 <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-{#    $("#example1").DataTable();#}
     $('#dataform').DataTable({
       "paging": true,
       "lengthChange": true,
@@ -102,10 +108,10 @@ function tanchu(n){
     type: 2,
     title: '修改信息',
     closeBtn: 1,
-    area: ['600px', '400px'],
+    area: ['1000px', '600px'],
     shadeClose: true, //点击遮罩关闭
-/*     content: ['/sktask/project_edit?id=' + n,], */
-    content: ['/sktask/project/edit/' + n,],
+/*     content: ['/skdeploy/project_edit?id=' + n,], */
+    content: ['/skdeploy/Project/edit/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
@@ -131,7 +137,7 @@ function tanchu(n){
 </script>
 <script>
     $(document).ready(function(){
-        $('.project_del').click(function(){
+        $('.x_del').click(function(){
             var row = $(this).closest('tr');
             if (confirm("确定删除?")) {
                 $.get(
@@ -145,4 +151,5 @@ function tanchu(n){
         });
     });
 </script>
+
 {% endblock %}

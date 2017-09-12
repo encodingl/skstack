@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'skconfig',
     'skaccounts',
     'skapi',
-   
+    'skdeploy',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

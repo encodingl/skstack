@@ -64,12 +64,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class UserGroup(models.Model):
-    name = models.CharField(max_length=64)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
-    desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
-        return self.name
     
 class UserInfo(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True, db_index=True)
@@ -82,14 +77,19 @@ class UserInfo(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-    usergroup = models.ManyToManyField(UserGroup,null=True,blank=True)
-
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
-
+        
+class UserGroup(models.Model):
+    name = models.CharField(max_length=64)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
+    desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
+    members = models.ManyToManyField(UserInfo,null=True,blank=True)
+    def __unicode__(self):
+        return self.name
+    
 class AuditFlow(models.Model):
-    name = models.CharField(u"登录用户",max_length=50)
+    name = models.CharField(u"名称",max_length=50)
     level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
     l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l1')
     l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l2')

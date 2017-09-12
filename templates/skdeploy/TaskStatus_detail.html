@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
+{% endblock %}
+</head>
+<body>
+<div class="content-wrapper">
+
+
+    <!-- Main content -->
+
+    <section class="content">
+
+<div id="dialog">
+        <div class="box box-info">
+            <!-- /.box-header -->
+            <!-- form start -->
+          <form action="{% url 'TaskStatus_index' %}" method="post">
+            {% csrf_token %}
+            {{ tpl_TaskStatus_form.as_p }}
+            <input type="hidden" name="id" value="{{ obj.id }}">
+  
+          </form>
+      </div>
+</div>
+
+    </section>
+
+  </div>
+{#回传参数至父层#}
+<script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name);
+        var success = {{ status }};
+        if ( success == '1' ) {
+            parent.$("#handle_status").val('1');
+            parent.layer.close(index);
+        } else if( success == '2' ) {
+            parent.$("#handle_status").val('2');
+            parent.layer.close(index);
+        }
+</script>
+<script>
+var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
+      nonSelectedListLabel: '可选',
+      selectedListLabel: '已选',
+      preserveSelectionOnMove: 'moved',
+      moveOnSelect: false,
+});
+</script>
+</body>
+</html>
+
+
