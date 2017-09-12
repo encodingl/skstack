@@ -34,12 +34,6 @@ def res_splict(value):
     else:
         return value
 
-<<<<<<< HEAD
-
-@register.filter(name='displayName')
-def displayName(value, arg):
-    return apply(eval('value.get_'+arg+'_display'), ())
-=======
 @register.filter(name='get_ip')
 def get_ip(get_ip):
     return get_ip.ip
@@ -74,4 +68,3 @@ def get_disk_info(disk_info):
     except Exception:
         disk_size = disk_info
     return disk_size
->>>>>>> feature.skcmdb
