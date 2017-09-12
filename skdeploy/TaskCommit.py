@@ -27,6 +27,7 @@ import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
 from git  import Git
+from skaccounts.models import UserInfo,UserGroup,AuditFlow
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -38,8 +39,13 @@ git_path = get_dir("git_path")
 @permission_verify()
 def TaskCommit_index(request):
     temp_name = "skdeploy/skdeploy-header.html"    
-    tpl_all = Project.objects.all()
-    print tpl_all
+ 
+    obj_user = UserInfo.objects.get(username=request.user)
+    
+    obj_group = obj_user.usergroup_set.all()
+    obj_project = Project.objects.filter(user_dep__in=obj_group,status="yes")
+    tpl_all = obj_project
+   
     return render_to_response('skdeploy/TaskCommit_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -75,7 +81,12 @@ def TaskCommit_add(request, ids):
     obj_path = git_path + str(obj_env) + "/" + str(obj_project)
     obj_git_url=obj.repo_url 
     obj_title = str(obj_project) + "-" + str(obj_env)
-   
+    obj_audit = obj.audit_flow
+    if not obj_audit:
+        obj_level = "0" 
+    else:
+        obj_level = AuditFlow.objects.get(name=obj_audit).level
+    
 
     repo = Gittle(obj_path, origin_uri=obj_git_url)
     
@@ -88,6 +99,7 @@ def TaskCommit_add(request, ids):
              'user_commit':obj_user,
              'branch':obj_branch,
              'status':"0",
+             'audit_level':obj_level,
                
              
              }
@@ -99,10 +111,14 @@ def TaskCommit_add(request, ids):
             status = 1
         else:
             status = 3
+            list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
+            tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
     else:  
         tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
-        list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
+        list_tumple_tags=get_git_tag(obj_path,obj_git_url)   
         tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
+        list_tumple_hosts = [("127.0.0.1","127.0.0.1"),("127.0.0.2","127.0.0.2")]
+        tpl_TaskCommit_form.fields["hosts_cus"].widget.choices = list_tumple_hosts
         
     
     return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))

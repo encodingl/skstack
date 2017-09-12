@@ -73,9 +73,10 @@
                                         </td>
                                         <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
-                                        <a value="{% url 'TaskStatus_revoke' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del" id="revoke">撤销</a>
-                                        <a href="{% url 'TaskStatus_release' x.id %}" class="btn btn-sm btn-primary" id="online">上线</a>    
-                                        <a value="{% url 'TaskStatus_rollback_add' %}?id={{ x.id }}" class="btn btn-sm btn-warning x_rol" id="rollback">回滚</a>
+                                        <a value="{% url 'TaskStatus_permit' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_audit" id="permit">同意</a>
+                                        <a value="{% url 'TaskStatus_deny' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_audit" id="deny">拒绝</a>
+                                         
+                                        
                                    
                                         
                                     </td>
@@ -165,9 +166,9 @@ function tanchu_detail(n){
 </script>
 <script>
     $(document).ready(function(){
-        $('.x_del').click(function(){
+        $('.x_audit').click(function(){
             var row = $(this).closest('tr');
-            if (confirm("确定撤销?")) {
+            if (confirm("确定?")) {
                 $.get(
                         $(this).attr('value'),
                         {},
@@ -180,56 +181,7 @@ function tanchu_detail(n){
     });
 </script>
 
-<script>
-    $(document).ready(function(){
-        $('.x_rol').click(function(){
-            var row = $(this).closest('tr');
-            if (confirm("确认回滚?")) {
-                $.get(
-                        $(this).attr('value'),
-                        {},
-                        function (data) {
-                        	location.reload() 
-                        }
-                )
-            }
-        });
-    });
-</script>
 
-<script>
-function tanchu_release(n){
-    layer.open({
-    type: 2,
-    title: '发布确认',
-    closeBtn: 1,
-    area: ['700px', '550px'],
-    shadeClose: true, //点击遮罩关闭
-/*     content: ['/skdeploy/project_edit?id=' + n,], */
-    content: ['/skdeploy/TaskStatus/release/' + n,],
-    
-    end:function(){
-            var handle_status = $("#handle_status").val();
-            if ( handle_status == '1' ) {
-                layer.msg('保存成功！',{
-                    icon: 1,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    location.reload();
-                    
-                });
-            } else if ( handle_status == '2' ) {
-                layer.msg('修改失败！',{
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    history.go(0);
-                });
-            }
-        }
-  });
-}
-</script>
 
 <script type="text/javascript"> 
 //回滚提单关闭回滚按钮
@@ -243,38 +195,22 @@ function tanchu_release(n){
     	
     });  
     
-// 发布完成后关闭上线 撤销按钮
-    $("[xstatus=3]").each(function(){   	
-              $(this).next("#features").children("#online,#revoke").remove();    	
+// 撤销后关闭审核按键
+    $("[xstatus=9]").each(function(){   	
+              $(this).siblings("#features").children("#permit,#deny").remove();    	
     }); 
 
-    // 撤销关闭按钮
-    $("[xstatus=9]").each(function(){	
-              $(this).next("#features").children("#revoke,#online").remove();	
-    });
-    
-    // 未发布完成关闭回滚按钮
-    $("[xstatus!=3]").each(function(){	
-              $(this).next("#features").children("#rollback").remove();	
-    });
-    
- // 关闭上线按钮
-    $("[xstatus!=1][xlevel=1]").each(function(){	
-              $(this).next("#features").children("#online").remove();	
+ // 上线完成后关闭审核按键
+    $("[xstatus=3]").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
     });
  
-    $("[xstatus!=5][xlevel=2]").each(function(){	
-        $(this).next("#features").children("#online").remove();	
-	});
-    
-    $("[xstatus!=7][xlevel=3]").each(function(){	
-        $(this).next("#features").children("#online").remove();	
-	});
- 
-    // 关闭撤销按钮
-    $("[xstatus!=0]").each(function(){	
-              $(this).next("#features").children("#revoke").remove();	
-    });
+ // 新建提单关闭审核按钮
+    $("[xstatus=0][xlevel!=0]").each(function(){
+          $(this).siblings("#features").children("#online").remove();	
+   });
+
+
 </script>  
 
 {% endblock %}

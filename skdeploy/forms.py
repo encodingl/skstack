@@ -49,7 +49,7 @@ class Project_form(forms.ModelForm):
             'pre_release': forms.Textarea(attrs={'class': 'form-control'}),
             'post_release': forms.Textarea(attrs={'class': 'form-control'}),
             'post_release_delay': forms.TextInput(attrs={'class': 'form-control'}),
-            'audit_enable': forms.Select(attrs={'class': 'form-control'}), 
+            'audit_enable': forms.CheckboxInput(), 
             'audit_flow': forms.Select(attrs={'class': 'form-control'}),
             'keep_version_num': forms.TextInput(attrs={'class': 'form-control'}),
                  
@@ -58,7 +58,7 @@ class Project_form(forms.ModelForm):
 class TaskCommit_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id","status")
+        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id","status","audit_level","forks","hosts_cus")
         
         widgets = {         
             'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
@@ -71,6 +71,9 @@ class TaskCommit_form(forms.ModelForm):
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
             'commit_id': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'audit_level': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'forks': forms.TextInput(attrs={'class': 'form-control'}),
+            'hosts_cus': forms.SelectMultiple(attrs={'class': 'form-control', 'size':'10', 'multiple': 'multiple'}),
  
         }    
 
@@ -80,30 +83,36 @@ class TaskCommit_form(forms.ModelForm):
 class TaskStatus_release_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","project_id","env","commit_id",)
+        fields = ("project","project_id","env","commit_id","forks")
         
         widgets = {         
             'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'project_id': forms.HiddenInput(attrs={'class': 'form-control'}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'commit_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'forks': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
  
         }  
                
 class TaskStatus_detail_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","env","desc","link_id","ex_link_id","updated_at_l1","updated_at_l2","updated_at_l3","finished_at",)
+        fields = ("project","env","desc","forks","link_id","ex_link_id","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
         widgets = {
             'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
             'link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'ex_link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'audit_level': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'user_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'user_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'user_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'forks': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
  
         }    
 

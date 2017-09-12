@@ -3,7 +3,7 @@
 
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from models import UserGroup
 import os
 from skconfig.views import get_dir
@@ -19,6 +19,7 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
+from django.core.urlresolvers import reverse
 
 
 
@@ -70,6 +71,7 @@ def UserGroup_del(request):
 @login_required()
 @permission_verify()
 def UserGroup_edit(request, ids):
+    temp_name = "skaccounts/accounts-header.html"
     status = 0
     obj = get_object(UserGroup, id=ids)
     
@@ -78,8 +80,9 @@ def UserGroup_edit(request, ids):
         if tpl_UserGroup_form.is_valid():
             tpl_UserGroup_form.save()
             status = 1
+            return HttpResponseRedirect(reverse('UserGroup_index'))
         else:
-            status = 2
+            status = 3
     else:
         tpl_UserGroup_form = UserGroup_form(instance=obj)      
     return render_to_response("skaccounts/UserGroup_edit.html", locals(), RequestContext(request))

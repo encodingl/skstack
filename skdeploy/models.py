@@ -50,7 +50,10 @@ TASK_STATUS = (
     (str(6), u"l2审核拒绝"),
     (str(7), u"l3审核通过"),
     (str(8), u"l3审核拒绝"),
+    (str(9), u"撤销"),
     )
+
+
 
 PROJECT_AUDIT_ENABLE = (
     (str("no"), u"关闭"),
@@ -95,7 +98,7 @@ class Project(models.Model):
     pre_release = models.CharField(u"同步之后更改软链接之前目标机器执行的任务pre-release",max_length=200,null=True, blank=True)
     post_release = models.CharField(u"目标机器更改软连接后执行的任务post-release",max_length=200,null=True, blank=True)
     post_release_delay = models.CharField(u"每台目标机执行post_release任务间隔/延迟时间 单位:秒",max_length=50,null=True, blank=True)
-    audit_enable = models.CharField(u"是否开启审核",choices=PROJECT_AUDIT_ENABLE,max_length=50,null=True, blank=True)
+    audit_enable = models.BooleanField(u"是否开启审核")
     audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.SET_NULL, null=True, blank=True)
     keep_version_num = models.CharField(u"线上版本保留数",max_length=50,null=True, blank=True)
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
@@ -118,11 +121,17 @@ class TaskStatus(models.Model):
     branch = models.CharField(u"上线的分支",max_length=50)
     enable_rollback = models.CharField(u"能否回滚此版本:",max_length=50)
     created_at = models.DateTimeField(u'提单时间', auto_now_add=True,null=True)
+    audit_level = models.CharField(u"审核层级",max_length=50,null=True,blank=True)
+    user_l1 = models.CharField(u"第1级审核用户",max_length=50,null=True,blank=True)
     updated_at_l1 = models.DateTimeField(u'l1审核时间', null=True)
+    user_l2 = models.CharField(u"第2级审核用户",max_length=50,null=True,blank=True)
     updated_at_l2 = models.DateTimeField(u'l2审核时间', null=True)
+    user_l3 = models.CharField(u"第3级审核用户",max_length=50,null=True,blank=True)
     updated_at_l3 = models.DateTimeField(u'l3审核时间', null=True)
     finished_at = models.DateTimeField(u'完成时间',null=True)
     project_id = models.CharField(u"项目id",max_length=50,null=True,blank=True)
+    forks = models.IntegerField(u"并发系数，请输入一个整数，默认值为5",  max_length=10, null=True, blank=True)
+    hosts_cus = models.CharField(u"自定义目标主机",max_length=200,null=True,blank=True)
     def __unicode__(self):
         return self.title
     

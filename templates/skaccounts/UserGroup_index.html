@@ -38,10 +38,11 @@
                                     <tr class="even gradeA">
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}" name="x_check" /></td>
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
-                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
+                                        <td>{{ x.name }}</td>
                                         <td>{{ x.desc }}</td>
                                         <td class="text-center" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
+                                     
+                                        <a href="{% url "UserGroup_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
                                         <a value="{% url 'UserGroup_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
                                     </tr>
@@ -94,39 +95,7 @@ function checkSubmit() {
     }
 }
 </script>
-<script>
-function tanchu(n){
-    layer.open({
-    type: 2,
-    title: '修改信息',
-    closeBtn: 1,
-    area: ['600px', '400px'],
-    shadeClose: true, //点击遮罩关闭
-/*     content: ['/skdeploy/project_edit?id=' + n,], */
-    content: ['/skdeploy/UserGroup/edit/' + n,],
-    
-    end:function(){
-            var handle_status = $("#handle_status").val();
-            if ( handle_status == '1' ) {
-                layer.msg('保存成功！',{
-                    icon: 1,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    location.reload();
-                    
-                });
-            } else if ( handle_status == '2' ) {
-                layer.msg('修改失败！',{
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    history.go(0);
-                });
-            }
-        }
-  });
-}
-</script>
+
 <script>
     $(document).ready(function(){
         $('.x_del').click(function(){

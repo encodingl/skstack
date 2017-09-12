@@ -1,26 +1,23 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-from subprocess import Popen, PIPE, STDOUT, call
-import re
 
+from lib.lib_config import get_redis_config
+import redis
 
 if __name__ == "__main__":
-    cmd = "ansible yunwei61 -m script -a '/opt/scripts/linkread.py'"
-    pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
-   
-    retcode_message=pcmd.communicate()
-    r1 = retcode_message[0]
-    print r1
-    a = r1.split(" => ")[1]
-    print a
-    true = "true"
-    dic = eval(a)
-    b = dic["stdout_lines"][0]
-    print b
-#     print r1
-#     pattern=r'\s*\{(.*?)\n\s*\}'
-#     a = re.findall(pattern, r1,re.S)
-#     print a.group()
+    redis_host,redis_port,redis_db,redis_password = get_redis_config()
+    conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
+    redis_chanel_pid_lock = "yyappgwprod11"
+    redis_chanel_message = "yyappgwprod"
+    conn.delete("yyappgwprod11")
+    
+    if conn.get(redis_chanel_pid_lock == "1") :
+        conn.set(redis_chanel_message,"You have already submitted, or someone else is submitting the same project.If you have any other problems, please contact the administrator")     
+               
+        ret=conn.get(redis_chanel_message)
+        print ret
         
-
+        
+    else:
+        
+        print conn.get(redis_chanel_pid_lock)

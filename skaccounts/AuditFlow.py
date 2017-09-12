@@ -27,7 +27,7 @@ from datetime import datetime
 def AuditFlow_index(request):
     temp_name = "skaccounts/accounts-header.html"    
     tpl_all = AuditFlow.objects.all()
-    print tpl_all
+    
     return render_to_response('skaccounts/AuditFlow_index.html', locals(), RequestContext(request))
 
 @login_required()

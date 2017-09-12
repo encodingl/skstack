@@ -21,19 +21,24 @@ urlpatterns = [
      url(r'^Environment/edit/(?P<ids>\d+)/$', Environment.Environment_edit, name='Environment_edit'),
          
      
-     url(r'^TaskStatus/del/$', TaskStatus.TaskStatus_del, name='TaskStatus_del'),
+     url(r'^TaskStatus/revoke/$', TaskStatus.TaskStatus_revoke, name='TaskStatus_revoke'),
      url(r'^TaskStatus/release/(?P<ids>\d+)/$', TaskStatus.TaskStatus_release, name='TaskStatus_release'),
      url(r'^TaskStatus/release/run/$', TaskStatus.TaskStatus_release_run, name='TaskStatus_release_run'),
      url(r'^TaskStatus/release/status/$', TaskStatus.TaskStatus_release_status, name='TaskStatus_release_status'),
      
      url(r'^TaskStatus/rollback/run/$', TaskStatus.TaskStatus_rollback_run, name='TaskStatus_rollback_run'),
-     url(r'^TaskStatus/rollback/add/(?P<ids>\d+)/$', TaskStatus.TaskStatus_rollback_add, name='TaskStatus_rollback_add'),
+#      url(r'^TaskStatus/rollback/add/(?P<ids>\d+)/$', TaskStatus.TaskStatus_rollback_add, name='TaskStatus_rollback_add'),
+     url(r'^TaskStatus/rollback/add/$', TaskStatus.TaskStatus_rollback_add, name='TaskStatus_rollback_add'),
     
      url(r'^TaskStatus/detail/(?P<ids>\d+)/$', TaskStatus.TaskStatus_detail, name='TaskStatus_detail'),
      url(r'^TaskStatus/$', TaskStatus.TaskStatus_index, name='TaskStatus_index'),
+     url(r'^TaskStatus/history/$', TaskStatus.TaskStatus_history, name='TaskStatus_history'),
+     url(r'^TaskStatus/audit/$', TaskStatus.TaskStatus_audit, name='TaskStatus_audit'),
+     url(r'^TaskStatus/audit/permit/$', TaskStatus.TaskStatus_permit, name='TaskStatus_permit'),
+     url(r'^TaskStatus/audit/deny/$', TaskStatus.TaskStatus_deny, name='TaskStatus_deny'),
   
      
-     url(r'^TaskCommit/$', TaskCommit.TaskCommit_index, name='TaskCommit_index'),
+     url(r'^TaskStatus/TaskCommit/$', TaskCommit.TaskCommit_index, name='TaskCommit_index'),
      url(r'^TaskCommit/undo/$', TaskCommit.TaskCommit_undo, name='TaskCommit_undo'),
      url(r'^TaskCommit/add/(?P<ids>\d+)/$', TaskCommit.TaskCommit_add, name='TaskCommit_add'),
      url(r'^TaskCommit/check/$', TaskCommit.TaskCommit_check, name='TaskCommit_check'),

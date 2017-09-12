@@ -124,6 +124,14 @@ $("#submit").click(function(){
 	$("#id_commit_id").attr("disabled",false);
 });
 </script>
+<script>
+var demo1 = $('select[name="hosts_cus"]').bootstrapDualListbox({
+      nonSelectedListLabel: '可选',
+      selectedListLabel: '已选',
+      preserveSelectionOnMove: 'moved',
+      moveOnSelect: false,
+});
+</script>
 </body>
 </html>
 
