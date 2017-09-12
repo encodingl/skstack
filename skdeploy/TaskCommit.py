@@ -42,7 +42,7 @@ def TaskCommit_index(request):
  
     obj_user = UserInfo.objects.get(username=request.user)
     
-    obj_group = obj_user.usergroup_set.all()
+    obj_group = obj_user.usergroup.all()
     obj_project = Project.objects.filter(user_dep__in=obj_group,status="yes")
     tpl_all = obj_project
    

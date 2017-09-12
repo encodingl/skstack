@@ -3,7 +3,7 @@
 # update by guohongze@126.com
 from django import forms
 from django.contrib import auth
-from models import UserInfo, RoleList, PermissionList,RoleJob,AuditFlow
+from models import UserInfo, RoleList, PermissionList,RoleJob,AuditFlow,UserGroup
 
 User_TYPE = (
     (0,'---------'),
@@ -207,3 +207,13 @@ class AuditFlow_form(forms.ModelForm):
             'user_l3': forms.Select(attrs={'class': 'form-control'}),
          
         }   
+
+class UserGroup_form(forms.ModelForm):
+    class Meta:
+        model = UserGroup
+        exclude = ("id",)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+            'members': forms.SelectMultiple(attrs={'class': 'form-control', 'size':'10', 'multiple': 'multiple'}),
+        }

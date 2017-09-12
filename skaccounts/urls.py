@@ -1,8 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from skaccounts import user, role, permission,AuditFlow
-
+from skaccounts import user, role, permission,AuditFlow,UserGroup
 
 urlpatterns = [
     # url(r'^$', user.user_list, name='accounts'),
@@ -29,6 +28,16 @@ urlpatterns = [
     url(r'^permission/list/$', permission.permission_list, name='permission_list'),
     url(r'^permission/edit/(?P<ids>\d+)/$', permission.permission_edit, name='permission_edit'),
     url(r'^permission/delete/(?P<ids>\d+)/$', permission.permission_del, name='permission_del'),
+
+    url(r'^UserGroup/$', UserGroup.UserGroup_index, name='UserGroup_index'),
+    url(r'^UserGroup/del/$', UserGroup.UserGroup_del, name='UserGroup_del'),
+    url(r'^UserGroup/add/$', UserGroup.UserGroup_add, name='UserGroup_add'),
+    url(r'^UserGroup/edit/(?P<ids>\d+)/$', UserGroup.UserGroup_edit, name='UserGroup_edit'),
+
+    url(r'^AuditFlow/$', AuditFlow.AuditFlow_index, name='AuditFlow_index'),
+    url(r'^AuditFlow/del/$', AuditFlow.AuditFlow_del, name='AuditFlow_del'),
+    url(r'^AuditFlow/add/$', AuditFlow.AuditFlow_add, name='AuditFlow_add'),
+    url(r'^AuditFlow/edit/(?P<ids>\d+)/$', AuditFlow.AuditFlow_edit, name='AuditFlow_edit'),
     
 #     url(r'^AuditFlow/$', AuditFlow.AuditFlow_index, name='AuditFlow_index'),
 #     url(r'^AuditFlow/del/$', AuditFlow.AuditFlow_del, name='AuditFlow_del'),

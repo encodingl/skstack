@@ -382,7 +382,7 @@ def TaskStatus_audit(request):
     
 #     obj_user_commit = TaskStatus.objects.filter(user_commit=request.user)
     obj_user = UserInfo.objects.get(username=request.user)    
-    obj_group = obj_user.usergroup_set.all()
+    obj_group = obj_user.usergroup.all()
   
     obj_AuditFlow = AuditFlow.objects.filter(Q(l1__in=obj_group)|Q(l2__in=obj_group)|Q(l3__in=obj_group))
     obj_project = Project.objects.filter(audit_flow__in = obj_AuditFlow,audit_enable=True)
