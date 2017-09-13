@@ -11,7 +11,7 @@ import platform
 import socket
 
 token = 'HPcWR7l4NJNJ'
-server_url = 'http://192.168.47.130:8000/cmdb/collect'
+server_url = 'http://172.28.3.212:8000/cmdb/asset_add'
 
 
 def get_ip():
