@@ -26,7 +26,7 @@ import time
 import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
-from git  import Git
+#from git  import Git
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
 
 level = get_dir("log_level")
