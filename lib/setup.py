@@ -69,7 +69,11 @@ def get_AnsibleHostsDic(args):
                     g = m.group().strip().strip('[').strip(']')
                     dic[g] = []
                 else:
-                    dic[g].append(line)
+                    try:
+                        dic[g].append(line)
+                    except:
+                        pass
+                    
     list_key = []
     dic_list = dic.items()
     list_group_key = dic.keys()
