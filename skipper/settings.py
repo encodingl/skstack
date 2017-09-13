@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'skaccounts',
     'skapi',
     'skrpt',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

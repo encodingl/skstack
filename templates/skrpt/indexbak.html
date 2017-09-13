@@ -8,9 +8,6 @@
 
     </section>
 
-
-
-      
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -19,9 +16,9 @@
             <span class="info-box-icon bg-aqua"><i class="fa fa-server"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">物理机数</span>
-
-                <span class="info-box-number">{{ test01 }}</span>
-
+                {% for test in test01 %}
+                <span class="info-box-number">{{ test.pnum }}</span>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -31,9 +28,9 @@
             <span class="info-box-icon bg-red"><i class="fa fa-outdent"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">虚拟机数量</span>
-
-                <span class="info-box-number">{{ test02 }}</span>
-
+               {% for test in test01 %}
+                <span class="info-box-number">{{ test.vm }}</span>
+                {% endfor %}
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -48,7 +45,7 @@
             <div class="info-box-content">
                 <span class="info-box-text">用户数</span>
 {#                {% for test in test01 %}#}
-                <span class="info-box-number">{{ user }}</span>
+                <span class="info-box-number">{{ test01 }}</span>
 {#                {% endfor %}#}
             </div>
             <!-- /.info-box-content -->
@@ -61,9 +58,9 @@
             <span class="info-box-icon bg-yellow"><i class="fa fa-building"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">APP数</span>
-{#                {% for test in test01 %}#}
-                <span class="info-box-number">{{ test02 }}</span>
-{#                {% endfor %}#}
+                {% for test in test01 %}
+                <span class="info-box-number">{{ test.app }}</span>
+                {% endfor %}
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -72,10 +69,6 @@
     <!-- /.col -->
 </div>
     </section>
-      <!-- /.content -->
-
-
-
-
+    <!-- /.content -->
   </div>
 {% endblock %}

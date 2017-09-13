@@ -9,13 +9,14 @@ from forms import navi_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
-
+from skrpt.models import Rpt
 
 @login_required()
 @permission_verify()
 def index(request):
     temp_name = "skdomain/navi-header.html"
     allnavi = navi.objects.all()
+    # allnavi = Rpt.objects.all()
     return render_to_response("skdomain/index.html", locals(), RequestContext(request))
 
 

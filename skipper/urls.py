@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 import views
 
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^skcmdb/', include('skcmdb.urls')),
@@ -14,5 +15,6 @@ urlpatterns = [
     url(r'^skdomain/', include('skdomain.urls')),
     url(r'^skapi/', include('skapi.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
+
 #     url(r'^skdeploy/', include('skdeploy.urls')),
 ]
