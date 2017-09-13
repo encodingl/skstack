@@ -26,7 +26,7 @@ import time
 import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
-#from git  import Git
+from git  import Git
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
 
 level = get_dir("log_level")
@@ -42,7 +42,7 @@ def TaskCommit_index(request):
  
     obj_user = UserInfo.objects.get(username=request.user)
     
-    obj_group = obj_user.usergroup.all()
+    obj_group = obj_user.usergroup_set.all()
     obj_project = Project.objects.filter(user_dep__in=obj_group,status="yes")
     tpl_all = obj_project
    
@@ -203,6 +203,3 @@ def TaskCommit_checkstatus(request):
     
     obj_json = json.dumps(ret)
     return  HttpResponse(obj_json)   
-
-
-    

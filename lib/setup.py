@@ -64,6 +64,7 @@ def get_AnsibleHostsDic(args):
             temp = line.split()
             if temp:
                 m = re.search(pattern,line)
+                
                 if (m is not None):
                     g = m.group().strip().strip('[').strip(']')
                     dic[g] = []
