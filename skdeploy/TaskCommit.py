@@ -26,7 +26,7 @@ import time
 import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
-#from git  import Git
+from git  import Git
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
 
 level = get_dir("log_level")
@@ -127,8 +127,8 @@ def TaskCommit_add(request, ids):
 @login_required()
 @permission_verify()
 def TaskCommit_check(request):
-    obj_env=request.POST.get('env') 
-    obj_project = request.POST.get('project')  
+    obj_env=request.POST.get('env')
+    obj_project = request.POST.get('project')
     obj_git_commit = request.POST.get('commit_id')
     redis_chanel = obj_project + obj_env
     redis_chanel_message = redis_chanel+"message"
@@ -152,8 +152,8 @@ def TaskCommit_check(request):
     result_pre_deploy=conn.get(redis_chanel_message)
     
          
-    obj_path = git_path + obj_env + "/" + obj_project  
-    g = Git(obj_path)  
+    obj_path = git_path + obj_env + "/" + obj_project
+    g = Git(obj_path)
     g.checkout(obj_git_commit)
     conn.set(redis_chanel,"60")
     conn.set(redis_chanel_message,"git checkout success")

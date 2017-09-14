@@ -141,16 +141,16 @@ class AppForm(forms.ModelForm):
         model = App
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px','placeholder': u'必填项'}),
-            'ywgroup': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'belong_ip': SelectMultiple(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'kafka': SelectMultiple(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'web_port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'dubbo_port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'status': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
+            'name': TextInput(attrs={'class': 'form-control','placeholder': u'必填项'}),
+            'ywgroup': Select(attrs={'class': 'form-control'}),
+            'sa': Select(attrs={'class': 'form-control'}),
+            'env': Select(attrs={'class': 'form-control'}),
+            'belong_ip': SelectMultiple(attrs={'class': 'form-control'}),
+            'kafka': SelectMultiple(attrs={'class': 'form-control'}),
+            'web_port': TextInput(attrs={'class': 'form-control'}),
+            'dubbo_port': TextInput(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'descrition': TextInput(attrs={'class': 'form-control'}),
         }
 
 

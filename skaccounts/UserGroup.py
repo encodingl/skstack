@@ -28,7 +28,6 @@ from django.core.urlresolvers import reverse
 def UserGroup_index(request):
     temp_name = "skaccounts/accounts-header.html"    
     tpl_all = UserGroup.objects.all()
-    print tpl_all
     return render_to_response('skaccounts/UserGroup_index.html', locals(), RequestContext(request))
 
 @login_required()
