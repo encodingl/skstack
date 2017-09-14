@@ -41,18 +41,18 @@
                             {% if tpl_all %}
                                 {% for x in tpl_all %}
                                     <tr class="even gradeA">
-                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}"
+                                        <td width="5%" style="vertical-align:middle"><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}"
                                                    name="x_check"/></td>
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
-                                        <td>{{ x.name }}</td>
-                                        <td>
+                                        <td width="10%" style="vertical-align:middle">{{ x.name }}</td>
+                                        <td width="10%" style="vertical-align:middle">
                                             {% for i in x.members.all %}
                                                 {{ i|get_name }}<br>
                                             {% endfor %}
                                         </td>
-                                        <td>{{ x.members.count }}</td>
-                                        <td>{{ x.desc }}</td>
-                                        <td class="text-center" data-editable='false'>
+                                        <td width="10%" style="vertical-align:middle">{{ x.members.count }}</td>
+                                        <td width="30%" style="vertical-align:middle">{{ x.desc }}</td>
+                                        <td width="30%" class="text-center" data-editable='false'>
 
                                             <a href="{% url "UserGroup_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
                                             <a value="{% url 'UserGroup_del' %}?id={{ x.id }}"
