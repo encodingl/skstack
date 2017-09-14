@@ -47,7 +47,7 @@
                                         <td>{{ x.name }}</td>
                                         <td>
                                             {% for i in x.members.all %}
-                                                {{ i|get_ip }}<br>
+                                                {{ i|get_name }}<br>
                                             {% endfor %}
                                         </td>
                                         <td>{{ x.members.count }}</td>
