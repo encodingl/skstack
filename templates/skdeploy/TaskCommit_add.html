@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {% include 'link_css.html' %}
-    {% include 'head_script.html' %}
+
+
+{% extends 'base.html' %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
     <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
 {% endblock %}
-</head>
-<body>
+{% block content %}
 <div class="content-wrapper">
 
 
@@ -132,7 +127,6 @@ var demo1 = $('select[name="hosts_cus"]').bootstrapDualListbox({
       moveOnSelect: false,
 });
 </script>
-</body>
-</html>
 
+{% endblock %}
 

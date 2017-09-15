@@ -9,6 +9,7 @@ urlpatterns = [
      url(r'^Project/$', Project.Project_index, name='Project_index'),
      url(r'^Project/add/$', Project.Project_add, name='Project_add'),
      url(r'^Project/edit/(?P<ids>\d+)/$', Project.Project_edit, name='Project_edit'),
+     url(r'^Project/init/$', Project.Project_init, name='Project_init'),
      
      url(r'^ProjectGroup/$', ProjectGroup.ProjectGroup_index, name='ProjectGroup_index'),
      url(r'^ProjectGroup/del/$', ProjectGroup.ProjectGroup_del, name='ProjectGroup_del'),

@@ -200,11 +200,15 @@ function tanchu_detail(n){
               $(this).siblings("#features").children("#permit,#deny").remove();    	
     }); 
 
- // 上线完成后关闭审核按键
+ // 上线成功关闭审核按键
     $("[xstatus=3]").each(function(){	
               $(this).siblings("#features").children("#permit,#deny").remove();	
     });
- 
+ // 上线失败关闭审核按键
+    $("[xstatus=4]").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
+    });
+
  // 新建提单关闭审核按钮
     $("[xstatus=0][xlevel!=0]").each(function(){
           $(this).siblings("#features").children("#online").remove();	

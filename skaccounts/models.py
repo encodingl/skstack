@@ -89,7 +89,7 @@ class UserInfo(AbstractBaseUser):
 class UserGroup(models.Model):
     name = models.CharField(max_length=64)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
     desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
-    members = models.ManyToManyField(UserInfo,null=True,blank=True)
+    members = models.ManyToManyField(UserInfo,blank=True)
     def __unicode__(self):
         return self.name
 

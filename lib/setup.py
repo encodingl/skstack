@@ -86,6 +86,8 @@ def get_AnsibleHostsDic(args):
     return dic_list,list_key_set,list_group_key
 
 
+
+
 def get_IpList(args):
 
     list_ip=[]
@@ -110,9 +112,8 @@ def get_IpList(args):
 if __name__ == "__main__":
     dic_list,list_key_set,list_group_key=get_AnsibleHostsDic('/etc/ansible/hosts-prd')
     list_ip=get_IpList('/etc/ansible/hosts-prd')
-    print  dic_list
-    print list_key_set
-    print list_group_key
+  
+    print  dic["yycs"]
    
     
     

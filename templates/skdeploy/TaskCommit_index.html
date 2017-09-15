@@ -46,7 +46,8 @@
                                         <td>{{ x.audit_enable }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-primary" onclick="return tanchu(this.value)" value="{{ x.id }}">提单</li></a>
+                                        
+                                        <a href="{% url 'TaskCommit_add' x.id %}" class="btn btn-sm btn-primary" id="提单">上线</a>  
                                        
                                     </td>
                                     </tr>

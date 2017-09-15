@@ -20,7 +20,7 @@ log("setup.log", level, log_path)
 
 
 
-def adv_task_step(hosts,env,project,task_file):
+def adv_task_step(hosts,env,project,task_file,forks=30):
     proj_base_dir = get_config_var("pro_path")
     task_file_abs = proj_base_dir+env+"/"+project+"/"+task_file
     
@@ -38,7 +38,9 @@ def adv_task_step(hosts,env,project,task_file):
 #         retcode_message=pcmd_copy.communicate()
 #         print "1:%s" % retcode_message
 #         if retcode==0:         
-        cmd = "ansible %s -m script -a %s" % (hosts,task_file_abs)    
+        
+        cmd = "ansible %s -f %s -m script -a %s" % (hosts,forks,task_file_abs)  
+        print cmd  
     try:        
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
         retcode=pcmd.wait()  
@@ -94,7 +96,7 @@ def release_project(project,env,hosts,release_dir,release_to):
 
 def change_link(hosts,release_dir,release_to):
     change_link_palybook=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/scripts/skdeploy/change_link.yml"
-    cmd= "ansible-playbook  %s -e 'h=%s release_dir=%s release_to=%s'" %  (change_link_palybook,hosts, release_dir,release_to)
+    cmd= "ansible-playbook  %s -f 30 -e 'h=%s release_dir=%s release_to=%s'" %  (change_link_palybook,hosts, release_dir,release_to)
     
     try:        
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
@@ -118,7 +120,40 @@ def change_link(hosts,release_dir,release_to):
     else:
         ret_message="failed"
     return ret_message   
+
+def uni_to_str(args):
+    obj_uni = args
+    obj_list = eval(obj_uni) 
+    obj_str=""
+    for h in obj_list:
+        h=h.strip()
+        obj_str=obj_str+h+","
+    return obj_str
+
+def create_release_path(hosts,path):
     
+    cmd= "ansible  %s -m shell -a 'mkdir -p %s'" %  (hosts,path)
+    
+    try:        
+        pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
+        retcode=pcmd.wait()  
+        ret_message = pcmd.communicate()
+        
+        if retcode != 0:    
+            logging.error(ret_message)
+        else:
+            logging.info(ret_message)
+ 
+    except:
+        exinfo=sys.exc_info()
+        logging.error(exinfo)
+    
+    if retcode==0:
+        ret_message="success"
+    else:
+        ret_message="failed"
+    return ret_message
+ 
 if __name__ == "__main__":
     
    

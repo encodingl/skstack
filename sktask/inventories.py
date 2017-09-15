@@ -38,7 +38,7 @@ def index(request):
         all_ansible_groups,list_key,list_key_gp = get_AnsibleHostsDic(ansible_dir+h)
         dic_dic_groups[h]=all_ansible_groups
         dic_list_key[h]=list_key
-          
+        
         
     return render_to_response('sktask/inventories_index.html', locals(), RequestContext(request))
 

@@ -21,6 +21,7 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
+from lib.lib_skdeploy import create_release_path
 
 
 level = get_dir("log_level")
@@ -108,32 +109,18 @@ def Project_edit(request, ids):
             obj_env_id=request.POST.get('env') 
             obj_project_name = request.POST.get('name')                  
             obj_env_eng=Environment.objects.get(id=obj_env_id)
+            if obj.release_library.endswith('/'):
+                obj_release_dir = obj.release_library + obj.name
+            else:
+                obj_release_dir = obj.release_library + "/" + obj.name      
+            
              
             
             repo_path = git_path+obj_env_eng.name_english+"/"+obj_project_name
             proj_dir = proj_base_dir+obj_env_eng.name_english+"/"+obj_project_name
-            print proj_dir
-        
-            try:
-                if os.path.exists(repo_path):
-                    shutil.rmtree(repo_path)
-               
-                repo_url = request.POST.get('repo_url')
-                repo = Gittle.clone(repo_url, repo_path)
-                if os.path.exists(proj_dir):
-                    shutil.rmtree(proj_dir)
-                os.mkdir(proj_dir)
-                os.chdir(proj_dir)
-                new_file("pre_deploy.sh", obj.pre_deploy)
-                new_file("post_deploy.sh", obj.post_deploy)
-                new_file("pre_release.sh", obj.post_deploy)
-                new_file("post_release.sh", obj.post_deploy)
-               
             
-
-            except:
-                exinfo=sys.exc_info()
-                logging.error(exinfo)
+        
+            
                 
             
             
@@ -146,3 +133,64 @@ def Project_edit(request, ids):
     else:
         tpl_Project_form = Project_form(instance=obj)      
     return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def Project_init(request):
+    temp_name = "skdeploy/skdeploy-header.html"
+    print "m0"
+    
+    Project_id = request.GET.get('id')
+    obj = get_object(Project, id=Project_id)
+    obj_env = str(obj.env)
+    obj_project = obj.name
+   
+    if obj.release_library.endswith('/'):
+        obj_release_dir = obj.release_library + obj.name
+    else:
+        obj_release_dir = obj.release_library + "/" + obj.name      
+    
+     
+    
+    repo_path = git_path+obj_env+"/"+obj_project
+   
+    proj_dir = proj_base_dir+obj_env+"/"+obj_project
+    ret = []
+    message = "SUCCESS\nProject:%s\n Env:%s\n配置验证和初始化成功" % (obj_project,obj_env)
+    ret.append(message)
+ 
+    
+    
+    try:
+        if os.path.exists(repo_path):
+            shutil.rmtree(repo_path)
+            
+        repo_url = obj.repo_url
+        repo = Gittle.clone(repo_url, repo_path)
+        
+        if os.path.exists(proj_dir):
+            shutil.rmtree(proj_dir)
+        
+        os.mkdir(proj_dir)
+        os.chdir(proj_dir)
+      
+        
+        new_file("pre_deploy.sh", obj.pre_deploy)
+        new_file("post_deploy.sh", obj.post_deploy)
+        new_file("pre_release.sh", obj.post_deploy)
+        new_file("post_release.sh", obj.post_deploy)
+        create_release_path(hosts=obj.hosts, path=obj_release_dir)
+    
+        
+       
+    
+
+    except:
+        exinfo=sys.exc_info()
+        logging.error(exinfo)
+        ret = []
+        ret.append(exinfo)
+
+         
+    return render_to_response("skdeploy/Project_init.html", locals(), RequestContext(request))
+

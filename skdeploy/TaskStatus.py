@@ -19,7 +19,7 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
-from lib.lib_skdeploy import adv_task_step, release_project,change_link
+from lib.lib_skdeploy import adv_task_step, release_project,change_link,uni_to_str
 import redis
 from lib.lib_config import get_redis_config
 from lib.file import get_ex_link
@@ -28,6 +28,7 @@ import time
 from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
 from itertools import chain
+from django.db.models import Max
 
 
 @login_required()
@@ -77,7 +78,8 @@ def TaskStatus_revoke(request):
 def TaskStatus_detail(request, ids):
     
     obj = get_object(TaskStatus, id=ids)
-    tpl_TaskStatus_form = TaskStatus_detail_form(instance=obj)      
+    tpl_TaskStatus_form = TaskStatus_detail_form(instance=obj) 
+   
     return render_to_response("skdeploy/TaskStatus_detail.html", locals(), RequestContext(request))
 
 
@@ -135,11 +137,18 @@ def TaskStatus_release_run(request):
     obj_project_id = obj.project_id
     obj_status = obj.status
     obj_audit_level = obj.audit_level
+    obj_forks = obj.forks
     
     
     
     obj2 = Project.objects.get(id=obj_project_id)
-    obj_hosts = obj2.hosts 
+    if obj.hosts_cus:
+        
+        obj_hosts = uni_to_str(obj.hosts_cus)
+    else:
+        obj_hosts = obj2.hosts 
+        
+    print obj_hosts
     now_time = time.strftime("%Y%m%d-%H%M%S")
  
     if obj2.release_library.endswith('/'):
@@ -148,7 +157,10 @@ def TaskStatus_release_run(request):
     else:
         obj_release_dir = obj2.release_library + "/" + obj_project + "/" + now_time
     obj_release_to = obj2.release_to
-    obj_ex_link_id = get_ex_link(hosts=obj_hosts,dir=obj2.release_to)
+#     obj_ex_link_id = get_ex_link(hosts=obj_hosts,dir=obj2.release_to)
+    obj3 = TaskStatus.objects.filter(title=obj.title,status="3").aggregate(Max('link_id'))
+    obj_ex_link_id = obj3["link_id__max"]
+  
     redis_chanel = obj_project + obj_env
     redis_chanel_message = redis_chanel+"message"
     redis_host,redis_port,redis_db,redis_password = get_redis_config()
@@ -229,7 +241,7 @@ def TaskStatus_release_run(request):
         conn.set(redis_chanel_pid_lock,"0")
         return  HttpResponse(obj_json) 
 # 步骤6 执行post release任务
-    result_post_release = adv_task_step(hosts=obj_hosts, env=obj_env, project=obj_project, task_file="post_release.sh")
+    result_post_release = adv_task_step(hosts=obj_hosts, env=obj_env, project=obj_project, task_file="post_release.sh",forks=obj_forks)
     if result_post_release == "success": 
         result_post_release = "post_release task %s" % result_post_release
         conn.set(redis_chanel_message,result_post_release)     

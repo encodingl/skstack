@@ -28,6 +28,9 @@ from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
 from git  import Git
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
+from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
+from django import forms
+
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -69,6 +72,7 @@ def TaskCommit_undo(request):
 @login_required()
 @permission_verify()
 def TaskCommit_add(request, ids):
+    temp_name = "skdeploy/skdeploy-header.html"
     status = 0
     obj = get_object(Project, id=ids)
     obj_project_id = obj.id
@@ -77,7 +81,9 @@ def TaskCommit_add(request, ids):
     obj_env=obj.env
    
     obj_branch="master"
-    obj_user=request.user    
+    obj_user=request.user   
+    obj2 =  UserInfo.objects.get(username=obj_user)  
+    obj_user_type = obj2.type 
     obj_path = git_path + str(obj_env) + "/" + str(obj_project)
     obj_git_url=obj.repo_url 
     obj_title = str(obj_project) + "-" + str(obj_env)
@@ -91,6 +97,9 @@ def TaskCommit_add(request, ids):
     repo = Gittle(obj_path, origin_uri=obj_git_url)
     
     repo.pull
+    obj_inventory = get_ansible_config_var("inventory")
+    list_tumple_hosts = get_AnsibleHostsList(obj_inventory, obj.hosts)
+    obj_forks = len(list_tumple_hosts)/2
     dic_init={'title':obj_title,
               'project':obj_project,
               'project_id':obj_project_id,
@@ -100,6 +109,7 @@ def TaskCommit_add(request, ids):
              'branch':obj_branch,
              'status':"0",
              'audit_level':obj_level,
+             'forks':obj_forks,
                
              
              }
@@ -108,26 +118,40 @@ def TaskCommit_add(request, ids):
         tpl_TaskCommit_form = TaskCommit_form(request.POST)
         if tpl_TaskCommit_form.is_valid():
             tpl_TaskCommit_form.save()
-            status = 1
+            ret = []
+            message = "SUCCESS\nProject:%s\n Env:%s\n提单成功" % (obj_project,obj_env)
+            ret.append(message)
+            return render_to_response("skdeploy/TaskCommit_result.html", locals(), RequestContext(request))
         else:
-            status = 3
+         
             list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
             tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
+            
+            if obj_user_type == 1:      
+                tpl_TaskCommit_form.fields["hosts_cus"].widget.choices = list_tumple_hosts
+            else:
+                tpl_TaskCommit_form.fields["hosts_cus"].widget = forms.HiddenInput()
+                
+            return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
     else:  
         tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
         list_tumple_tags=get_git_tag(obj_path,obj_git_url)   
         tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
-        list_tumple_hosts = [("127.0.0.1","127.0.0.1"),("127.0.0.2","127.0.0.2")]
-        tpl_TaskCommit_form.fields["hosts_cus"].widget.choices = list_tumple_hosts
+        if obj_user_type == 1: 
+       
+            tpl_TaskCommit_form.fields["hosts_cus"].widget.choices = list_tumple_hosts
+        else:
+            tpl_TaskCommit_form.fields["hosts_cus"].widget = forms.HiddenInput()
         
     
-    return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
+        return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
 def TaskCommit_check(request):
     obj_env=request.POST.get('env') 
+    
     obj_project = request.POST.get('project')  
     obj_git_commit = request.POST.get('commit_id')
     redis_chanel = obj_project + obj_env
@@ -136,7 +160,7 @@ def TaskCommit_check(request):
     conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
     
     result_pre_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="pre_deploy.sh")  
-    
+  
     if result_pre_deploy == "success": 
         result_pre_deploy = "pre_deploy task %s" % result_pre_deploy
         conn.set(redis_chanel_message,result_pre_deploy)     
@@ -150,7 +174,7 @@ def TaskCommit_check(request):
         return  HttpResponse(obj_json) 
     
     result_pre_deploy=conn.get(redis_chanel_message)
-    
+   
          
     obj_path = git_path + obj_env + "/" + obj_project  
     g = Git(obj_path)  
@@ -162,7 +186,8 @@ def TaskCommit_check(request):
 
      
      
-    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")        
+    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")   
+    
     if result_post_deploy == "success":     
         conn.set(redis_chanel,"100") 
         result_post_deploy = "post_deploy task %s" % result_post_deploy
@@ -178,6 +203,7 @@ def TaskCommit_check(request):
         result_post_deploy = "post_deploy task %s" % result_post_deploy
         conn.set(redis_chanel_message,result_post_deploy)
         obj_json = json.dumps(ret)
+        
         return  HttpResponse(obj_json)  
     
     
@@ -196,7 +222,7 @@ def TaskCommit_checkstatus(request):
     conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
     ret["redis_chanel"]=conn.get(redis_chanel) 
     ret["redis_chanel_message"]=conn.get(redis_chanel_message)
-    if "faild" in ret["redis_chanel_message"] or ret["redis_chanel"] == "100" :
+    if ("faild" in ret["redis_chanel_message"]) or (ret["redis_chanel"] == "100") :
         conn.delete(redis_chanel)
         print conn.get(redis_chanel)
         conn.delete(redis_chanel_message)

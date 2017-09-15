@@ -3,7 +3,7 @@
 
 from gittle import Gittle
 
-#from git  import Git
+from git  import Git
 
 def get_git_tag(repo_path,repo_url):
     repo = Gittle(repo_path,origin_uri=repo_url)

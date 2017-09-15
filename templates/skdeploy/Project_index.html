@@ -49,6 +49,7 @@
                                         <td>{{ x.audit_enable }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
+                                        <a href="{% url 'Project_init' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_init">验证</a>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
                                         <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
@@ -151,5 +152,19 @@ function tanchu(n){
         });
     });
 </script>
+
+
+<script>
+        $(".x_init").click(function () {
+
+
+            if (confirm("确认执行配置初始化" + '?'))
+                var index = layer.load(0, {
+                    shade: [0.5, '#fff'] //0.1透明度的白色背景
+                });
+            else
+                return false;
+        });
+    </script>
 
 {% endblock %}
