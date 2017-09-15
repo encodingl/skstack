@@ -99,7 +99,7 @@ def user_edit(request, ids):
             form.save()
             status = 1
         else:
-            status = 2
+            status = 3
     else:
         form = EditUserForm(instance=user)
     # ids = ids
