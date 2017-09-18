@@ -150,3 +150,16 @@ class DbSource(models.Model):
 
     def __unicode__(self):
         return self.user
+
+
+class Url(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"* Url名称", unique=True)
+    nickname = models.CharField(max_length=50, verbose_name=u"别名", null=True, blank=True)
+    sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
+    env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
+    belongapp = models.ForeignKey(App, verbose_name=u"所属App", on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
+    descrition = models.TextField(u"用途", max_length=200, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
