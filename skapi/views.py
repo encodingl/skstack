@@ -37,14 +37,14 @@ def grafana_search(request):
 
 def zabbix_sender(request):
     zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
-    agent_ip = request.POST.get('zabbix_ip', '')
+    agent_ip = request.POST.get('agent_ip', '')
     data =request.POST.get('data', '')
     if data and agent_ip:
         datas = data.split('\n')
         for data in datas:
             if data :
                 _data = data.split(',')
-                url=_data[0].split('-')[0],
+                url=_data[0].split('-')[0]
                 pay_loads = {
                     'bytes_in':_data[1],
                     'bytes_out':_data[2],
@@ -55,7 +55,7 @@ def zabbix_sender(request):
                     'rt':_data[10]
                 }
                 for k in pay_loads:
-                    cmd = '''/usr/bin/zabbix_sender -s %s -z "%s" -k url[%s,%s] -o "%s"''' % (agent_ip, zabbbix_server, url,k, pay_loads[k])
+                    cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (agent_ip, zabbbix_server, url,k, pay_loads[k])
                     code, result = commands.getstatusoutput(cmd)
                     if code != 0:
                         logging.info(pay_loads)
