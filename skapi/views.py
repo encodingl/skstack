@@ -63,13 +63,14 @@ def zabbix_sender(request):
                     code, result = commands.getstatusoutput(cmd)
                     if code != 0:
                         count += 1
-                        logging.info(pay_loads)
+                        msg = 'error:' + url + ','+ k + ','+ pay_loads[k]
+                        print msg
+                        logging.info(msg)
         if count == 0:
             return HttpResponse('ok')
         else:
             return HttpResponse('Error count:' + str(count))
     return HttpResponse('Error')
-
 
 
 def get_urllist(request):
