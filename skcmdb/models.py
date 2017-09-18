@@ -14,6 +14,11 @@ ASSET_STATUS = (
     (str(4), u"其它"),
 )
 
+MAP_TYPE = (
+    (str(1), u"外网"),
+    (str(2), u"内网"),
+)
+
 
 class Idc(models.Model):
     name = models.CharField(u"* 机房名称", max_length=30, null=True)
@@ -156,8 +161,8 @@ class Url(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* Url名称", unique=True)
     nickname = models.CharField(max_length=50, verbose_name=u"别名", null=True, blank=True)
     whitelist = models.CharField(max_length=50, verbose_name=u"白名单列表", null=True, blank=True)
-    outerip = models.GenericIPAddressField(max_length=50, verbose_name=u"映射外网IP", null=True, blank=True)
-    innerip = models.GenericIPAddressField(max_length=50, verbose_name=u"映射内网IP", null=True, blank=True)
+    mapip = models.GenericIPAddressField(max_length=50, verbose_name=u"映射IP", null=True, blank=True)
+    type = models.CharField(u"类型", choices=MAP_TYPE, max_length=30, null=True, blank=True)
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belongapp = models.ForeignKey(App, verbose_name=u"所属App", on_delete=models.SET_NULL, null=True, blank=True)
