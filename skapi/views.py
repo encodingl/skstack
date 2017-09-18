@@ -44,6 +44,7 @@ def zabbix_sender(request):
     data =request.POST.get('data', '')
     if data and agent_ip:
         datas = data.split('\n')
+        count = 0
         for data in datas:
             if data :
                 _data = data.split(',')
@@ -57,18 +58,17 @@ def zabbix_sender(request):
                     'http_5xx':_data[8],
                     'rt':_data[10]
                 }
-                count = 0
                 for k in pay_loads:
                     cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (agent_ip, zabbbix_server, url,k, pay_loads[k])
                     code, result = commands.getstatusoutput(cmd)
                     if code != 0:
                         count += 1
                         logging.info(pay_loads)
-                if count == 0:
-                    return HttpResponse('ok')
-                else:
-                    return HttpResponse('Error count:' + str(count))
-    return HttpResponse('error')
+        if count == 0:
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('Error count:' + str(count))
+    return HttpResponse('Error')
 
 
 
