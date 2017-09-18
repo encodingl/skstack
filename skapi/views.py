@@ -30,7 +30,7 @@ def grafana_search(request):
                 iplist = app.belong_ip.all()
                 data = [{'text': i.ip, 'value': i.ip} for i in iplist]
             if result == 'urllist':
-                urls = list(Url.objects.filter(status=1).values_list('name'))
+                urls = Url.objects.filter(status=1)
                 data = [{'text': i.name, 'value': i.name} for i in urls]
             return HttpResponse(json.dumps(data), content_type="application/json")
         except:
