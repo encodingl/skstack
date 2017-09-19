@@ -260,7 +260,15 @@
                     data: {pid: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
                     type: 'POST',
                     success: function (callback) {
-                        var obj = jQuery.parseJSON(callback),
+                   
+                        var obj = jQuery.parseJSON(callback);
+                        console.log("m1")
+                      console.log(obj)
+                      console.log("m2")
+                        if (obj.length == 0) {
+                        	$(".js-extravars-box").html("无可选参数");
+                        	     }
+                        else {
                                 $con = $();
                         console.log("ex success");
                         $.each(obj, function (index, item) {
@@ -292,10 +300,13 @@
                             radioClass: 'iradio_flat-blue',
                             increaseArea: '20%' // optional
                         });
+                       }
                     }
                 });
             });
         });
+        
+  
 
     </script>
     <script>

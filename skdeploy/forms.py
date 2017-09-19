@@ -52,6 +52,7 @@ class Project_form(forms.ModelForm):
             'audit_enable': forms.CheckboxInput(), 
             'audit_flow': forms.Select(attrs={'class': 'form-control'}),
             'keep_version_num': forms.TextInput(attrs={'class': 'form-control'}),
+            'audit_enable': forms.CheckboxInput(),
                  
         }
 

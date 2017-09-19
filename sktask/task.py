@@ -81,6 +81,7 @@ def extravars_search(request):
     obj = extravars.objects.filter(job=job_id).values('id','name','vars')
   
     obj_list = list(obj)
+    print obj_list
 
     obj_json = json.dumps(obj_list)
 

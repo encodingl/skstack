@@ -99,7 +99,8 @@ def Project_del(request):
 @login_required()
 @permission_verify()
 def Project_edit(request, ids):
-    status = 0
+    temp_name = "skdeploy/skdeploy-header.html"
+    
     obj = get_object(Project, id=ids)
     
     if request.method == 'POST':
@@ -113,84 +114,81 @@ def Project_edit(request, ids):
                 obj_release_dir = obj.release_library + obj.name
             else:
                 obj_release_dir = obj.release_library + "/" + obj.name      
-            
-             
-            
+        
             repo_path = git_path+obj_env_eng.name_english+"/"+obj_project_name
             proj_dir = proj_base_dir+obj_env_eng.name_english+"/"+obj_project_name
-            
-        
-            
-                
-            
-            
-         
-                
+       
             tpl_Project_form.save()
-            status = 1
+           
+            ret = []
+            message = "SUCCESS\n保存成功" 
+            ret.append(message)
+            return render_to_response("skdeploy/Project_result.html", locals(), RequestContext(request))
         else:
-            status = 2
+            
+            return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
     else:
         tpl_Project_form = Project_form(instance=obj)      
-    return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
+        return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
 def Project_init(request):
     temp_name = "skdeploy/skdeploy-header.html"
-    print "m0"
-    
+
     Project_id = request.GET.get('id')
     obj = get_object(Project, id=Project_id)
     obj_env = str(obj.env)
     obj_project = obj.name
-   
+    obj_type = obj.repo_type
+    proj_dir = proj_base_dir+obj_env+"/"+obj_project
+    ret = []
     if obj.release_library.endswith('/'):
         obj_release_dir = obj.release_library + obj.name
     else:
-        obj_release_dir = obj.release_library + "/" + obj.name      
-    
-     
-    
-    repo_path = git_path+obj_env+"/"+obj_project
-   
-    proj_dir = proj_base_dir+obj_env+"/"+obj_project
-    ret = []
-    message = "SUCCESS\nProject:%s\n Env:%s\n配置验证和初始化成功" % (obj_project,obj_env)
-    ret.append(message)
- 
-    
+        obj_release_dir = obj.release_library + "/" + obj.name 
+        
     
     try:
-        if os.path.exists(repo_path):
-            shutil.rmtree(repo_path)
-            
-        repo_url = obj.repo_url
-        repo = Gittle.clone(repo_url, repo_path)
-        
         if os.path.exists(proj_dir):
-            shutil.rmtree(proj_dir)
-        
+                shutil.rmtree(proj_dir)        
         os.mkdir(proj_dir)
         os.chdir(proj_dir)
-      
-        
         new_file("pre_deploy.sh", obj.pre_deploy)
         new_file("post_deploy.sh", obj.post_deploy)
         new_file("pre_release.sh", obj.post_deploy)
         new_file("post_release.sh", obj.post_deploy)
         create_release_path(hosts=obj.hosts, path=obj_release_dir)
-    
-        
-       
-    
-
     except:
         exinfo=sys.exc_info()
         logging.error(exinfo)
-        ret = []
         ret.append(exinfo)
+    
+    if obj_type == "git":
+        repo_path = git_path+obj_env+"/"+obj_project
 
-         
+        try:
+            if os.path.exists(repo_path):
+                shutil.rmtree(repo_path)
+            repo_url = obj.repo_url
+            repo = Gittle.clone(repo_url, repo_path)
+
+        except:
+            exinfo=sys.exc_info()
+            logging.error(exinfo)
+            ret.append(exinfo)
+    if len(ret) == 0:       
+        message = "SUCCESS\nProject:%s\n Env:%s\n配置验证和初始化成功" % (obj_project,obj_env)
+        ret.append(message)
+  
     return render_to_response("skdeploy/Project_init.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def Project_template(request):
+    temp_name = "skdeploy/skdeploy-header.html"    
+    tpl_all = Project.objects.filter(template_enable = True)
+    
+    return render_to_response('skdeploy/Project_template.html', locals(), RequestContext(request))
 

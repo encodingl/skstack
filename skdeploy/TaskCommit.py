@@ -46,7 +46,7 @@ def TaskCommit_index(request):
     obj_user = UserInfo.objects.get(username=request.user)
     
     obj_group = obj_user.usergroup_set.all()
-    obj_project = Project.objects.filter(user_dep__in=obj_group,status="yes")
+    obj_project = Project.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False)
     tpl_all = obj_project
    
     return render_to_response('skdeploy/TaskCommit_index.html', locals(), RequestContext(request))

@@ -88,7 +88,7 @@ class Project(models.Model):
     status = models.CharField(u"项目状态", choices=PROJECT_STATUS, max_length=10,default="no")
     repo_url = models.CharField(u"git地址",max_length=100,null=True, blank=True)
     repo_mode = models.CharField(u"上线方式：branch/tag",choices=PROJECT_REPO_MODE,max_length=50,null=True, blank=True)
-    repo_type = models.CharField(u"上线方式：git/other",choices=PROJECT_REPO_TYPE,max_length=50,null=True, blank=True)  
+    repo_type = models.CharField(u"项目类型：git/other",choices=PROJECT_REPO_TYPE,max_length=50,null=True, blank=True)  
     release_user = models.CharField(u"目标机器用户",max_length=50,null=True, blank=True)
     release_to = models.CharField(u"目标机器的目录，相当于nginx的root，可直接web访问",max_length=50,null=True, blank=True)
     release_library = models.CharField(u"目标机器版本发布库",max_length=50,null=True, blank=True)
@@ -100,9 +100,11 @@ class Project(models.Model):
     post_release_delay = models.CharField(u"目标机执行post_release任务间隔/延迟时间 单位:秒",max_length=50,null=True, blank=True)
     audit_enable = models.BooleanField(u"是否开启审核")
     audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.SET_NULL, null=True, blank=True)
-    keep_version_num = models.CharField(u"线上版本保留数",max_length=50,null=True, blank=True)
+    keep_version_num = models.PositiveIntegerField(u"线上版本保留数",max_length=50,null=True, blank=True)
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
     updated_at = models.DateTimeField(u'修改时间', auto_now_add=True,null=True)
+    template_enable = models.BooleanField(u"是否转为模板")
+    
     def __unicode__(self):
         return self.name
     

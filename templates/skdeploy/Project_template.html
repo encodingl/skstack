@@ -28,7 +28,7 @@
                                 <input type="checkbox" onclick="checkAll(this, 'item1');" />
                             </th>
                                     <th>名称</th>
-                                    <th>描述</th> 
+                                    <th>类型</th> 
                                     <th>环境</th>
                                     <th>分组</th>
                                     <th>审核激活</th> 
@@ -43,14 +43,15 @@
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}" name="x_check" /></td>
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
-                                        <td>{{ x.desc }}</td>
+                                        <td>{{ x.repo_type }}</td>
                                         <td>{{ x.env }}</td>
                                         <td>{{ x.group }}</td>
                                         <td>{{ x.audit_enable }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
-                                        <a href="{% url 'Project_init' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_init">验证</a>
+                                        <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">从模板创建</span></a>
                                         <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
+                                        
                                         <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
                                     </tr>
