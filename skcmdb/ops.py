@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
@@ -7,10 +7,11 @@ from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
-from skcmdb.forms import IdcForm,EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm
-from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS,App,HostGroup, DbSource, KafkaTopic
+from skcmdb.forms import IdcForm, EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm, \
+    UrlForm
+from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS, App, HostGroup, DbSource, KafkaTopic, Url, MAP_TYPE
 from skaccounts.models import UserInfo
-import commands,os
+import commands, os
 from subprocess import Popen, PIPE, STDOUT, call
 
 
@@ -150,7 +151,6 @@ def ywgroup_save(request):
     else:
         status = 2
     return render_to_response("skcmdb/ywgroup_edit.html", locals(), RequestContext(request))
-
 
 
 @login_required()
@@ -318,16 +318,17 @@ def app_list(request):
 
     if keyword:
         app_find = app_find.filter(
-            Q(name__contains=keyword)|
-            Q(ywgroup__name__contains=keyword)|
+            Q(name__contains=keyword) |
+            Q(ywgroup__name__contains=keyword) |
             Q(sa__nickname__contains=keyword) |
-            Q(env__name__contains=keyword)    |
+            Q(env__name__contains=keyword) |
             Q(status__contains=keyword) |
             Q(descrition__contains=keyword)
         )
 
     app_list, p, apps, page_range, current_page, show_first, show_end = pages(app_find, request)
     return render_to_response('skcmdb/app_list.html', locals(), RequestContext(request))
+
 
 @login_required()
 @permission_verify()
@@ -364,7 +365,6 @@ def app_del(request):
             for app_id in app_id_all.split(','):
                 app = get_object(App, id=app_id)
                 app.delete()
-
     return HttpResponse(u'删除成功')
 
 
@@ -384,6 +384,90 @@ def app_edit(request, ids):
         af = AppForm(instance=obj)
 
     return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))
+
+
+@login_required
+@permission_verify()
+def url_list(request):
+    temp_name = "skcmdb/cmdb-header.html"
+
+    sa_info = UserInfo.objects.filter(type=1)
+    env_info = Env.objects.all()
+    type_info = MAP_TYPE
+    status_info = ASSET_STATUS
+
+    sa = request.GET.get('sa', '')
+    env = request.GET.get('env', '')
+    type = request.GET.get('type', '')
+    status = request.GET.get('status', '')
+
+    obj_info = Url.objects.all()
+
+    if sa:
+        obj_info = obj_info.filter(sa__nickname__contains=sa)
+    if env:
+        obj_info = obj_info.filter(env__name__contains=env)
+    if type:
+        obj_info = obj_info.filter(type=type)
+    if status:
+        obj_info = obj_info.filter(status=status)
+    return render_to_response('skcmdb/url_list.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def url_add(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    if request.method == "POST":
+        a_form = UrlForm(request.POST)
+        if a_form.is_valid():
+            a_form.save()
+            tips = u"增加成功！"
+            display_control = ""
+        else:
+            tips = u"增加失败！"
+            display_control = ""
+    else:
+        display_control = "none"
+        a_form = UrlForm()
+    return render_to_response("skcmdb/url_add.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def url_del(request):
+    url_id = request.GET.get('id', '')
+    if url_id:
+        Url.objects.filter(id=url_id).delete()
+
+    if request.method == 'POST':
+        url_batch = request.GET.get('arg', '')
+        url_id_all = str(request.POST.get('url_id_all', ''))
+
+        if url_batch:
+            for url_id in url_id_all.split(','):
+                url = get_object(Url, id=url_id)
+                url.delete()
+
+    return HttpResponse(u'删除成功')
+
+
+@login_required
+@permission_verify()
+def url_edit(request, ids):
+    status = 0
+    obj = get_object(Url, id=ids)
+    if request.method == 'POST':
+        af = UrlForm(request.POST, instance=obj)
+        if af.is_valid():
+            af.save()
+            status = 1
+        else:
+            status = 2
+    else:
+        af = UrlForm(instance=obj)
+
+    return render_to_response('skcmdb/url_edit.html', locals(), RequestContext(request))
 
 
 @login_required
@@ -427,7 +511,7 @@ def dbsource_list(request):
 @login_required()
 @permission_verify()
 def dbsource_add(request):
-    print "data=",request.method
+    print "data=", request.method
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = DbSourceForm(request.POST)
@@ -466,8 +550,8 @@ def dbsource_edit(request, ids):
                 obj.password = pwd
             form.save()
             status = 1
-        # else:
-        #     status = 2
+            # else:
+            #     status = 2
     else:
         form = DbSourceForm(instance=obj)
     return render_to_response("skcmdb/dbsource_edit.html", locals(), RequestContext(request))

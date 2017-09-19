@@ -3,14 +3,14 @@
 
 from django import forms
 from django.forms.widgets import *
-from .models import Host, Idc, HostGroup,Env, YwGroup, MiddleType,App, DbSource
+from .models import Host, Idc, HostGroup, Env, YwGroup, MiddleType, App, DbSource, Url
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 
 class AssetForm(forms.ModelForm):
-
     class Meta:
         model = Host
         exclude = ("id",)
@@ -34,7 +34,8 @@ class AssetForm(forms.ModelForm):
             'disk': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'sn': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'idc': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
-            'position': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'物理机写位置，虚机写宿主'}),
+            'position': TextInput(
+                attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'物理机写位置，虚机写宿主'}),
             'memo': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;'}),
         }
 
@@ -55,14 +56,14 @@ class IdcForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'address': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'tel': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'contact': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'contact_phone': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'ip_range': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'jigui': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'bandwidth': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'address': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'tel': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'contact': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'contact_phone': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'ip_range': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'jigui': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'bandwidth': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
 
 
@@ -71,9 +72,9 @@ class EnvForm(forms.ModelForm):
         model = Env
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'address': Select(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'address': Select(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
 
 
@@ -93,9 +94,9 @@ class YwGroupForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'sa': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'sa': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
 
 
@@ -115,8 +116,8 @@ class MiddleTypeForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
-            'descrition': TextInput(attrs={'class': 'form-control','style': 'width:450px;'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'descrition': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
 
 
@@ -133,7 +134,7 @@ class HostGroupForm(forms.ModelForm):
 
     class Meta:
         model = HostGroup
-        exclude = ("id", )
+        exclude = ("id",)
 
 
 class AppForm(forms.ModelForm):
@@ -141,7 +142,7 @@ class AppForm(forms.ModelForm):
         model = App
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control','placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
             'ywgroup': Select(attrs={'class': 'form-control'}),
             'sa': Select(attrs={'class': 'form-control'}),
             'env': Select(attrs={'class': 'form-control'}),
@@ -154,8 +155,25 @@ class AppForm(forms.ModelForm):
         }
 
 
-class DbSourceForm(forms.ModelForm):
+class UrlForm(forms.ModelForm):
+    class Meta:
+        model = Url
+        exclude = ("id",)
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
+            'nickname': TextInput(attrs={'class': 'form-control'}),
+            'whitelist': TextInput(attrs={'class': 'form-control', 'placeholder': u'多个请逗号分隔'}),
+            'mapip': TextInput(attrs={'class': 'form-control'}),
+            'type': Select(attrs={'class': 'form-control'}),
+            'sa': Select(attrs={'class': 'form-control'}),
+            'env': Select(attrs={'class': 'form-control'}),
+            'belongapp': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'descrition': Textarea(attrs={'class': 'form-control'}),
+        }
 
+
+class DbSourceForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(DbSourceForm, self).clean()
         value = cleaned_data.get('name')

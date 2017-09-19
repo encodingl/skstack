@@ -159,7 +159,7 @@ class DbSource(models.Model):
 
 class Url(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* Url名称", unique=True)
-    nickname = models.CharField(max_length=50, verbose_name=u"别名", null=True, blank=True)
+    nickname = models.CharField(max_length=50, verbose_name=u"业务名称", null=True, blank=True)
     whitelist = models.CharField(max_length=50, verbose_name=u"白名单列表", null=True, blank=True)
     mapip = models.GenericIPAddressField(max_length=50, verbose_name=u"映射IP", null=True, blank=True)
     type = models.CharField(u"类型", choices=MAP_TYPE, max_length=30, null=True, blank=True)
