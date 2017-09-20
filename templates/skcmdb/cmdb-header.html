@@ -35,6 +35,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li style="font-size: medium" id="sa"><a href="{% url 'opssa_list' %}"><b>运维负责人</b></a></li>
+                        <li style="font-size: medium" id="idc_list"><a href="{% url 'idc' %}"><b>机房列表</b></a></li>
                         <li style="font-size: medium" id="env"><a href="{% url 'env_list' %}"><b>运行环境</b></a></li>
                         <li style="font-size: medium" id="ywgroup"><a href="{% url 'ywgroup_list' %}"><b>业务分组</b></a></li>
                         <li style="font-size: medium" id="middletype"><a href="{% url 'middletype_list' %}"><b>主机分组</b></a></li>
@@ -45,10 +46,10 @@
 
                 <li class="dropdown" style="font-size: medium" id="manage">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <b>机房管理</b> <span class="caret"></span>
+                        <b>第三方管理</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium" id="idc_list"><a href="{% url 'idc' %}"><b>机房列表</b></a></li>
+                        <li style="font-size: medium" id="whileip_list"><a href="{% url 'whileip_list' %}"><b>白名单列表</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>

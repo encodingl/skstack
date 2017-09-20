@@ -47,7 +47,7 @@
                                         <td width="15%" style="vertical-align:middle">{{ x.name }}</td>
                                         <td width="15%" style="vertical-align:middle">
                                             {% for i in x.members.all %}
-                                                {{ i|get_name }}<br>
+                                                {{ i|get_nickname }}<br>
                                             {% endfor %}
                                         </td>
                                         <td width="10%" style="vertical-align:middle">{{ x.members.count }}</td>

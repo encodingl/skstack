@@ -74,6 +74,10 @@ def get_disk_info(disk_info):
 def displayName(value, arg):
     return apply(eval('value.get_'+arg+'_display'), ())
 
+@register.filter(name='get_nickname')
+def get_nickname(get_nickname):
+    return get_nickname.nickname
+
 @register.filter(name='get_name')
 def get_name(get_name):
-    return get_name.nickname
+    return get_name.name

@@ -53,6 +53,19 @@
                         </label>
 
                         <label>
+                            <select name="ywgroup" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">业务分组</option>
+                                {% for i in ywgroup_info %}
+                                {% ifequal i.name ywgroup %}
+                                <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
+                                {% else %}
+                                <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>
                             <select name="type" class="form-control m-b input-sm" onchange="change_info()">
                                 <option value="">类型</option>
                                 {% for i in type_info %}
@@ -100,14 +113,18 @@
                         <tbody>
                         {% if obj_info %}
                             {% for i in obj_info %}
-                                <tr class="even gradeA">
+                                <tr class="even gradeX">
                                     <td width="2%" style="vertical-align:middle"><input type="checkbox" id="u_id"
                                                                                         class="item1" value="{{ i.id }}"
                                                                                         name="idc_check"/></td>
                                     <td width="10%" style="vertical-align:middle">{{ i.name }}</td>
                                     <td width="15%" style="vertical-align:middle">{{ i.nickname }}</td>
                                     <td width="10%" style="vertical-align:middle">{{ i.mapip }}</td>
-                                    <td width="10%" style="vertical-align:middle">{{ i.whitelist }}</td>
+                                    <td width="10%" style="vertical-align:middle">
+                                        {% for i in i.whitelist.all %}
+                                            {{ i|get_ip }}<br>
+                                        {% endfor %}
+                                    </td>
                                     <td width="10%" style="vertical-align:middle">{{ i.belong }}</td>
                                     <td width="30%" style="vertical-align:middle">{{ i.descrition }}</td>
                                     <td style="vertical-align:middle" class="text-center" data-editable='false'>
@@ -148,8 +165,6 @@
         }
     }
 </script>
-<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
     var Table = $('#dataform').DataTable({
         "paging": true,
@@ -179,6 +194,7 @@
                     }, function () {
                         history.go(0);
                     });
+                    window.location = "{% url 'url_list' %}"
                 } else if (handle_status == '2') {
                     layer.msg('修改失败！', {
                         icon: 2,
@@ -222,9 +238,9 @@
                 $.ajax({
                     type: "post",
                     data: {url_id_all: url_id_all, csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    url: "{% url 'app_del' %}?arg=batch",
+                    url: "{% url 'url_del' %}",
                     success: function () {
-                        parent.location.reload();
+                        window.location = "{% url 'url_list' %}"
                     }
                 });
             }

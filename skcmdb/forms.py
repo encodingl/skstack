@@ -3,7 +3,7 @@
 
 from django import forms
 from django.forms.widgets import *
-from .models import Host, Idc, HostGroup, Env, YwGroup, MiddleType, App, DbSource, Url
+from .models import Host, Idc, HostGroup, Env, YwGroup, MiddleType, App, DbSource, Url, WhileIp
 import sys
 
 reload(sys)
@@ -162,14 +162,26 @@ class UrlForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
             'nickname': TextInput(attrs={'class': 'form-control'}),
-            'whitelist': TextInput(attrs={'class': 'form-control', 'placeholder': u'多个请逗号分隔'}),
+            'whitelist': SelectMultiple(attrs={'class': 'form-control'}),
             'mapip': TextInput(attrs={'class': 'form-control'}),
+            'ywgroup': Select(attrs={'class': 'form-control'}),
             'type': Select(attrs={'class': 'form-control'}),
             'sa': Select(attrs={'class': 'form-control'}),
             'env': Select(attrs={'class': 'form-control'}),
             'belongapp': Select(attrs={'class': 'form-control'}),
             'status': Select(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+class WhileIpForm(forms.ModelForm):
+    class Meta:
+        model = WhileIp
+        exclude = ("id",)
+        widgets = {
+            'ip': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'descrition': Textarea(attrs={'class': 'form-control', 'style': 'height:150px'}),
         }
 
 
