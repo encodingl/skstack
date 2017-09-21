@@ -156,8 +156,8 @@ class DbSource(models.Model):
 
 
 class WhileIp(models.Model):
-    ip = models.GenericIPAddressField(max_length=50, verbose_name=u"* IP地址", unique=True)
-    name = models.CharField(max_length=50, verbose_name=u"第三方名称", null=True, blank=True)
+    ip = models.CharField(max_length=50, verbose_name=u"* 白名单", unique=True)
+    name = models.CharField(max_length=50, verbose_name=u"名称", null=True, blank=True)
     descrition = models.TextField(u"用途", max_length=1000, null=True, blank=True)
 
     def __unicode__(self):
