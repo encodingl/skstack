@@ -35,7 +35,7 @@ proj_base_dir = get_dir("pro_path")
 @permission_verify()
 def Project_index(request):
     temp_name = "skdeploy/skdeploy-header.html"    
-    tpl_all = Project.objects.all()
+    tpl_all = Project.objects.filter(template_enable = False)
     
     return render_to_response('skdeploy/Project_index.html', locals(), RequestContext(request))
 
@@ -46,20 +46,9 @@ def Project_add(request):
     if request.method == "POST":
         tpl_Project_form = Project_form(request.POST)
         if tpl_Project_form.is_valid():
-            obj_env_id=request.POST.get('env') 
-            obj_project_name = request.POST.get('name')                  
-            obj_env_eng=Environment.objects.get(id=obj_env_id)
             
-            repo_path = git_path+obj_env_eng.name_english+"/"+obj_project_name
             
-            try:
-              
-                repo_url = request.POST.get('repo_url')
-                repo = Gittle.clone(repo_url, repo_path)
-
-            except:
-                exinfo=sys.exc_info()
-                logging.error(exinfo)
+          
                 
             tpl_Project_form.save()
             tips = u"增加成功！"
@@ -191,4 +180,49 @@ def Project_template(request):
     tpl_all = Project.objects.filter(template_enable = True)
     
     return render_to_response('skdeploy/Project_template.html', locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def Project_add_from_template(request,ids):
+    temp_name = "skdeploy/skdeploy-header.html"
+    
+    
+    if request.method == "POST":
+        tpl_Project_form = Project_form(request.POST)
+        if tpl_Project_form.is_valid():         
+            tpl_Project_form.save()
+            tips = u"增加成功！"
+            display_control = ""
+        else:
+            tips = u"增加失败！"
+            display_control = ""
+        return render_to_response("skdeploy/Project_add.html", locals(), RequestContext(request))
+    else:
+        display_control = "none"
+        obj = get_object(Project, id=ids)
+        dic_init={
+            'desc':obj.desc,
+            
+            'env':obj.env,
+            'group':obj.group,
+            'status':obj.status,
+            'repo_url':obj.repo_url,
+            'repo_mode':obj.repo_mode,
+            'repo_type':obj.repo_type,
+            'release_user':obj.release_user,
+            'release_to':obj.release_to,
+            'release_library':obj.release_library,
+            'pre_deploy':obj.pre_deploy,
+            'post_deploy':obj.post_deploy,
+            'pre_release':obj.pre_release,
+            'post_release':obj.post_release,
+            'post_release_delay':obj.post_release_delay,
+            'audit_enable':obj.audit_enable,
+            'audit_flow':obj.audit_flow,
+            'keep_version_num':obj.keep_version_num,
+
+             }
+        print dic_init
+        tpl_Project_form = Project_form(initial=dic_init) 
+        return render_to_response("skdeploy/Project_add.html", locals(), RequestContext(request))
 

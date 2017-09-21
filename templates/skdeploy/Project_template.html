@@ -49,7 +49,7 @@
                                         <td>{{ x.audit_enable }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
-                                        <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">从模板创建</span></a>
+                                        <a href="{% url "Project_add_from_template" x.id %}"><span class="btn btn-sm btn-primary">从模板创建</span></a>
                                         <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
                                         
                                         <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
