@@ -9,7 +9,6 @@ from forms import LoginUserForm, EditUserForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
 from forms import AddUserForm
 from django.core.urlresolvers import reverse
-from models import UserInfo
 from skaccounts.permission import permission_verify
 
 

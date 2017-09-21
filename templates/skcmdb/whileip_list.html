@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
+{% load mytags %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
-    <script src="/static/js/base.js"></script>
 {% endblock %}
 {% block content %}
 
@@ -14,13 +14,13 @@
 
         <!-- Main content -->
         <section class="content">
-            <form action="{% url 'env_del' %}" method="post">
+            <form action="{% url 'whileip_del' %}" method="post">
                 {% csrf_token %}
                 <div class="box">
                     <div class="box-header">
                         <div class="btn-group">
-                            <a href="{% url 'env_add' %}">
-                                <li class="btn btn-success"><b>添加运行环境</b></li>
+                            <a href="{% url 'whileip_add' %}">
+                                <li class="btn btn-success"><b>添加白名单</b></li>
                             </a>
                         </div>
                     </div>
@@ -32,25 +32,29 @@
                                 <th>
                                     <input type="checkbox" onclick="checkAll(this, 'item1');"/>
                                 </th>
-                                <th>环境名称</th>
-                                <th>主机数量</th>
-                                <th>所在地址</th>
+                                <th>IP地址</th>
+                                <th>第三方名称</th>
+                                <th>所属URL</th>
                                 <th>描述</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% if obj_info %}
-                                {% for idc in obj_info %}
-                                    <tr class="even gradeX">
-                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ idc.id }}"
+                                {% for i in obj_info %}
+                                    <tr class="even gradeA">
+                                        <td style="vertical-align:middle"><input type="checkbox" id="u_id" class="item1" value="{{ i.id }}"
                                                    name="idc_check"/></td>
-                                        <td><a href="#">
+                                        <td style="vertical-align:middle"><a href="#">
                                             <li style="list-style-type:none" onclick="return tanchu(this.value)"
-                                                value="{{ idc.id }}"> {{ idc.name }}</li>
+                                                value="{{ i.id }}"> {{ i.ip }}</li>
                                         </a></td>
-                                        <td>{{ idc.host_set.count }}</td>
-                                        <td>{{ idc.address }}</td>
-                                        <td>{{ idc.descrition }}</td>
+                                        <td style="vertical-align:middle">{{ i.name }}</td>
+                                        <td style="vertical-align:middle">
+                                            {% for j in i.url_set.all %}
+                                                {{ j|get_name }}<br>
+                                            {% endfor %}
+                                        </td>
+                                        <td style="vertical-align:middle">{{ i.descrition }}</td>
                                     </tr>
                                 {% endfor %}
                             {% else %}
@@ -59,8 +63,7 @@
                             </tbody>
                         </table>
                         <div class="btn-group">
-                            <button class="btn btn-danger" style="width: 60pt;font-size: medium"
-                                    onclick="return checkSubmit()"><b>删除</b></button>
+                            <button class="btn btn-danger" onclick="return checkSubmit()"><b>批量删除</b></button>
                         </div>
                     </div>
                 </div>
@@ -103,24 +106,20 @@
     </script>
     <script>
         function checkSubmit() {
-            var app_id_all = getIDall();
-            if (app_id_all == '') {
-                alert("请至少选择一行!");
-                return false;
-            }
             if (!confirm("确定删除？")) {
                 window.event.returnValue = false;
             }
         }
     </script>
+
     <script>
         function tanchu(n) {
             layer.open({
                 type: 2,
-                title: '环境信息修改',
+                title: '白名单信息修改',
                 area: ['600px', '450px'],
                 shadeClose: true, //点击遮罩关闭
-                content: ['/skcmdb/asset/env_edit/' + n,],
+                content: ['/skcmdb/asset/whileip_edit/' + n,],
                 end: function () {
                     var handle_status = $("#handle_status").val();
                     if (handle_status == '1') {
@@ -130,7 +129,7 @@
                         }, function () {
                             history.go(0);
                         });
-                        window.location = "{% url 'env_list' %}"
+                        window.location = "{% url 'whileip_list' %}"
                     } else if (handle_status == '2') {
                         layer.msg('修改失败！', {
                             icon: 2,

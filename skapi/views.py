@@ -77,3 +77,4 @@ def get_urllist(request):
     urls = list(Url.objects.filter(status=1).values_list('name'))
     url_d = [url[0] for url in urls]
     return HttpResponse(json.dumps(url_d), content_type="application/json")
+

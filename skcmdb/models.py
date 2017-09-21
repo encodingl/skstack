@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from skaccounts.models import UserInfo
 
@@ -157,17 +155,28 @@ class DbSource(models.Model):
         return self.user
 
 
+class WhileIp(models.Model):
+    ip = models.GenericIPAddressField(max_length=50, verbose_name=u"* IP地址", unique=True)
+    name = models.CharField(max_length=50, verbose_name=u"第三方名称", null=True, blank=True)
+    descrition = models.TextField(u"用途", max_length=1000, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.ip
+
+
 class Url(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* Url名称", unique=True)
     nickname = models.CharField(max_length=50, verbose_name=u"业务名称", null=True, blank=True)
-    whitelist = models.CharField(max_length=50, verbose_name=u"白名单列表", null=True, blank=True)
+    whitelist = models.ManyToManyField(WhileIp, verbose_name=u"白名单列表", blank=True)
     mapip = models.GenericIPAddressField(max_length=50, verbose_name=u"映射IP", null=True, blank=True)
     type = models.CharField(u"类型", choices=MAP_TYPE, max_length=30, null=True, blank=True)
+    ywgroup = models.ForeignKey(YwGroup, verbose_name=u"业务分组", on_delete=models.SET_NULL, null=True, blank=True)
     sa = models.ForeignKey(UserInfo, verbose_name=u"运维负责人", on_delete=models.SET_NULL, null=True, blank=True)
     env = models.ForeignKey(Env, verbose_name=u"运行环境", on_delete=models.SET_NULL, null=True, blank=True)
     belongapp = models.ForeignKey(App, verbose_name=u"所属App", on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(u"设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
-    descrition = models.TextField(u"用途", max_length=200, null=True, blank=True)
+    descrition = models.TextField(u"用途", max_length=1000, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
+

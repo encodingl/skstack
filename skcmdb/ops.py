@@ -1,18 +1,20 @@
 # coding:utf-8
+from Tkconstants import W
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
 from skcmdb.forms import IdcForm, EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm, \
-    UrlForm
-from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS, App, HostGroup, DbSource, KafkaTopic, Url, MAP_TYPE
+    UrlForm, WhileIpForm
+from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS, App, HostGroup, DbSource, KafkaTopic, Url, MAP_TYPE, \
+    WhileIp
 from skaccounts.models import UserInfo
-import commands, os
-from subprocess import Popen, PIPE, STDOUT, call
+import commands
 
 
 @login_required()
@@ -44,11 +46,10 @@ def env_add(request):
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/env_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
         obj_form = EnvForm()
-        return render_to_response("skcmdb/env_add.html", locals(), RequestContext(request))
+    return render_to_response("skcmdb/env_add.html", locals(), RequestContext(request))
 
 
 @login_required()
@@ -71,16 +72,13 @@ def env_edit(request, ids):
     obj = get_object(Env, id=ids)
     if request.method == 'POST':
         af = EnvForm(request.POST, instance=obj)
-        print af.errors
         if af.is_valid():
-            print af.errors
             af.save()
             status = 1
         else:
             status = 2
     else:
         af = EnvForm(instance=obj)
-
     return render_to_response('skcmdb/env_edit.html', locals(), RequestContext(request))
 
 
@@ -105,11 +103,10 @@ def ywgroup_add(request):
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/ywgroup_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
         obj_form = YwGroupForm()
-        return render_to_response("skcmdb/ywgroup_add.html", locals(), RequestContext(request))
+    return render_to_response("skcmdb/ywgroup_add.html", locals(), RequestContext(request))
 
 
 @login_required()
@@ -393,11 +390,13 @@ def url_list(request):
 
     sa_info = UserInfo.objects.filter(type=1)
     env_info = Env.objects.all()
+    ywgroup_info = YwGroup.objects.all()
     type_info = MAP_TYPE
     status_info = ASSET_STATUS
 
     sa = request.GET.get('sa', '')
     env = request.GET.get('env', '')
+    ywgroup = request.GET.get('ywgroup', '')
     type = request.GET.get('type', '')
     status = request.GET.get('status', '')
 
@@ -407,6 +406,8 @@ def url_list(request):
         obj_info = obj_info.filter(sa__nickname__contains=sa)
     if env:
         obj_info = obj_info.filter(env__name__contains=env)
+    if ywgroup:
+        obj_info = obj_info.filter(ywgroup__name__contains=ywgroup)
     if type:
         obj_info = obj_info.filter(type=type)
     if status:
@@ -441,14 +442,11 @@ def url_del(request):
         Url.objects.filter(id=url_id).delete()
 
     if request.method == 'POST':
-        url_batch = request.GET.get('arg', '')
         url_id_all = str(request.POST.get('url_id_all', ''))
-
-        if url_batch:
+        if url_id_all:
             for url_id in url_id_all.split(','):
                 url = get_object(Url, id=url_id)
                 url.delete()
-
     return HttpResponse(u'删除成功')
 
 
@@ -466,7 +464,6 @@ def url_edit(request, ids):
             status = 2
     else:
         af = UrlForm(instance=obj)
-
     return render_to_response('skcmdb/url_edit.html', locals(), RequestContext(request))
 
 
@@ -555,3 +552,61 @@ def dbsource_edit(request, ids):
     else:
         form = DbSourceForm(instance=obj)
     return render_to_response("skcmdb/dbsource_edit.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def whileip_list(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    obj_info = WhileIp.objects.all()
+    return render_to_response('skcmdb/whileip_list.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def whileip_add(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    if request.method == "POST":
+        obj_form = WhileIpForm(request.POST)
+        if obj_form.is_valid():
+            obj_form.save()
+            tips = u"增加成功！"
+            display_control = ""
+        else:
+            tips = u"增加失败！"
+            display_control = ""
+    else:
+        display_control = "none"
+        obj_form = WhileIpForm()
+    return render_to_response("skcmdb/whileip_add.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def whileip_del(request):
+    temp_name = "skcmdb/cmdb-header.html"
+    if request.method == 'POST':
+        obj_items = request.POST.getlist('idc_check', [])
+        print obj_items
+        if obj_items:
+            for n in obj_items:
+                WhileIp.objects.filter(id=n).delete()
+    return HttpResponseRedirect(reverse('whileip_list'), RequestContext(request))
+
+
+@login_required
+@permission_verify()
+def whileip_edit(request, ids):
+    status = 0
+    obj = get_object(WhileIp, id=ids)
+    if request.method == 'POST':
+        af = WhileIpForm(request.POST, instance=obj)
+        if af.is_valid():
+            af.save()
+            status = 1
+        else:
+            status = 2
+    else:
+        af = WhileIpForm(instance=obj)
+    return render_to_response('skcmdb/whileip_edit.html', locals(), RequestContext(request))
+
