@@ -5,6 +5,11 @@
     <title>Title</title>
     {% include 'link_css.html' %}
     {% include 'head_script.html' %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
+{% endblock %}
 </head>
 <body>
 <div class="content-wrapper">
@@ -18,42 +23,15 @@
         <div class="box box-info">
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" action="{% url 'project_edit' ids %}" method="POST">
-                      {% csrf_token %}
-                <div class="box-body">
-                <div class="form-group">
-                  <label for="project_name" class="col-sm-2 control-label">项目名</label>
-
-                  <div class="col-sm-10">
-                    {{ obj_f.name }}
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="project_path" class="col-sm-2 control-label">项目路径</label>
-
-                  <div class="col-sm-10">
-                    {{ obj_f.path }}
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label for="project_status" class="col-sm-2 control-label">是否激活</label>
-
-                  <div class="col-sm-10">
-                    {{ obj_f.online_status }}
-                  </div>
-                </div>
-               
-                <input type="hidden" name="id" value="{{ obj_f.id }}">
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <button type="submit" class="btn btn-info pull-right">保存</button>
-              </div>
-              <!-- /.box-footer -->
-            </form>
+          <form action="{% url 'Project_edit' ids %}" method="post">
+            {% csrf_token %}
+            {{ tpl_Project_form.as_p }}
+            <input type="hidden" name="id" value="{{ obj.id }}">
+            <input type="submit" class="btn btn-primary" style="width: 60pt" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
+      
+          </form>
+      </div>
 </div>
-    </div>
 
     </section>
 
@@ -69,6 +47,14 @@
             parent.$("#handle_status").val('2');
             parent.layer.close(index);
         }
+</script>
+<script>
+var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
+      nonSelectedListLabel: '可选',
+      selectedListLabel: '已选',
+      preserveSelectionOnMove: 'moved',
+      moveOnSelect: false,
+});
 </script>
 </body>
 </html>

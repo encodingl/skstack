@@ -23,6 +23,8 @@ def index(request):
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
         pro_path = config.get('config', 'project_base_path')
+        git_path = config.get('config', 'git_base_path')
+        
 #         r_path = config.get('config', 'roles_path')
 #         p_path = config.get('config', 'playbook_path')
 #         s_path = config.get('config', 'scripts_path')
@@ -46,6 +48,7 @@ def config_save(request):
         # path
         ansible_path = request.POST.get('ansible_path')
         project_base_path = request.POST.get('project_base_path')
+        git_base_path = request.POST.get('project_base_path')
 #         roles_path = request.POST.get('roles_path')
 #         pbook_path = request.POST.get('pbook_path')
 #         scripts_path = request.POST.get('scripts_path')
@@ -68,6 +71,7 @@ def config_save(request):
         
         config.set('config', 'ansible_path', ansible_path)
         config.set('config', 'project_base_path', project_base_path)
+        config.set('config', 'git_base_path', git_base_path)
 #         config.set('config', 'roles_path', roles_path)
 #         config.set('config', 'playbook_path', pbook_path)
 #         config.set('config', 'scripts_path', scripts_path)
@@ -117,6 +121,8 @@ def get_dir(args):
 #         p_path = config.get('config', 'playbook_path')
 #         s_path = config.get('config', 'scripts_path')
         pro_path = config.get('config', 'project_base_path')
+        git_path = config.get('config', 'git_base_path')
+        
         token = config.get('token', 'token')
         log_path = config.get('log', 'log_path')
         log_level = config.get('log', 'log_level')
@@ -137,6 +143,9 @@ def get_dir(args):
         return log_path
     if args == "log_level":
         return log_level
+    if args == "git_path":
+        return git_path
+    
 
 
 

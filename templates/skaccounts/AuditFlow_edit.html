@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+</head>
+<body>
+<div class="content-wrapper">
+
+
+    <!-- Main content -->
+
+    <section class="content">
+
+<div id="dialog">
+        <div class="box box-info">
+            <!-- /.box-header -->
+            <!-- form start -->
+          <form action="{% url 'AuditFlow_edit' ids %}" method="post">
+            {% csrf_token %}
+            {{ tpl_AuditFlow_form.as_p }}
+            <input type="hidden" name="id" value="{{ obj.id }}">
+            <input type="submit" class="btn btn-primary" style="width: 60pt" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
+      
+          </form>
+      </div>
+</div>
+
+    </section>
+
+  </div>
+{#回传参数至父层#}
+<script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name);
+        var success = {{ status }};
+        if ( success == '1' ) {
+            parent.$("#handle_status").val('1');
+            parent.layer.close(index);
+        } else if( success == '2' ) {
+            parent.$("#handle_status").val('2');
+            parent.layer.close(index);
+        }
+</script>
+</body>
+</html>
+
+

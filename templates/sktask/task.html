@@ -7,319 +7,346 @@
     <link href="/static/plugins/iCheck/flat/red.css" rel="stylesheet">
     <link href="/static/plugins/iCheck/flat/blue.css" rel="stylesheet">
     <link href="/static/css/my.css" rel="stylesheet">
-    <link href="/static/bootstrap/css/bootstrap-directional-buttons.css" rel="stylesheet" type="text/css" />
-   
+    <link href="/static/bootstrap/css/bootstrap-directional-buttons.css" rel="stylesheet" type="text/css"/>
+
     <script src="/static/plugins/iCheck/icheck.js"></script>
-   
+
 {% endblock %}
+
+
+
 {% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+        </section>
 
-
-
-
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-    </section>
-
-    <!-- Main content -->
-<section class="content">
-      <form action="{% url 'task_playbook' %}" method="post">
+        <!-- Main content -->
+        <section class="content">
+            <form action="{% url 'task_playbook' %}" method="post">
                 {% csrf_token %}
-        <div class="box">
-           <div class="box-header with-border">
-                  运维任务管理系统
-                </div>
-                <!-- /.box-header -->
-          <div class="box-body">
- 
-                <!-- /.标题排版 --> 
-                <div class="row">
-                  <div class="col-md-3">
-             			<button type="button" class="btn btn-sm btn-info btn-arrow-right">1.选择项目</button>
-             			</div>
-             		<div class="col-md-3">
-             			<button type="button" class="btn btn-sm btn-info btn-arrow-right">2.选择任务</button>
-             			</div>
-             		<div class="col-md-3">
-             			<button type="button" class="btn btn-sm btn-info btn-arrow-right">3.选择参数</button>
-             			</div>
-             		<div class="col-md-3">
-             			<button type="button" class="btn btn-sm btn-info btn-arrow-right">4.输入hosts</button>
-             			</div>
-                </div>
-               
-                
-                
-                <div class="row box-body">
-							  <div class="col-md-3">
-							   
-							  <ul class="list" id="project_ul">
-							   {% if all_projects %}
-							 
-                      		 {% for p in all_projects %}
-                      		 	<li>                      		 	
-                      			 <input type="radio" name="iCheck_project" class="js-project" id={{p.name}} project_id="{{p.id}}" value={{p.path}} > 
-                      			 <label class="js-radio js-click" for="{{p.name}}" project_id="{{p.id}}">{{p.name}}</label>
-                      			</li>
-                        	 {% endfor %}
-                        {% else %}
-                            <p>No Item are available.</p>
-                        {% endif %}
-                        </ul>							   
-							  </div>
-							  <div class="col-md-3" class="js-radio js-job-box">
-							  
-							   	<ul class="js-job-change" id="job_ul">Please choose project first</ul>
-							  </div>
-							  <div class="col-md-3" >
-							  <ul class="js-extravars-box" id="vars_ul">Please choose job first</ul>
-							  </div>
-							  <div class="col-md-3" >
-							  	 
-													               
-					                <select id="ansible_hosts" name="ansible_hosts" class="form-control" data-placeholder="ansible hosts" size="15"   style="width: 100%;">
-					                    {% for hosts in all_ansible_hosts %}
-					                        <option value="{{ hosts }}">{{hosts}}</option>
-					                    {% endfor %}
-				                	 </select>
-				            
-							  </div>
-							</div>
-							 
-							
-                    
-                </div>
-                <div class="box-footer with-border">
-                			<div class="btn-group">
-                   			 <input type="submit" class="btn btn-danger task_submit " value="前台执行">
-                       </div>
-                       <div class="btn-group">
-                   			 <input type="button" class="btn btn-info back_submit " value="后台执行">
-                       </div>
-                </div>
-            </div>
-        </form>
+                <div class="box">
+                    <div class="box-header with-border">
+                        运维任务管理系统
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
 
-    </section>
+                        <!-- /.标题排版 -->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">1.选择项目</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">2.选择任务</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">3.选择参数</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">4.输入hosts</button>
+                            </div>
+                        </div>
+
+
+                        <div class="row box-body">
+                            <div class="col-md-3">
+
+                                <ul class="list" id="project_ul">
+                                    {% if all_projects %}
+
+                                        {% for p in all_projects %}
+                                            <li>
+                                                <input type="radio" name="iCheck_project" class="js-project"
+                                                       id={{ p.name }} project_id="{{ p.id }}" value={{ p.path }}>
+                                                <label class="js-radio js-click" for="{{ p.name }}"
+                                                       project_id="{{ p.id }}">{{ p.name }}</label>
+                                            </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p>No Item are available.</p>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div class="col-md-3" class="js-radio js-job-box">
+
+                                <ul class="js-job-change" id="job_ul">Please choose project first</ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="js-extravars-box" id="vars_ul">Please choose job first</ul>
+                            </div>
+                            <div class="col-md-3">
+
+
+                                <select id="ansible_hosts" name="ansible_hosts" class="form-control"
+                                        data-placeholder="ansible hosts" size="15" style="width: 100%;">
+                                    {% for hosts in all_ansible_hosts %}
+                                        <option value="{{ hosts }}">{{ hosts }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="box-footer with-border">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-danger task_submit " value="前台执行">
+                        </div>
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-info back_submit " value="后台执行">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </section>
         <!-- /.content -->
-      </div>
-{#接收子层回传参数#}
-<input id="handle_status" value="" hidden="hidden">
-<script type='text/javascript'>
-	
-		$(".back_submit").on("click", function(event){
-	    
-			aj_p=$("#project_ul div[aria-checked='true'] input").val();
-			aj_j=$("#job_ul div[aria-checked='true'] input").val();
-			console.log(aj_j)
-			aj_v=$("#vars_ul div[aria-checked='true'] input").val();
-			console.log(aj_v)
-			aj_h=$("#ansible_hosts  option:selected").val();
-			if (typeof(aj_j)=="undefined") {
-		        layer.msg('请选择任务!');
-		        return false;
-		    }
-			
+    </div>
+    {#接收子层回传参数#}
+    <input id="handle_status" value="" hidden="hidden">
+    <script type='text/javascript'>
 
-			
-			if(confirm("确认执行"+aj_j+'?')){
-				layer.msg('开始后台执行，请稍后查看执行结果', {
-					  icon: 16
-					  ,shade: 0.01
-					});
-				setTimeout(function(){
-					  layer.closeAll('msg');
-					}, 1000);
-			}
-		    else
-		        return false;
-			$.ajax({
-				url:'/sktask/task/playbookback/',
-				data:{iCheck_project: aj_p,
-						iCheck_job: aj_j,
-						iCheck_extravars: aj_v,
-						ansible_hosts: aj_h,
-						csrfmiddlewaretoken:'{{ csrf_token }}'},
-				type:'POST',
-				success:function(callback){
-					var obj_json = jQuery.parseJSON(callback);					
-				/* 	alert(obj_json); */
-				}
+        $(".back_submit").on("click", function (event) {
 
-	
-			});			
-		});
-	
-
-</script>
-<script>
-function checkAll(sender, checkClass) {
-    var checkItems = document.getElementsByTagName('input');
-    for (var i = 0; i < checkItems.length; i++) {
-        var checkItem = checkItems[i];
-        if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
-            checkItem.checked = sender.checked;
-        }
-    }
-}
-</script>
-<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script>
-  $(function () {
-	  
-	  $("#ansible_hosts").select2();
-    $('#dataform').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true
-    });
-  });
-</script>
+            aj_p = $("#project_ul div[aria-checked='true'] input").val();
+            aj_j = $("#job_ul div[aria-checked='true'] input").val();
+            console.log(aj_j)
+            aj_v = $("#vars_ul div[aria-checked='true'] input").val();
+            console.log(aj_v)
+            aj_h = $("#ansible_hosts  option:selected").val();
+            if (typeof(aj_j) == "undefined") {
+                layer.msg('请选择任务!');
+                return false;
+            }
 
 
-
-
-
-<script>
-$(document).ready(function(){
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_flat-green',
-    radioClass: 'iradio_flat-green',
-    increaseArea: '20%' // optional
-  });
-});
-</script>
-<script type='text/javascript'>
-	$(function(){
-		$("[project_id]").on("ifChecked", function(event){
-			id=$(this).attr("project_id");
-			console.log("job");
-			console.log(id);
-			$.ajax({
-				url:'/sktask/task/jobsearch/',
-				data:{pid:id,csrfmiddlewaretoken:'{{ csrf_token }}'},
-				type:'POST',
-				success:function(callback){
-					var obj = jQuery.parseJSON(callback),
-					$con=$();
-					console.log("ajax success");
-					$.each(obj,function(index,item){
-						var obj_li=$("<li>"),
-						inpuy_radio = $('<input>', { type: "radio", name: "iCheck_job", id: item.name ,class: "js-radio js-click js-job", job_id: item.id, value: item.playbook});					
-						obj_li.append(inpuy_radio[0]);
-						obj_li.append($('<label>', { for: item.name,  id: item.name ,html:item.name, job_id: item.id, class: "js-radio js-click js-job"}));
-						$con.push(obj_li[0]);
-					});
-//					console.log($con);
-					console.log($con[0]);
-					
-					$(".js-job-change").html($con);
-					$(".js-extravars-box").html("<ul class='js-extravars-box'>Please choose job first</ul>");
-					$(".js-job").iCheck({
-					    checkboxClass: 'icheckbox_flat-red',
-					    radioClass: 'iradio_flat-red',
-					    increaseArea: '20%' // optional
-					  });
-				}
-			});			
-		});
-	});
-
-</script>
-<script type='text/javascript'>
-$(function(){
-	$(document).on("ifChecked", ".js-job", function(event){
-//		alert(event.target.value + ' callback');
-		console.log("extra id:");
-		$value = $(this).val();
-		console.log($(this).attr("job_id"));
-		id=$(this).attr("job_id");
-		console.log(id);
-		
-		$.ajax({
-			url:'/sktask/task/varsearch/',
-			data:{pid:id,csrfmiddlewaretoken:'{{ csrf_token }}'},
-			type:'POST',
-			success:function(callback){
-				var obj = jQuery.parseJSON(callback),
-				$con=$();
-				console.log("ex success");
-				$.each(obj,function(index,item){
-					var obj_li=$('<li>'),
-					inpuy_radio = $('<input>', { type: "radio", name: "iCheck_extravars", id: item.name ,class: "js-extra", extravars_id: item.id, value: item.vars});					
-					obj_li.append(inpuy_radio[0]);
-					obj_li.append($('<label>', { for: item.name, extravars_id: item.id, id: item.name ,html:item.name,class: "js-extra"}));
-//					console.log(obj_li[0]);
-					$con.push(obj_li[0]);
-				});
-				console.log($con);
-				console.log($con[0]);
-				$(".js-extravars-box").html($con);
-				$(".js-extra").iCheck({
-				    checkboxClass: 'icheckbox_flat-blue',
-				    radioClass: 'iradio_flat-blue',
-				    increaseArea: '20%' // optional
-				  });
-			}
-		});
-	});
-});	
-
-</script>
-<script>
-function jobSubmit(hosts,playbook,extravars){
-    layer.open({
-    type: 2,
-    title: '修改信息',
-    closeBtn: 1,
-    area: ['600px', '400px'],
-    shadeClose: true, //点击遮罩关闭
-/*     content: ['/sktask/project_?id=' + n,], */
-    content: ['/sktask/task/playbook/' + n,],
-    
-    end:function(){
-            var handle_status = $("#handle_status").val();
-            if ( handle_status == '1' ) {
-                layer.msg('执行成功！',{
-                    icon: 1,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    location.reload();
-                    
+            if (confirm("确认执行" + aj_j + '?')) {
+                layer.msg('开始后台执行，请稍后查看执行结果', {
+                    icon: 16
+                    , shade: 0.01
                 });
-            } else if ( handle_status == '2' ) {
-                layer.msg('执行失败！',{
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    history.go(0);
-                });
+                setTimeout(function () {
+                    layer.closeAll('msg');
+                }, 1000);
+            }
+            else
+                return false;
+            $.ajax({
+                url: '/sktask/task/playbookback/',
+                data: {
+                    iCheck_project: aj_p,
+                    iCheck_job: aj_j,
+                    iCheck_extravars: aj_v,
+                    ansible_hosts: aj_h,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                type: 'POST',
+                success: function (callback) {
+                    var obj_json = jQuery.parseJSON(callback);
+                    /* 	alert(obj_json); */
+                }
+
+
+            });
+        });
+
+
+    </script>
+    <script>
+        function checkAll(sender, checkClass) {
+            var checkItems = document.getElementsByTagName('input');
+            for (var i = 0; i < checkItems.length; i++) {
+                var checkItem = checkItems[i];
+                if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
+                    checkItem.checked = sender.checked;
+                }
             }
         }
-  });
-}
-</script>
-<script>
-$(".task_submit").click(function(){
-	
-	 var obj = $("#job_ul div[aria-checked='true'] input").val();
-    if (typeof(obj)=="undefined") {
-        layer.msg('请选择任务!');
-        return false;
-    }
-    
+    </script>
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
 
-    if(confirm("确认执行"+obj+'?'))
-        var index = layer.load(0, {
-            shade: [0.5,'#fff'] //0.1透明度的白色背景
+            $("#ansible_hosts").select2();
+            $('#dataform').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
         });
-    else
-        return false;
-});
-</script>
+    </script>
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+    <script type='text/javascript'>
+        $(function () {
+            $("[project_id]").on("ifChecked", function (event) {
+                id = $(this).attr("project_id");
+                console.log("job");
+                console.log(id);
+                $.ajax({
+                    url: '/sktask/task/jobsearch/',
+                    data: {pid: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    type: 'POST',
+                    success: function (callback) {
+                        var obj = jQuery.parseJSON(callback),
+                                $con = $();
+                        console.log("ajax success");
+                        $.each(obj, function (index, item) {
+                            var obj_li = $("<li>"),
+                                    inpuy_radio = $('<input>', {
+                                        type: "radio",
+                                        name: "iCheck_job",
+                                        id: item.name,
+                                        class: "js-radio js-click js-job",
+                                        job_id: item.id,
+                                        value: item.playbook
+                                    });
+                            obj_li.append(inpuy_radio[0]);
+                            obj_li.append($('<label>', {
+                                for: item.name,
+                                id: item.name,
+                                html: item.name,
+                                job_id: item.id,
+                                class: "js-radio js-click js-job"
+                            }));
+                            $con.push(obj_li[0]);
+                        });
+//					console.log($con);
+                        console.log($con[0]);
+
+                        $(".js-job-change").html($con);
+                        $(".js-extravars-box").html("<ul class='js-extravars-box'>Please choose job first</ul>");
+                        $(".js-job").iCheck({
+                            checkboxClass: 'icheckbox_flat-red',
+                            radioClass: 'iradio_flat-red',
+                            increaseArea: '20%' // optional
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script type='text/javascript'>
+        $(function () {
+            $(document).on("ifChecked", ".js-job", function (event) {
+//		alert(event.target.value + ' callback');
+                console.log("extra id:");
+                $value = $(this).val();
+                console.log($(this).attr("job_id"));
+                id = $(this).attr("job_id");
+                console.log(id);
+
+                $.ajax({
+                    url: '/sktask/task/varsearch/',
+                    data: {pid: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    type: 'POST',
+                    success: function (callback) {
+                        var obj = jQuery.parseJSON(callback),
+                                $con = $();
+                        console.log("ex success");
+                        $.each(obj, function (index, item) {
+                            var obj_li = $('<li>'),
+                                    inpuy_radio = $('<input>', {
+                                        type: "radio",
+                                        name: "iCheck_extravars",
+                                        id: item.name,
+                                        class: "js-extra",
+                                        extravars_id: item.id,
+                                        value: item.vars
+                                    });
+                            obj_li.append(inpuy_radio[0]);
+                            obj_li.append($('<label>', {
+                                for: item.name,
+                                extravars_id: item.id,
+                                id: item.name,
+                                html: item.name,
+                                class: "js-extra"
+                            }));
+//					console.log(obj_li[0]);
+                            $con.push(obj_li[0]);
+                        });
+                        console.log($con);
+                        console.log($con[0]);
+                        $(".js-extravars-box").html($con);
+                        $(".js-extra").iCheck({
+                            checkboxClass: 'icheckbox_flat-blue',
+                            radioClass: 'iradio_flat-blue',
+                            increaseArea: '20%' // optional
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        function jobSubmit(hosts, playbook, extravars) {
+            layer.open({
+                type: 2,
+                title: '修改信息',
+                closeBtn: 1,
+                area: ['600px', '400px'],
+                shadeClose: true, //点击遮罩关闭
+                /*     content: ['/sktask/project_?id=' + n,], */
+                content: ['/sktask/task/playbook/' + n,],
+
+                end: function () {
+                    var handle_status = $("#handle_status").val();
+                    if (handle_status == '1') {
+                        layer.msg('执行成功！', {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            location.reload();
+
+                        });
+                    } else if (handle_status == '2') {
+                        layer.msg('执行失败！', {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            history.go(0);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        $(".task_submit").click(function () {
+
+            var obj = $("#job_ul div[aria-checked='true'] input").val();
+            if (typeof(obj) == "undefined") {
+                layer.msg('请选择任务!');
+                return false;
+            }
+
+
+            if (confirm("确认执行" + obj + '?'))
+                var index = layer.load(0, {
+                    shade: [0.5, '#fff'] //0.1透明度的白色背景
+                });
+            else
+                return false;
+        });
+    </script>
 {% endblock %}

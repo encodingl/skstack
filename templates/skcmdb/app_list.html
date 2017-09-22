@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load mytags %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/js/base.js"></script>
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.css"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <form action="" method="post" id="app_form">
+            <div class="box">
+                <div class="box-header">
+                    <div class="col-sm-2" style="padding-left: 0">
+                        <a href="{% url 'app_add' %}">
+                            <li class="btn btn-success"><b>添加App</b></li>
+                        </a>
+                    </div>
+                    <div class="col-sm-5" style="padding-left: 0px">
+                        <label>
+                            <select name="sa" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">负责人</option>
+                                {% for idc in sa_info %}
+                                {% ifequal idc.nickname sa_name %}
+                                <option value="{{ idc.nickname }}" selected> {{ idc.nickname|slice:":20" }}</option>
+                                {% else %}
+                                <option value="{{ idc.nickname }}"> {{ idc.nickname|slice:":20" }}</option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>
+                            <select name="env" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">运行环境</option>
+                                {% for idc in env_info %}
+                                {% ifequal idc.name env_name %}
+                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
+                                {% else %}
+                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>
+                            <select name="ywgroup" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">业务分组</option>
+                                {% for idc in ywgroup_info %}
+                                {% ifequal idc.name ywgroup_name %}
+                                <option value="{{ idc.name }}" selected> {{ idc.name|slice:":20" }}</option>
+                                {% else %}
+                                <option value="{{ idc.name }}"> {{ idc.name|slice:":20" }}</option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>
+                            <select name="status" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">状态</option>
+                                {% for s in status_info %}
+                                {% ifequal s.0|int2str status %}
+                                <option value="{{ s.0 }}" selected> {{ s.1 }}</option>
+                                {% else %}
+                                <option value="{{ s.0 }}"> {{ s.1 }}</option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col-sm-4" style="padding-right: 0;">
+                        <div class="input-group inline-group padding-right: 10px">
+                            <input type="text" class="form-control m-b " id="search_input" name="keyword"
+                                   value="{{ keyword }}" placeholder="Search">
+                            <input type="text" style="display: none">
+                            <div class="input-group-btn ">
+                                <button id='search_btn' href="{% url 'cmdb' %}?search=true" type="button"
+                                        class="btn btn-primary " onclick="change_info()">
+                                    <b>&nbsp;搜索&nbsp;</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-striped table-bordered" id="dataform">
+                        <thead>
+                        <tr>
+                            <th>
+                                <input id="checkall" type="checkbox" class="i-checks" name="checkall" value="checkall"
+                                       data-editable='false' onclick="check_all('app_form')">
+                            </th>
+                            <th>App名称</th>
+                            <th>所属主机</th>
+                            <th>Kafka列表</th>
+                            <th>Web端口</th>
+                            <th>Dubbo端口</th>
+                            <th class="text-center">功能</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for app in apps.object_list %}
+                            <tr class="even gradeX">
+                                <td width="2%" style="vertical-align:middle"><input type="checkbox" id="id" class="i-checks"
+                                                                         value="{{ app.id }}" name="id"/>
+                                </td>
+                                <td width="15%" style="vertical-align:middle"><a href="#">
+                                    <li style="list-style-type:none" onclick="return tanchu(this.value)"
+                                        value="{{ app.id }}"> {{ app.name }}</li>
+                                </a></td>
+                                <td width="20%" style="vertical-align:middle">
+                                    {% for i in app.belong_ip.all %}
+                                        {{ i|get_ip }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td width="30%" style="vertical-align:middle">
+                                    {% for i in app.kafka.all %}
+                                        {{ i|get_item }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td style="vertical-align:middle">{{ app.web_port }}</td>
+                                <td style="vertical-align:middle">{{ app.dubbo_port }}</td>
+                                <td style="vertical-align:middle" class="text-center" data-editable='false'>
+                                    {#                                        <a href="{% url 'app_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
+                                    <a href="#">
+                                        <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
+                                            value="{{ app.id }}">编辑
+                                        </li>
+                                    </a>
+                                    <a value="{% url 'app_del' %}?id={{ app.id }}"
+                                       class="btn btn-sm btn-danger app_del">删除</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="btn-group">
+                        <input type="button" id="app_del" class="btn btn-danger" name="del_button" value="批量删除"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!-- /.content -->
+    {#用于接收app_edit.html中layui子层的传值#}
+    <input id="handle_status" value="" hidden="hidden">
+</div>
+<script>
+    $(function () {
+        $('#dataform').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true
+        });
+    });
+</script>
+<script>
+    function checkSubmit() {
+        if (!confirm("确定删除？")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>
+<script>
+    function tanchu(n) {
+        layer.open({
+            type: 2,
+            title: '修改APP信息',
+            closeBtn: 1,
+            area: ['600px', '550px'],
+            shadeClose: true, //点击遮罩关闭
+            content: ['/skcmdb/asset/app_edit/' + n,],
+            end: function () {
+                var handle_status = $("#handle_status").val();
+                if (handle_status == '1') {
+                    layer.msg('保存成功！', {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        history.go(0);
+                    });
+                    window.location = "{% url 'app_list' %}"
+                } else if (handle_status == '2') {
+                    layer.msg('修改失败！', {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        history.go(0);
+                    });
+                }
+            }
+        });
+    }
+</script>
+<script>
+    function change_info() {
+        var args = $("#app_form").serialize();
+        window.location = "{% url 'app_list' %}?" + args
+    }
+
+    function export_excel() {
+        var app_id_all = getIDall();
+        if (app_id_all == '') {
+            if (confirm('您没有勾选，是否导出全部信息？')) {
+                var args = $("#app_form").serialize();
+                window.location = "{% url 'cmdb' %}?export=all&" + args
+            } else {
+                return false;
+            }
+        } else {
+            var args = $("#app_form").serialize();
+            window.location = "{% url 'cmdb' %}?export=true&" + args
+        }
+    }
+    $("#search_input").keydown(function (e) {
+        if (e.keyCode == 13) {
+            change_info()
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.app_del').click(function () {
+            var row = $(this).closest('tr');
+            if (confirm("确定删除?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                            row.remove()
+                        }
+                )
+            }
+        });
+
+        $('#app_del').click(function () {
+            var app_id_all = getIDall();
+            if (app_id_all == '') {
+                alert("请至少选择一行!");
+                return false;
+            }
+            if (confirm("确定删除?")) {
+                $.ajax({
+                    type: "post",
+                    data: {app_id_all: app_id_all, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    url: "{% url 'app_del' %}?arg=batch",
+                    success: function () {
+                        window.location = "{% url 'app_list' %}"
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{% endblock %}

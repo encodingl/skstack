@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from models import Host, HostGroup, IpSource, Idc, InterFace, UserInfo
+from models import Host, HostGroup, IpSource, Idc, InterFace
 
 
 class HostAdmin(admin.ModelAdmin):
@@ -40,4 +40,4 @@ admin.site.register(IpSource, IpAdmin)
 admin.site.register(Idc, IdcAdmin)
 admin.site.register(InterFace, InterFaceAdmin)
 admin.site.register(HostGroup, HostGroupAdmin)
-admin.site.register(UserInfo)
+#admin.site.register(UserInfo)

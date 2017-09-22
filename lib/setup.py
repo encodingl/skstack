@@ -64,11 +64,16 @@ def get_AnsibleHostsDic(args):
             temp = line.split()
             if temp:
                 m = re.search(pattern,line)
+
                 if (m is not None):
                     g = m.group().strip().strip('[').strip(']')
                     dic[g] = []
                 else:
-                    dic[g].append(line)
+                    try:
+                        dic[g].append(line)
+                    except:
+                        pass
+                    
     list_key = []
     dic_list = dic.items()
     list_group_key = dic.keys()
@@ -105,7 +110,9 @@ def get_IpList(args):
 if __name__ == "__main__":
     dic_list,list_key_set,list_group_key=get_AnsibleHostsDic('/etc/ansible/hosts-prd')
     list_ip=get_IpList('/etc/ansible/hosts-prd')
-    print list_ip
+    print  dic_list
+    print list_key_set
+    print list_group_key
    
     
     
