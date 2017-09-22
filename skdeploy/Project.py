@@ -112,12 +112,16 @@ def Project_edit(request, ids):
             ret = []
             message = "SUCCESS\n保存成功" 
             ret.append(message)
-            return render_to_response("skdeploy/Project_result.html", locals(), RequestContext(request))
+            tips = u"保存成功！"
+            display_control = ""
+            return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
         else:
-            
+            tips = u"保存失败！"
+            display_control = ""
             return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
     else:
         tpl_Project_form = Project_form(instance=obj)      
+        display_control = "none"
         return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
 
 @login_required()

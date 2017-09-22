@@ -26,7 +26,7 @@
         {% endfor %}
         </div>
         <!-- /.box-body -->
-       <input type="button" class="btn btn-info backurl" style="width: 60pt" value="返回">
+       <input type="button" class="btn btn-info" onclick="window.history.go(-2);window.location.reload()" style="width: 60pt" value="返回">
         <div class="box-footer">
           <i class="fa fa-info-circle"></i>
         </div>
@@ -62,7 +62,9 @@
   <script>
 $(".backurl").click(function(){
 	 history.go(-2);
-	 location.reload();
-});
+	
+    window.location.reload();
+ 
+})
 </script>
 {% endblock %}
