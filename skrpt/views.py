@@ -12,8 +12,6 @@ from skcmdb.models import Host, App
 @permission_verify()
 def index(request):
     temp_name = "skrpt/navi-header.html"
-    test01 = Rpt.objects.filter(app__in=[55]).count()
-    test02 = Rpt.objects.filter(app__in=[5]).count()
     usernum = UserInfo.objects.all().count()
     phynum = Host.objects.filter(group_id__in=[1]).count()
     vmnum = Host.objects.filter(group_id__in=[2]).count()
