@@ -1,0 +1,97 @@
+#canvas{
+	box-shadow: 0px 1px 4px rgba(0,0,0,0.6);
+}
+
+#control-fn{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.selector{
+	padding: 6px 0px 8px 2px;
+}
+
+.selector>span{
+	margin-left: 10px;
+	margin-right: 3px;
+}
+
+.unit{
+	margin: 0px 0px 0px 10px;
+}
+
+.unit input{
+	width: 30px;
+	margin-right: 10px;
+}
+
+.axis{
+	padding: 6px 0px 2px 2px;
+}
+
+.axis>input{
+	width: 240px;
+	outline: none;
+	margin-right: 10px;
+}
+
+.points{
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+
+.points .lName{
+	margin: 0px 10px 6px 8px;
+	width: 120px;
+	text-align: left;
+	outline: none;
+}
+
+.points .lStyle{
+	width: 100px;
+}
+
+.points input{
+	width: 30px;
+	border: none;
+	box-shadow: 0px 0px 2px #222;
+	text-align: center;
+}
+
+.points .cName,.points .cPercent{
+	width: 50px;
+}
+
+.control{
+	margin-top: 10px;
+}
+
+.control input{
+	width: 24px;
+	border: none;
+	box-shadow: 0px 0px 2px #222;
+	text-align: center;
+	margin-left: 6px;
+}
+
+.control>div{
+	display: inline-block;
+	margin-left: 2px;
+	margin-right: 20px;
+}
+
+.control>div:last-child{
+	float: right;
+	margin-right: 0px;
+}
+
+.control button,.axis-create{
+	border: none;
+	padding: 4px 14px;
+	background:#18B4D5;
+	outline: none;
+	color: #fff;
+	font-weight: 700;
+	box-shadow: 0px 1px 5px rgba(0,0,0,0.7);
+}
