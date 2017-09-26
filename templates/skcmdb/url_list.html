@@ -120,13 +120,13 @@
                                     <td width="10%" style="vertical-align:middle">{{ i.name }}</td>
                                     <td width="15%" style="vertical-align:middle">{{ i.nickname }}</td>
                                     <td width="10%" style="vertical-align:middle">{{ i.mapip }}</td>
-                                    <td width="10%" style="vertical-align:middle">
+                                    <td width="15%" style="vertical-align:middle">
                                         {% for i in i.whitelist.all %}
                                             {{ i|get_ip }}<br>
                                         {% endfor %}
                                     </td>
                                     <td width="10%" style="vertical-align:middle">{{ i.belongapp }}</td>
-                                    <td width="30%" style="vertical-align:middle">{{ i.descrition }}</td>
+                                    <td width="25%" style="vertical-align:middle">{{ i.descrition }}</td>
                                     <td style="vertical-align:middle" class="text-center" data-editable='false'>
                                         <a href="#">
                                             <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
