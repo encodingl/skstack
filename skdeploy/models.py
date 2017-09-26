@@ -10,7 +10,6 @@ from skaccounts.models import UserGroup, AuditFlow
 
 import datetime
 from _mysql import NULL
-from celery.bin.control import status
 
 PROJECT_STATUS = (
     (str("no"), u"停用"),

@@ -1,5 +1,5 @@
 # coding:utf-8
-from Tkconstants import W
+#from Tkconstants import W
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q

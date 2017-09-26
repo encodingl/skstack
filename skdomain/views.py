@@ -25,7 +25,6 @@ def add(request):
     temp_name = "skdomain/navi-header.html"
     if request.method == "POST":
         n_form = navi_form(request.POST)
-        
         if n_form.is_valid():
             n_form.save()
             tips = u"增加成功！"
