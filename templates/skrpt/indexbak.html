@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+    <div class="col-md-5 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-server"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">物理机数</span>
+                {% for test in test01 %}
+                <span class="info-box-number">{{ test.pnum }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- /.col -->
+    <div class="col-md-5 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-outdent"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">虚拟机数量</span>
+               {% for test in test01 %}
+                <span class="info-box-number">{{ test.vm }}</span>
+                {% endfor %}
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <!-- fix for small devices only -->
+    <div class="clearfix visible-sm-block"></div>
+    <div class="col-md-5 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">用户数</span>
+{#                {% for test in test01 %}#}
+                <span class="info-box-number">{{ test01 }}</span>
+{#                {% endfor %}#}
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-5 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-building"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">APP数</span>
+                {% for test in test01 %}
+                <span class="info-box-number">{{ test.app }}</span>
+                {% endfor %}
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+</div>
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock %}
