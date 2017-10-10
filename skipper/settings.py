@@ -138,7 +138,7 @@ else:
 
 DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
 DATABASE_APPS_MAPPING = {
-    'skapi': 'jumpserver_db',
+    'skjumpserver': 'jumpserver_db',
 }
 
 # Password validation

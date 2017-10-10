@@ -1,7 +1,12 @@
 # coding: utf-8
 import json, commands
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+from skaccounts.permission import permission_verify
 from skcmdb.models import App
 import logging
 from skcmdb.models import Url
@@ -41,29 +46,30 @@ def grafana_search(request):
 def zabbix_sender(request):
     zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
     agent_ip = request.POST.get('agent_ip', '')
-    data =request.POST.get('data', '')
+    data = request.POST.get('data', '')
     if data and agent_ip:
         datas = data.split('\n')
         count = 0
         for data in datas:
-            if data :
+            if data:
                 _data = data.split(',')
-                url=_data[0].split('-')[0]
+                url = _data[0].split('-')[0]
                 pay_loads = {
-                    'bytes_in':_data[1],
-                    'bytes_out':_data[2],
-                    'http_2xx':_data[5],
-                    'http_3xx':_data[6],
-                    'http_4xx':_data[7],
-                    'http_5xx':_data[8],
-                    'rt':_data[10]
+                    'bytes_in': _data[1],
+                    'bytes_out': _data[2],
+                    'http_2xx': _data[5],
+                    'http_3xx': _data[6],
+                    'http_4xx': _data[7],
+                    'http_5xx': _data[8],
+                    'rt': _data[10]
                 }
                 for k in pay_loads:
-                    cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (agent_ip, zabbbix_server, url,k, pay_loads[k])
+                    cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (
+                    agent_ip, zabbbix_server, url, k, pay_loads[k])
                     code, result = commands.getstatusoutput(cmd)
                     if code != 0:
                         count += 1
-                        msg = 'error:' + url + ','+ k + ','+ pay_loads[k]
+                        msg = 'error:' + url + ',' + k + ',' + pay_loads[k]
                         print msg
                         logging.info(msg)
         if count == 0:

@@ -21,6 +21,11 @@ sys.setdefaultencoding('utf8')
 
 @login_required()
 @permission_verify()
+def other(request):
+    return HttpResponse("敬请期待...")
+
+@login_required()
+@permission_verify()
 def asset(request):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()

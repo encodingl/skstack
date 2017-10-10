@@ -5,6 +5,7 @@ from skcmdb import api, idc, asset, ops
 
 urlpatterns = [
     url(r'asset/$', asset.asset, name='cmdb'),
+    url(r'asset/other$', asset.other, name='other'),
     url(r'^asset/add/$', asset.asset_add, name='asset_add'),
     url(r'^asset/del/$', asset.asset_del, name='asset_del'),
     url(r'^asset/asset_import/$', asset.asset_import, name='asset_import'),
