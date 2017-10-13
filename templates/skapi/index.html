@@ -13,20 +13,20 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="{% url 'hostgroup_del' %}" method="post">
+        <form action="{% url 'hostgroup_del' %}" method="post" id="form">
             {% csrf_token %}
             <div class="box">
                 <div class="box-header">
                     <div class="col-sm-5" style="padding-left: 0px">
-                        <a href="#">请选择:</a>
+                        <a href="#">请选择告警分组:</a>
                         <label>
-                            <select name="sa" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">告警分组</option>
-                                {% for i in sa_info %}
-                                {% ifequal i.nickname sa %}
-                                <option value="{{ i.nickname }}" selected> {{ i.nickname|slice:":20" }}</option>
+                            <select name="alarmgroup" class="form-control m-b input-sm" onchange="change_info()">
+                                <option value="">分组列表</option>
+                                {% for i in alarmgroup_info %}
+                                {% ifequal i.name alarmgroup_name %}
+                                <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
                                 {% else %}
-                                <option value="{{ i.nickname }}"> {{ i.nickname|slice:":20" }}</option>
+                                <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
                                 {% endifequal %}
                                 {% endfor %}
                             </select>
@@ -46,7 +46,7 @@
                             <th>邮件状态</th>
                             <th>短信状态</th>
                             <th>钉钉状态</th>
-                            <th>电话状态</th>
+                            <th class="text-center">功能</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -59,11 +59,38 @@
                                         <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                             value="{{ obj.id }}"> {{ obj.name }}</li>
                                     </a></td>
-                                    <td>{{ obj.wx_status }}</td>
-                                    <td>{{ obj.email_status }}</td>
-                                    <td>{{ obj.sms_status }}</td>
-                                    <td>{{ obj.dignding_status }}</td>
-                                    <td>{{ obj.tel_status }}</td>
+                                    <td>
+                                        {% if obj.weixin_status %}
+                                            <span class="label label-success">启用</span>
+                                        {% else %}
+                                            <span class="label label-default">禁用</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if obj.email_status %}
+                                            <span class="label label-success">启用</span>
+                                        {% else %}
+                                            <span class="label label-default">禁用</span>
+                                        {% endif %}</td>
+                                    <td>
+                                        {% if obj.sms_status %}
+                                            <span class="label label-success">启用</span>
+                                        {% else %}
+                                            <span class="label label-default">禁用</span>
+                                        {% endif %}</td>
+                                    <td>
+                                        {% if obj.dd_status %}
+                                            <span class="label label-success">启用</span>
+                                        {% else %}
+                                            <span class="label label-default">禁用</span>
+                                        {% endif %}</td>
+                                    <td class="text-center" data-editable='false'>
+                                        <a href="#">
+                                            <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
+                                                value="{{ obj.id }}">编辑
+                                            </li>
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% else %}
@@ -81,6 +108,10 @@
 {#接收子层回传参数#}
 <input id="handle_status" value="" hidden="hidden">
 <script>
+    function change_info() {
+        var args = $("#form").serialize();
+        window.location = "{% url 'monitor_index' %}?" + args
+    }
     function checkAll(sender, checkClass) {
         var checkItems = document.getElementsByTagName('input');
         for (var i = 0; i < checkItems.length; i++) {
@@ -121,10 +152,10 @@
     function tanchu(n) {
         layer.open({
             type: 2,
-            title: '类型名称信息修改',
+            title: '修改用户告警策略',
             area: ['600px', '450px'],
             shadeClose: true, //点击遮罩关闭
-            content: ['/skcmdb/asset/hostgroup_edit/' + n,],
+            content: ['/skapi/monitor/alarmlistedit/' + n,],
             end: function () {
                 var handle_status = $("#handle_status").val();
                 if (handle_status == '1') {
@@ -134,7 +165,7 @@
                     }, function () {
                         history.go(0);
                     });
-                    window.location = "{% url 'hostgroup_list' %}"
+                    window.location = "{% url 'monitor_index' %}"
                 } else if (handle_status == '2') {
                     layer.msg('修改失败！', {
                         icon: 2,
