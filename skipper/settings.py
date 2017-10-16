@@ -222,9 +222,8 @@ LOGGING = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp.exmail.qq.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'monitor.sz@mljr.com'
-EMAIL_HOST_PASSWORD = 'error#MONITOR1234'
-DEFAULT_FROM_EMAIL = 'Monitor<monitor@mljr.com>'
+EMAIL_HOST = config.get('email','email_host')
+EMAIL_PORT = config.get('email','email_port')
+EMAIL_HOST_USER = config.get('email','email_user')
+EMAIL_HOST_PASSWORD = config.get('email','email_password')
+

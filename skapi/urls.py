@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^monitor/alarmlistedit/(?P<ids>\d+)/$', monitor.alarmlistedit, name='monitor_alarmlistedit'),
     url(r'^monitor/setuplist', monitor.setuplist, name='monitor_setuplist'),
     url(r'^monitor/setupedit', monitor.setupedit, name='monitor_setupedit'),
+    url(r'^monitor/zabbixalart', monitor.zabbixalart, name='monitor_zabbixalart'),
 ]

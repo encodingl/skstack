@@ -1,12 +1,7 @@
 # coding: utf-8
 import json, commands
-
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 
-from skaccounts.permission import permission_verify
 from skcmdb.models import App
 import logging
 from skcmdb.models import Url

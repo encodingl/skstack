@@ -24,7 +24,7 @@ class AlarmGroupForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'name': TextInput(attrs={'class': 'form-control'}),
             'serial': TextInput(attrs={'class': 'form-control'}),
             'tel_status': Select(choices=((True, u'启用'), (False, u'禁用')),
                           attrs={'class': 'form-control'}),

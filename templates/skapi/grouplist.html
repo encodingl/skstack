@@ -32,11 +32,12 @@
                                 <th>
                                     <input type="checkbox" onclick="checkAll(this, 'item1');"/>
                                 </th>
+                                <th>ID</th>
                                 <th>名称</th>
                                 <th>告警名单</th>
-                                <th>编号</th>
                                 <th>监控范围</th>
                                 <th>运维电话告警</th>
+                                <th>微信编号</th>
                                 <th class="text-center">功能</th>
                             </tr>
                             </thead>
@@ -46,6 +47,7 @@
                                     <tr class="even gradeX">
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ obj.id }}"
                                                    name="idc_check"/></td>
+                                        <td>{{ obj.id }}</td>
                                         <td><a href="#">
                                             <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                                 value="{{ obj.id }}"> {{ obj.name }}</li>
@@ -55,7 +57,6 @@
                                                 {{ i|get_user }}<br>
                                             {% endfor %}
                                         </td>
-                                        <td>{{ obj.serial }}</td>
                                         <td>{{ obj.descrition }}</td>
                                         <td>
                                             {% if obj.tel_status %}
@@ -63,6 +64,7 @@
                                             {% else %}
                                                 <span class="label label-default">禁用</span>
                                             {% endif %}</td>
+                                        <td>{{ obj.serial }}</td>
                                         <td class="text-center" data-editable='false'>
                                             <a href="#">
                                                 <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
