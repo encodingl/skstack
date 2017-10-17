@@ -15,8 +15,8 @@ class AlarmUser(models.Model):
 
 class AlarmGroup(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 告警分组名称", unique=True)
-    serial = models.IntegerField(default=0, verbose_name=u"* 微信编号", null=True, blank=True)
-    tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
+    serial = models.IntegerField(default=0, verbose_name=u"微信编号", null=True, blank=True)
+    tel_status = models.IntegerField(default=0,verbose_name=u"电话状态")
     user = models.ManyToManyField(AlarmUser, verbose_name=u"告警名单", blank=True)
     descrition = models.CharField(max_length=50, verbose_name=u"描述", null=True, blank=True)
 

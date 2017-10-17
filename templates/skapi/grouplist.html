@@ -60,7 +60,11 @@
                                         <td>{{ obj.descrition }}</td>
                                         <td>
                                             {% if obj.tel_status %}
-                                                <span class="label label-success">启用</span>
+                                                {% ifequal obj.tel_status 1 %}
+                                                <span class="label label-success">启用-运维</span>
+                                                {% else %}
+                                                <span class="label label-success">启用-周杰</span>
+                                                {% endifequal %}
                                             {% else %}
                                                 <span class="label label-default">禁用</span>
                                             {% endif %}</td>

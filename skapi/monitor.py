@@ -7,8 +7,8 @@ from django.template import RequestContext
 from skaccounts.permission import permission_verify
 
 from models import AlarmUser, AlarmGroup, AlarmList
-from skapi.api import sendWeixin, sendMail, sendSms
-from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm
+from skapi.api import sendWeixin, sendMail, sendSms, sendMobile
+from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm
 from lib.utils import get_object, config
 from utils import initAlarmList
 
@@ -58,7 +58,7 @@ def userlist(request):
 def useradd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
-        obj_form = AlarmUserForm(request.POST)
+        obj_form = AddAlarmUserForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
             tips = u"增加成功！"
@@ -68,7 +68,7 @@ def useradd(request):
             display_control = ""
     else:
         display_control = "none"
-        obj_form = AlarmUserForm()
+        obj_form = AddAlarmUserForm()
     return render_to_response('skapi/useradd.html', locals(), RequestContext(request))
 
 
@@ -77,7 +77,10 @@ def useradd(request):
 def userdel(request):
     id = request.GET.get('id', '')
     if id:
-        AlarmList.objects.filter(id=id).delete()
+        auser = AlarmUser.objects.get(id=id)
+        a_name = auser.name
+        auser.delete()
+        AlarmList.objects.filter(name=a_name).delete()
     return HttpResponse(u'删除成功')
 
 
@@ -134,7 +137,10 @@ def groupadd(request):
 def groupdel(request):
     id = request.GET.get('id', '')
     if id:
-        AlarmGroup.objects.filter(id=id).delete()
+        ag = AlarmGroup.objects.get(id=id)
+        ag_name = ag.name
+        ag.delete()
+        AlarmList.objects.filter(group=ag_name).delete()
     return HttpResponse(u'删除成功')
 
 
@@ -178,25 +184,25 @@ def setupedit(request):
 def zabbixalart(request):
     subject = request.POST.get('subject', '')
     content = request.POST.get('content', '')
-    token = request.POST.get('token', '')
+    token = request.GET.get('token', '')
     if subject and token == config().get('token', 'token'):
         sub_data = subject.split(',')
         ag_obj = AlarmGroup.objects.get(id=sub_data[0])
         serial = ag_obj.serial
-        print "serial=", serial
         userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, weixin_status=1).values_list('name')]
         wxlist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
         for wx in wxlist:
-            print "subject=", type(subject), "wx=", type(wx), "content=", type(content), "serial=", type(serial)
             sendWeixin(subject, wx, content, serial).send()
         userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, email_status=1).values_list('name')]
         emaillist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
-        print "emaillist=", emaillist
         sendMail(subject, emaillist, content).send()
         userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, sms_status=1).values_list('name')]
         tellist = [AlarmUser.objects.get(name=ul).tel for ul in userlist]
         for tel in tellist:
-            print "tel=", tel
             sendSms(tel, content).send()
+        if ag_obj.tel_status == 1:
+            sendMobile(content).send()
+        elif ag_obj.tel_status == 2:
+            sendMobile(content, type='linkedsee_zhoujie').send()
         return HttpResponse("ok")
     return HttpResponse("error")
