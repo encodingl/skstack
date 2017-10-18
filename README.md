@@ -108,7 +108,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
     'content','xxxxx',       #指定接收的内容
 }
 
-3.电话接口:(目前只购买了灵犀云2个通道,运维专用和周杰专用)
+4.电话接口:(目前只购买了灵犀云2个通道,运维专用和周杰专用)
 请求方url: http://10.8.48.195:8000/skapi/api/sendmobile?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
