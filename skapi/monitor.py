@@ -169,18 +169,19 @@ def groupedit(request, ids):
 @permission_verify()
 def setuplist(request):
     temp_name = "skapi/api-header.html"
+    display_control = "none"
     status = 0
-    # AlarmList.objects.get_or_create()
-    # obj = get_object(Host, id=ids)
-    # if request.method == 'POST':
-    #     af = AssetForm(request.POST, instance=obj)
-    #     if af.is_valid():
-    #         af.save()
-    #         status = 1
-    #     else:
-    #         status = 2
-    # else:
-    #     af = AssetForm(instance=obj)
+    AlarmList.objects.get_or_create(group='全局组')
+    obj = get_object(AlarmList, group='全局组')
+    if request.method == 'POST':
+        af = AlarmListForm(request.POST, instance=obj)
+        if af.is_valid():
+            af.save()
+            status = 1
+        else:
+            status = 2
+    else:
+        af = AlarmListForm(instance=obj)
     return render_to_response('skapi/setup.html', locals(), RequestContext(request))
 
 

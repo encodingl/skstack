@@ -9,83 +9,51 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
+            <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4>{{ tips }}</h4>
+            </div>
         </section>
 
         <!-- Main content -->
         <section class="content">
             <div id="dialog">
                 <div class="box">
-                    <form class="form-horizontal" action="{% url 'config_save' %}" method="POST">
+                    <form class="form-horizontal" action="{% url 'monitor_setuplist' %}" method="POST">
                         {% csrf_token %}
                         <div class="box-body">
                             <hr>
-                            <p><b>全局设置</b></p>
+                            <p><b>全局设置:</b></p>
                             <div class="form-group">
-                                <label for="log" class="col-sm-2 control-label">微信状态:</label>
+                                <label for="weixin_status" class="col-sm-2 control-label">微信状态:</label>
                                 <div class="col-sm-10">
-                                    <select name="log_level" class="form-control" style="width:450px;">
-                                        <option value="{{ log_level }}" selected="selected"> {{ log_level }}</option>
-                                        {% for key,value in all_level.items %}
-                                            <option value="{{ key }}"> {{ key }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ af.weixin_status }}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="log" class="col-sm-2 control-label">邮件状态:</label>
+                                <label for="email_status" class="col-sm-2 control-label">邮件状态:</label>
                                 <div class="col-sm-10">
-                                    <select name="log_level" class="form-control" style="width:450px;">
-                                        <option value="{{ log_level }}" selected="selected"> {{ log_level }}</option>
-                                        {% for key,value in all_level.items %}
-                                            <option value="{{ key }}"> {{ key }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ af.email_status }}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="log" class="col-sm-2 control-label">短信状态:</label>
+                                <label for="sms_status" class="col-sm-2 control-label">短信状态:</label>
                                 <div class="col-sm-10">
-                                    <select name="log_level" class="form-control" style="width:450px;">
-                                        <option value="{{ log_level }}" selected="selected"> {{ log_level }}</option>
-                                        {% for key,value in all_level.items %}
-                                            <option value="{{ key }}"> {{ key }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ af.sms_status }}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="log" class="col-sm-2 control-label">钉钉状态:</label>
+                                <label for="dd_status" class="col-sm-2 control-label">钉钉状态:</label>
                                 <div class="col-sm-10">
-                                    <select name="log_level" class="form-control" style="width:450px;">
-                                        <option value="{{ log_level }}" selected="selected"> {{ log_level }}</option>
-                                        {% for key,value in all_level.items %}
-                                            <option value="{{ key }}"> {{ key }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="log" class="col-sm-2 control-label">电话状态:</label>
-                                <div class="col-sm-10">
-                                    <select name="log_level" class="form-control" style="width:450px;">
-                                        {% if status %}
-                                            <option value="1" selected="selected"> 启用</option>
-                                            <option value="0"> 禁用</option>
-                                            {% else %}
-                                            <option value="1"> 启用</option>
-                                            <option value="0" selected="selected"> 禁用</option>
-                                        {% endif %}
-
-                                    </select>
+                                    {{ af.dd_status }}
                                 </div>
                             </div>
 
                         </div>
-
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <button type="submit" onclick="checkSubmit()" class="btn btn-info pull-left"
-                                    style="width: 120px"><b>保存(save)</b></button>
+                                    style="width: 120px"><b>保存</b></button>
                         </div>
                         <!-- /.box-footer -->
                     </form>
@@ -101,13 +69,6 @@
             if (!confirm("确定修改？")) {
                 window.event.returnValue = false;
             }
-        }
-    </script>
-    <script>
-        function get_token() {
-            $.post('/skconfig/token/', {csrfmiddlewaretoken: '{{ csrf_token }}'}, function (data) {
-                document.getElementById("token").value = data;
-            });
         }
     </script>
 {% endblock %}
