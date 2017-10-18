@@ -192,7 +192,8 @@ def zabbixalart(request):
         userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, weixin_status=1).values_list('name')]
         wxlist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
         for wx in wxlist:
-            sendWeixin(subject, wx, content, serial).send()
+            content = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx, content)
+            sendWeixin(wx, content, serial).send()
         userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, email_status=1).values_list('name')]
         emaillist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
         sendMail(subject, emaillist, content).send()
@@ -206,3 +207,29 @@ def zabbixalart(request):
             sendMobile(content, type='linkedsee_zhoujie').send()
         return HttpResponse("ok")
     return HttpResponse("error")
+
+
+def api(request, method):
+    token = config().get('token', 'token')
+    if request.method == 'POST' and token == request.GET.get('token', ''):
+        if method == 'sendmail':
+            subject = request.POST.get('subject', 'Default Subject...')
+            receiverlist = request.POST.get('receiverlist', '').split(',')
+            content = request.POST.get('content', '')
+            sendMail(subject, receiverlist, content).send()
+        if method == 'sendweixin':
+            receiver = request.POST.get('receiver', '')
+            content = request.POST.get('content', '')
+            serial = request.POST.get('serial', '')
+            sendMail(receiver, content, serial).send()
+        if method == 'sendsms':
+            mobile = request.POST.get('mobile', '')
+            content = request.POST.get('content', '')
+            sendSms(mobile, content).send()
+        if method == 'sendmobile':
+            type = request.POST.get('type', '')
+            content = request.POST.get('content', '')
+            sendMobile(content, type).send()
+        return HttpResponse("ok")
+    return HttpResponse("error")
+

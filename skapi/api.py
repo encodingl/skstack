@@ -10,7 +10,6 @@ class sendMail:
         self._subject = subject
         self._receiverlist = receiverlist
         self._message = message
-
     def send(self):
         try:
             send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
@@ -19,7 +18,7 @@ class sendMail:
 
 
 class sendWeixin:
-    def __init__(self, subject, receiver, message, serial):
+    def __init__(self, receiver, message, serial):
         self._CropID = "wxf97f43cc98f403ec"
         self._Secret = "bypQWOXYsytWQJBXu1Q9omb2O6rwp7G1bUK8V-94J32cKvjnD2PLhezvhlW1mvYj"
         self._Gurl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s" % (
@@ -30,10 +29,9 @@ class sendWeixin:
             "msgtype": "text",
             "agentid": serial,
             "text": {
-                "content": u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, receiver, message)
+                "content": message
             }
         }
-
     def send(self):
         try:
             r = requests.get(self._Gurl)
@@ -51,7 +49,6 @@ class sendSms:
             "msg": '''{'content':'%s','mobile':'%s','bussdepartment':'zabbix','source':'zabbix','type':1}''' % (
                 message, mobile)
         }
-
     def send(self):
         requests.get(self._url, self._message)
 
@@ -66,7 +63,6 @@ class sendMobile:
             'servicetoken': self._token
         }
         self._message = "{content:'%s'}" % message
-
     def send(self):
         try:
             requests.post(self._url, self._message, headers=self._headers)

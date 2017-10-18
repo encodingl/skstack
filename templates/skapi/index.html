@@ -46,6 +46,7 @@
                             <th>邮件状态</th>
                             <th>短信状态</th>
                             <th>钉钉状态</th>
+                            <th>电话状态</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -80,6 +81,12 @@
                                         {% endif %}</td>
                                     <td>
                                         {% if obj.dd_status %}
+                                            <span class="label label-success">启用</span>
+                                        {% else %}
+                                            <span class="label label-default">禁用</span>
+                                        {% endif %}</td>
+                                    <td>
+                                        {% if obj.tel_status %}
                                             <span class="label label-success">启用</span>
                                         {% else %}
                                             <span class="label label-default">禁用</span>
@@ -158,6 +165,9 @@
             content: ['/skapi/monitor/alarmlistedit/' + n,],
             end: function () {
                 var handle_status = $("#handle_status").val();
+                alert(handle_status);
+                layer.msg('保存成功！');
+                alert(handle_status);
                 if (handle_status == '1') {
                     layer.msg('保存成功！', {
                         icon: 1,

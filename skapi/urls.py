@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^monitor/setuplist', monitor.setuplist, name='monitor_setuplist'),
     url(r'^monitor/setupedit', monitor.setupedit, name='monitor_setupedit'),
     url(r'^monitor/zabbixalart', monitor.zabbixalart, name='monitor_zabbixalart'),
+    url(r'^api/(?P<method>\w+)', monitor.api, name='api'),
 ]

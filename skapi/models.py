@@ -6,7 +6,6 @@ from django.db import models
 class AlarmUser(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 告警收件人", unique=True)
     email = models.EmailField(max_length=255, verbose_name=u"* 邮箱", null=True)
-    weixin = models.CharField(max_length=50, verbose_name=u"* 微信号", null=True)
     tel = models.CharField(max_length=50, verbose_name=u"* 电话号码", null=True)
     dd = models.CharField(max_length=50, verbose_name=u"* 钉钉号", null=True)
 

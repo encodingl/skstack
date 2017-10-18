@@ -12,7 +12,6 @@ class AlarmUserForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;', 'readonly': True}),
             'email': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
-            'weixin': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
             'tel': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
             'dd': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
@@ -25,7 +24,6 @@ class AddAlarmUserForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
             'email': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
-            'weixin': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
             'tel': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
             'dd': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
         }
