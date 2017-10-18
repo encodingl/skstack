@@ -3,6 +3,12 @@ from django.core.mail import send_mail
 import requests, json
 import logging
 
+from skapi.models import AlarmStatus
+
+try:
+    obj = AlarmStatus.objects.get(id=1)
+except:
+    pass
 
 class sendMail:
     def __init__(self, subject, receiverlist, message):
@@ -11,10 +17,13 @@ class sendMail:
         self._receiverlist = receiverlist
         self._message = message
     def send(self):
-        try:
-            send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
-        except Exception, e:
-            logging.error("[邮件发送失败]:" + e.message())
+        if obj.email_status:
+            try:
+                send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
+            except Exception, e:
+                logging.error("[邮件发送失败]:" + e.message())
+        else:
+            logging.warning("邮件功能未开启.")
 
 
 class sendWeixin:
@@ -33,13 +42,16 @@ class sendWeixin:
             }
         }
     def send(self):
-        try:
-            r = requests.get(self._Gurl)
-            token = r.json()['access_token']
-            Purl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s" % token
-            requests.post(Purl, data=json.dumps(self._body))
-        except Exception, e:
-            logging.error("[微信发送失败]:" + e.message())
+        if obj.weixin_status:
+            try:
+                r = requests.get(self._Gurl)
+                token = r.json()['access_token']
+                Purl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s" % token
+                requests.post(Purl, data=json.dumps(self._body))
+            except Exception, e:
+                logging.error("[微信发送失败]:" + e.message())
+        else:
+            logging.warning("微信功能未开启.")
 
 
 class sendSms:
@@ -50,8 +62,13 @@ class sendSms:
                 message, mobile)
         }
     def send(self):
-        requests.get(self._url, self._message)
-
+        if obj.sms_status:
+            try:
+                requests.get(self._url, self._message)
+            except Exception, e:
+                logging.error("[短信发送失败]:" + e.message())
+        else:
+            logging.warning("短信功能未开启.")
 
 class sendMobile:
     def __inif__(self, message, type='linkedsee_szyw'):
@@ -64,10 +81,13 @@ class sendMobile:
         }
         self._message = "{content:'%s'}" % message
     def send(self):
-        try:
-            requests.post(self._url, self._message, headers=self._headers)
-        except Exception, e:
-            logging.error("[电话告警发送失败]:" + e.message())
+        if obj.tel_status:
+            try:
+                requests.post(self._url, self._message, headers=self._headers)
+            except Exception, e:
+                logging.error("[电话告警发送失败]:" + e.message())
+        else:
+            logging.warning("电话功能未开启.")
 
 
 class sendDingding:

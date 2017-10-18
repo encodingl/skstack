@@ -6,9 +6,9 @@ from django.template import RequestContext
 
 from skaccounts.permission import permission_verify
 
-from models import AlarmUser, AlarmGroup, AlarmList
+from models import AlarmUser, AlarmGroup, AlarmList, AlarmStatus
 from skapi.api import sendWeixin, sendMail, sendSms, sendMobile
-from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm
+from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, AlarmStatusForm
 from lib.utils import get_object, config
 from utils import initAlarmList
 
@@ -169,28 +169,20 @@ def groupedit(request, ids):
 @permission_verify()
 def setuplist(request):
     temp_name = "skapi/api-header.html"
-    display_control = "none"
-    status = 0
-    AlarmList.objects.get_or_create(group='全局组')
-    obj = get_object(AlarmList, group='全局组')
+    AlarmStatus.objects.get_or_create(id=1)
+    obj = get_object(AlarmStatus, id=1)
     if request.method == 'POST':
-        af = AlarmListForm(request.POST, instance=obj)
+        af = AlarmStatusForm(request.POST, instance=obj)
         if af.is_valid():
             af.save()
-            status = 1
+            tips = u"保存成功！"
+            display_control = ""
         else:
             status = 2
     else:
-        af = AlarmListForm(instance=obj)
+        display_control = "none"
+        af = AlarmStatusForm(instance=obj)
     return render_to_response('skapi/setup.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def setupedit(request):
-    temp_name = "skapi/api-header.html"
-    obj_info = AlarmUser.objects.all()
-    return render_to_response('skapi/index.html', locals(), RequestContext(request))
 
 
 def zabbixalart(request):
