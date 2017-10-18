@@ -94,7 +94,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求方法: POST
 请求数据格式:
 {
-    'receiver':'test1@mljr.com',  #指定邮件收件人,统一用注册的个人企业邮箱.
+    'receiver':'test1@mljr.com',  #指定微信接收人,统一用注册的个人企业邮箱.
     'serial','xxxxx',             #指定微信分组编号
     'content','xxxxx',            #指定微信内容.
 }

@@ -170,7 +170,7 @@ def groupedit(request, ids):
 def setuplist(request):
     temp_name = "skapi/api-header.html"
     obj_info = AlarmUser.objects.all()
-    return render_to_response('skapi/index.html', locals(), RequestContext(request))
+    return render_to_response('skapi/setup.html', locals(), RequestContext(request))
 
 
 @login_required()
