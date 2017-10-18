@@ -67,7 +67,7 @@ class sendSms:
             logging.warning("短信功能未开启.")
 
 class sendMobile:
-    def __inif__(self, message, type='linkedsee_szyw'):
+    def __init__(self, message, type='linkedsee_szyw'):
         self._url = 'http://www.linkedsee.com/alarm/zabbix'
         self._token = 'a138538e6f2cc8596901c2d26d89b279'
         if type == 'linkedsee_zhoujie':
