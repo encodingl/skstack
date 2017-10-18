@@ -5,10 +5,6 @@ import logging
 
 from skapi.models import AlarmStatus
 
-try:
-    obj = AlarmStatus.objects.get(id=1)
-except:
-    pass
 
 class sendMail:
     def __init__(self, subject, receiverlist, message):
@@ -17,7 +13,7 @@ class sendMail:
         self._receiverlist = receiverlist
         self._message = message
     def send(self):
-        if obj.email_status:
+        if AlarmStatus.objects.get(id=1).email_status:
             try:
                 send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
             except Exception, e:
@@ -42,7 +38,7 @@ class sendWeixin:
             }
         }
     def send(self):
-        if obj.weixin_status:
+        if AlarmStatus.objects.get(id=1).weixin_status:
             try:
                 r = requests.get(self._Gurl)
                 token = r.json()['access_token']
@@ -62,7 +58,7 @@ class sendSms:
                 message, mobile)
         }
     def send(self):
-        if obj.sms_status:
+        if AlarmStatus.objects.get(id=1).sms_status:
             try:
                 requests.get(self._url, self._message)
             except Exception, e:
@@ -81,7 +77,7 @@ class sendMobile:
         }
         self._message = "{content:'%s'}" % message
     def send(self):
-        if obj.tel_status:
+        if AlarmStatus.objects.get(id=1).tel_status:
             try:
                 requests.post(self._url, self._message, headers=self._headers)
             except Exception, e:

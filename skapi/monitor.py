@@ -225,7 +225,7 @@ def api(request, method):
             receiver = request.POST.get('receiver', '')
             content = request.POST.get('content', '')
             serial = request.POST.get('serial', '')
-            sendMail(receiver, content, serial).send()
+            sendWeixin(receiver, content, serial).send()
         if method == 'sendsms':
             mobile = request.POST.get('mobile', '')
             content = request.POST.get('content', '')
