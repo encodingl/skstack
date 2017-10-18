@@ -74,3 +74,53 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 # 安全
 建议不要将程序启动在有公网可以直接访问的设备上，如果需要请使用VPN。<br>
 建议生产环境中使用https配置服务器<br>
+
+
+
+<api接口文档,包含邮件,微信,电话,短信接口>
+接口使用说明:
+1.邮件接口:
+请求方url: http://10.8.48.195:8000/skapi/api/sendmail?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'subject':'xxxxx',                               #指定邮件标题
+    'receiverlist','test1@mljr.com,test2@mljr.com',  #指定邮件收件人,多人邮件已逗号分隔
+    'content','xxxxx',                               #指定邮件正文,默认为 text 格式.
+}
+
+2.微信接口:
+请求方url: http://10.8.48.195:8000/skapi/api/sendweixin?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'receiver':'test1@mljr.com',  #指定邮件收件人,统一用注册的个人企业邮箱.
+    'serial','xxxxx',             #指定微信分组编号
+    'content','xxxxx',            #指定微信内容.
+}
+
+3.短信接口:
+请求方url: http://10.8.48.195:8000/skapi/api/sendsms?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'mobile':'18621628123',  #指定接收信息的电话号码
+    'content','xxxxx',       #指定接收的内容
+}
+
+3.电话接口:(目前只购买了灵犀云2个通道,运维专用和周杰专用)
+请求方url: http://10.8.48.195:8000/skapi/api/sendmobile?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'type':'',          #可选项,如为:linkedsee_szyw,指定运维通道,如为:linkedsee_zhoujie, 指定周杰通道.可以不指定此参数,默认为运维通道.
+    'content','xxxxx',  #指定告警内容,仅作为后台收集数据.
+}
+
+
+
+
+
+
+
+
