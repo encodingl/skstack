@@ -13,13 +13,13 @@ def db_record_create(model,**values):
     model.objects.create(**values)
     
 def test(x,**y):
-    if y1==0:
+    if y==0:
         x="suc"
     else:
-        y1="fai"
+        x="fai"
     print x,y
     
 if __name__ == '__main__':
-    test(1,y=2)
-    test("b",y1=4,y2=5)
+    
+    test("b",y=0,y1=4,y2=5)
     

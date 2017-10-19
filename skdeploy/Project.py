@@ -21,7 +21,8 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
-from lib.lib_skdeploy import create_release_path
+from lib.lib_skdeploy import create_release_path,var_change
+from lib.lib_config import get_config_var
 
 
 level = get_dir("log_level")
@@ -134,6 +135,9 @@ def Project_init(request):
     obj_env = str(obj.env)
     obj_project = obj.name
     obj_type = obj.repo_type
+    pre_release_base_path = get_config_var("release_path")
+    pre_release_proj_path = pre_release_base_path+obj_env+"/"+obj_project+"/"
+    
     proj_dir = proj_base_dir+obj_env+"/"+obj_project
     ret = []
     if obj.release_library.endswith('/'):
@@ -141,22 +145,6 @@ def Project_init(request):
     else:
         obj_release_dir = obj.release_library + "/" + obj.name 
         
-    
-    try:
-        if os.path.exists(proj_dir):
-                shutil.rmtree(proj_dir)        
-        os.mkdir(proj_dir)
-        os.chdir(proj_dir)
-        new_file("pre_deploy.sh", obj.pre_deploy)
-        new_file("post_deploy.sh", obj.post_deploy)
-        new_file("pre_release.sh", obj.post_deploy)
-        new_file("post_release.sh", obj.post_deploy)
-        create_release_path(hosts=obj.hosts, path=obj_release_dir)
-    except:
-        exinfo=sys.exc_info()
-        logging.error(exinfo)
-        ret.append(exinfo)
-    
     if obj_type == "git":
         repo_path = git_path+obj_env+"/"+obj_project
 
@@ -170,6 +158,40 @@ def Project_init(request):
             exinfo=sys.exc_info()
             logging.error(exinfo)
             ret.append(exinfo)
+        
+    
+    try:
+        if os.path.exists(proj_dir):
+                shutil.rmtree(proj_dir)        
+        os.mkdir(proj_dir)
+        os.chdir(proj_dir)
+        dic_project={
+             'repo_path':repo_path,
+             'pre_release_path':pre_release_proj_path,
+             'env':obj_env,
+             'project':obj_project,
+             'repo_url':repo_url,
+             'release_user':obj.release_user,                
+             'release_to':obj.release_to,
+             'release_lib':obj.release_library,
+                     }
+                     
+        obj_pre_deploy = var_change(str=obj.pre_deploy,**dic_project)
+        
+        
+        
+        
+        new_file("pre_deploy.sh", obj_pre_deploy)
+        new_file("post_deploy.sh", obj.post_deploy)
+        new_file("pre_release.sh", obj.pre_release)
+        new_file("post_release.sh", obj.post_release)
+        create_release_path(hosts=obj.hosts, path=obj_release_dir)
+    except:
+        exinfo=sys.exc_info()
+        logging.error(exinfo)
+        ret.append(exinfo)
+    
+    
     if len(ret) == 0:       
         message = "SUCCESS\nProject:%s\n Env:%s\n配置验证和初始化成功" % (obj_project,obj_env)
         ret.append(message)

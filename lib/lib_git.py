@@ -23,6 +23,7 @@ if __name__ == "__main__":
     repo = Gittle(repo_path, origin_uri=repo_url)
     g = Git(repo_path)
     print repo.active_branch
+    print repo.tags.keys()
     g.checkout("v0.1.0.000")
     
 #     repo.switch_branch("feature.skdeploy")

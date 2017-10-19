@@ -209,10 +209,12 @@ function tanchu_detail(n){
               $(this).siblings("#features").children("#permit,#deny").remove();	
     });
 
- // 新建提单关闭审核按钮
+ // 新建提单关闭上线按钮
     $("[xstatus=0][xlevel!=0]").each(function(){
           $(this).siblings("#features").children("#online").remove();	
    });
+ 
+
 
 
 </script>  

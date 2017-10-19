@@ -96,7 +96,7 @@ function release_checkstatus(){
 				$("#message_box").text(message);
 				$('#prog_in').width(obj_json["redis_chanel"] + '%');
 				$("#prog_percentage").text(obj_json["redis_chanel"] + '%');
-				if (message.indexOf("failed") > 0 ) {
+				if (message.indexOf("failed") != -1 ) {
 					clearInterval(sitv);
 			
 				}

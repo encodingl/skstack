@@ -29,6 +29,7 @@ from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
 from itertools import chain
 from django.db.models import Max
+from lib.lib_redis import RedisLock
 
 
 @login_required()
@@ -59,18 +60,31 @@ def TaskStatus_revoke(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
     time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     TaskStatus_id = request.GET.get('id', '')
+    obj=TaskStatus.objects.get(id=TaskStatus_id)
+    obj_project=obj.project
+    obj_env=obj.env
+    obj_project_id=obj.project_id
+    
+    redis_chanel = obj_project + obj_env
+    redis_host,redis_port,redis_db,redis_password = get_redis_config()
+    conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
+    
+    redis_chanel_taskcommit_lock = redis_chanel + obj_project_id + "_taskcommit_lock"
+    
+    
     if TaskStatus_id:
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="9",finished_at=time_now)
+        conn.set(redis_chanel_taskcommit_lock,"0")
+        
     
     if request.method == 'POST':
         TaskStatus_items = request.POST.getlist('x_check', [])
         if TaskStatus_items:
             for n in TaskStatus_items:
                 TaskStatus.objects.filter(id=n).update(status="9",finished_at=time_now)
+                conn.set(redis_chanel_taskcommit_lock,"0")
     return HttpResponse(u'撤销成功')
- #   allproject = TaskStatus.objects.all()
-    
- #   return render_to_response("skdeploy/TaskStatus.html", locals(), RequestContext(request))
+
 
 
 @login_required()
@@ -165,7 +179,8 @@ def TaskStatus_release_run(request):
     redis_chanel_message = redis_chanel+"message"
     redis_host,redis_port,redis_db,redis_password = get_redis_config()
     conn = redis.Redis(host=redis_host,db=redis_db,port=redis_port,password=redis_password)
-    redis_chanel_pid_lock = redis_chanel + obj_project_id
+    redis_chanel_taskrelease_lock = redis_chanel + obj_project_id + "_taskrelease_lock"
+    redis_chanel_taskcommit_lock = redis_chanel + obj_project_id + "_taskcommit_lock"
 #步骤1判断是否通过审核
     if (obj_audit_level == "1" and obj_status != "1") or (obj_audit_level == "2" and obj_status != "5") or (obj_audit_level == "3" and obj_status != "7") :
         conn.set(redis_chanel_message,"faild,Not yet permitted,any other problems, please contact the administrator")     
@@ -176,7 +191,7 @@ def TaskStatus_release_run(request):
     else:
         pass
     #步骤2 判断是否重复执行   
-    if conn.get(redis_chanel_pid_lock == "1") :
+    if conn.get(redis_chanel_taskrelease_lock == "1") :
         conn.set(redis_chanel_message,"You have already submitted, or someone else is submitting the same project.ny other problems, please contact the administrator")     
         conn.set(redis_chanel,"2")        
         ret=conn.get(redis_chanel_message)
@@ -184,7 +199,7 @@ def TaskStatus_release_run(request):
         return  HttpResponse(obj_json)
         
     else:
-        conn.set(redis_chanel_pid_lock,"1")
+        conn.set(redis_chanel_taskrelease_lock,"1")
 
 # 步骤3 同步project文件
     result_release_project = release_project(project=obj_project,env=obj_env,hosts=obj_hosts,release_dir=obj_release_dir,release_to=obj_release_to)
@@ -200,7 +215,8 @@ def TaskStatus_release_run(request):
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="4",link_id=obj_release_dir,ex_link_id=obj_ex_link_id,finished_at=obj_finished_at)
         obj_json = json.dumps(ret)
-        conn.set(redis_chanel_pid_lock,"0")
+        conn.set(redis_chanel_taskrelease_lock,"0")
+        conn.set(redis_chanel_taskcommit_lock,"0")
         return  HttpResponse(obj_json)    
   
  
@@ -221,7 +237,8 @@ def TaskStatus_release_run(request):
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="4",link_id=obj_release_dir,ex_link_id=obj_ex_link_id,finished_at=obj_finished_at)
         obj_json = json.dumps(ret)
-        conn.set(redis_chanel_pid_lock,"0")
+        conn.set(redis_chanel_taskrelease_lock,"0")
+        conn.set(redis_chanel_taskcommit_lock,"0")
         return  HttpResponse(obj_json)    
    
 #步骤5 改变软链接
@@ -238,7 +255,8 @@ def TaskStatus_release_run(request):
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="4",link_id=obj_release_dir,ex_link_id=obj_ex_link_id,finished_at=obj_finished_at) 
         obj_json = json.dumps(ret)
-        conn.set(redis_chanel_pid_lock,"0")
+        conn.set(redis_chanel_taskrelease_lock,"0")
+        conn.set(redis_chanel_taskcommit_lock,"0")
         return  HttpResponse(obj_json) 
 # 步骤6 执行post release任务
     result_post_release = adv_task_step(hosts=obj_hosts, env=obj_env, project=obj_project, task_file="post_release.sh",forks=obj_forks)
@@ -252,7 +270,8 @@ def TaskStatus_release_run(request):
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="3",link_id=obj_release_dir,ex_link_id=obj_ex_link_id,finished_at=obj_finished_at)
         result_post_release=conn.get(redis_chanel_message)
     
-        conn.set(redis_chanel_pid_lock,"0")
+        conn.set(redis_chanel_taskrelease_lock,"0")
+        conn.set(redis_chanel_taskcommit_lock,"0")
         return  HttpResponse(obj_json)
     else:
         conn.set(redis_chanel,"80")
@@ -262,7 +281,8 @@ def TaskStatus_release_run(request):
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         TaskStatus.objects.filter(id=TaskStatus_id).update(status="4",link_id=obj_release_dir,ex_link_id=obj_ex_link_id,finished_at=obj_finished_at)
         obj_json = json.dumps(ret)
-        conn.set(redis_chanel_pid_lock,"0")
+        conn.set(redis_chanel_taskrelease_lock,"0")
+        conn.set(redis_chanel_taskcommit_lock,"0")
         return  HttpResponse(obj_json)    
     
  
@@ -292,6 +312,8 @@ def TaskStatus_release_status(request):
         conn.delete(redis_chanel)
        
         conn.delete(redis_chanel_message)
+    else:
+        pass
     return  HttpResponse(obj_json) 
 
 
@@ -408,50 +430,58 @@ def TaskStatus_audit(request):
 @permission_verify()
 def TaskStatus_permit(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
-    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-   
+    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
     TaskStatus_id = request.GET.get('id', '')
-    login_user = request.user
-  
-    login_user = str(login_user)
-   
-    
+    login_user = request.user  
+    login_user = str(login_user) 
     obj_user = UserInfo.objects.get(username=request.user)    
-    obj_group = obj_user.usergroup_set.all()
-    
-    
+    obj_group = obj_user.usergroup_set.all()  
+   
     obj_TaskStatus = TaskStatus.objects.get(id=TaskStatus_id)
     obj_Project = Project.objects.get(id=obj_TaskStatus.project_id)
-
-    obj_AuditFlow = AuditFlow.objects.get(name = obj_Project.audit_flow)
-  
-    
+    obj_AuditFlow = AuditFlow.objects.get(name = obj_Project.audit_flow)   
     obj_level = obj_AuditFlow.level
+    obj_status = obj_TaskStatus.status
+   
+    obj_project = str(obj_Project.name)
+    obj_env = str(obj_Project.env)
+    obj_project_id = str(obj_Project.id)
+    redis_chanel = obj_project + obj_env 
+    redis_chanel_taskcommit_lock = redis_chanel + obj_project_id + "_taskcommit_lock"   
+    rlock = RedisLock(channel_name = redis_chanel_taskcommit_lock)
+    
     if obj_level == "1":
         obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
         if obj_l1 in obj_group:
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
+        rlock.lock()
             
     elif obj_level == "2":
         obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)   
-        if obj_l1 in obj_group:
+    
+        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)  
+    
+        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
+         
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group:
+        if obj_l2 in obj_group :
+      
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="5",user_l2=login_user,updated_at_l2=time_now)
+        rlock.lock()
             
-    elif obj_level == "3": 
+    elif obj_level == "3" and (obj_status == "0" or obj_status == "2" or obj_status == "6" or obj_status == "8"): 
         obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
         obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
         obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
-        if obj_l1 in obj_group:
+        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group:
+        if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "6"):
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="5",user_l2=login_user,updated_at_l2=time_now)
-        if obj_l3 in obj_group:
+        if obj_l3 in obj_group :
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="7",user_l3=login_user,updated_at_l3=time_now)
+        rlock.lock()
 
-    return HttpResponse(u'成功')
+    return HttpResponse(u'ok')
 
 @login_required()
 @permission_verify()
@@ -470,6 +500,7 @@ def TaskStatus_deny(request):
     
     
     obj_TaskStatus = TaskStatus.objects.get(id=TaskStatus_id)
+    obj_status = obj_TaskStatus.status
     obj_Project = Project.objects.get(id=obj_TaskStatus.project_id)
 
     obj_AuditFlow = AuditFlow.objects.get(name = obj_Project.audit_flow)
@@ -484,7 +515,7 @@ def TaskStatus_deny(request):
     elif obj_level == "2":
         obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
         obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)   
-        if obj_l1 in obj_group:
+        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="2",user_l1=login_user,updated_at_l1=time_now)
         if obj_l2 in obj_group:
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="6",user_l2=login_user,updated_at_l2=time_now)
@@ -493,11 +524,18 @@ def TaskStatus_deny(request):
         obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
         obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
         obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
-        if obj_l1 in obj_group:
+        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="2",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group:
+        if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "5"):
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="6",user_l2=login_user,updated_at_l2=time_now)
         if obj_l3 in obj_group:
             TaskStatus.objects.filter(id=TaskStatus_id).update(status="8",user_l3=login_user,updated_at_l3=time_now)
+    obj_project = str(obj_Project.name)
+    obj_env = str(obj_Project.env)
+    obj_project_id = str(obj_Project.id)
+    redis_chanel = obj_project + obj_env
+    redis_chanel_taskcommit_lock = redis_chanel + obj_project_id + "_taskcommit_lock"
+    rlock = RedisLock(channel_name = redis_chanel_taskcommit_lock)
+    rlock.unlock()
 
     return HttpResponse(u'成功')   

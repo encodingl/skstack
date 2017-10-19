@@ -29,6 +29,8 @@ def get_AnsibleHostsList(hostsfile,group):
     for h in dic[group]:
         t1=(h,h)
         list_tumple_hosts.append(t1)
+    if list_tumple_hosts is None:
+        list_tumple_hosts = [('1','ansible hosts没有找到主机'),]
     return list_tumple_hosts
 
 def get_ansible_config_var(args):

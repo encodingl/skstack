@@ -59,12 +59,12 @@ class Project_form(forms.ModelForm):
 class TaskCommit_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id","status","audit_level","forks","hosts_cus")
+        fields = ("title","project","project_id","project_group","env","user_commit","branch","desc","commit_id","status","audit_level","forks","hosts_cus")
         
         widgets = {    
             'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
             'project': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'project_id': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'project_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'project_group': forms.HiddenInput(attrs={'class': 'form-control'}),
             'env': forms.HiddenInput(attrs={'class': 'form-control'}),
             'user_commit': forms.HiddenInput(attrs={'class': 'form-control'}),

@@ -117,9 +117,7 @@ def get_dir(args):
     with open(dirs+'/skipper.conf', 'r') as cfgfile:
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
-#         r_path = config.get('config', 'roles_path')
-#         p_path = config.get('config', 'playbook_path')
-#         s_path = config.get('config', 'scripts_path')
+
         pro_path = config.get('config', 'project_base_path')
         git_path = config.get('config', 'git_base_path')
         
@@ -129,12 +127,6 @@ def get_dir(args):
 
     if args == "a_path":
         return a_path
-#     if args == "r_path":
-#         return r_path
-#     if args == "p_path":
-#         return p_path
-#     if args == "s_path":
-#         return s_path
     if args == "pro_path":
         return pro_path
     if args == "token":
