@@ -77,13 +77,14 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 
 
 
-<api接口文档,包含邮件,微信,电话,短信接口>
+<api接口文档,包含邮件,微信,电话,短信接口,zabbix调用接口>
 接口使用说明:
 1.邮件接口:
 请求方url: http://10.8.48.195:8000/skapi/api/sendmail?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
+    'level':'',                                      #指定事件级别
     'subject':'xxxxx',                               #指定邮件标题
     'receiverlist','test1@mljr.com,test2@mljr.com',  #指定邮件收件人,多人邮件已逗号分隔
     'content','xxxxx',                               #指定邮件正文,默认为 text 格式.
@@ -94,7 +95,8 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求方法: POST
 请求数据格式:
 {
-    'receiver':'test1@mljr.com',  #指定微信接收人,统一用注册的个人企业邮箱.
+    'level':'',                                      #指定事件级别
+    'receiverlist':'test1@mljr.com,test2@mljr.com',  #指定微信接收人,多人以逗号分隔,账号统一用注册的个人企业邮箱.
     'serial','xxxxx',             #指定微信分组编号
     'content','xxxxx',            #指定微信内容.
 }
@@ -104,7 +106,8 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求方法: POST
 请求数据格式:
 {
-    'mobile':'18621628123',  #指定接收信息的电话号码
+    'level':'',                       #指定事件级别
+    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多.人以逗号分隔
     'content','xxxxx',       #指定接收的内容
 }
 
@@ -113,8 +116,19 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求方法: POST
 请求数据格式:
 {
+    'level':'',         #指定事件级别
     'type':'',          #可选项,如为:linkedsee_szyw,指定运维通道,如为:linkedsee_zhoujie, 指定周杰通道.可以不指定此参数,默认为运维通道.
     'content','xxxxx',  #指定告警内容,仅作为后台收集数据.
+}
+
+5.zabbix接口:
+请求方url: http://10.8.48.195:8000/skapi/api/ZABBIX?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'level':'',         #指定事件级别
+    'subject':'xxx',    #标题
+    'content','xxxxx',  #内容
 }
 
 

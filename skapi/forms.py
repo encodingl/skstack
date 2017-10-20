@@ -1,7 +1,7 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmUser, AlarmGroup, AlarmList, AlarmStatus
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth
 
 
 class AlarmUserForm(forms.ModelForm):
@@ -61,20 +61,14 @@ class AlarmListForm(forms.ModelForm):
                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
 
-class AlarmStatusForm(forms.ModelForm):
+
+class TokenAuthForm(forms.ModelForm):
     class Meta:
-        model = AlarmStatus
+        model = TokenAuth
         exclude = ("id",)
 
         widgets = {
-            'weixin_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                    attrs={'class': 'form-control', 'style': 'width:400px;'}),
-            'email_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                   attrs={'class': 'form-control', 'style': 'width:400px;'}),
-            'sms_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                 attrs={'class': 'form-control', 'style': 'width:400px;'}),
-            'dd_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                attrs={'class': 'form-control', 'style': 'width:400px;'}),
-            'tel_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                attrs={'class': 'form-control', 'style': 'width:400px;'}),
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'token': TextInput(attrs={'class': 'form-control'}),
+            'descrition': TextInput(attrs={'class': 'form-control'}),
         }

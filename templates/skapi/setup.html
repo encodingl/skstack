@@ -22,39 +22,147 @@
                     <form class="form-horizontal" action="{% url 'monitor_setuplist' %}" method="POST">
                         {% csrf_token %}
                         <div class="box-body">
+                            <p><b>全局配置:</b></p>
                             <hr>
-                            <p><b>全局设置:</b></p>
+                            <p><b>功能开启:</b></p>
                             <div class="form-group">
-                                <label for="weixin_status" class="col-sm-2 control-label">微信状态:</label>
+                                <label for="log" class="col-sm-2 control-label">微信功能:</label>
                                 <div class="col-sm-10">
-                                    {{ af.weixin_status }}
+                                    <select name="weixin_status" class="form-control" style="width:350px;">
+                                        {% ifequal weixin_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="email_status" class="col-sm-2 control-label">邮件状态:</label>
+                                <label for="log" class="col-sm-2 control-label">邮件功能:</label>
                                 <div class="col-sm-10">
-                                    {{ af.email_status }}
+                                    <select name="email_status" class="form-control" style="width:350px;">
+                                        {% ifequal email_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="sms_status" class="col-sm-2 control-label">短信状态:</label>
+                                <label for="log" class="col-sm-2 control-label">短信功能:</label>
                                 <div class="col-sm-10">
-                                    {{ af.sms_status }}
+                                    <select name="sms_status" class="form-control" style="width:350px;">
+                                        {% ifequal sms_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="dd_status" class="col-sm-2 control-label">钉钉状态:</label>
+                                <label for="log" class="col-sm-2 control-label">钉钉功能:</label>
                                 <div class="col-sm-10">
-                                    {{ af.dd_status }}
+                                    <select name="dd_status" class="form-control" style="width:350px;">
+                                        {% ifequal dd_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="tel_status" class="col-sm-2 control-label">电话状态:</label>
+                                <label for="log" class="col-sm-2 control-label">电话功能:</label>
                                 <div class="col-sm-10">
-                                    {{ af.tel_status }}
+                                    <select name="tel_status" class="form-control" style="width:350px;">
+                                        {% ifequal tel_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
                                 </div>
                             </div>
+                            <hr>
+                            <p><b>微信接口:</b></p>
+                            <div class="form-group">
+                                <label for="database" class="col-sm-2 control-label">weixin_gurl:</label>
 
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ weixin_gurl }}" id="weixin_gurl" name="weixin_gurl"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="weixin_purl" class="col-sm-2 control-label">weixin_purl:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ weixin_purl }}" id="weixin_purl" name="weixin_purl"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="weixin_cropid" class="col-sm-2 control-label">weixin_cropid:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ weixin_cropid }}" id="weixin_cropid"
+                                           name="weixin_cropid"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="weixin_secret" class="col-sm-2 control-label">weixin_secret:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ weixin_secret }}" id="weixin_purl" name="weixin_secret"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <hr>
+                            <p><b>短信接口:</b></p>
+                            <div class="form-group">
+                                <label for="sms_api" class="col-sm-2 control-label">weixin_gurl:</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ sms_api }}" id="weixin_gurl" name="sms_api"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <hr>
+                            <p><b>灵犀云接口:</b></p>
+                            <div class="form-group">
+                                <label for="linkedsee_api" class="col-sm-2 control-label">linkedsee_api:</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ linkedsee_api }}" id="weixin_gurl" name="linkedsee_api"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="szyw_token" class="col-sm-2 control-label">szyw_token:</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ szyw_token }}" id="weixin_gurl" name="szyw_token"
+                                           style="width:450px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="zhoujie_token" class="col-sm-2 control-label">zhoujie_token:</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ zhoujie_token }}" id="weixin_gurl" name="zhoujie_token"
+                                           style="width:450px;">
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">

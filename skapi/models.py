@@ -34,12 +34,10 @@ class AlarmList(models.Model):
     def __unicode__(self):
         return self.name
 
-class AlarmStatus(models.Model):
-    weixin_status = models.BooleanField(default=False,verbose_name=u"微信状态")
-    email_status = models.BooleanField(default=False,verbose_name=u"邮件状态")
-    sms_status = models.BooleanField(default=False,verbose_name=u"短信状态")
-    dd_status = models.BooleanField(default=False,verbose_name=u"钉钉状态")
-    tel_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
+class TokenAuth(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"* 授权用户", unique=True)
+    token = models.CharField(max_length=50, verbose_name=u"* Token", null=True)
+    descrition = models.CharField(max_length=50, verbose_name=u"描述", null=True, blank=True)
 
     def __unicode__(self):
         return self.name

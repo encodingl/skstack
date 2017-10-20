@@ -47,7 +47,11 @@ def get_object(model, **kwargs):
     return the_object
 
 
-def config(path=os.path.join(settings.BASE_DIR, 'skipper.conf')):
+config_path = os.path.join(settings.BASE_DIR, 'skipper.conf')
+
+def config(path=config_path):
     obj = ConfigParser.ConfigParser()
     obj.read(path)
     return obj
+
+cfg = config()
