@@ -168,9 +168,14 @@ def groupedit(request, ids):
 @login_required()
 @permission_verify()
 def setuplist(request):
+    print "1111"
     temp_name = "skapi/api-header.html"
     cfg = config()
     if request.method == 'POST':
+        email_host = request.POST.get('email_host', '')
+        email_port = request.POST.get('email_port', '')
+        email_user = request.POST.get('email_user', '')
+        email_password = request.POST.get('email_password', '')
         weixin_status = request.POST.get('weixin_status', '')
         email_status = request.POST.get('email_status', '')
         sms_status = request.POST.get('sms_status', '')
@@ -184,6 +189,10 @@ def setuplist(request):
         linkedsee_api = request.POST.get('linkedsee_api', '')
         szyw_token = request.POST.get('szyw_token', '')
         zhoujie_token = request.POST.get('zhoujie_token', '')
+        cfg.set('email', 'email_host', email_host)
+        cfg.set('email', 'email_port', email_port)
+        cfg.set('email', 'email_user', email_user)
+        cfg.set('email', 'email_password', email_password)
         cfg.set('api', 'weixin_status', weixin_status)
         cfg.set('api', 'email_status', email_status)
         cfg.set('api', 'sms_status', sms_status)
@@ -204,6 +213,11 @@ def setuplist(request):
         display_control = ""
     else:
         display_control = "none"
+        email_host = cfg.get('email', 'email_host')
+        print "email_host=",email_host
+        email_port = cfg.get('email', 'email_port')
+        email_user = cfg.get('email', 'email_user')
+        email_password = cfg.get('email', 'email_password')
         weixin_status = cfg.get('api', 'weixin_status')
         email_status = cfg.get('api', 'email_status')
         sms_status = cfg.get('api', 'sms_status')
