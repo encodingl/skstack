@@ -85,3 +85,7 @@ def get_name(get_name):
 @register.filter(name='get_user')
 def get_name(get_user):
     return get_user.name
+
+@register.filter(name='get_app')
+def get_app(get_app):
+    return get_app.name

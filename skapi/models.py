@@ -1,6 +1,7 @@
 # coding:utf8
 from __future__ import unicode_literals
 from django.db import models
+from skcmdb.models import App
 
 
 class AlarmUser(models.Model):
@@ -8,6 +9,7 @@ class AlarmUser(models.Model):
     email = models.EmailField(max_length=255, verbose_name=u"* 邮箱", null=True)
     tel = models.CharField(max_length=50, verbose_name=u"* 电话号码", null=True)
     dd = models.CharField(max_length=50, verbose_name=u"* 钉钉号", null=True)
+    app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
 
     def __unicode__(self):
         return self.name

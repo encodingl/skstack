@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mytags %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
     <script src="/static/js/base.js"></script>
@@ -35,6 +36,7 @@
                                 <th>邮箱</th>
                                 <th>电话号码</th>
                                 <th>钉钉号</th>
+                                <th>授权APP</th>
                                 <th class="text-center">功能</th>
                             </tr>
                             </thead>
@@ -51,6 +53,10 @@
                                         <td>{{ obj.email }}</td>
                                         <td>{{ obj.tel }}</td>
                                         <td>{{ obj.dd }}</td>
+                                        <td>
+                                            {% for i in obj.app.all %}
+                                                {{ i|get_app }}<br>
+                                            {% endfor %}</td>
                                         <td class="text-center" data-editable='false'>
                                             <a href="#">
                                                 <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"

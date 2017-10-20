@@ -239,7 +239,7 @@ def zabbixalart(request):
     subject = request.POST.get('subject', '')
     content = request.POST.get('content', '')
     token = request.GET.get('token', '')
-    if subject and token == cfg.get('token', 'token'):
+    if request.method == 'POST' and token == cfg.get('token', 'token'):
         sub_data = subject.split(',')
         ag_obj = AlarmGroup.objects.get(id=sub_data[0])
         serial = ag_obj.serial
@@ -265,7 +265,7 @@ def zabbixalart(request):
 
 def api(request, method):
     token = request.GET.get('token', '')
-    if request.method == 'POST' and token and TokenAuth.objects.filter(token=token):
+    if request.method == 'POST' and TokenAuth.objects.filter(token=token):
         if method == 'sendmail':
             level = request.POST.get('level', '')
             subject = request.POST.get('subject', 'Default Subject...')

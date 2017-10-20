@@ -10,11 +10,13 @@ class AlarmUserForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;', 'readonly': True}),
-            'email': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
-            'tel': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
-            'dd': TextInput(attrs={'class': 'form-control', 'style': 'width:450px;'}),
+            'name': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'email': TextInput(attrs={'class': 'form-control'}),
+            'tel': TextInput(attrs={'class': 'form-control'}),
+            'dd': TextInput(attrs={'class': 'form-control'}),
+            'app': SelectMultiple(attrs={'class': 'form-control'}),
         }
+
 
 class AddAlarmUserForm(forms.ModelForm):
     class Meta:
@@ -37,7 +39,7 @@ class AlarmGroupForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
             'serial': TextInput(attrs={'class': 'form-control'}),
-            'tel_status': Select(choices=( (0, u'禁用'),(1, u'启用-运维'),(2, u'启用-周杰')),
+            'tel_status': Select(choices=((0, u'禁用'), (1, u'启用-运维'), (2, u'启用-周杰')),
                                  attrs={'class': 'form-control'}),
             'user': SelectMultiple(attrs={'class': 'form-control'}),
             'descrition': TextInput(attrs={'class': 'form-control'}),
