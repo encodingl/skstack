@@ -3,9 +3,6 @@
     <script src="/static/layer/layer.js"></script>
 {% endblock %}
 {% block content %}
-
-
-
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -19,7 +16,7 @@
         <section class="content">
             <div id="dialog">
                 <div class="box">
-                    <form class="form-horizontal" action="{% url 'config_save' %}" method="POST">
+                    <form class="form-horizontal" action="{% url 'config' %}" method="POST">
                         {% csrf_token %}
                         <div class="box-body">
                             <span><b>脚本路径设置</b></span>

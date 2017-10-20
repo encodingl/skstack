@@ -37,7 +37,7 @@ class AlarmList(models.Model):
 class TokenAuth(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 授权用户", unique=True)
     token = models.CharField(max_length=50, verbose_name=u"* Token", null=True)
-    descrition = models.CharField(max_length=50, verbose_name=u"描述", null=True, blank=True)
+    descrition = models.CharField(max_length=50, verbose_name=u"用途", null=True, blank=True)
 
     def __unicode__(self):
         return self.name

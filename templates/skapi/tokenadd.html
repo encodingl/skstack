@@ -38,11 +38,21 @@
                                 <span class="btn btn-default" id="config" onclick="get_token();"><b>点击新生成</b></span>
                             </div>
                         </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="descrition" class="control-label"
+                                       style="text-align:left; margin-left: 20px; width: 100px; display: inline-block;">
+                                    &nbsp;&nbsp;用途:</label>
+                                <input type="text" value="" id="descrition" name="descrition" style="width:250px;">
+                            </div>
+                        </div>
 
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-info pull-left"
-                                    style="width: 120px"><b>保存</b></button>
+                            <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;
+                            <a href="{% url 'monitor_tokenlist' %}">
+                                <li style="width: 60pt" class="btn btn-primary" value="">返回</li>
+                            </a><br>
                         </div>
                         <!-- /.box-footer -->
                     </form>
