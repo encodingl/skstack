@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
-from lib.lib_git import get_git_tag
+from lib.lib_git import get_git_tag, get_git_commitid
 from .forms import TaskCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
@@ -81,6 +81,7 @@ def TaskCommit_add(request, ids):
     obj_project_group=obj.group
     obj_env=str(obj.env)
     obj_repo_type = str(obj.repo_type)
+    obj_repo_mode = str(obj.repo_mode)
    
     obj_branch="master"
     obj_user=request.user   
@@ -97,8 +98,8 @@ def TaskCommit_add(request, ids):
     
 
     repo = Gittle(obj_path, origin_uri=obj_git_url)
-    
-    repo.pull
+#     repo.switch_branch('master')
+    repo.pull()
     obj_inventory = get_ansible_config_var("inventory")
     if obj.hosts:
         list_tumple_hosts = get_AnsibleHostsList(obj_inventory, obj.hosts)
@@ -137,10 +138,13 @@ def TaskCommit_add(request, ids):
             return render_to_response("skdeploy/TaskCommit_result.html", locals(), RequestContext(request))
         else:
             
-            if obj_repo_type == "git":
+            if obj_repo_type == "git" and obj_repo_mode == "tag":
          
                 list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
                 tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
+            elif obj_repo_type == "git" and obj_repo_mode == "branch":
+                list_tumple_commitid = get_git_commitid(obj_path)
+                tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_commitid
             else:
                 tpl_TaskCommit_form.fields["commit_id"].widget=forms.HiddenInput()
             
@@ -152,9 +156,13 @@ def TaskCommit_add(request, ids):
             return render_to_response("skdeploy/TaskCommit_add.html", locals(), RequestContext(request))
     else:  
         tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
-        list_tumple_tags=get_git_tag(obj_path,obj_git_url) 
-        if obj_repo_type == "git":
+         
+        if obj_repo_type == "git" and obj_repo_mode == "tag":
+            list_tumple_tags=get_git_tag(obj_path,obj_git_url)
             tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
+        elif obj_repo_type == "git" and obj_repo_mode == "branch":
+            list_tumple_commitid = get_git_commitid(obj_path)
+            tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_commitid
         else:
             tpl_TaskCommit_form.fields["commit_id"].widget=forms.HiddenInput()
         if obj_user_type == 1: 

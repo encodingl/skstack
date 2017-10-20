@@ -3,7 +3,8 @@
 
 from gittle import Gittle
 
-from git  import Git
+from git  import *
+import re
 
 def get_git_tag(repo_path,repo_url):
     repo = Gittle(repo_path,origin_uri=repo_url)
@@ -16,20 +17,43 @@ def get_git_tag(repo_path,repo_url):
         list_tumple_tags.append(t1)
         
     return list_tumple_tags
+
+def get_git_commitid(repo_path):
+    g = Repo(repo_path,odbt=GitDB)
+    list_commitid = list(g.iter_commits("master", max_count=10))
+ 
+   
+    list_tumple_commitid = []
+    for l in list_commitid:
+        l = str(l)
+        t1=(l,l)
+        list_tumple_commitid.append(t1)
+        
+    return list_tumple_commitid
     
 if __name__ == "__main__":
     repo_url="git@gitlab.szyy.com:opergroup/skipper.git"
     repo_path="/opt/data/gitsource/prod/skipper"
     repo = Gittle(repo_path, origin_uri=repo_url)
-    g = Git(repo_path)
-    print repo.active_branch
-    print repo.tags.keys()
-    g.checkout("v0.1.0.000")
     
-#     repo.switch_branch("feature.skdeploy")
-#     repo.checkout("v0.1.0.001")
-
-
+    print get_git_commitid(repo_path=repo_path)
+#     g = Repo(repo_path,odbt=GitDB)
+#     list_commitid = list(g.iter_commits("master", max_count=15))
+#     print type(list_commitid)
+#     l=[]
+#     p = r'"(.*)"'
+#     for i in list_commitid:
+#         print i
+#         print type(i)
+#         i = str(i)
+#         print type(i)
+#         l.append(i)
+# #         i = str(i)
+# #         i = re.search(p,i)
+# #         ig = i.group()
+# #         l.append(ig)
+#     print l
+    
     
     
 
