@@ -35,7 +35,7 @@ class AlarmList(models.Model):
     dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
 
     def __unicode__(self):
-        return self.name
+        return self.name.name
 
 
 class TokenAuth(models.Model):

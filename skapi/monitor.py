@@ -19,7 +19,6 @@ def index(request):
     temp_name = "skapi/api-header.html"
     alarmgroup_info = AlarmGroup.objects.all()
     alarmgroup_id = request.GET.get('alarmgroup', '')
-    print "alarmgroup_id=",alarmgroup_id
 
     if alarmgroup_id:
         ag = AlarmGroup.objects.get(id=alarmgroup_id)
@@ -242,16 +241,15 @@ def zabbixalart(request):
         sub_data = subject.split(',')
         ag_obj = AlarmGroup.objects.get(id=sub_data[0])
         serial = ag_obj.serial
-        userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, weixin_status=1).values_list('name')]
-        wxlist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
-        for wx in wxlist:
-            content = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx, content)
-            sendWeixin(wx, content, serial).send()
-        userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, email_status=1).values_list('name')]
-        emaillist = [AlarmUser.objects.get(name=ul).email for ul in userlist]
+        userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
+        for wx in userlist:
+            content = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
+            sendWeixin(wx.name.email, content, serial).send()
+        userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
+        emaillist = [ul.name.email for ul in userlist]
         sendMail(subject, emaillist, content).send()
-        userlist = [u[0] for u in AlarmList.objects.filter(group=ag_obj.name, sms_status=1).values_list('name')]
-        tellist = [AlarmUser.objects.get(name=ul).tel for ul in userlist]
+        userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
+        tellist = [ul.name.tel for ul in userlist]
         for tel in tellist:
             sendSms(tel, content).send()
         if ag_obj.tel_status == 1:
