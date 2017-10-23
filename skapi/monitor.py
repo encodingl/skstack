@@ -18,15 +18,16 @@ from utils import initAlarmList
 def index(request):
     temp_name = "skapi/api-header.html"
     alarmgroup_info = AlarmGroup.objects.all()
-    alarmgroup_name = request.GET.get('alarmgroup', '')
-    obj_info = AlarmList.objects.all()
+    alarmgroup_id = request.GET.get('alarmgroup', '')
+    print "alarmgroup_id=",alarmgroup_id
 
-    if alarmgroup_name:
-        obj_info = obj_info.filter(group__contains=alarmgroup_name)
+    if alarmgroup_id:
+        ag = AlarmGroup.objects.get(id=alarmgroup_id)
+        obj_info = ag.alarmlist_set.all()
     else:
         temp = AlarmGroup.objects.first()
         if temp:
-            obj_info = obj_info.filter(group__contains=temp.name)
+            obj_info = AlarmList.objects.filter(group=temp)
     return render_to_response('skapi/index.html', locals(), RequestContext(request))
 
 
@@ -138,9 +139,8 @@ def groupdel(request):
     id = request.GET.get('id', '')
     if id:
         ag = AlarmGroup.objects.get(id=id)
-        ag_name = ag.name
         ag.delete()
-        AlarmList.objects.filter(group=ag_name).delete()
+        AlarmList.objects.filter(group=ag).delete()
     return HttpResponse(u'删除成功')
 
 
@@ -168,7 +168,6 @@ def groupedit(request, ids):
 @login_required()
 @permission_verify()
 def setuplist(request):
-    print "1111"
     temp_name = "skapi/api-header.html"
     cfg = config()
     if request.method == 'POST':
@@ -206,7 +205,7 @@ def setuplist(request):
         cfg.set('api', 'linkedsee_api', linkedsee_api)
         cfg.set('api', 'szyw_token', szyw_token)
         cfg.set('api', 'zhoujie_token', zhoujie_token)
-        fp = open(config_path,'w')
+        fp = open(config_path, 'w')
         cfg.write(fp)
         fp.close()
         tips = u"保存成功！"
@@ -214,7 +213,7 @@ def setuplist(request):
     else:
         display_control = "none"
         email_host = cfg.get('email', 'email_host')
-        print "email_host=",email_host
+        print "email_host=", email_host
         email_port = cfg.get('email', 'email_port')
         email_user = cfg.get('email', 'email_user')
         email_password = cfg.get('email', 'email_password')
@@ -328,4 +327,3 @@ def tokendel(request):
     if id:
         TokenAuth.objects.get(id=id).delete()
     return HttpResponse(u'删除成功')
-

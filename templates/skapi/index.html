@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mytags %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
     <script src="/static/js/base.js"></script>
@@ -21,12 +22,11 @@
                         <a href="#">请选择告警分组:</a>
                         <label>
                             <select name="alarmgroup" class="form-control m-b input-sm" onchange="change_info()">
-                                <option value="">分组列表</option>
                                 {% for i in alarmgroup_info %}
-                                {% ifequal i.name alarmgroup_name %}
-                                <option value="{{ i.name }}" selected> {{ i.name|slice:":20" }}</option>
+                                {% ifequal i.id|int2str alarmgroup_id %}
+                                <option value="{{ i.id }}" selected> {{ i.name|slice:":20" }}</option>
                                 {% else %}
-                                <option value="{{ i.name }}"> {{ i.name|slice:":20" }}</option>
+                                <option value="{{ i.id }}"> {{ i.name|slice:":20" }}</option>
                                 {% endifequal %}
                                 {% endfor %}
                             </select>
@@ -165,7 +165,8 @@
                     }, function () {
                         history.go(0);
                     });
-                    window.location = "{% url 'monitor_index' %}"
+                    var args = $("#form").serialize();
+                    window.location = "{% url 'monitor_index' %}?" + args
                 } else if (handle_status == '2') {
                     layer.msg('修改失败！', {
                         icon: 2,
