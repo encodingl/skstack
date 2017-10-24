@@ -128,6 +128,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 {
     'subject':'xxx',    #标题
     'content','xxxxx',  #内容
+    'type','xxxxx',  #可选,特殊了分组使用
 }
 
 
