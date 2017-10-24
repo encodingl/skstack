@@ -9,9 +9,10 @@ from skaccounts.permission import permission_verify
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth
 from skapi.api import sendWeixin, sendMail, sendSms, sendMobile
 from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm
-from lib.utils import get_object, config, cfg, config_path
+from lib.com import get_object, config, cfg, config_path
 from utils import initAlarmList
-
+import logging
+log = logging.getLogger('zabbix')
 
 @login_required()
 @permission_verify()
@@ -138,8 +139,8 @@ def groupdel(request):
     id = request.GET.get('id', '')
     if id:
         ag = AlarmGroup.objects.get(id=id)
-        ag.delete()
         AlarmList.objects.filter(group=ag).delete()
+        ag.delete()
     return HttpResponse(u'删除成功')
 
 
@@ -212,7 +213,6 @@ def setuplist(request):
     else:
         display_control = "none"
         email_host = cfg.get('email', 'email_host')
-        print "email_host=", email_host
         email_port = cfg.get('email', 'email_port')
         email_user = cfg.get('email', 'email_user')
         email_password = cfg.get('email', 'email_password')
@@ -238,6 +238,7 @@ def zabbixalart(request):
     content = request.POST.get('content', '')
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
+        log.info('[token:]', token + ',[subject:]', subject + ',[content:]', content)
         sub_data = subject.split(',')
         ag_obj = AlarmGroup.objects.get(id=sub_data[0])
         serial = ag_obj.serial
@@ -262,6 +263,8 @@ def zabbixalart(request):
 
 def api(request, method):
     token = request.GET.get('token', '')
+    print 'token=',token
+    print 'TokenAuth=',TokenAuth.objects.filter(token=token)
     if request.method == 'POST' and TokenAuth.objects.filter(token=token):
         if method == 'sendmail':
             level = request.POST.get('level', '')

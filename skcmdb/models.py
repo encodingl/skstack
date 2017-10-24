@@ -4,18 +4,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from skaccounts.models import UserInfo
-
-ASSET_STATUS = (
-    (str(1), u"使用中"),
-    (str(2), u"未使用"),
-    (str(3), u"故障"),
-    (str(4), u"其它"),
-)
-
-MAP_TYPE = (
-    (str(1), u"外网"),
-    (str(2), u"内网"),
-)
+from lib.type import ASSET_STATUS, MAP_TYPE
 
 
 class Idc(models.Model):
@@ -179,4 +168,3 @@ class Url(models.Model):
 
     def __unicode__(self):
         return self.name
-

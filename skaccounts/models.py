@@ -6,13 +6,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from sktask.models import job
-
-# Create your models here.
-AuditFlow_LEVEL = (
-    (str(1), u"一层审核"),
-    (str(2), u"二层审核"),
-    (str(3), u"三层审核"),
-    )
+from lib.type import AuditFlow_LEVEL
 
 class PermissionList(models.Model):
     name = models.CharField(max_length=64)

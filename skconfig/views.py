@@ -8,7 +8,7 @@ from skaccounts.permission import permission_verify
 from django.contrib.auth import get_user_model
 import logging
 from lib.log import dic
-from lib.utils import config, config_path
+from lib.com import config, config_path
 
 
 @login_required()

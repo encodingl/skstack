@@ -1,8 +1,7 @@
-from django.conf.urls import include,url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 import views
-
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -15,4 +14,6 @@ urlpatterns = [
     url(r'^skapi/', include('skapi.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
     url(r'^skdeploy/', include('skdeploy.urls')),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

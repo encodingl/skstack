@@ -42,7 +42,7 @@ class AlarmGroupForm(forms.ModelForm):
             'tel_status': Select(choices=((0, u'禁用'), (1, u'启用-运维'), (2, u'启用-周杰')),
                                  attrs={'class': 'form-control'}),
             'user': SelectMultiple(attrs={'class': 'form-control'}),
-            'descrition': TextInput(attrs={'class': 'form-control'}),
+            'descrition': Textarea(attrs={'class': 'form-control'}),
         }
 
 

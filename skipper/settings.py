@@ -1,3 +1,4 @@
+# coding:utf8
 """
 Django settings for skipper project.
 
@@ -13,10 +14,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import ConfigParser
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+config = ConfigParser.ConfigParser()
+config.read(os.path.join(BASE_DIR, 'skipper.conf'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -25,9 +27,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = config.get('setup', 'debug')
 
-ALLOWED_HOSTS = []
+DEBUG = True if config.get('setup', 'debug') == 'True' else False
+ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
+
+ADMINS = (
+    ('yehaiquan', 'haiquan.ye@mljr.com'),
+)
+MANAGERS = ADMINS
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -54,7 +62,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -82,7 +90,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'skipper.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -92,8 +99,7 @@ WSGI_APPLICATION = 'skipper.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-config = ConfigParser.ConfigParser()
-config.read(os.path.join(BASE_DIR, 'skipper.conf'))
+
 
 DATABASES = {}
 if config.get('db', 'engine') == 'mysql':
@@ -159,7 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -173,14 +178,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-#APP_PATH=os.path.dirname(os.path.dirname(__file__))
-#STATIC_ROOT = os.path.join(APP_PATH,'static').replace('\\','/')
+STATIC_ROOT = BASE_DIR + '/static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'static').replace('\\','/'),
+    os.path.join(BASE_DIR, 'static').replace('\\', '/'),
 )
 '''
 REST_FRAMEWORK = {
@@ -203,27 +204,118 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'skaccounts.UserInfo'
 LOGIN_URL = '/skaccounts/login/'
 
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'INFO' if DEBUG else 'INFO',
+#         },
+#     },
+# }
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
         },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s|%(levelname)s|%(pathname)s|%(funcName)s|%(lineno)d|[msg:%(message)s]'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'INFO',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false'],  # 仅当 DEBUG = False 时才发送邮件
+            # 'include_html':True,
+            'formatter': 'standard',
+        },
+        'default': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper.log',  # 日志输出文件
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份份数
+            'formatter': 'standard',  # 使用哪种formatters日志格式
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper-error.log',
+            'formatter': 'standard'
+        },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper-info.log',
+            'formatter': 'standard'
+        },
+        'debug': {  # 记录到日志文件(需要创建对应的目录，否则会出错)
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper-debug.log',  # 日志输出文件
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份份数
+            'formatter': 'standard',  # 使用哪种formatters日志格式
+        },
+        'zabbix_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper-zabbix.log',
+            'formatter': 'standard'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        # 对于不在 ALLOWED_HOSTS 中的请求不发送报错邮件
+        # 'django.security.DisallowedHost': {
+        #     'handlers': ['null'],
+        #     'propagate': False,
+        # },
     },
     'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'INFO' if DEBUG else 'INFO',
+        'django': {
+            'handlers': ['console', 'info_file'],
+            'level': 'INFO',
+            'propagate': True,
         },
-    },
+        'django.request': {
+            'handlers': ['console', 'info_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'skipper': {
+            'handlers': ['console', 'info_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'zabbix': {
+            'handlers': ['zabbix_file'],
+            'level': 'INFO',
+            'propagate': False,
+        }
+    }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = config.get('email','email_host')
-EMAIL_PORT = config.get('email','email_port')
-EMAIL_HOST_USER = config.get('email','email_user')
-EMAIL_HOST_PASSWORD = config.get('email','email_password')
-
+EMAIL_HOST = config.get('email', 'email_host')
+EMAIL_PORT = config.get('email', 'email_port')
+EMAIL_HOST_USER = config.get('email', 'email_user')
+EMAIL_HOST_PASSWORD = config.get('email', 'email_password')

@@ -20,7 +20,7 @@ class AlarmGroup(models.Model):
     serial = models.IntegerField(default=0, verbose_name=u"微信编号", null=True, blank=True)
     tel_status = models.IntegerField(default=0, verbose_name=u"电话状态")
     user = models.ManyToManyField(AlarmUser, verbose_name=u"告警名单", blank=True)
-    descrition = models.CharField(max_length=50, verbose_name=u"描述", null=True, blank=True)
+    descrition = models.TextField(max_length=200, verbose_name=u"监控范围", null=True, blank=True)
 
     def __unicode__(self):
         return self.name
