@@ -64,9 +64,8 @@ def zabbix_sender(request):
                     code, result = commands.getstatusoutput(cmd)
                     if code != 0:
                         count += 1
-                        msg = 'error:' + url + ',' + k + ',' + pay_loads[k]
-                        print msg
-                        logging.info(msg)
+                        # msg = 'error:' + url + ',' + k + ',' + pay_loads[k]
+                        # logging.info(msg)
         if count == 0:
             return HttpResponse('ok')
         else:

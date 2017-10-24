@@ -263,8 +263,6 @@ def zabbixalart(request):
 
 def api(request, method):
     token = request.GET.get('token', '')
-    print 'token=',token
-    print 'TokenAuth=',TokenAuth.objects.filter(token=token)
     if request.method == 'POST' and TokenAuth.objects.filter(token=token):
         if method == 'sendmail':
             level = request.POST.get('level', '')

@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
 from django.core.mail import send_mail
+from lib.com import config, cfg
 import requests, json
 import logging
-from lib.com import config, cfg
+
+log = logging.getLogger('api')
 
 
 class sendMail:
@@ -17,14 +19,19 @@ class sendMail:
         if cfg.get('api', 'email_status') == 'On':
             try:
                 send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
+                log.info(
+                    '[邮件发送成功]:' + '[标题:' + self._subject + ']' + '[收件人:' + self._receiverlist + ']' + '[内容:' + self._message + ']')
             except Exception, e:
-                logging.error("[邮件发送失败]:" + e.message())
+                log.error("[邮件发送失败]:" + e.message())
         else:
-            logging.warning("邮件功能未开启.")
+            log.warning("邮件功能未开启.")
 
 
 class sendWeixin:
     def __init__(self, receiver, message, serial):
+        self._receiver = receiver
+        self._message = message
+        self._serial = serial
         self._CropID = cfg.get('api', 'weixin_cropid')
         self._Secret = cfg.get('api', 'weixin_secret')
         self._Gurl = "%s?corpid=%s&corpsecret=%s" % (cfg.get('api', 'weixin_gurl'), self._CropID, self._Secret)
@@ -37,23 +44,28 @@ class sendWeixin:
                 "content": message
             }
         }
+
     def send(self):
         cfg = config()
         if cfg.get('api', 'weixin_status') == 'On':
             try:
                 r = requests.get(self._Gurl)
                 token = r.json()['access_token']
-                Purl = "%s?access_token=%s" % (cfg.get('api', 'weixin_purl'),token)
+                Purl = "%s?access_token=%s" % (cfg.get('api', 'weixin_purl'), token)
                 requests.post(Purl, data=json.dumps(self._body))
+                log.info(
+                    '[微信发送成功]:' + '[编号:' + self._serial + ']' + '[收件人:' + self._receiver + ']' + '[内容:' + self._message + ']')
             except Exception, e:
-                logging.error("[微信发送失败]:" + e.message())
+                log.error("[微信发送失败]:" + e.message())
         else:
-            logging.warning("微信功能未开启.")
+            log.warning("微信功能未开启.")
 
 
 class sendSms:
     def __init__(self, mobile, message):
         self._url = cfg.get('api', 'sms_api')
+        self._mobile = mobile
+        self._message = message
         self._message = {
             "msg": '''{'content':'%s','mobile':'%s','bussdepartment':'zabbix','source':'zabbix','type':1}''' % (
                 message, mobile)
@@ -64,18 +76,19 @@ class sendSms:
         if cfg.get('api', 'sms_status') == 'On':
             try:
                 requests.get(self._url, self._message)
+                log.info('[短信发送成功]:' + '[收件人:' + self._mobile + ']' + '[内容:' + self._message + ']')
             except Exception, e:
-                logging.error("[短信发送失败]:" + e.message())
+                log.error("[短信发送失败]:" + e.message())
         else:
-            logging.warning("短信功能未开启.")
+            log.warning("短信功能未开启.")
 
 
 class sendMobile:
     def __init__(self, message, type='linkedsee_szyw'):
         self._url = cfg.get('api', 'linkedsee_api')
-        self._token = cfg.get('api', 'linkedsee_token_szyw')
+        self._token = cfg.get('api', 'szyw_token')
         if type == 'linkedsee_zhoujie':
-            self._token = cfg.get('api', 'linkedsee_token_zhoujie')
+            self._token = cfg.get('api', 'zhoujie_token')
         self._headers = {
             'servicetoken': self._token
         }
@@ -86,10 +99,11 @@ class sendMobile:
         if cfg.get('api', 'tel_status') == 'On':
             try:
                 requests.post(self._url, self._message, headers=self._headers)
+                log.info('[电话发送成功]:' + self._headers + '[内容:' + self._message + ']')
             except Exception, e:
-                logging.error("[电话告警发送失败]:" + e.message())
+                log.error("[电话告警发送失败]:" + e.message())
         else:
-            logging.warning("电话功能未开启.")
+            log.warning("电话功能未开启.")
 
 
 class sendDingding:
