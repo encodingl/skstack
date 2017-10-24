@@ -31,7 +31,7 @@ from skaccounts.models import UserInfo,UserGroup,AuditFlow
 from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
 from django import forms
 from lib.lib_redis import RedisLock
-from git  import *
+from git  import Repo
 
 
 level = get_dir("log_level")
@@ -98,11 +98,12 @@ def TaskCommit_add(request, ids):
         obj_level = AuditFlow.objects.get(name=obj_audit).level
     
 
-    repogit = Gittle(obj_path, origin_uri=obj_git_url)
-#     repogit = Git(obj_path)
-#     repo.switch_branch('master')
-    repogit.pull()
+#     repogit = Gittle(obj_path, origin_uri=obj_git_url)
     
+    repogit = Repo(obj_path)
+#     repo.switch_branch('master')
+    repogit.remote().pull()
+   
     
 
 

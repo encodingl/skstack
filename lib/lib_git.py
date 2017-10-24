@@ -34,9 +34,10 @@ def get_git_commitid(repo_path):
 if __name__ == "__main__":
     repo_url="git@gitlab.szyy.com:opergroup/skipper.git"
     repo_path="/opt/data/gitsource/prod/skipper"
-    repo = Gittle(repo_path, origin_uri=repo_url)
     
-    print get_git_commitid(repo_path=repo_path)
+    Repo.clone_from(url=repo_url, to_path="/tmp/cl4/")
+    
+    
 #     g = Repo(repo_path,odbt=GitDB)
 #     list_commitid = list(g.iter_commits("master", max_count=15))
 #     print type(list_commitid)

@@ -12,7 +12,7 @@ from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from lib.file import new_file
-from gittle import Gittle
+# from gittle import Gittle
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
@@ -23,7 +23,7 @@ import sys
 from datetime import datetime
 from lib.lib_skdeploy import create_release_path,var_change
 from lib.lib_config import get_config_var
-
+from git import Repo
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -152,7 +152,8 @@ def Project_init(request):
             if os.path.exists(repo_path):
                 shutil.rmtree(repo_path)
             repo_url = obj.repo_url
-            repo = Gittle.clone(repo_url, repo_path)
+#             repo = Gittle.clone(repo_url, repo_path)
+            Repo.clone_from(url=repo_url, to_path=repo_path)
 
         except:
             exinfo=sys.exc_info()

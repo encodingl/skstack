@@ -100,7 +100,7 @@ class Project(models.Model):
     post_release_delay = models.CharField(u"目标机执行post_release任务间隔/延迟时间 单位:秒",max_length=50,null=True, blank=True)
     audit_enable = models.BooleanField(u"是否开启审核")
     audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.SET_NULL, null=True, blank=True)
-    keep_version_num = models.PositiveIntegerField(u"线上版本保留数",max_length=50,null=True, blank=True)
+    keep_version_num = models.PositiveIntegerField(u"线上版本保留数",null=True, blank=True)
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
     updated_at = models.DateTimeField(u'修改时间', auto_now_add=True,null=True)
     template_enable = models.BooleanField(u"是否转为模板")
