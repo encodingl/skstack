@@ -100,7 +100,6 @@ class sendMobile:
                 requests.post(self._url, self._message, headers=self._headers)
                 log.info('[电话告警发送成功]:' + '[token:' + self._token + ']' + '[内容:' + self._message + ']')
             except Exception, msg:
-                print msg
                 log.error(msg)
         else:
             log.warning("电话功能未开启.")
