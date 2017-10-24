@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from lib.com import config, cfg
 import requests, json
 import logging
+
 log = logging.getLogger('api')
 
 
@@ -19,9 +20,10 @@ class sendMail:
             try:
                 send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
                 log.info(
-                    '[邮件发送成功]:' + '[标题:' + self._subject + ']' + '[收件人:' + self._receiverlist + ']' + '[内容:' + self._message + ']')
+                    '[邮件发送成功]:' + '[标题:' + self._subject + ']' + '[收件人:' + ','.join(
+                        self._receiverlist) + ']' + '[内容:' + self._message + ']')
             except Exception, msg:
-                log.error("[邮件发送失败]:" + msg)
+                log.error(msg)
         else:
             log.warning("邮件功能未开启.")
 
@@ -55,7 +57,7 @@ class sendWeixin:
                 log.info(
                     '[微信发送成功]:' + '[编号:' + self._serial + ']' + '[收件人:' + self._receiver + ']' + '[内容:' + self._message + ']')
             except Exception, msg:
-                log.error("[微信发送失败]:" + msg)
+                log.error(msg)
         else:
             log.warning("微信功能未开启.")
 
@@ -75,9 +77,9 @@ class sendSms:
         if cfg.get('api', 'sms_status') == 'On':
             try:
                 requests.get(self._url, self._message)
-                log.info('[短信发送成功]:' + '[收件人:' + self._mobile + ']' + '[内容:' + self._message + ']')
+                log.info('[短信发送成功]:' + '[收件人:' + self._mobile + ']' + '[内容:' + self._message['msg'] + ']')
             except Exception, msg:
-                log.error("[短信发送失败]:" + msg)
+                log.error(msg)
         else:
             log.warning("短信功能未开启.")
 

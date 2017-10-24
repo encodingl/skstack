@@ -12,7 +12,9 @@ from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUs
 from lib.com import get_object, config, cfg, config_path
 from utils import initAlarmList
 import logging
+
 log = logging.getLogger('zabbix')
+
 
 @login_required()
 @permission_verify()
@@ -238,14 +240,14 @@ def zabbixalart(request):
     content = request.POST.get('content', '')
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
-        log.info('[token:]', token + ',[subject:]', subject + ',[content:]', content)
+        log.info('[token:' + token + ']' + '[subject:' + subject + ']' + '[content:' + content + ']')
         sub_data = subject.split(',')
-        ag_obj = AlarmGroup.objects.get(id=sub_data[0])
+        ag_obj = AlarmGroup.objects.get(id=int(sub_data[0]))
         serial = ag_obj.serial
         userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
         for wx in userlist:
-            content = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
-            sendWeixin(wx.name.email, content, serial).send()
+            message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
+            sendWeixin(wx.name.email, message, serial).send()
         userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
         emaillist = [ul.name.email for ul in userlist]
         sendMail(subject, emaillist, content).send()
