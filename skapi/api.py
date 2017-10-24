@@ -3,7 +3,6 @@ from django.core.mail import send_mail
 from lib.com import config, cfg
 import requests, json
 import logging
-
 log = logging.getLogger('api')
 
 
@@ -21,8 +20,8 @@ class sendMail:
                 send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
                 log.info(
                     '[邮件发送成功]:' + '[标题:' + self._subject + ']' + '[收件人:' + self._receiverlist + ']' + '[内容:' + self._message + ']')
-            except Exception, e:
-                log.error("[邮件发送失败]:" + e.message())
+            except Exception, msg:
+                log.error("[邮件发送失败]:" + msg)
         else:
             log.warning("邮件功能未开启.")
 
@@ -55,8 +54,8 @@ class sendWeixin:
                 requests.post(Purl, data=json.dumps(self._body))
                 log.info(
                     '[微信发送成功]:' + '[编号:' + self._serial + ']' + '[收件人:' + self._receiver + ']' + '[内容:' + self._message + ']')
-            except Exception, e:
-                log.error("[微信发送失败]:" + e.message())
+            except Exception, msg:
+                log.error("[微信发送失败]:" + msg)
         else:
             log.warning("微信功能未开启.")
 
@@ -77,8 +76,8 @@ class sendSms:
             try:
                 requests.get(self._url, self._message)
                 log.info('[短信发送成功]:' + '[收件人:' + self._mobile + ']' + '[内容:' + self._message + ']')
-            except Exception, e:
-                log.error("[短信发送失败]:" + e.message())
+            except Exception, msg:
+                log.error("[短信发送失败]:" + msg)
         else:
             log.warning("短信功能未开启.")
 
@@ -99,9 +98,10 @@ class sendMobile:
         if cfg.get('api', 'tel_status') == 'On':
             try:
                 requests.post(self._url, self._message, headers=self._headers)
-                log.info('[电话发送成功]:' + self._headers + '[内容:' + self._message + ']')
-            except Exception, e:
-                log.error("[电话告警发送失败]:" + e.message())
+                log.info('[电话告警发送成功]:' + '[token:' + self._token + ']' + '[内容:' + self._message + ']')
+            except Exception, msg:
+                print msg
+                log.error(msg)
         else:
             log.warning("电话功能未开启.")
 
