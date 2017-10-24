@@ -12,7 +12,7 @@ from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from lib.file import new_file
-# from gittle import Gittle
+
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object

@@ -1,20 +1,34 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gittle import Gittle
+# from gittle import Gittle
 
-from git  import *
+from git  import Repo,Git,GitDB
 import re
 
-def get_git_tag(repo_path,repo_url):
-    repo = Gittle(repo_path,origin_uri=repo_url)
-    list_tags = repo.tags.keys()
+# def get_git_tag(repo_path,repo_url):
+#     repo = Gittle(repo_path,origin_uri=repo_url)
+#     list_tags = repo.tags.keys()
+#  
+#     list_tags = sorted(list_tags,reverse=True)
+#     list_tumple_tags = []
+#     for l in list_tags:
+#         t1=(l,l)
+#         list_tumple_tags.append(t1)
+#         
+#     return list_tumple_tags
+
+def get_git_taglist(repo_path):
+    repo = Repo(repo_path)
+    list_tags = repo.tags
  
-    list_tags = sorted(list_tags,reverse=True)
+    
     list_tumple_tags = []
     for l in list_tags:
+        l=str(l)
         t1=(l,l)
         list_tumple_tags.append(t1)
+    list_tumple_tags = sorted(list_tumple_tags,reverse=True)
         
     return list_tumple_tags
 
@@ -35,7 +49,8 @@ if __name__ == "__main__":
     repo_url="git@gitlab.szyy.com:opergroup/skipper.git"
     repo_path="/opt/data/gitsource/prod/skipper"
     
-    Repo.clone_from(url=repo_url, to_path="/tmp/cl4/")
+    
+    print get_git_taglist(repo_path=repo_path)
     
     
 #     g = Repo(repo_path,odbt=GitDB)

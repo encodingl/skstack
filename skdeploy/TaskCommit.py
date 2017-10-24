@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
-from lib.lib_git import get_git_tag, get_git_commitid
+from lib.lib_git import get_git_taglist, get_git_commitid
 from .forms import TaskCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
@@ -20,18 +20,18 @@ import logging
 from billiard.util import INFO
 import sys
 from datetime import datetime
-from gittle import Gittle
+
 import redis
 import time
 import json
 from lib.lib_config import get_redis_config
 from lib.lib_skdeploy import adv_task_step
-from git  import Git
+from git  import Git,Repo
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
 from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
 from django import forms
 from lib.lib_redis import RedisLock
-from git  import Repo
+
 
 
 level = get_dir("log_level")
@@ -101,7 +101,9 @@ def TaskCommit_add(request, ids):
 #     repogit = Gittle(obj_path, origin_uri=obj_git_url)
     
     repogit = Repo(obj_path)
-#     repo.switch_branch('master')
+    
+    repogit.git.checkout("master")
+    
     repogit.remote().pull()
    
     
@@ -147,7 +149,7 @@ def TaskCommit_add(request, ids):
             
             if obj_repo_type == "git" and obj_repo_mode == "tag":
          
-                list_tumple_tags=get_git_tag(obj_path,obj_git_url)     
+                list_tumple_tags=get_git_taglist(obj_path)     
                 tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
             elif obj_repo_type == "git" and obj_repo_mode == "branch":
                 list_tumple_commitid = get_git_commitid(obj_path)
@@ -165,7 +167,7 @@ def TaskCommit_add(request, ids):
         tpl_TaskCommit_form = TaskCommit_form(initial=dic_init)  
          
         if obj_repo_type == "git" and obj_repo_mode == "tag":
-            list_tumple_tags=get_git_tag(obj_path,obj_git_url)
+            list_tumple_tags=get_git_taglist(obj_path)
             tpl_TaskCommit_form.fields["commit_id"].widget.choices=list_tumple_tags
         elif obj_repo_type == "git" and obj_repo_mode == "branch":
             list_tumple_commitid = get_git_commitid(obj_path)
