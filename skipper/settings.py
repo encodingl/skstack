@@ -278,6 +278,12 @@ LOGGING = {
             'filename': '/opt/data/logs/skipper/skipper-zabbix.log',
             'formatter': 'standard'
         },
+        'api_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/skipper-api.log',
+            'formatter': 'standard'
+        },
         'console': {
             'level': 'DEBUG',
             'filters': ['require_debug_false'],
@@ -308,6 +314,11 @@ LOGGING = {
         },
         'zabbix': {
             'handlers': ['zabbix_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'api': {
+            'handlers': ['api_file'],
             'level': 'INFO',
             'propagate': False,
         }
