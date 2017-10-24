@@ -2,7 +2,7 @@
 from django.core.mail import send_mail
 import requests, json
 import logging
-from lib.utils import config, cfg
+from lib.com import config, cfg
 
 
 class sendMail:

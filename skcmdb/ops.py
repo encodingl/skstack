@@ -21,7 +21,7 @@ import commands
 @permission_verify()
 def opssa_list(request):
     temp_name = "skcmdb/cmdb-header.html"
-    opssa_info = UserInfo.objects.filter(type=1)
+    opssa_info = UserInfo.objects.filter(type__gte=1).filter(type__lte=5)
     return render_to_response('skcmdb/opssa_list.html', locals(), RequestContext(request))
 
 

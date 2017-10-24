@@ -11,9 +11,3 @@ def redis_subscribe():
         if item['type'] == 'message':
             print item['data']
     
-if __name__ == "__main__":
-    
-
-
-
-  

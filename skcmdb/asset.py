@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from forms import AssetForm
-from lib.utils import mysql_execute, ASSET_TYPE
+from lib.utils import mysql_execute
+from lib.type import ASSET_TYPE
 from models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType, DbSource
 from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
 from django.db.models import Q
