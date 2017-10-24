@@ -239,27 +239,54 @@ def zabbixalart(request):
     subject = request.POST.get('subject', '')
     content = request.POST.get('content', '')
     token = request.GET.get('token', '')
+    type= request.GET.get('type', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
         log.info('[token:' + token + ']' + '[subject:' + subject + ']' + '[content:' + content + ']')
-        sub_data = subject.split(',')
-        ag_obj = AlarmGroup.objects.get(id=int(sub_data[0]))
-        serial = ag_obj.serial
-        userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
-        for wx in userlist:
-            message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
-            sendWeixin(wx.name.email, message, serial).send()
-        userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
-        emaillist = [ul.name.email for ul in userlist]
-        sendMail(subject, emaillist, content).send()
-        userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
-        tellist = [ul.name.tel for ul in userlist]
-        for tel in tellist:
-            sendSms(tel, content).send()
-        if ag_obj.tel_status == 1:
-            sendMobile(content).send()
-        elif ag_obj.tel_status == 2:
-            sendMobile(content, type='linkedsee_zhoujie').send()
-        return HttpResponse("ok")
+        if type == 'appname':
+            sub_data = subject.split(',', 2)
+            groupid = int(sub_data[0])
+            appname = sub_data[1]
+            subject = sub_data[2]
+            ag_obj = AlarmGroup.objects.get(id=groupid)
+            serial = ag_obj.serial
+            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(name__app__name__contains=appname)
+            for wx in userlist:
+                message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
+                sendWeixin(wx.name.email, message, serial).send()
+            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(name__app__name__contains=appname)
+            emaillist = [ul.name.email for ul in userlist]
+            sendMail(subject, emaillist, content).send()
+            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(name__app__name__contains=appname)
+            tellist = [ul.name.tel for ul in userlist]
+            for tel in tellist:
+                sendSms(tel, content).send()
+            if ag_obj.tel_status == 1:
+                sendMobile(content).send()
+            elif ag_obj.tel_status == 2:
+                sendMobile(content, type='linkedsee_zhoujie').send()
+            return HttpResponse("ok")
+        else:
+            sub_data = subject.split(',', 1)
+            groupid = int(sub_data[0])
+            subject = sub_data[1]
+            ag_obj = AlarmGroup.objects.get(id=groupid)
+            serial = ag_obj.serial
+            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
+            for wx in userlist:
+                message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
+                sendWeixin(wx.name.email, message, serial).send()
+            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
+            emaillist = [ul.name.email for ul in userlist]
+            sendMail(subject, emaillist, content).send()
+            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
+            tellist = [ul.name.tel for ul in userlist]
+            for tel in tellist:
+                sendSms(tel, content).send()
+            if ag_obj.tel_status == 1:
+                sendMobile(content).send()
+            elif ag_obj.tel_status == 2:
+                sendMobile(content, type='linkedsee_zhoujie').send()
+            return HttpResponse("ok")
     return HttpResponse("error")
 
 
