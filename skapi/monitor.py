@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.db.models import Q
 
 from skaccounts.permission import permission_verify
 
@@ -249,14 +250,14 @@ def zabbixalart(request):
             subject = sub_data[2]
             ag_obj = AlarmGroup.objects.get(id=groupid)
             serial = ag_obj.serial
-            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(name__app__name__contains=appname)
+            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
                 sendWeixin(wx.name.email, message, serial).send()
-            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(name__app__name__contains=appname)
+            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
             emaillist = [ul.name.email for ul in userlist]
             sendMail(subject, emaillist, content).send()
-            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(name__app__name__contains=appname)
+            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
                 sendSms(tel, content).send()
