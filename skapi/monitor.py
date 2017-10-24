@@ -238,8 +238,8 @@ def setuplist(request):
 def zabbixalart(request):
     subject = request.POST.get('subject', '')
     content = request.POST.get('content', '')
+    type = request.POST.get('type', '')
     token = request.GET.get('token', '')
-    type= request.GET.get('type', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
         log.info('[token:' + token + ']' + '[subject:' + subject + ']' + '[content:' + content + ']')
         if type == 'appname':
