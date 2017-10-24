@@ -243,13 +243,14 @@ def zabbixalart(request):
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
         log.info('[token:' + token + ']' + '[subject:' + subject + ']' + '[content:' + content + ']')
+        sub_data = subject.split(',', 1)
+        groupid = int(sub_data[0])
+        subject = sub_data[1]
+        ag_obj = AlarmGroup.objects.get(id=groupid)
+        serial = ag_obj.serial
         if type == 'appname':
             sub_data = subject.split(',', 2)
-            groupid = int(sub_data[0])
             appname = sub_data[1]
-            subject = sub_data[2]
-            ag_obj = AlarmGroup.objects.get(id=groupid)
-            serial = ag_obj.serial
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
@@ -267,11 +268,6 @@ def zabbixalart(request):
                 sendMobile(content, type='linkedsee_zhoujie').send()
             return HttpResponse("ok")
         else:
-            sub_data = subject.split(',', 1)
-            groupid = int(sub_data[0])
-            subject = sub_data[1]
-            ag_obj = AlarmGroup.objects.get(id=groupid)
-            serial = ag_obj.serial
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
