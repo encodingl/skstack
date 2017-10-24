@@ -122,11 +122,10 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 }
 
 5.zabbix接口:
-请求方url: http://10.8.48.195:8000/skapi/api/ZABBIX?token=xxxxxxxx
+请求方url: http://10.8.48.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
-    'level':'',         #指定事件级别
     'subject':'xxx',    #标题
     'content','xxxxx',  #内容
 }
