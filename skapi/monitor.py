@@ -237,13 +237,13 @@ def setuplist(request):
 
 
 def zabbixalart(request):
-    subject = request.POST.get('subject', '')
+    zabbix_subject = request.POST.get('subject', '')
     content = request.POST.get('content', '')
     type = request.POST.get('type', '')
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
-        log.info('[token:' + token + ']' + '[subject:' + subject + ']' + '[content:' + content + ']')
-        sub_data = subject.split(',', 1)
+        log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + content + ']')
+        sub_data = zabbix_subject.split(',', 1)
         groupid = int(sub_data[0])
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
@@ -253,12 +253,9 @@ def zabbixalart(request):
         elif ag_obj.tel_status == 2:
             sendMobile(content, type='linkedsee_zhoujie').send()
         if type == 'appname':
-            sub_data = subject.split(',', 2)
+            sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
-            testlist = [ul.name.email for ul in userlist]
-            test = appname +':'+','.join(testlist)
-            log.warning(test)
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
                 sendWeixin(wx.name.email, message, serial).send()
