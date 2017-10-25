@@ -248,10 +248,17 @@ def zabbixalart(request):
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
+        if ag_obj.tel_status == 1:
+            sendMobile(content).send()
+        elif ag_obj.tel_status == 2:
+            sendMobile(content, type='linkedsee_zhoujie').send()
         if type == 'appname':
             sub_data = subject.split(',', 2)
             appname = sub_data[1]
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(Q(name__app__name=appname)|Q(name__app__name='all')).distinct()
+            testlist = [ul.name.email for ul in userlist]
+            test = appname +':'+','.join(testlist)
+            log.warning(test)
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
                 sendWeixin(wx.name.email, message, serial).send()
@@ -262,10 +269,6 @@ def zabbixalart(request):
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
                 sendSms(tel, content).send()
-            if ag_obj.tel_status == 1:
-                sendMobile(content).send()
-            elif ag_obj.tel_status == 2:
-                sendMobile(content, type='linkedsee_zhoujie').send()
             return HttpResponse("ok")
         else:
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
@@ -279,10 +282,6 @@ def zabbixalart(request):
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
                 sendSms(tel, content).send()
-            if ag_obj.tel_status == 1:
-                sendMobile(content).send()
-            elif ag_obj.tel_status == 2:
-                sendMobile(content, type='linkedsee_zhoujie').send()
             return HttpResponse("ok")
     return HttpResponse("error")
 
