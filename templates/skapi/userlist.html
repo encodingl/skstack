@@ -44,20 +44,20 @@
                             {% if obj_info %}
                                 {% for obj in obj_info %}
                                     <tr class="even gradeX">
-                                        <td><input type="checkbox" id="u_id" class="item1" value="{{ obj.id }}"
+                                        <td width="2%" style="vertical-align:middle"><input type="checkbox" id="u_id" class="item1" value="{{ obj.id }}"
                                                    name="idc_check"/></td>
-                                        <td><a href="#">
+                                        <td width="15%" style="vertical-align:middle"><a href="#">
                                             <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                                 value="{{ obj.id }}"> {{ obj.name }}</li>
                                         </a></td>
-                                        <td>{{ obj.email }}</td>
-                                        <td>{{ obj.tel }}</td>
-                                        <td>{{ obj.dd }}</td>
-                                        <td>
+                                        <td width="15%" style="vertical-align:middle">{{ obj.email }}</td>
+                                        <td width="15%" style="vertical-align:middle">{{ obj.tel }}</td>
+                                        <td width="15%" style="vertical-align:middle">{{ obj.dd }}</td>
+                                        <td width="15%" style="vertical-align:middle">
                                             {% for i in obj.app.all %}
                                                 {{ i|get_app }}<br>
                                             {% endfor %}</td>
-                                        <td class="text-center" data-editable='false'>
+                                        <td style="vertical-align:middle" class="text-center" data-editable='false'>
                                             <a href="#">
                                                 <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
                                                     value="{{ obj.id }}">编辑
