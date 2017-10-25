@@ -7,9 +7,9 @@ from django.db.models import Q
 
 from skaccounts.permission import permission_verify
 
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy
 from skapi.api import sendWeixin, sendMail, sendSms, sendMobile
-from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm
+from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm
 from lib.com import get_object, config, cfg, config_path
 from utils import initAlarmList
 import logging
@@ -105,6 +105,61 @@ def useredit(request, ids):
     else:
         af = AlarmUserForm(instance=obj)
     return render_to_response('skapi/useredit.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def policy(request):
+    temp_name = "skapi/api-header.html"
+    obj_info = UserPolicy.objects.all()
+    return render_to_response('skapi/policy.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def policyadd(request):
+    temp_name = "skapi/api-header.html"
+    if request.method == "POST":
+        obj_form = UserPolicyForm(request.POST)
+        if obj_form.is_valid():
+            obj_form.save()
+            tips = u"增加成功！"
+            display_control = ""
+        else:
+            tips = u"增加失败！"
+            display_control = ""
+    else:
+        display_control = "none"
+        obj_form = UserPolicyForm()
+    return render_to_response('skapi/policyadd.html', locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
+def policydel(request):
+    id = request.GET.get('id', '')
+    if id:
+        UserPolicy.objects.get(id=id).delete()
+    return HttpResponse(u'删除成功')
+
+
+@login_required()
+@permission_verify()
+def policyedit(request, ids):
+    temp_name = "skapi/api-header.html"
+    obj_info = UserPolicy.objects.all()
+    status = 0
+    obj = get_object(UserPolicy, id=ids)
+    if request.method == 'POST':
+        af = UserPolicyForm(request.POST, instance=obj)
+        if af.is_valid():
+            af.save()
+            status = 1
+        else:
+            status = 2
+    else:
+        af = UserPolicyForm(instance=obj)
+    return render_to_response('skapi/policyedit.html', locals(), RequestContext(request))
 
 
 @login_required()

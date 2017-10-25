@@ -1,7 +1,25 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy
+
+
+class UserPolicyForm(forms.ModelForm):
+    class Meta:
+        model = UserPolicy
+        exclude = ("id",)
+
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'weixin_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                    attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'email_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                   attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'sms_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'dd_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                attrs={'class': 'form-control', 'style': 'width:500px;'}),
+        }
 
 
 class AlarmUserForm(forms.ModelForm):
@@ -15,6 +33,7 @@ class AlarmUserForm(forms.ModelForm):
             'tel': TextInput(attrs={'class': 'form-control'}),
             'dd': TextInput(attrs={'class': 'form-control'}),
             'app': SelectMultiple(attrs={'class': 'form-control'}),
+            'policy': Select(attrs={'class': 'form-control'}),
         }
 
 
