@@ -96,6 +96,22 @@
                                 </div>
                             </div>
                             <hr>
+                            <p><b>Zabbix日志记录</b></p>
+                            <div class="form-group">
+                                <label for="log" class="col-sm-2 control-label">功能:</label>
+                                <div class="col-sm-10">
+                                    <select name="zabbix_status" class="form-control" style="width:350px;">
+                                        {% ifequal zabbix_status "On" %}
+                                            <option value="On" selected="selected">On</option>
+                                            <option value="Off">Off</option>
+                                            {% else %}
+                                            <option value="On">On</option>
+                                            <option value="Off" selected="selected">Off</option>
+                                        {% endifequal %}
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
                             <p><b>邮件接口:</b></p>
                             <div class="form-group">
                                 <label for="sms_api" class="col-sm-2 control-label">email_host:</label>
@@ -121,7 +137,8 @@
                             <div class="form-group">
                                 <label for="sms_api" class="col-sm-2 control-label">email_password:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" value="{{ email_password }}" id="email_password" name="email_password"
+                                    <input type="password" value="{{ email_password }}" id="email_password"
+                                           name="email_password"
                                            style="width:450px;">
                                 </div>
                             </div>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+</head>
+<body>
+<div class="content-wrapper">
+
+    <section class="content">
+        <div id="dialog">
+            <div class="box box-info">
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" action="{% url 'monitor_groupedit' ids %}" method="POST">
+                    {% csrf_token %}
+                    {{ af.as_p }}
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

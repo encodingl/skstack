@@ -43,7 +43,6 @@
                             <th>ID</th>
                             <th>名称</th>
                             <th>告警名单</th>
-                            <th>运维电话告警</th>
                             <th>微信通道</th>
                             <th>监控范围</th>
                             <th class="text-center">功能</th>
@@ -56,25 +55,15 @@
                             <td width="2%" style="vertical-align:middle"><input type="checkbox" id="u_id" class="item1" value="{{ obj.id }}"
                                        name="idc_check"/></td>
                             <td width="3%" style="vertical-align:middle">{{ obj.id }}</td>
-                            <td width="15%" style="vertical-align:middle"><a href="#">
+                            <td width="25%" style="vertical-align:middle"><a href="#">
                                 <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                     value="{{ obj.id }}"> {{ obj.name }}</li>
                             </a></td>
-                            <td width="10%" style="vertical-align:middle">
+                            <td width="12%" style="vertical-align:middle">
                                 {% for i in obj.user.all %}
                                     {{ i|get_user }}<br>
                                 {% endfor %}
                             </td>
-                            <td width="12%" style="vertical-align:middle">
-                                {% if obj.tel_status %}
-                                {% ifequal obj.tel_status 1 %}
-                                <span class="label label-success">启用-运维</span>
-                                {% else %}
-                                <span class="label label-success">启用-周杰</span>
-                                {% endifequal %}
-                                {% else %}
-                                <span class="label label-default">禁用</span>
-                                {% endif %}</td>
                             <td width="8%" style="vertical-align:middle">{{ obj.serial }}</td>
                             <td style="vertical-align:middle">{{ obj.descrition }}</td>
                             <td style="vertical-align:middle" class="text-center" data-editable='false'>

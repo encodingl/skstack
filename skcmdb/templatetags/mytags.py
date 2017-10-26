@@ -89,3 +89,38 @@ def get_name(get_user):
 @register.filter(name='get_app')
 def get_app(get_app):
     return get_app.name
+
+@register.filter(name='rec_str2uni')
+def rec_str2uni(value):
+    if value and len(value)>15:
+        return value[:15]+'  ....'
+    else:
+        return value
+
+@register.filter(name='sub_str2uni')
+def sub_str2uni(value):
+    if value and len(value)>15:
+        return value[:15]+'  ....'
+    else:
+        return value
+
+@register.filter(name='cont_str2uni')
+def cont_str2uni(value):
+    if value and len(value)>30:
+        return value[:30]+'  ....'
+    else:
+        return value
+
+@register.filter(name='logsub_str2uni')
+def logsub_str2uni(value):
+    if value and len(value)>20:
+        return value[:20]+'  ....'
+    else:
+        return value
+
+@register.filter(name='logcont_str2uni')
+def logcont_str2uni(value):
+    if value and len(value)>40:
+        return value[:40]+'  ....'
+    else:
+        return value
