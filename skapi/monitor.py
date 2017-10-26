@@ -307,7 +307,7 @@ def zabbixalart(request):
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
-            if config().get('record', 'zabbix_log') == 'On':
+            if config().get('record', 'zabbix_status') == 'On':
                 ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=content,appname=appname)
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
