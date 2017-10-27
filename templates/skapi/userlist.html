@@ -49,15 +49,15 @@
                                                                                             class="item1"
                                                                                             value="{{ obj.id }}"
                                                                                             name="idc_check"/></td>
-                                        <td width="8%" style="vertical-align:middle"><a href="#">
+                                        <td width="6%" style="vertical-align:middle"><a href="#">
                                             <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                                 value="{{ obj.id }}"> {{ obj.name }}</li>
                                         </a></td>
                                         <td width="12%" style="vertical-align:middle">{{ obj.email }}</td>
                                         <td width="12%" style="vertical-align:middle">{{ obj.tel }}</td>
                                         <td width="10%" style="vertical-align:middle">{{ obj.dd }}</td>
-                                        <td width="15%" style="vertical-align:middle">{{ obj.policy }}</td>
-                                        <td width="10%" style="vertical-align:middle">
+                                        <td width="10%" style="vertical-align:middle">{{ obj.policy }}</td>
+                                        <td width="16%" style="vertical-align:middle">
                                             {% for i in obj.app.all %}
                                                 {{ i|get_app }}<br>
                                             {% endfor %}</td>
