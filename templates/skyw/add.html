@@ -34,36 +34,16 @@
 
   </div>
 <script>
- var List = {{name}};
-     $('#list').prepend(List[0]);
-    $('#list').append(List[1]);
- 
-    console.log('--- 遍历 List 方法 1 ---')
-    for(i in List){
-        console.log(i);// i为索引
-    }
- 
-    console.log('--- 遍历 List 方法 2 ---')
-    for (var i = List.length - 1; i >= 0; i--) {
-        // 鼠标右键，审核元素，选择 console 可以看到输入的值。
-        console.log(List[i]);
-    };
- 
-    console.log('--- 同时遍历索引和内容，使用 jQuery.each() 方法 ---')
-    $.each(List, function(index, item){
-        console.log(index);
-        console.log(item);
-    });
- 
-</script>
-
-  <script>
+select();
+ function select(){
         var demo1 = $('select[name="businessline"]').bootstrapDualListbox({
               nonSelectedListLabel: '可选择业务',
               selectedListLabel: '已选择业务',
               preserveSelectionOnMove: 'moved',
               moveOnSelect: false,
         });
-    </script>
+        }
+</script>
+
 {% endblock %}
 
