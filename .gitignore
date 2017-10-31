@@ -1,3 +1,4 @@
+.gitignore
 .project
 .pydevproject
 .settings/
@@ -10,4 +11,5 @@ gitpush.sh
 ignoreupdate.sh
 .idea
 .gitignore
-skipper.conf
+*.swp
+
