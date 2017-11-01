@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {% include 'link_css.html' %}
-    {% include 'head_script.html' %}
+
+
+{% extends 'base.html' %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
     <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
 {% endblock %}
-</head>
-<body>
+{% block content %}
 <div class="content-wrapper">
 
 
@@ -65,21 +60,26 @@
 function taskcommit_checkstatus(){
 	var obj_project=$("#id_project").val();
 	var obj_env=$("#id_env").val();
+	
 	var sitv = setInterval(function(){	
 		$.ajax({
 			url:'/skdeploy/TaskCommit/checkstatus/',
 			type:"POST",
 			data:{project:obj_project,
 				   env:obj_env,
-				csrfmiddlewaretoken:'{{ csrf_token }}'},
+				   
+				   csrfmiddlewaretoken:'{{ csrf_token }}'},
 			success:function(callback){
 				var obj_json = jQuery.parseJSON(callback);
 				message = obj_json["redis_chanel_message"]
+				
 				$("#message_box").text(message);
 				$('#prog_in').width(obj_json["redis_chanel"] + '%');
 				$("#prog_percentage").text(obj_json["redis_chanel"] + '%');
-				if (message.indexOf("failed") > 0 ) {
+				console.log(message);
+				if (message.indexOf("failed") != -1 ) {
 					clearInterval(sitv);
+					
 			
 				}
 				
@@ -91,7 +91,7 @@ function taskcommit_checkstatus(){
 					
 				}
 					
-				console.log(message);
+				
 				
 			}
 		})
@@ -105,12 +105,16 @@ function taskcommit_checkstatus(){
 function taskcommit_check(){
 	var obj_project=$("#id_project").val();
 	var obj_env=$("#id_env").val();
+	var obj_project_id=$("#id_project_id").val();
+	var obj_commit_id=$("#id_commit_id").val();
 	$.ajax({
 		url:'/skdeploy/TaskCommit/check/',
 		type:"POST",
 		data:{project:obj_project,
 			   env:obj_env,
-			csrfmiddlewaretoken:'{{ csrf_token }}'},
+			   project_id:obj_project_id,
+			   commit_id:obj_commit_id,
+			   csrfmiddlewaretoken:'{{ csrf_token }}'},
 		
 		success:function(callback){
 				var obj_json = jQuery.parseJSON(callback);									   
@@ -132,7 +136,6 @@ var demo1 = $('select[name="hosts_cus"]').bootstrapDualListbox({
       moveOnSelect: false,
 });
 </script>
-</body>
-</html>
 
+{% endblock %}
 

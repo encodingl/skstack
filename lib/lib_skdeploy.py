@@ -10,17 +10,11 @@ import sys
 import os
 from lib.lib_config import get_config_var
 
-
-
 level = get_config_var("log_level")
 log_path = get_config_var("log_path")
 log("setup.log", level, log_path)
 
-
-
-
-
-def adv_task_step(hosts,env,project,task_file):
+def adv_task_step(hosts,env,project,task_file,forks=30):
     proj_base_dir = get_config_var("pro_path")
     task_file_abs = proj_base_dir+env+"/"+project+"/"+task_file
     
@@ -30,20 +24,14 @@ def adv_task_step(hosts,env,project,task_file):
      
         
     else:
-#         dest_file_abs="/tmp/%s/%s/%s" % (env,project,task_file)
-#         cmd_copy = "ansible %s -m copy -a 'src=%s dest=%s'" %  (hosts,task_file_abs, dest_file_abs)
-#         
-#         pcmd_copy = Popen(cmd_copy, stdout=PIPE, stderr=PIPE, shell=True)
-#         retcode=pcmd_copy.wait()
-#         retcode_message=pcmd_copy.communicate()
-#         print "1:%s" % retcode_message
-#         if retcode==0:         
-        cmd = "ansible %s -m script -a %s" % (hosts,task_file_abs)    
+
+        cmd = "ansible %s -f %s -m script -a %s" % (hosts,forks,task_file_abs)  
+        
     try:        
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
         retcode=pcmd.wait()  
         retcode_message=pcmd.communicate()
-        print retcode_message
+        
     
     except:
         exinfo=sys.exc_info()
@@ -94,7 +82,7 @@ def release_project(project,env,hosts,release_dir,release_to):
 
 def change_link(hosts,release_dir,release_to):
     change_link_palybook=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/scripts/skdeploy/change_link.yml"
-    cmd= "ansible-playbook  %s -e 'h=%s release_dir=%s release_to=%s'" %  (change_link_palybook,hosts, release_dir,release_to)
+    cmd= "ansible-playbook  %s -f 30 -e 'h=%s release_dir=%s release_to=%s'" %  (change_link_palybook,hosts, release_dir,release_to)
     
     try:        
         pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
@@ -118,7 +106,55 @@ def change_link(hosts,release_dir,release_to):
     else:
         ret_message="failed"
     return ret_message   
+
+def uni_to_str(args):
+    obj_uni = args
+    obj_list = eval(obj_uni) 
+    obj_str=""
+    for h in obj_list:
+        h=h.strip()
+        obj_str=obj_str+h+","
+    return obj_str
+
+def create_release_path(hosts,path):
     
+    cmd= "ansible  %s -m shell -a 'mkdir -p %s'" %  (hosts,path)
+    
+    try:        
+        pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
+        retcode=pcmd.wait()  
+        ret_message = pcmd.communicate()
+        
+        if retcode != 0:    
+            logging.error(ret_message)
+        else:
+            logging.info(ret_message)
+ 
+    except:
+        exinfo=sys.exc_info()
+        logging.error(exinfo)
+    
+    if retcode==0:
+        ret_message="success"
+    else:
+        ret_message="failed"
+    return ret_message
+
+def var_change(str,**pDic):
+    str=str.replace("{repo_path}",pDic["repo_path"])
+    str=str.replace("{pre_release_path}",pDic["pre_release_path"])
+    str=str.replace("{release_to}",pDic["release_to"])
+    str=str.replace("{release_lib}",pDic["release_lib"])
+    str=str.replace("{project}",pDic["project"])
+    str=str.replace("{env}",pDic["env"])
+    str=str.replace("{repo_url}",pDic["repo_url"])
+    str=str.replace("{release_user}",pDic["release_user"])
+    return str
+    
+    
+    
+    
+ 
 if __name__ == "__main__":
     
    

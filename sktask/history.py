@@ -30,15 +30,4 @@ def detail(request, ids):
     obj_cmd = obj.cmd
     ret=obj.cmd_detail
     ret=ret.encode('utf-8')
-    
-    print type(ret)
-    print "ret1:%s" % ret
-
- 
- 
-#     ret=ret.split("\\n") 
-#     print "ret2:%s" % ret
-#     print type(ret[0])
-   
- 
     return render_to_response('sktask/history_detail.html', locals(), RequestContext(request))

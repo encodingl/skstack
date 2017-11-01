@@ -11,10 +11,13 @@
 
     <!-- Main content -->
     <section class="content">
-       
+        <form action="{% url 'Project_del' %}" method="post">
+                {% csrf_token %}
             <div class="box">
                 <div class="box-header">
-    
+                  <div class="btn-group">
+						 <a href="{% url 'Project_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
+                  </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -25,7 +28,7 @@
                                 <input type="checkbox" onclick="checkAll(this, 'item1');" />
                             </th>
                                     <th>名称</th>
-                                    <th>描述</th> 
+                                    <th>类型</th> 
                                     <th>环境</th>
                                     <th>分组</th>
                                     <th>审核激活</th> 
@@ -40,15 +43,16 @@
                                         <td><input type="checkbox" id="u_id" class="item1" value="{{ x.id }}" name="x_check" /></td>
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
-                                        <td>{{ x.desc }}</td>
+                                        <td>{{ x.repo_type }}</td>
                                         <td>{{ x.env }}</td>
                                         <td>{{ x.group }}</td>
                                         <td>{{ x.audit_enable }}</td>
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
+                                        <a href="{% url "Project_add_from_template" x.id %}"><span class="btn btn-sm btn-primary">从模板创建</span></a>
+                                        <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
                                         
-                                        <a href="{% url 'TaskCommit_add' x.id %}" class="btn btn-sm btn-primary" id="提单">上线</a>  
-                                       
+                                        <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
                                     </tr>
                                 {% endfor %}
@@ -61,7 +65,7 @@
 
                 </div>
             </div>
-       
+        </form>
 
     </section>
         <!-- /.content -->
@@ -106,15 +110,15 @@ function tanchu(n){
     type: 2,
     title: '修改信息',
     closeBtn: 1,
-    area: ['600px', '400px'],
+    area: ['1000px', '600px'],
     shadeClose: true, //点击遮罩关闭
 /*     content: ['/skdeploy/project_edit?id=' + n,], */
-    content: ['/skdeploy/TaskCommit/add/' + n,],
+    content: ['/skdeploy/Project/edit/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
             if ( handle_status == '1' ) {
-                layer.msg('提交成功！',{
+                layer.msg('保存成功！',{
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 },function(){
@@ -149,5 +153,19 @@ function tanchu(n){
         });
     });
 </script>
+
+
+<script>
+        $(".x_init").click(function () {
+
+
+            if (confirm("确认执行配置初始化" + '?'))
+                var index = layer.load(0, {
+                    shade: [0.5, '#fff'] //0.1透明度的白色背景
+                });
+            else
+                return false;
+        });
+    </script>
 
 {% endblock %}

@@ -272,7 +272,7 @@ function tanchu_release(n){
 	});
  
     // 关闭撤销按钮
-    $("[xstatus!=0]").each(function(){	
+    $("[xstatus=2],[xstatus=3],[xstatus=4],[xstatus=6],[xstatus=8]").each(function(){	
               $(this).next("#features").children("#revoke").remove();	
     });
 </script>  

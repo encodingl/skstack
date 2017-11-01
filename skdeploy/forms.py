@@ -52,22 +52,24 @@ class Project_form(forms.ModelForm):
             'audit_enable': forms.CheckboxInput(), 
             'audit_flow': forms.Select(attrs={'class': 'form-control'}),
             'keep_version_num': forms.TextInput(attrs={'class': 'form-control'}),
+            'audit_enable': forms.CheckboxInput(),
                  
         }
 
 class TaskCommit_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","project_id","project_group","env","user_commit","branch","title", "desc","commit_id","status","audit_level","forks","hosts_cus")
+        fields = ("title","project","project_id","project_group","env","user_commit","branch","desc","commit_id","status","audit_level","forks","hosts_cus")
         
-        widgets = {         
-            'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+        widgets = {    
+            'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
+            'project': forms.HiddenInput(attrs={'class': 'form-control'}),
             'project_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'project_group': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'env': forms.HiddenInput(attrs={'class': 'form-control'}),
             'user_commit': forms.HiddenInput(attrs={'class': 'form-control'}),
             'branch': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
             'commit_id': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.HiddenInput(attrs={'class': 'form-control'}),
@@ -77,7 +79,7 @@ class TaskCommit_form(forms.ModelForm):
  
         }    
 
-        
+
 
 
 class TaskStatus_release_form(forms.ModelForm):
@@ -97,11 +99,12 @@ class TaskStatus_release_form(forms.ModelForm):
 class TaskStatus_detail_form(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = ("project","env","desc","forks","link_id","ex_link_id","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
+        fields = ("project","env","desc","forks","hosts_cus","link_id","ex_link_id","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
         widgets = {
             'project': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+            'hosts_cus': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
             'link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'ex_link_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'audit_level': forms.TextInput(attrs={'class': 'form-control','readonly':True}),

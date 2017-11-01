@@ -3,7 +3,7 @@
 
 import ConfigParser
 import os
-
+import re
 
 def get_redis_config():
     config = ConfigParser.RawConfigParser()
@@ -51,6 +51,27 @@ def get_config_var(args):
     if args == "release_path":
         return release_path
 
+def get_AnsibleHostsDic_only(args):
+    dic = {}
+    pattern = r'^\s*\[.+\]'
+
+    with open(args) as f:
+        for line in f:
+            temp = line.split()
+            if temp:
+                m = re.search(pattern,line)
+                
+                if (m is not None):
+                    g = m.group().strip().strip('[').strip(']')
+                    dic[g] = []
+                else:
+                    try:
+                        dic[g].append(line)
+                    except:
+                        pass
+    
+
+    return dic
 if __name__ == "__main__":
     x = get_redis_config()
     print x
