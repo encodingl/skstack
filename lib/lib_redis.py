@@ -25,8 +25,6 @@ class RedisLock():
     def test(self,tchn):
         return self.conn.get(tchn)
     
-<<<<<<< HEAD
-=======
 if __name__ == "__main__":
     r1=RedisLock(channel_name="chn001")
     cv = r1.get_channel_value()
@@ -44,4 +42,3 @@ if __name__ == "__main__":
 
 
   
->>>>>>> feature.skdeploy.v0.1.1
