@@ -187,14 +187,9 @@ def TaskCommit_add(request, ids):
 @login_required()
 @permission_verify()
 def TaskCommit_check(request):
-<<<<<<< HEAD
-    obj_env=request.POST.get('env')
-    obj_project = request.POST.get('project')
-=======
     obj_env=request.POST.get('env') 
     
     obj_project = request.POST.get('project')  
->>>>>>> feature.skdeploy.v0.1.1
     obj_git_commit = request.POST.get('commit_id')
     
     obj_project_id = request.POST.get('project_id')
@@ -246,35 +241,6 @@ def TaskCommit_check(request):
        
     
          
-<<<<<<< HEAD
-    obj_path = git_path + obj_env + "/" + obj_project
-    g = Git(obj_path)
-    g.checkout(obj_git_commit)
-    conn.set(redis_chanel,"60")
-    conn.set(redis_chanel_message,"git checkout success")
-    
-    result_git_task=conn.get(redis_chanel_message)
-
-     
-     
-    result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")        
-    if result_post_deploy == "success":     
-        conn.set(redis_chanel,"100") 
-        result_post_deploy = "post_deploy task %s" % result_post_deploy
-        conn.set(redis_chanel_message,result_post_deploy) 
-        ret="ok"
-        obj_json = json.dumps(ret)
-        result_post_deploy=conn.get(redis_chanel_message)
-       
-        return  HttpResponse(obj_json) 
-    else:
-        conn.set(redis_chanel,"65")
-        ret=conn.get(redis_chanel_message)
-        result_post_deploy = "post_deploy task %s" % result_post_deploy
-        conn.set(redis_chanel_message,result_post_deploy)
-        obj_json = json.dumps(ret)
-        return  HttpResponse(obj_json)  
-=======
          
         result_post_deploy = adv_task_step(hosts="localhost", env=obj_env, project=obj_project, task_file="post_deploy.sh")   
         
@@ -296,7 +262,6 @@ def TaskCommit_check(request):
             obj_json = json.dumps(ret)
             
             return  HttpResponse(obj_json)  
->>>>>>> feature.skdeploy.v0.1.1
     
     
     
