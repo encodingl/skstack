@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+  <div class="content-wrapper">
+   <section class="content-header">
+        <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4>{{ tips }}</h4>
+        </div>
+    </section>
+
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content">
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-body">
+        <form action="{% url 'rota_add' %}" method="post">
+        {% csrf_token %}
+        <h4>按值班顺序添加值班人员,ps:轮班人员从轮值人员中选择，算法周天数%轮班人员</h4>
+        <p>*值班人员：{{ rota.name}}
+        <p>*联系方式：{{rota.iphone}}</p>
+        <p>*是否需要轮值：{{ rota.spell}}</p>
+        <p>*是否为紧急联系人：{{ rota.emergency_contact}}</p>
+        <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'yw' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+        </form>
+
+        <!-- /.box-body -->
+        <div class="box-footer">
+          <i class="fa fa-info-circle"></i> 请勿重复添加条目
+        </div>
+        <div><input name="Fruit" type="checkbox" value="" /> </div>
+        <!-- /.box-footer-->
+
+           </div><!-- /.box -->
+      </div>
+    </section>
+
+  </div>
+
+
+<script>
+
+$("#btn5").click(function(){//输出选中的值
+  var str=[];
+  $("[name='checkbox']:checked").each(function(i){
+     str[i]=$(this).val();
+})
+    console.log(str);    //可以在控制台打印一下看看，这是拼起来的标签和数据
+    localStorage.setItem('array',str.join(','));
+    //localStorage.removeItem('array');
+})
+$("#btn6").click(function(){//输出选中的值
+  var str=[];
+  $("[name='checkboxdba']:checked").each(function(i){
+  var json = {name:'',iphone:''};
+  json.name = $(this).val().split(' ')[0];
+  json.iphone = $(this).val().split(' ')[1];
+     str.push(json);
+})
+    console.log(str);    //可以在控制台打印一下看看，这是拼起来的标签和数据
+    localStorage.setItem('dbaarr',JSON.stringify(str));
+    //localStorage.removeItem('dbaarr');
+})
+
+</script>
+
+{% endblock %}
+
