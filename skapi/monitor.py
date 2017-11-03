@@ -363,14 +363,14 @@ def api(request, method):
         subject = request.POST.get('subject', 'Default Subject...')
         content = request.POST.get('content', '')
         temp_reveiver = request.POST.get('receiverlist', '').split(',')
-        sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.get(id=6))
+        sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
         if method == 'sendmail':
             receiverlist = []
             for receiver in temp_reveiver:
                 if sinal_alarmlist.filter(name__email=receiver).filter(email_status=1):
                     receiverlist.append(receiver)
                     AlarmRecord.objects.create(type=u'邮件', name=name, token=token, subject=subject, receiver=receiver,
-                                               contnet=content, level=level)
+                                               content=content, level=level)
             sendMail(subject, receiverlist, content).send()
         if method == 'sendweixin':
             serial = request.POST.get('serial', '')
@@ -378,13 +378,13 @@ def api(request, method):
                 if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
                     sendWeixin(receiver, content, serial).send()
                     AlarmRecord.objects.create(type=u'微信', name=name, token=token, serial=serial, receiver=receiver,
-                                               contnet=content, level=level)
+                                               content=content, level=level)
         if method == 'sendsms':
             mobiles = request.POST.get('mobiles', '').split(',')
             for m in mobiles:
                 if sinal_alarmlist.filter(name__tel=m).filter(sms_status=1):
                     sendSms(m, content).send()
-                    AlarmRecord.objects.create(type=u'短信', name=name, token=token, receiver=m, contnet=content,
+                    AlarmRecord.objects.create(type=u'短信', name=name, token=token, receiver=m, content=content,
                                                level=level)
         if method == 'sendmobile':
             type = request.POST.get('type', '')
@@ -393,13 +393,13 @@ def api(request, method):
                 if type != 'linkedsee_zhoujie':
                     type = 'linkedsee_szyw'
                 AlarmRecord.objects.create(type=u'电话', name=name, token=token,
-                                           receiver=type, contnet=content, level=level)
+                                           receiver=type, content=content, level=level)
         if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
             groupid = request.POST.get('groupid', '')
             group_obj = AlarmGroup.objects.get(id=groupid)
             group_alarmlist = AlarmList.objects.filter(group=group_obj)
             AlarmRecord.objects.create(type=u'公共组', name=name, token=token, subject=subject, receiver=groupid,
-                                       contnet=content, level=level)
+                                       content=content, level=level)
             receiverlist = []
             for receiver in temp_reveiver:
                 if sinal_alarmlist.filter(name__email=receiver).filter(email_status=1):
