@@ -103,73 +103,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!--body -->
 <div class="container">
-<!---content-->
-    <!--上部分-->
-      <!--运维公告-->
     <div class="row">
-       <!--运维公告-->
         <div class="col-md-12 text-center">
             <div class="panel panel-primary">
-	        <div class="panel-heading">
-                     <h3 class="panel-title">运维公告</h3>
-                 </div>
-                <div class="panel-body">
+	         <div class="panel-heading">
+		          <h3 class="panel-title">运维公告</h3>
+	         </div>
+	         <div class="panel-body">
                  <ul class="list-group">
-		  {% if notice %}{% for i in notice %}
-                      <li class="list-group-item">{{i.notice }}</li>{% endfor %}
+		         {% if notice %}{% for i in notice %}
+                          <li class="list-group-item">{{i.notice }}</li>{% endfor %}
                   {% endif %}
                  </ul>
-	         </div> 
-            </div>
-        </div>
+	         </div>
     </div>
-    <!--下部分-->
+    </div>
+    </div>
+    <hr>
     <div class="row">
-        <!---左部分-->
-          <!--平台分类-->
         <div class="col-md-2">
             <div class="panel panel-success">
-                 <div class="panel-heading">
-                     <h3 class="panel-title">平台分类</h3>
-                 </div>
-                 <div class="panel-body">
-		    <table class="table table-striped table-bordered table-hover table-bordered">
-		      <thead>
-		      <tr>
+	          <div class="panel-heading">
+		       <h3 class="panel-title">平台分类</h3>
+                  </div>
+	          <div class="panel-body">
+		         <table class="table table-striped table-bordered table-hover table-bordered">
+		           <thead>
+				      <tr>
                       {% for key,value in d1.items %}
-		      <th>{{ key }}</th></tr>
-		    </thead>
-		    <tbody>
-                     {% for v in value %}
+			           <th>{{ key }}</th></tr>
+		           </thead>
+		           <tbody>
+                   {% for v in value %}
                       <tr>
-                      <td><a href="{{v.1}}">{{ v.0 }}</a></td>
+                        <td><a href="{{v.1}}">{{ v.0 }}</a></td>
                       </tr>{% endfor %}
-                     {% endfor %}
-		    </tbody>
-		    </table>
+                  {% endfor %}
+		           </tbody>
+			     </table>
 	          </div>
             </div>
         </div>
-       <!--右部分-->
-        <div class="col-md-10">
-            <div class="row">
-               <!--运维职责表-->
-              <div class="col-md-12">
-                  <div class="panel panel-info">
-                       <div class="panel-heading">
-                          <h3 class="panel-title">运维职责表</h3>
-                       </div>
-                       <div class="panel-body">
-		         <table class="table table-hover">
-		          <thead>
-			   <tr>
-			   <th>运维负责人</th>
-			   <th>业务线分工</th>
-			   <th>运维系统分工</th>
-			   <th>第二负责人</th>
-			   </tr>
-		          </thead>
-		         <tbody>
+      <div class="col-md-10">
+       <div class="panel panel-info">
+	   <div class="panel-heading">
+		<h3 class="panel-title">运维职责表</h3>
+	   </div>
+	   <div class="panel-body">
+		 <table class="table table-hover">
+		                  <thead>
+			              <tr>
+			              <th>运维负责人</th>
+			              <th>业务线分工</th>
+			              <th>运维系统分工</th>
+			              <th>第二负责人</th>
+			              </tr>
+		                  </thead>
+		                  <tbody>
                           {% for i in person %}
                           <tr><td>{{ i.name.nickname }}</td>
                                <td>{% for bussine in i.businessline.all %} {{ bussine }} {% endfor %}</td>
@@ -177,109 +167,93 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                <td>{{i.secondaryname.nickname }}</td>
                           </tr>
                           {% endfor %}
-		         </tbody>
-			</table>
+		                  </tbody>
+			              </table>
 	     </div>
-                  </div>
-              </div>
-                <!--右部分-->
-              <div class="col-md-12">
-              <div class="row">
-                    <!--运维值班表-->
-                   <div class="col-md-8">
-                     <div class="panel panel-info">
-                       <div class="panel-heading">
-                            <h3 class="panel-title">运维周值班表</h3>
-                       </div>
-                       <div class="panel-body">
-                        <table class="table table-hover" id="datasform">
-                	  <thead>
-                    	   <tr>
-                           <th>星期</th>
-                           <th>运维值班人员</th>
-			   <th>dba值班人员(ps:dba为周值班)</th>
-                           </tr>
-                           </thead>
-                           <tbody>
-			     {% for key,value in yw_list.items %}
-                              <tr class="even gradeX">
-			      <td><span class="numberClass"></span></td>
-			      <td>{{ key }} {{value.0}}</td>
-			     {% endfor%}
-			      <td><span class="js-dba"></span></td>
-                              </tr>
-			      <tr><td>紧急联系人：{% for i in rota %}{% if i.emergency_contact == 0 %}{{i.name.nickname}} {{ i.iphone.iphone }} {% endif %}{% endfor %}<td></tr>
-                           </tbody>
-                          </table>
-                     </div>
-                     </div>
-                   </div>
-                      <!--电话值班表-->
-                   <div class="col-md-4">
-                     <div class="panel panel-info">
-                       <div class="panel-heading">
-                          <h3 class="panel-title">电话值班表</h3>		  
-                       </div>
-                       <div class="panel-body">
-                       <table class="table table-hover" id="iphoneform">
-                 	  <thead>
-                    	  <tr>
-                          <th>本周</th>
-                          <th>下周</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-			    <td class="nowweek"></td>
-			    <td class="nextweek"></td>
-                            <tr><td>紧急联系人：{% for i in rota %}{% if i.emergency_contact == 0 %}{{i.name.nickname}} {{ i.iphone.iphone }} {% endif %}{% endfor %}<td></tr>
-                          </tbody>
-                        </table>
-                     </div>
-                      </div>
-                   </div>
-              </div>
-              </div>
-              <!--运维流程-->
-              <div class="col-md-12">
-                  <div class="panel panel-danger">
-                       <div class="panel-heading">
-                         <h3 class="panel-title">运维流程</h3>
-                       </div>
-                       <div class="panel-body">
-                         <table class="table table-hover">
-		 	 <thead>
-			  <tr>
-			  <th>等级</th>
-			  <th>响应时间</th>
-			  <th>跟进人员</th>
-			  <th>处理问题和升级流程</th>
-			  <th>参与人员</th>
-			  </tr>
-		  	 </thead>
-		         <tbody>
+	   </div>
+	  </div>
+      <div class="col-md-10">
+       <div class="panel panel-info">
+	    <div class="panel-heading">
+		   <h3 class="panel-title">运维值班信息</h3>
+	     </div>
+	     <div class="panel-body">
+         <div class="col-md-8" align="center">
+             <table class="table table-hover" id="datasform">
+                    		  <thead>
+                        		<tr>
+                           		<th>星期</th>
+                           		<th>运维值班人员</th>
+					<th>dba值班人员(ps:dba为周值班)</th>
+                        		</tr>
+                              </thead>
+                              <tbody>
+							  {% for key,value in yw_list.items %}
+                               <tr class="even gradeX">
+								   <td><span class="numberClass"></span></td>
+			                        <td>{{ key }} {{value.0}}</td>
+								    {% endfor%}
+								    <td><span class="js-dba"></span></td>
+                                </tr>
+							  <tr><td>紧急联系人：{% for i in rota %}{% if i.emergency_contact == 0 %}{{i.name.nickname}} {{ i.iphone.iphone }} {% endif %}{% endfor %}<td></tr>
+                              </tbody>
+                              </table>
+         </div>
+         <div class="col-md-4" align="center">
+            <table class="table table-hover" id="iphoneform">
+                    		  <thead>
+                        		<tr>
+                           		<th>本周</th>
+                           		<th>下周</th>
+                        		</tr>
+                              </thead>
+                              <tbody>
+							    <td class="nowweek"></td>
+								<td class="nextweek"></td>
+                                <tr><td>紧急联系人：{% for i in rota %}{% if i.emergency_contact == 0 %}{{i.name.nickname}} {{ i.iphone.iphone }} {% endif %}{% endfor %}<td></tr>
+                              </tbody>
+                              </table>
+         </div>
+		</div> 	 
+	   </div>
+      </div>
+      <div class="col-md-10">
+        <div class="panel panel-danger">
+	      <div class="panel-heading">
+		     <h3 class="panel-title">运维流程</h3>
+	      </div>
+	    <div class="panel-body">
+			<table class="table table-hover">
+		 				 <thead>
+							<tr>
+			  				<th>等级</th>
+			  				<th>响应时间</th>
+			 				<th>跟进人员</th>
+			 				<th>处理问题和升级流程</th>
+			  				<th>参与人员</th>
+							</tr>
+		  				 </thead>
+		                 <tbody>
                            {% for i in events %}
                      		 <tr>
                        		 <td>{{ i.level }}</td>
-				 <td>{{ i.responsetime }}</td>
+							 <td>{{ i.responsetime }}</td>
                       		 <td>{{i.processingpersonnel}}</td>
                        		 <td>{{ i.event }}</td>
                       		 <td>{{ i.participant }}</td>
                      		 </tr>
-                 	  {% endfor %}
-		 	  </tbody>
-			  </table>
-                       </div>
-                  </div>
-              </div>
-            </div>
+                 			 {% endfor %}
+		 				 </tbody>
+					 </table>
+
+	    </div>
         </div>
-    </div>
-
-<!--content-end-->
-</div>     
-</section>
+        </div>
+      </div>
 </div>
-
+<!--bodyend-->
+    </section>
+ </div>
 <script>
  $('.collapse').collapse()
 weekofyear =  (((new Date())-(new Date("2017-01-02")))/(24*60*60*7*1000)|0) +1;
@@ -360,3 +334,4 @@ number();
 });
 </script>
 </html>
+
