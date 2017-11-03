@@ -22,8 +22,6 @@ urlpatterns = [
     url(r'^event_delete/(?P<ids>\d+)/$',event.event_delete,name='event_delete'),
 
     #platform 运维平台
-    url(r'^platform_index',platform.platform_list,name='platform_index'),
-    url(r'^platform_list',platform.platform_list,name='platform_list'),
     url(r'^platform_add',platform.platform_add,name='platform_add'),
     url(r'^platformclass_add',platform.platformclass_add,name='platformclass_add'),
     url(r'^platform_edit/(?P<ids>\d+)/$', platform.platform_edit, name='platform_edit'),

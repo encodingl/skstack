@@ -26,13 +26,11 @@ def rota_add(request):
            rota.save()
            tips = u'增加成功'
            display_control = ""
-           #return HttpResponseRedirect(reverse('rota_add'))
        else:
            tips = u"增加失败"
            displ_control = ""
     else:
         rota = rotaform()
-        tips = u"空数据"
     return render_to_response("skyw/rota_add.html",locals(),RequestContext(request))
 
 @login_required()

@@ -85,6 +85,7 @@
          <th>值班人员联系方式</th>
          <th>是否轮值</th>
          <th>是否为紧急联系人</th>
+         <th>是否需要电话值班</th>
          </tr>
        </thead>
        <tbody>
@@ -97,6 +98,7 @@
                 <td>{{i.iphone}}</td>
                 <td>{{i.spell}}</td>
                 <td>{{i.emergency_contact}}</td>
+                <td>{{i.iphone_rota}}</td>
                 <td>
                   <a href="{% url 'rota_edit' i.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
                   <a href="{% url 'rota_delete' i.id %}" onclick="return confirm('确认删除吗？？')"><span class="btn btn-sm btn-danger ">删除</span></a>

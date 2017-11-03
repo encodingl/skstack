@@ -40,7 +40,7 @@ class Devops(models.Model):
     job = models.IntegerField(choices=JOB,verbose_name='运维角色',null=True)
     iphone = models.CharField(u'联系方式',max_length=20)
     jobclass = models.CharField(u'运维系统分工',max_length=20)
-    platform_name = models.ForeignKey(Platform,related_name='platformname',on_delete=models.SET_NULL, null=True, blank=True)
+    platform_name = models.ManyToManyField(Platform)
     businessline = models.ManyToManyField(YwGroup)
     secondaryname = models.ForeignKey(UserInfo,related_name='nickname_backup',on_delete=models.SET_NULL, null=True, blank=True)
     jobuse = models.CharField(u'运维工具',max_length=15)
@@ -52,10 +52,12 @@ class Devops(models.Model):
 class Rota(models.Model):
     SPELL_TYPE=((0,'是'),(1,'否'))
     EMERGENCY_type=((0,'是'),(1,'否'))
+    IPHONE_ROTA=((0,'是'),(1,'否'))
     name = models.ForeignKey(UserInfo,related_name='rota_name',null=True, blank=False)
     iphone = models.ForeignKey(Devops,related_name='rota_iphone',on_delete=models.SET_NULL, null=True, blank=False)
     spell = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否轮值',null=False)
     emergency_contact = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否为重要联系人',null=False)
+    iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False)
 
     def __unicode__(self):
         return self.name

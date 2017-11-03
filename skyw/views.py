@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
+from collections import OrderedDict
 # Create your views here.
 
 def index(request):
@@ -24,16 +25,17 @@ def index(request):
     # 1.先区分应用运维和dba运维，根据区分的人员拿到对应的信息，应用运维组成lists。dba运维组成lists。放入运维值班表的固定td
     # 2.然后再获取轮班spell参数。组成list。放入运维值班表中的轮班td。
     # type = Rota.objects.select_related().all().values_list('name__type')
-    yw_list={}
-    dba_list={}
-    yw_spell_list={}
-    dba_spell_list={}
+    yw_list=OrderedDict()
+    dba_list=OrderedDict()
+    yw_spell_list=OrderedDict()
+    dba_spell_list=OrderedDict()
+    telarrdba=OrderedDict()
     for i in rota:
             names = Rota.objects.get(name=i.name)
             types=names.name.type
             emergency_contact=i.emergency_contact
             print emergency_contact
-            if types == 1 and i.emergency_contact == 1:
+            if types == 1 and i.emergency_contact == 1 and i.iphone_rota==0:
                yw_list[str(i.name.nickname)]=[str(i.iphone.iphone)]
                if i.spell==0:
                   yw_spell_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
@@ -41,17 +43,16 @@ def index(request):
                 dba_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
                 if i.spell==0:
                     dba_spell_list[str(i.name.nickname)]=[str(i.iphone.iphone)]
+                if i.iphone_rota==0:
+                    telarrdba[str(i.name.nickname)]=[str(i.iphone.iphone)]
             elif  i.emergency_contact == 0:
                 print i.name
             else:
                 print "error"
     dba_spell_list=json.dumps(dba_spell_list,encoding="UTF-8",ensure_ascii=False)
     yw_spell_list=json.dumps(yw_spell_list,encoding="UTF-8",ensure_ascii=False)
-    #print test
     print dba_spell_list
-    telarr =dict(dba_list.items()+yw_list.items())
-    telarr.pop('毕占杰')
-    telarr.pop('杨丽敏')
+    telarr =dict(telarrdba.items()+yw_list.items())
     telarr=json.dumps(telarr,encoding="UTF-8",ensure_ascii=False)
     print telarr
 
@@ -71,7 +72,7 @@ def index(request):
     #print dicts
     #print d1
 
-    return render_to_response("skyw/index.html", locals(), RequestContext(request))
+    return render_to_response("index.html", locals(), RequestContext(request))
 @login_required()
 @permission_verify()
 def list(request):
@@ -94,10 +95,10 @@ def add(request):
        if devops.is_valid(): 
            devops.save()
            tips = u'增加成功'
-           return HttpResponseRedirect(reverse('add'))
+           display_control=""
        else:
            tips = u"增加失败"
-           displ_control = ""
+           display_control = ""
     else:
         devops = devopsform()
         tips = u"空数据"

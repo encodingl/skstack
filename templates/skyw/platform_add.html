@@ -19,7 +19,7 @@
       <form action="{% url 'platform_add' %}" method="post">
         {% csrf_token %}
         <h3>新增平台</h3>
-        {{ platform.as_p }}
+        {{ platform.as_p }} 
         <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{% url 'yw' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
       </form>

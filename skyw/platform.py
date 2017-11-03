@@ -12,29 +12,6 @@ from skaccounts.permission import permission_verify
 # Create your views here.
 
 
-
-def platform_list(request):
-    temp_name = "skyw/yw-header.html"
-    type = PlatFormclass.objects.all()
-    d1={}
-    list=[]
-    for  name in type:
-        print name
-        platformclass1 = PlatFormclass.objects.get(platform_class=name)
-        admin_obj = platformclass1.platform_set.all()
-        for admin_line in admin_obj:
-          platformname = admin_line.platform_name
-          platformurl= admin_line.platform_url
-          #print platformname
-          #print platformurl
-          #context=platformname +"," + platformurl
-          d1.setdefault(str(name),[]).append([platformname,platformurl])
-        print d1
-    dicts =json.dumps(d1,encoding="UTF-8",ensure_ascii=False)
-    print dicts
-
-    return render_to_response("skyw/platform.html",locals(), RequestContext(request))
-
 def platformclass_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
@@ -43,12 +20,11 @@ def platformclass_add(request):
 
            platformclasss.save()
            tips = u'增加成功'
-           return HttpResponseRedirect(reverse('platformclass_add'))
+           display_control=" "
        else:
            tips = u"增加失败"
-           displ_control = ""
+           display_control = ""
     else:
-
         platformclasss = platformclassform()
         tips = u"空数据"
     return render_to_response("skyw/platformclass_add.html", locals(), RequestContext(request))
@@ -59,33 +35,35 @@ def platformclass_delete(request,ids):
     return HttpResponseRedirect(reverse('list'))
 
 def platformclass_edit(request,ids):
-    platformclassedit = PlatFormclass.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"
+    platformclassedit = PlatFormclass.objects.get(id=ids)
     if request.method=="POST":
         platformclassforms = platformclassform(request.POST,instance=platformclassedit)
         if platformclassforms.is_valid():
             platformclassforms.save()
-            return HttpResponseRedirect(reverse('platform_list'))
+            tips=u"编辑成功"
+            display_control=" "
+        else:
+            tips=u"编辑失败"
+            display_control=" "
     else:
         platformclassforms= platformclassform(instance=platformclassedit)
+        
     return render_to_response('skyw/platformclass_edit.html',locals(),RequestContext(request))
 
 def platform_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
-
        platform = platformform(request.POST)
        if platform.is_valid() :
            platform.save()
-
            tips = u'增加成功'
-           return HttpResponseRedirect(reverse('platform_add'))
+           display_control=" "
        else:
            tips = u"增加失败"
-           displ_control = ""
+           display_control = ""
     else:
         platform = platformform()
-        tips = u"空数据"
     return render_to_response("skyw/platform_add.html", locals(), RequestContext(request))
 
 def platform_delete(request,ids):
@@ -102,7 +80,11 @@ def platform_edit(request,ids):
         nform = platformform(request.POST,instance=platformedit)
         if nform.is_valid():
             nform.save()
-            return HttpResponseRedirect(reverse('platform_list'))
+            tips = u"编辑成功"
+            display_control=" "
+        else:
+            tips="编辑失败"
+            display_control=" "
     else:
         nform= platformform(instance=platformedit)
     return render_to_response('skyw/platform_edit.html',locals(),RequestContext(request))

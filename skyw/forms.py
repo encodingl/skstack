@@ -16,19 +16,20 @@ class devopsform(forms.ModelForm):
             'job': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'iphone': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'jobclass':  forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'platform_name': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'businessline': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'platform_name': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'businessline': forms.SelectMultiple(attrs={'name':'businessline','class': 'form-control', 'style': 'width:500px;'}),
             'secondaryname': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),}
 
 class rotaform(forms.ModelForm):
     class Meta:
         model = Rota
-        fields = ('name','iphone','spell','emergency_contact')
+        fields = ('name','iphone','spell','emergency_contact','iphone_rota')
         widgets = {
             'name': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'iphone': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'spell': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'emergency_contact': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'iphone_rota': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
 
 class noticeform(forms.ModelForm):
@@ -58,4 +59,14 @@ class eventform(forms.ModelForm):
     class Meta:
         model = event
         exclude = ("id",)
+        fields = ('level','responsetime','processingpersonnel','event','participant')
+        widgets = {
+            'level': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'responsetime': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'processingpersonnel': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            #'event': forms.TextArea(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'event': forms.Textarea(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'participant': forms.Textarea(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+
+        }
 

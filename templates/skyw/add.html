@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-
-
+<head>
+    <link href="scripts/duallistbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+    <script src="scripts/jquery/jquery-2.1.4.min.js"></script>
+    <script src="scripts/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>-->
+    <script src="scripts/duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+</head>
   <div class="content-wrapper">
     <section class="content-header">
         <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
@@ -33,17 +38,23 @@
     </section>
 
   </div>
-<script>
-select();
- function select(){
+
+
+    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+    <script>
         var demo1 = $('select[name="businessline"]').bootstrapDualListbox({
-              nonSelectedListLabel: '可选择业务',
-              selectedListLabel: '已选择业务',
-              preserveSelectionOnMove: 'moved',
-              moveOnSelect: false,
+            nonSelectedListLabel: '可选择',
+            selectedListLabel: '已选择',
+            preserveSelectionOnMove: 'moved',
+            moveOnSelect: false,
         });
-        }
-</script>
+        var demo2 = $('select[name="platform_name"]').bootstrapDualListbox({
+            nonSelectedListLabel: '可选择',
+            selectedListLabel: '已选择',
+            preserveSelectionOnMove: 'moved',
+            moveOnSelect: false,
+        });
+    </script>
 
 {% endblock %}
 
