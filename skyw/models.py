@@ -57,7 +57,7 @@ class Rota(models.Model):
     iphone = models.ForeignKey(Devops,related_name='rota_iphone',on_delete=models.SET_NULL, null=True, blank=False)
     spell = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否轮值',null=False)
     emergency_contact = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否为重要联系人',null=False)
-    iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False)
+    iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False, blank=False)
 
     def __unicode__(self):
         return self.name

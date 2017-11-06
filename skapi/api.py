@@ -3,11 +3,14 @@ from django.core.mail import send_mail
 from lib.com import config, cfg
 import requests, json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
+
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
 import logging
+
 log = logging.getLogger('api')
 
 
@@ -112,5 +115,7 @@ class sendMobile:
 
 
 class sendDingding:
-    '''待开发...'''
-    pass
+    def __init__(self):
+        self.__params = {'corpid': cfg.get('dingding', 'corpid'),
+                         'corpsecret': cfg.get('dingding', 'corpsecret')}
+        self.url_get_token =
