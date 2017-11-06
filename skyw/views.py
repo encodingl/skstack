@@ -50,8 +50,8 @@ def index(request):
     #print test
     print dba_spell_list
     telarr =dict(dba_list.items()+yw_list.items())
-    telarr.pop('毕占杰')
-    telarr.pop('杨丽敏')
+    #telarr.pop('毕占杰')
+    #telarr.pop('杨丽敏')
     telarr=json.dumps(telarr,encoding="UTF-8",ensure_ascii=False)
     print telarr
 

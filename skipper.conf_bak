@@ -10,8 +10,8 @@ engine = mysql
 host = 127.0.0.1
 port = 3306
 user = root
-password = 
-database = skipper5
+password = root@123 
+database = skipper
 
 [jump_db]
 engine = mysql
