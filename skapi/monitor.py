@@ -341,7 +341,7 @@ def zabbixalart(request):
             body["content"] = content[u'[错误日志]:']
             form.append({'key': u'[故障主机]:', 'value': content[u'[故障主机]:']})
             form.append({'key': u'[故障时间]:', 'value': content[u'[故障时间]:']})
-            form.append({'key': u'[事件ID]', 'value': content[u'[事件ID]']})
+            form.append({'key': u'[事件ID]:', 'value': content[u'[事件ID]:']})
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
