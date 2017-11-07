@@ -308,21 +308,14 @@ def zabbixalart(request):
         content = json.loads(zabbix_content)
         if type == 'appname':
             message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n"%(content[u'[故障名称]:'],content[u'[故障主机]:'],content[u'[故障时间]:'],content[u'[事件ID]:'],content[u'[错误日志]:'])
-            print "1=",content[u'[故障名称]:']
-            print "2=", content[u'[故障主机]:']
-            print "3=", content[u'[故障时间]:']
-            print "4=", content[u'[事件ID]:']
-            print "5=", content[u'[错误日志]:']
-            print "message=",message
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
                 ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=message,appname=appname)
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            for wx in userlist:
-                print wx.name.email
-                SendWeixin().send(wx.name.email, message, serial)
+            wxlist = [wx.name.email for wx in userlist]
+            SendWeixin().send('|'.join(wxlist), message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             emaillist = [ul.name.email for ul in userlist]
