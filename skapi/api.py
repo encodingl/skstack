@@ -54,7 +54,7 @@ class SendWeixin:
                 r = requests.get(self._Gurl)
                 token = r.json()['access_token']
                 Purl = "%s?access_token=%s" % (cfg.get('api', 'weixin_purl'), token)
-                requests.post(Purl, data=json.dumps(self._body))
+                requests.post(Purl, data=json.dumps(body))
                 log.info(
                     '[微信信息发送成功]:' + '[编号:' + serial + ']' + '[收件人:' + receiver + ']' + '[内容:' + message + ']')
             except Exception, msg:
