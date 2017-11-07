@@ -344,7 +344,7 @@ def zabbixalart(request):
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
-            SendDingding().send(agentid=cfg.get('dingding', 'agentid'),userid='|'.join(ddlist),messages=messages)
+            SendDingding().send(agentid=cfg.get('dingding', 'agentid'),userid='|'.join(ddlist),message=message,messages=messages)
             userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             for u in userlist:

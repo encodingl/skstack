@@ -130,7 +130,7 @@ class SendDingding:
         except:
             self.__raise_error(res)
 
-    def send(self, agentid='', messages='', userid='', toparty=''):
+    def send(self, agentid='', messages='', userid='', toparty='',message=''):
         payload = {
             'touser': userid,
             'toparty': toparty,
@@ -142,7 +142,7 @@ class SendDingding:
         params = self.__token_params
         try:
             res = requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
-            log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + json.dumps(messages) + ']')
+            log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + message + ']')
             return res.json()
         except:
             self.__raise_error(res)
