@@ -320,8 +320,8 @@ def zabbixalart(request):
                 ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=message,appname=appname)
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            weixinlist = '|'.join([wx.name.email for wx in userlist])
-            SendWeixin().send(weixinlist, message, serial)
+            for wx in userlist:
+                SendWeixin().send(wx.name.email, message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             emaillist = [ul.name.email for ul in userlist]
