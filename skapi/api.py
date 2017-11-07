@@ -3,14 +3,11 @@ from django.core.mail import send_mail
 from lib.com import config, cfg
 import requests, json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
-
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
 import logging
-
 log = logging.getLogger('api')
 
 
@@ -131,18 +128,21 @@ class SendDingding:
             self.__raise_error(res)
 
     def send(self, agentid='', messages='', userid='', toparty='',message=''):
-        payload = {
-            'touser': userid,
-            'toparty': toparty,
-            'agentid': agentid,
-            'msgtype': 'oa',
-            'oa': messages
-        }
-        headers = {'content-type': 'application/json'}
-        params = self.__token_params
-        try:
-            res = requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
-            log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + message + ']')
-            return res.json()
-        except:
-            self.__raise_error(res)
+        cfg = config()
+        if cfg.get('api', 'dd_status') == 'On':
+            payload = {
+                'touser': userid,
+                'toparty': toparty,
+                'agentid': agentid,
+                'msgtype': 'oa',
+                'oa': messages
+            }
+            headers = {'content-type': 'application/json'}
+            params = self.__token_params
+            try:
+                requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
+                log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + message + ']')
+            except Exception, msg:
+                log.error(msg)
+        else:
+            log.warning("钉钉功能未开启.")
