@@ -122,5 +122,8 @@ class ZabbixRecordForm(forms.ModelForm):
             'create_time': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'appname': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'subject': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'status': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'host': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'event': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'content': Textarea(attrs={'class': 'form-control', 'readonly': True}),
         }

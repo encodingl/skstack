@@ -79,10 +79,13 @@ class AlarmRecord(models.Model):
 
 class ZabbixRecord(models.Model):
     name = models.CharField(u"发送者", max_length=10, null=True)
-    create_time = models.DateTimeField(u'保存日期', default=timezone.now)
+    create_time = models.DateTimeField(u'记录时间', default=timezone.now)
     token = models.CharField(u"授权Token", max_length=20, null=True)
     appname = models.CharField(u"APPNAME", max_length=50, null=True)
     subject = models.TextField(u"标题", max_length=50, null=True)
+    status = models.CharField(u"状态", max_length=30, null=True)
+    host = models.CharField(u"主机", max_length=30, null=True)
+    event = models.CharField(u"事件ID", max_length=30, null=True)
     content = models.TextField(u"内容", max_length=200, null=True)
 
     def __unicode__(self):

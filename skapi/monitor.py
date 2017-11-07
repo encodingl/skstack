@@ -306,12 +306,15 @@ def zabbixalart(request):
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
         content = json.loads(zabbix_content)
-        message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (content[u'[故障名称]:'], content[u'[故障主机]:'], content[u'[故障时间]:'], content[u'[事件ID]:'], content[u'[错误日志]:'])
+        message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (
+        content[u'[故障名称]:'], content[u'[故障主机]:'], content[u'[故障时间]:'], content[u'[事件ID]:'], content[u'[错误日志]:'])
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
-                ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=message,appname=appname)
+                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
+                                                 status=content[u'[故障状态]:'], host=content[u'[故障主机]:'],
+                                                 event=content[u'[事件ID]:'], content=content[u'[错误日志]:'])
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             wxlist = [wx.name.email for wx in userlist]
@@ -331,8 +334,8 @@ def zabbixalart(request):
             messages = {}
             body = {}
             form = []
-            messages["message_url"] = cfg.get('dingding', 'url')
-            messages["pc_message_url"] = cfg.get('dingding', 'pc_url')
+            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % zr.id
+            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % zr.id
             messages["head"] = {
                 "bgcolor": "DBE97659",  # 前两位表示透明度
                 "text": u"服务器故障"
@@ -345,7 +348,8 @@ def zabbixalart(request):
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
-            SendDingding().send(agentid=cfg.get('dingding', 'agentid'),userid='|'.join(ddlist),message=message,messages=messages)
+            SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
+                                messages=messages)
             userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             for u in userlist:
@@ -414,7 +418,7 @@ def api(request, method):
                     type = 'linkedsee_szyw'
                 AlarmRecord.objects.create(type=u'电话', name=name, token=token,
                                            receiver=type, content=content, level=level)
-        if  method == 'senddingding':
+        if method == 'senddingding':
             pass
 
         if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
@@ -508,7 +512,7 @@ def alarmapidetail(request, ids):
 @permission_verify()
 def alarmlogrecord(request):
     temp_name = "skapi/api-header.html"
-    obj_info = ZabbixRecord.objects.all()
+    obj_info = ZabbixRecord.objects.all()[0:200]
     return render_to_response('skapi/alarmlogrecord.html', locals(), RequestContext(request))
 
 
@@ -519,3 +523,9 @@ def alarmlogdetail(request, ids):
     obj = get_object(ZabbixRecord, id=ids)
     af = ZabbixRecordForm(instance=obj)
     return render_to_response('skapi/alarmapidetail.html', locals(), RequestContext(request))
+
+
+def ddlogdetail(request, ids):
+    obj = get_object(ZabbixRecord, id=ids)
+    af = ZabbixRecordForm(instance=obj)
+    return render_to_response('skapi/ddlogdetail.html', locals(), RequestContext(request))

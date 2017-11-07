@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^monitor/alarmlogrecord', monitor.alarmlogrecord, name='monitor_alarmlogrecord'),
     url(r'^monitor/alarmapidetail/(?P<ids>\d+)/$', monitor.alarmapidetail, name='monitor_alarmapidetail'),
     url(r'^monitor/alarmlogdetail/(?P<ids>\d+)/$', monitor.alarmlogdetail, name='monitor_alarmlogdetail'),
+    url(r'^monitor/ddlogdetail/(?P<ids>\d+)/$', monitor.ddlogdetail, name='monitor_ddlogdetail'),
     url(r'^monitor/setuplist', monitor.setuplist, name='monitor_setuplist'),
     url(r'^monitor/zabbixalart', monitor.zabbixalart, name='monitor_zabbixalart'),
     url(r'^api/(?P<method>\w+)', monitor.api, name='api'),
