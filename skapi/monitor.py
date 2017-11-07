@@ -307,13 +307,7 @@ def zabbixalart(request):
         serial = ag_obj.serial
         content = json.loads(zabbix_content)
         if type == 'appname':
-            message = "[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n"%(content[u'[故障名称]:'],content[u'[故障主机]:'],content[u'[故障时间]:'],content[u'[事件ID]:'],content[u'[错误日志]:'])
-            print "1=",content[u'[故障名称]:']
-            print "2=", content[u'[故障主机]:']
-            print "3=", content[u'[故障时间]:']
-            print "4=", content[u'[事件ID]:']
-            print "5=", content[u'[错误日志]:']
-            print "message=",message
+            message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n"%(content[u'[故障名称]:'],content[u'[故障主机]:'],content[u'[故障时间]:'],content[u'[事件ID]:'],content[u'[错误日志]:'])
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
@@ -341,13 +335,13 @@ def zabbixalart(request):
             messages["message_url"] = cfg.get('dingding', 'web')
             messages["head"] = {
                 "bgcolor": "DBE97659",  # 前两位表示透明度
-                "text": "服务器故障"
+                "text": u"服务器故障"
             }
             body["title"] = subject
-            body["content"] = content['[错误日志]:']
-            form.append({'key': '[故障主机]:', 'value': content[u'[故障主机]:']})
-            form.append({'key': '[故障时间]:', 'value': content[u'[故障时间]:']})
-            form.append({'key': '[事件ID]', 'value': content[u'[事件ID]']})
+            body["content"] = content[u'[错误日志]:']
+            form.append({'key': u'[故障主机]:', 'value': content[u'[故障主机]:']})
+            form.append({'key': u'[故障时间]:', 'value': content[u'[故障时间]:']})
+            form.append({'key': u'[事件ID]', 'value': content[u'[事件ID]']})
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
