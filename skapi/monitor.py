@@ -331,7 +331,8 @@ def zabbixalart(request):
             messages = {}
             body = {}
             form = []
-            messages["message_url"] = cfg.get('dingding', 'web')
+            messages["message_url"] = cfg.get('dingding', 'url')
+            messages["pc_message_url"] = cfg.get('dingding', 'pc_url')
             messages["head"] = {
                 "bgcolor": "DBE97659",  # 前两位表示透明度
                 "text": u"服务器故障"
