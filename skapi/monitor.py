@@ -321,6 +321,7 @@ def zabbixalart(request):
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             for wx in userlist:
+                print wx.name.email
                 SendWeixin().send(wx.name.email, message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
