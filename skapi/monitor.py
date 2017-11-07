@@ -306,8 +306,8 @@ def zabbixalart(request):
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
         content = json.loads(zabbix_content)
+        message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (content[u'[故障名称]:'], content[u'[故障主机]:'], content[u'[故障时间]:'], content[u'[事件ID]:'], content[u'[错误日志]:'])
         if type == 'appname':
-            message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n"%(content[u'[故障名称]:'],content[u'[故障主机]:'],content[u'[故障时间]:'],content[u'[事件ID]:'],content[u'[错误日志]:'])
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
@@ -319,7 +319,7 @@ def zabbixalart(request):
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             emaillist = [ul.name.email for ul in userlist]
-            SendMail().send(subject, emaillist, content)
+            SendMail().send(subject, emaillist, message)
             userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             tellist = [ul.name.tel for ul in userlist]
@@ -328,7 +328,6 @@ def zabbixalart(request):
             userlist = AlarmList.objects.filter(group=ag_obj, dd_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             ddlist = [ul.name.dd for ul in userlist]
-
             messages = {}
             body = {}
             form = []
@@ -350,26 +349,25 @@ def zabbixalart(request):
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             for u in userlist:
                 if u.tel_status == 1:
-                    SendMobile(content).send()
+                    SendMobile().send(message)
                 elif ag_obj.tel_status == 2:
                     SendMobile().send(content, type='linkedsee_zhoujie')
             return HttpResponse("ok")
         else:
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
-            for wx in userlist:
-                message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
-                SendWeixin().send(wx.name.email, message, serial)
+            wxlist = [wx.name.email for wx in userlist]
+            SendWeixin().send('|'.join(wxlist), message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
             emaillist = [ul.name.email for ul in userlist]
-            SendMail().send(subject, emaillist, content)
+            SendMail().send(subject, emaillist, message)
             userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
-                SendSms().send(tel, content)
+                SendSms().send(tel, subject)
             userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1)
             for u in userlist:
                 if u.tel_status == 1:
-                    SendMobile().send(content)
+                    SendMobile().send(message)
                 elif ag_obj.tel_status == 2:
                     SendMobile().send(content, type='linkedsee_zhoujie')
             return HttpResponse("ok")
