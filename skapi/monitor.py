@@ -4,11 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Q
+import json
 
 from skaccounts.permission import permission_verify
 
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
-from skapi.api import sendWeixin, sendMail, sendSms, sendMobile
+from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
 from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm, \
     AlarmRecordForm, ZabbixRecordForm
 from lib.com import get_object, config, cfg, config_path
@@ -294,63 +295,83 @@ def setuplist(request):
 
 def zabbixalart(request):
     zabbix_subject = request.POST.get('subject', '')
-    content = request.POST.get('content', '')
+    zabbix_content = request.POST.get('content', '')
     type = request.POST.get('type', '')
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
-        log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + content + ']')
+        log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + zabbix_content + ']')
         sub_data = zabbix_subject.split(',', 1)
         groupid = int(sub_data[0])
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
+        content = json.loads(zabbix_content)
         if type == 'appname':
+            message = "[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n"%(content[u'[故障名称]:'],content[u'[故障主机]:'],content[u'[故障时间]:'],content[u'[事件ID]:'],content[u'[错误日志]:'])
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
-                ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=content,appname=appname)
+                ZabbixRecord.objects.create(name='zabbix',token=token,subject=subject, content=message,appname=appname)
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            for wx in userlist:
-                message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
-                sendWeixin(wx.name.email, message, serial).send()
+            weixinlist = '|'.join([wx.name.email for wx in userlist])
+            SendWeixin().send(weixinlist, message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             emaillist = [ul.name.email for ul in userlist]
-            sendMail(subject, emaillist, content).send()
+            SendMail().send(subject, emaillist, content)
             userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
-                sendSms(tel, content).send()
+                SendSms().send(tel, subject)
+            userlist = AlarmList.objects.filter(group=ag_obj, dd_status=1).filter(
+                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            ddlist = [ul.name.dd for ul in userlist]
+
+            messages = {}
+            body = {}
+            form = []
+            messages["message_url"] = cfg.get('dingding', 'web')
+            messages["head"] = {
+                "bgcolor": "DBE97659",  # 前两位表示透明度
+                "text": "服务器故障"
+            }
+            body["title"] = subject
+            body["content"] = content['[错误日志]:']
+            form.append({'key': '[故障主机]:', 'value': content[u'[故障主机]:']})
+            form.append({'key': '[故障时间]:', 'value': content[u'[故障时间]:']})
+            form.append({'key': '[事件ID]', 'value': content[u'[事件ID]']})
+            body['form'] = form
+            body["author"] = u"来自深圳运维监控系统"
+            messages['body'] = body
+            SendDingding().send(agentid=cfg.get('dingding', 'agentid'),userid='|'.join(ddlist),messages=messages)
             userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             for u in userlist:
                 if u.tel_status == 1:
-                    sendMobile(content).send()
+                    SendMobile(content).send()
                 elif ag_obj.tel_status == 2:
-                    sendMobile(content, type='linkedsee_zhoujie').send()
-
-
+                    SendMobile().send(content, type='linkedsee_zhoujie')
             return HttpResponse("ok")
         else:
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
             for wx in userlist:
                 message = u'[通知标题]:%s\n[收件人]:%s\n[通知内容]:\n%s' % (subject, wx.name.email, content)
-                sendWeixin(wx.name.email, message, serial).send()
+                SendWeixin().send(wx.name.email, message, serial)
             userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
             emaillist = [ul.name.email for ul in userlist]
-            sendMail(subject, emaillist, content).send()
+            SendMail().send(subject, emaillist, content)
             userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
             tellist = [ul.name.tel for ul in userlist]
             for tel in tellist:
-                sendSms(tel, content).send()
+                SendSms().send(tel, content)
             userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1)
             for u in userlist:
                 if u.tel_status == 1:
-                    sendMobile(content).send()
+                    SendMobile().send(content)
                 elif ag_obj.tel_status == 2:
-                    sendMobile(content, type='linkedsee_zhoujie').send()
+                    SendMobile().send(content, type='linkedsee_zhoujie')
             return HttpResponse("ok")
     return HttpResponse("error")
 
@@ -371,29 +392,32 @@ def api(request, method):
                     receiverlist.append(receiver)
                     AlarmRecord.objects.create(type=u'邮件', name=name, token=token, subject=subject, receiver=receiver,
                                                content=content, level=level)
-            sendMail(subject, receiverlist, content).send()
+            SendMail().send(subject, receiverlist, content)
         if method == 'sendweixin':
             serial = request.POST.get('serial', '')
             for receiver in temp_reveiver:
                 if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
-                    sendWeixin(receiver, content, serial).send()
+                    SendWeixin().send(receiver, content, serial)
                     AlarmRecord.objects.create(type=u'微信', name=name, token=token, serial=serial, receiver=receiver,
                                                content=content, level=level)
         if method == 'sendsms':
             mobiles = request.POST.get('mobiles', '').split(',')
             for m in mobiles:
                 if sinal_alarmlist.filter(name__tel=m).filter(sms_status=1):
-                    sendSms(m, content).send()
+                    SendSms().send(m, content)
                     AlarmRecord.objects.create(type=u'短信', name=name, token=token, receiver=m, content=content,
                                                level=level)
         if method == 'sendmobile':
             type = request.POST.get('type', '')
             if sinal_alarmlist.filter(name__name=name).filter(tel_status=1):
-                sendMobile(content, type).send()
+                SendMobile().send(content, type)
                 if type != 'linkedsee_zhoujie':
                     type = 'linkedsee_szyw'
                 AlarmRecord.objects.create(type=u'电话', name=name, token=token,
                                            receiver=type, content=content, level=level)
+        if  method == 'senddingding':
+            pass
+
         if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
             groupid = request.POST.get('groupid', '')
             group_obj = AlarmGroup.objects.get(id=groupid)
@@ -408,22 +432,22 @@ def api(request, method):
             for u in group_alarmlist:
                 if u.name.email not in receiverlist:
                     receiverlist.append(u.name.email)
-            sendMail(subject, receiverlist, content).send()
+            SendMail().send(subject, receiverlist, content)
             for receiver in temp_reveiver:
                 if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
-                    sendWeixin(receiver, content, serial).send()
+                    SendWeixin().send(receiver, content, serial)
             group_alarmlist = group_alarmlist.filter(weixin_status=1)
             for u in group_alarmlist:
                 if u.name.email not in receiverlist:
-                    sendWeixin(receiver, content, serial).send()
+                    SendWeixin().send(receiver, content, serial)
             mobiles = request.POST.get('mobiles', '').split(',')
             for m in mobiles:
                 if sinal_alarmlist.filter(name__tel=m).filter(sms_status=1):
-                    sendSms(m, content).send()
+                    SendSms().send(m, content)
             group_alarmlist = group_alarmlist.filter(sms_status=1)
             for u in group_alarmlist:
                 if u.name.tel not in receiverlist:
-                    sendSms(m, content).send()
+                    SendSms().send(m, content)
         return HttpResponse("ok")
     return HttpResponse("error")
 

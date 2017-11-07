@@ -14,108 +14,135 @@ import logging
 log = logging.getLogger('api')
 
 
-class sendMail:
-    def __init__(self, subject, receiverlist, message):
+class SendMail:
+    def __init__(self):
         self._from = 'Monitor<monitor.sz@mljr.com>'
-        self._subject = subject
-        self._receiverlist = receiverlist
-        self._message = message
 
-    def send(self):
+    def send(self, subject, receiverlist, message):
         cfg = config()
         if cfg.get('api', 'email_status') == 'On':
             try:
-                send_mail(self._subject, self._message, self._from, self._receiverlist, fail_silently=False)
+                send_mail(subject, message, self._from, receiverlist, fail_silently=False)
                 log.info(
-                    '[邮件发送成功]:' + '[标题:' + self._subject + ']' + '[收件人:' + ','.join(
-                        self._receiverlist) + ']' + '[内容:' + self._message + ']')
+                    '[邮件信息发送成功]:' + '[标题:' + subject + ']' + '[收件人:' + ','.join(
+                        receiverlist) + ']' + '[内容:' + message + ']')
             except Exception, msg:
                 log.error(msg)
         else:
             log.warning("邮件功能未开启.")
 
 
-class sendWeixin:
-    def __init__(self, receiver, message, serial):
-        self._receiver = receiver
-        self._message = message
-        self._serial = serial
+class SendWeixin:
+    def __init__(self):
         self._CropID = cfg.get('api', 'weixin_cropid')
         self._Secret = cfg.get('api', 'weixin_secret')
         self._Gurl = "%s?corpid=%s&corpsecret=%s" % (cfg.get('api', 'weixin_gurl'), self._CropID, self._Secret)
-        self._body = {
-            "touser": receiver,
-            "toparty": "",
-            "msgtype": "text",
-            "agentid": serial,
-            "text": {
-                "content": message
-            }
-        }
 
-    def send(self):
+    def send(self, receiver, message, serial, toparty=''):
         cfg = config()
         if cfg.get('api', 'weixin_status') == 'On':
+            body = {
+                "touser": receiver,
+                "toparty": toparty,
+                "msgtype": "text",
+                "agentid": serial,
+                "text": {
+                    "content": message
+                }
+            }
             try:
                 r = requests.get(self._Gurl)
                 token = r.json()['access_token']
                 Purl = "%s?access_token=%s" % (cfg.get('api', 'weixin_purl'), token)
                 requests.post(Purl, data=json.dumps(self._body))
                 log.info(
-                    '[微信发送成功]:' + '[编号:' + self._serial + ']' + '[收件人:' + self._receiver + ']' + '[内容:' + self._message + ']')
+                    '[微信信息发送成功]:' + '[编号:' + serial + ']' + '[收件人:' + receiver + ']' + '[内容:' + message + ']')
             except Exception, msg:
                 log.error(msg)
         else:
             log.warning("微信功能未开启.")
 
 
-class sendSms:
-    def __init__(self, mobile, message):
+class SendSms:
+    def __init__(self):
         self._url = cfg.get('api', 'sms_api')
-        self._mobile = mobile
-        self._message = message
-        self._message = {
-            "msg": '''{'content':'%s','mobile':'%s','bussdepartment':'zabbix','source':'zabbix','type':1}''' % (
-                message, mobile)
-        }
 
-    def send(self):
+    def send(self, mobile, message):
         cfg = config()
         if cfg.get('api', 'sms_status') == 'On':
+            message = {
+                "msg": '''{'content':'%s','mobile':'%s','bussdepartment':'zabbix','source':'zabbix','type':1}''' % (
+                    message, mobile)
+            }
             try:
-                requests.get(self._url, self._message)
-                log.info('[短信发送成功]:' + '[收件人:' + self._mobile + ']' + '[内容:' + self._message['msg'] + ']')
+                requests.get(self._url, message)
+                log.info('[短信信息发送成功]:' + '[收件人:' + mobile + ']' + '[内容:' + message['msg'] + ']')
             except Exception, msg:
                 log.error(msg)
         else:
             log.warning("短信功能未开启.")
 
 
-class sendMobile:
-    def __init__(self, message, type='linkedsee_szyw'):
+class SendMobile:
+    def __init__(self):
         self._url = cfg.get('api', 'linkedsee_api')
         self._token = cfg.get('api', 'szyw_token')
-        if type == 'linkedsee_zhoujie':
-            self._token = cfg.get('api', 'zhoujie_token')
-        self._headers = {
-            'servicetoken': self._token
-        }
-        self._message = "{content:'%s'}" % message
 
-    def send(self):
+    def send(self, content, type='linkedsee_szyw'):
         cfg = config()
         if cfg.get('api', 'tel_status') == 'On':
+            if type == 'linkedsee_zhoujie':
+                self._token = cfg.get('api', 'zhoujie_token')
+            headers = {
+                'servicetoken': self._token
+            }
+            message = "{content:'%s'}" % content
             try:
-                requests.post(self._url, self._message, headers=self._headers)
-                log.info('[电话告警发送成功]:' + '[token:' + self._token + ']' + '[内容:' + self._message + ']')
+                requests.post(self._url, message, headers=headers)
+                log.info('[电话信息发送成功]:' + '[token:' + self._token + ']' + '[内容:' + message + ']')
             except Exception, msg:
                 log.error(msg)
         else:
             log.warning("电话功能未开启.")
 
 
-class sendDingding:
+class SendDingding:
     def __init__(self):
-        self.__params = {'corpid': cfg.get('dingding', 'corpid'),
-                         'corpsecret': cfg.get('dingding', 'corpsecret')}
-        self.url_get_token =
+        self.__params = {
+            'corpid': cfg.get('dingding', 'corpid'),
+            'corpsecret': cfg.get('dingding', 'corpsecret')
+        }
+        self.url_get_token = cfg.get('dingding', 'url_get_token')
+        self.url_send = cfg.get('dingding', 'url_send')
+        self.__token = self.__get_token()
+        self.__token_params = {
+            'access_token': self.__token
+        }
+
+    def __raise_error(self, res):
+        raise Exception('error code: %s,error message: %s' % (res.json()['errcode'], res.json()['errmsg']))
+
+    def __get_token(self):
+        headers = {'content-type': 'application/json'}
+        res = requests.get(self.url_get_token, headers=headers, params=self.__params)
+        try:
+            return res.json()['access_token']
+        except:
+            self.__raise_error(res)
+
+    def send(self, agentid='', messages='', userid='', toparty=''):
+        payload = {
+            'touser': userid,
+            'toparty': toparty,
+            'agentid': agentid,
+            'msgtype': 'oa',
+            'oa': messages
+        }
+        headers = {'content-type': 'application/json'}
+        params = self.__token_params
+        try:
+            res = requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
+            log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + messages + ']')
+            return res.json()
+        except:
+            self.__raise_error(res)
