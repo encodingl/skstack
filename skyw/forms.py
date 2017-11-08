@@ -10,24 +10,24 @@ class devopsform(forms.ModelForm):
     class Meta:
         model = Devops
         exclude = ("id",)
-        fields = ('name', 'job', 'iphone', 'jobclass','platform_name', 'businessline','secondaryname')
+        fields = ('name', 'job', 'iphone', 'jobclass','businessline','secondaryname')
         widgets = {
             'name': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'job': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'iphone': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'jobclass':  forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'platform_name': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'businessline': forms.SelectMultiple(attrs={'name':'businessline','class': 'form-control', 'style': 'width:500px;'}),
             'secondaryname': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),}
 
 class rotaform(forms.ModelForm):
     class Meta:
         model = Rota
-        fields = ('name','iphone','spell','emergency_contact','iphone_rota')
+        fields = ('name','iphone','spell','rota_number','emergency_contact','iphone_rota')
         widgets = {
             'name': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'iphone': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'spell': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'rota_number': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'emergency_contact': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'iphone_rota': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
