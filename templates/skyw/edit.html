@@ -18,7 +18,7 @@
 
         <div id="dialog">
             <div class="box" id="devops">
-            <form action="{% url 'edit' ids %}" method="post">
+            <form action="{% url 'yw_edit' ids %}" method="post">
               {% csrf_token %}
               {{ nform.as_p }}
               <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;

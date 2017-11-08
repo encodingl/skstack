@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'skrpt',
     'skdeploy',
     'skyw',
+    'skfile',
     'skrecord',
     'django.contrib.admin',
     'django.contrib.auth',
