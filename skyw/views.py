@@ -29,33 +29,45 @@ def index(request):
     dba_list=OrderedDict()
     yw_spell_list=OrderedDict()
     dba_spell_list=OrderedDict()
+    telarryw=OrderedDict()
     telarrdba=OrderedDict()
+    #telarr=OrderedDict()
+    listrota = Rota.objects.all().order_by("rota_number")
     for i in rota:
-            names = Rota.objects.get(name=i.name)
-            types=names.name.type
-            emergency_contact=i.emergency_contact
-            print emergency_contact
-            if types == 1 and i.emergency_contact == 1 and i.iphone_rota==0:
-               yw_list[str(i.name.nickname)]=[str(i.iphone.iphone)]
-               if i.spell==0:
-                  yw_spell_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
-            elif types == 4 and i.emergency_contact == 1:
-                dba_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
-                if i.spell==0:
-                    dba_spell_list[str(i.name.nickname)]=[str(i.iphone.iphone)]
-                if i.iphone_rota==0:
-                    telarrdba[str(i.name.nickname)]=[str(i.iphone.iphone)]
-            elif  i.emergency_contact == 0:
-                print i.name
-            else:
-                print "error"
-    dba_spell_list=json.dumps(dba_spell_list,encoding="UTF-8",ensure_ascii=False)
-    yw_spell_list=json.dumps(yw_spell_list,encoding="UTF-8",ensure_ascii=False)
-    print dba_spell_list
-    telarr =dict(dba_list.items()+yw_list.items())
-    telarr.pop('毕占杰')
-    telarr.pop('杨丽敏')
-    telarr=json.dumps(telarr,encoding="UTF-8",ensure_ascii=False)
+        names = Rota.objects.get(name=i.name)
+        types = names.name.type
+        if types == 1 and i.emergency_contact == 1 and i.iphone_rota == 0:
+            print i.rota_number, i.name.nickname, i.iphone.iphone
+            # yw_list[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
+            yw_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
+    for i in listrota:
+        names = Rota.objects.get(name=i.name)
+        types=names.name.type
+        if types==1 and i.emergency_contact==1 and i.iphone_rota==0:
+            if i.spell == 0:
+                print i.rota_number,i.name.nickname
+                yw_spell_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
+            if  i.iphone_rota==0:
+                telarryw[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
+        elif types==4 and i.emergency_contact==1:
+            print i.rota_number,i.name.nickname
+            dba_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
+            if i.spell==0:
+                dba_spell_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
+            if i.iphone_rota == 0:
+                telarrdba[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
+        elif i.emergency_contact ==0:
+            print i.name
+        else:
+            print "error"
+
+    yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False)
+    dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False)
+    dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False)
+    print telarrdba.items()
+    print telarryw.items()
+    telarr=OrderedDict(telarrdba.items()+telarryw.items())
+    telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
     print telarr
 
     type = PlatFormclass.objects.all()
@@ -113,7 +125,7 @@ def delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 
-def edit(request,ids):
+def yw_edit(request,ids):
     devops_edit = Devops.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"
     if request.method=="POST":
@@ -126,7 +138,7 @@ def edit(request,ids):
             tips = u"编辑失败！"
             display_control = ""
     else:
-        nform= devopsform(instance=devops_edit)
+        nform = devopsform(instance=devops_edit)
     return render_to_response('skyw/edit.html',locals(),RequestContext(request))
 
 

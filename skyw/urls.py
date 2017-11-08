@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^notice_add', notice.notice_add, name='notice_add'),
     url(r'^event_add',event.event_add, name='event_add'),
 
-    url(r'^edit/(?P<ids>\d+)/$', views.edit,name='edit'),
+    url(r'^yw_edit/(?P<ids>\d+)/$',views.yw_edit, name='yw_edit'),
     url(r'^rota_edit/(?P<ids>\d+)/$', rota.rota_edit, name='rota_edit'),
     url(r'^notice_edit/(?P<ids>\d+)/$', notice.notice_edit, name='notice_edit'),
     url(r'^event_edit/(?P<ids>\d+)/$', event.event_edit, name='event_edit'),
