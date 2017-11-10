@@ -1,26 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {% include 'link_css.html' %}
-    {% include 'head_script.html' %}
-</head>
-<body>
-<div class="content-wrapper">
-
-    <section class="content">
-        <div id="dialog">
-            <div class="box box-info">
-                <!-- /.box-header -->
-                <!-- form start -->
-                <form class="form-horizontal">
-                    {{ af.as_p }}
-                </form>
-            </div>
-        </div>
-    </section>
-</div>
-
-</body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      table{
+        border-top:1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-spacing:0;
+        border-collapse:collapse;
+        width: 600px;
+      }
+      th{
+        font-weight: normal;
+      }
+      th,td{
+        border-bottom: 1px solid #ddd;
+        border-left:1px solid #ddd;
+        height: 30px
+      }
+      .odd{
+        background: #f9f9f9;
+      }
+      .even{
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+        <p>{{ obj.content }}</p>
+        <tr class="odd">
+          <th>标题:</th>
+          <td>{{ obj.subject }}</td>
+        </tr>
+        <tr class="odd">
+          <th>记录时间:</th>
+          <td>{{ obj.create_time }}</td>
+        </tr>
+        <tr class="even">
+          <th>APP:</th>
+          <td>{{ obj.appname }}</td>
+        </tr>
+        <tr class="odd">
+          <th>主机:</th>
+          <td>{{ obj.host }}</td>
+        </tr>
+        <tr class="even">
+          <th>状态:</th>
+          <td>{{ obj.status }}</td>
+        </tr>
+        <tr class="even">
+          <th>事件ID:</th>
+          <td>{{ obj.event }}</td>
+        </tr>
+    </table>
+  </body>
 </html>

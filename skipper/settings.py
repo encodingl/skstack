@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -236,7 +236,7 @@ LOGGING = {
     },
     'formatters': {
         'standard': {
-            'format': '%(asctime)s|%(levelname)s|%(pathname)s|%(funcName)s|%(lineno)d|[msg:%(message)s]'
+            'format': '%(asctime)s|%(levelname)s|%(pathname)s|%(funcName)s|%(lineno)d|msg:%(message)s'
         },
     },
     'handlers': {

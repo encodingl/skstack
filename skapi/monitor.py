@@ -527,5 +527,4 @@ def alarmlogdetail(request, ids):
 
 def ddlogdetail(request, ids):
     obj = get_object(ZabbixRecord, id=ids)
-    af = ZabbixRecordForm(instance=obj)
     return render_to_response('skapi/ddlogdetail.html', locals(), RequestContext(request))
