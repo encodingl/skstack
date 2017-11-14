@@ -6,7 +6,7 @@ from skyw import views,rota,notice,platform,event
 urlpatterns = [
     url(r'^$',views.index,name='yw'),
     url(r'^list', views.list, name='list'),
-    url(r'^add', views.add, name='add'),
+    url(r'^yw_add', views.add, name='yw_add'),
     url(r'^rota_add', rota.rota_add, name='rota_add'),
     url(r'^notice_add', notice.notice_add, name='notice_add'),
     url(r'^event_add',event.event_add, name='event_add'),

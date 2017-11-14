@@ -64,10 +64,13 @@ def index(request):
     yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False)
     dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False)
     dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False)
-    print telarrdba.items()
-    print telarryw.items()
+    print dba_spell_list
+    #telarrdba=json.dumps(telarrdba, encoding="UTF-8", ensure_ascii=False)
+
+    print telarrdba
     telarr=OrderedDict(telarrdba.items()+telarryw.items())
     telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
+
 
     type = PlatFormclass.objects.all()
     d1={}

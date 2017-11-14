@@ -13,13 +13,6 @@ from skaccounts.permission import permission_verify
 @permission_verify()
 def rota_add(request):
     temp_name = "skyw/yw-header.html"
-    rotadata = Rota.objects.all()
-    dbadata = Devops.objects.all()
-    for i in dbadata:
-        job=i.job
-        if job == 3:
-            print i.name , i.iphone
-
     if request.method == "POST":
        rota=rotaform(request.POST)
        if rota.is_valid():
