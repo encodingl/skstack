@@ -66,9 +66,6 @@
              <tr class="even gradeX">
                 <td><input type="checkbox" id="dir_id" class="item1" value="{{ i.id }}" name="id" /></td>
                 <td>{{dir}}</td>
-                <td>
-                  <a href="{% url 'dir_delete' i.id %}" onclick="return confirm('确认删除吗？？')"><span class="btn btn-sm btn-danger ">删除</span></a>
-                </td>
              </tr>
           {% endfor %}
           {% endif %}

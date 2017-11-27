@@ -291,7 +291,7 @@ function rota(){
        x = weekofyear%keys.length;
 
 
-        if((x+1)<3){
+        if((x+1)<4){
            //查找表 --> tbody -->tr --> td
            $("#datasform tbody").find('tr').each(function(){
             	$(this).find('.js-dba').text(dbarr[keys[x]][0]+' '+ (dbarr[keys[x]][1]));
@@ -306,24 +306,26 @@ function rota(){
          //运维轮流值班安排
           var ywarr={{ yw_spell_list | safe }}
           var ywkeys=Object.keys(ywarr)
-          ywx = weekofyear%ywkeys.length;
-          var ywarr={{ yw_spell_list | safe }}
-          var ywkeys=Object.keys(ywarr)
-          ywx = weekofyear%ywkeys.length;
-          if((ywx+1)<3){
-             //行   列              内容          插入              最后一行
-             for(var i = 0; i < 3;i++){
-              if((i+1)<4){
-               $('<tr><td>'+(i+5)+'</td><td>'+(ywarr[ywkeys[i]][0])+' '+(ywarr[ywkeys[i]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));}
-               else {$('<tr><td>'+7+'</td><td>'+(ywarr[ywkeys[i-1]][0])+' '+(ywarr[ywkeys[i-1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));}
-             }
+          ywx = weekofyear%3;
+          if(ywx=0){
+            $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
           }
-          else{
-             var i =0;
-            $('<tr><td>'+(i+5)+'</td><td>'+ywkeys[0]+' '+(ywarr[ywkeys[0]][0])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
-            $('<tr><td>'+(i+6)+'</td><td>'+ywkeys[i+1]+' '+(ywarr[ywkeys[i+1]][0])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
-            $('<tr><td>'+(i+7)+'</td><td>'+ywkeys[i+2]+' '+(ywarr[ywkeys[i+2]][0])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
-         }
+          else if(ywx=1){
+            $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+          }
+          else if(ywx=2){
+            $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+          }
+          else {
+             alter("仅支持3天轮班，星期五-星期天")
+          }
+
 
         //电话告警轮值，按每周轮值
          var telarrs = {{ telarr | safe }};

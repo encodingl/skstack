@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<head>
+   <link href="~/Content/Tree1/css/bootstrap.min.css" rel="stylesheet" />
+   <link href="~/Content/Tree1/css/style.css" rel="stylesheet" />
+</head>
 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -10,25 +13,36 @@
 
     <!-- Main content -->
     <section class="content">
-        {% if allnavi %}
-        {% for navi in allnavi %}
-            <a href="{{ navi.url }}" target="view_window">
-        <div class="col-md-3">
-          <div class="box box-solid box-info">
-            <div class="box-header">
-                    <h3 class="box-title">{{ navi.name }}</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-              {{ navi.description }}
-            </div><!-- /.box-body -->
-          </div><!-- /.box -->
-        </div>
-            </a>
+    <div class="tree well">
+        {% for topdirname in dirmanager %}
+        <ul>
+            <li>
+                <span><i class="icon-folder-open"></i>{{ topdirname }}</span>
+            </li>
+        </ul>
         {% endfor %}
-        {% endif %}
+    </div>
       <!-- Your Page Content Here -->
 
     </section>
     <!-- /.content -->
   </div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+　　$(function(){
+    　　$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    　　$('.tree li.parent_li > span').on('click', function (e) {
+       　　 var children = $(this).parent('li.parent_li').find(' > ul > li');
+        　　if (children.is(":visible")) {
+            　　children.hide('fast');
+            　　$(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        　　} else {
+            　　children.show('fast');
+            　　$(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        　　}
+        　　e.stopPropagation();
+    　　});
+　　});
+</script>
 {% endblock %}
