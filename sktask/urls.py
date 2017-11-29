@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^task/playbookback/$', task.playbook_back, name='task_playbook_back'),
     url(r'^task/jobsearch/$', task.job_search, name='job_search'),
     url(r'^task/varsearch/$', task.extravars_search, name='extravars_search'),
+    url(r'^task/hostsfilechange/$', task.hostfile_change, name='hostfile_change'),
     
 
     url(r'^job/$', job.job_index, name='job_index'),

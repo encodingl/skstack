@@ -12,7 +12,7 @@ from skaccounts.permission import permission_verify
 from skaccounts.models import RoleJob,UserInfo
 import logging
 from lib.log import log
-from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList
+from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList,get_hostsFile
 from .models import history
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
@@ -28,6 +28,7 @@ from sktask.models import ONLINE_STATUS
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)
+ansible_dir = get_dir("a_path")
 
 
 
@@ -39,12 +40,29 @@ log("setup.log", level, log_path)
 def index(request):
     proj_base_dir = get_dir("pro_path")
     inventory = get_ansible_config("inventory")   
+    default_check_HostsFile = inventory.split('/')[-1]
     temp_name = "sktask/setup-header.html"
+    all_HostsFile = get_hostsFile(ansible_dir)
     all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)   
     all_ansible_hosts_ip = get_IpList(inventory)
     all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
     all_projects = project.objects.filter(online_status=1)    
     return render_to_response('sktask/task.html', locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def hostfile_change(request):
+    print "hotfile_change"
+    inventory = request.POST.get('icheck_HostsFile')   
+    inventory_abs = ansible_dir+inventory
+    all_HostsFile = get_hostsFile(ansible_dir)
+    all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory_abs)   
+    all_ansible_hosts_ip = get_IpList(inventory_abs)
+    icheck_all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
+    obj_list = list(icheck_all_ansible_hosts)
+    obj_json = json.dumps(obj_list)
+    return  HttpResponse(obj_json)
+   
 
 @login_required()
 @permission_verify()
