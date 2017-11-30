@@ -77,7 +77,7 @@
                             </div>
                             <div class="col-md-3">
                             
-                            <div id="HostsFile_div">
+                            
 		                            <ul class="list" id="HostsFile_ul">
 		                                    {% if all_HostsFile %}
 		
@@ -91,16 +91,16 @@
 		                                        <p>No Item are available.</p>
 		                                    {% endif %}
 		                                </ul>
-									</div>
 									
-                                <div id="ansible_hosts_div">
+									
+                                
 	                                <select id="ansible_hosts" name="ansible_hosts" class="form-control"
 	                                        data-placeholder="ansible hosts" size="15" style="width: 80%;">
 	                                    {% for hosts in all_ansible_hosts %}
 	                                        <option value="{{ hosts }}">{{ hosts }}</option>
 	                                    {% endfor %}
 	                                </select>
-	                             </div> 
+	                             
 
                             </div>
                         </div>
@@ -129,9 +129,10 @@
 
             aj_p = $("#project_ul div[aria-checked='true'] input").val();
             aj_j = $("#job_ul div[aria-checked='true'] input").val();
-            console.log(aj_j)
+            
             aj_v = $("#vars_ul div[aria-checked='true'] input").val();
-            console.log(aj_v)
+            aj_f = $("#HostsFile_ul div[aria-checked='true'] input").val();
+           
             aj_h = $("#ansible_hosts  option:selected").val();
             if (typeof(aj_j) == "undefined") {
                 layer.msg('请选择任务!');
@@ -156,6 +157,7 @@
                     iCheck_project: aj_p,
                     iCheck_job: aj_j,
                     iCheck_extravars: aj_v,
+                    iCheck_HostsFile: aj_f,
                     ansible_hosts: aj_h,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
