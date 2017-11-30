@@ -12,7 +12,7 @@ from skaccounts.permission import permission_verify
 from skaccounts.models import RoleJob,UserInfo
 import logging
 from lib.log import log
-from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList
+from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList,get_hostsFile
 from .models import history
 from .forms import Project_form
 from django.shortcuts import render_to_response, RequestContext
@@ -28,6 +28,7 @@ from sktask.models import ONLINE_STATUS
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)
+ansible_dir = get_dir("a_path")
 
 
 
@@ -39,12 +40,29 @@ log("setup.log", level, log_path)
 def index(request):
     proj_base_dir = get_dir("pro_path")
     inventory = get_ansible_config("inventory")   
+    default_check_HostsFile = inventory.split('/')[-1]
     temp_name = "sktask/setup-header.html"
+    all_HostsFile = get_hostsFile(ansible_dir)
     all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory)   
     all_ansible_hosts_ip = get_IpList(inventory)
     all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
     all_projects = project.objects.filter(online_status=1)    
     return render_to_response('sktask/task.html', locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def hostfile_change(request):
+  
+    inventory = request.POST.get('icheck_HostsFile')   
+    inventory_abs = ansible_dir+inventory
+    all_HostsFile = get_hostsFile(ansible_dir)
+    all_ansible_hosts_dic,list_key,all_group_key = get_AnsibleHostsDic(inventory_abs)   
+    all_ansible_hosts_ip = get_IpList(inventory_abs)
+    icheck_all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
+    obj_list = list(icheck_all_ansible_hosts)
+    obj_json = json.dumps(obj_list)
+    return  HttpResponse(obj_json)
+   
 
 @login_required()
 @permission_verify()
@@ -78,7 +96,7 @@ def job_search(request):
 @permission_verify()
 def extravars_search(request):
     job_id = request.POST.get('pid')
-    obj = extravars.objects.filter(job=job_id).values('id','name','vars')
+    obj = extravars.objects.filter(job=job_id,online_status='1').values('id','name','vars')
   
     obj_list = list(obj)
     print obj_list
@@ -110,16 +128,27 @@ def playbook(request):
         if request.POST.get('iCheck_extravars'):
             e_obj = request.POST.get('iCheck_extravars')
             extra_vars = extra_vars + " " + e_obj 
+            
+        if request.POST.get('iCheck_HostsFile'):
+            f_obj = request.POST.get('iCheck_HostsFile')   
+            print f_obj
+            f_obj = ansible_dir+f_obj
         
         p_obj = request.POST.get('iCheck_project')
         j_obj = request.POST.get('iCheck_job')
                 
         
     playbook_dir = proj_base_dir +  p_obj
+    job_obj = playbook_dir +"/"+ j_obj
     if j_obj.endswith('.yml'):
-        cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+#         cmd = "ansible-playbook"+ " " + "-i" + " " + " " + f_obj + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+        cmd ="ansible-playbook %s -i %s -e '%s'" % (job_obj,f_obj,extra_vars)
+     
     elif j_obj.endswith('.ans'):
-        cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+#         cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+          hosts_vars = "%s -i %s" % (h_obj,f_obj)
+          cmd = "bash %s '%s'" % (job_obj,hosts_vars)
+          
     else:
         ret.append("您定义的job任务脚本不符合规范，playbook脚本名称必须以yml结尾，shell封装的ansible命令任务脚本ans结尾")
         
@@ -178,16 +207,23 @@ def playbook_back(request):
             e_obj = request.POST.get('iCheck_extravars')
           
             extra_vars = extra_vars + " " + e_obj 
+            
+      
         
         p_obj = request.POST.get('iCheck_project')
         j_obj = request.POST.get('iCheck_job')
+        f_obj = ansible_dir + request.POST.get('iCheck_HostsFile')
                 
         
     playbook_dir = proj_base_dir +  p_obj
+    job_obj = playbook_dir +"/"+ j_obj
     if j_obj.endswith('.yml'):
-        cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+#         cmd = "ansible-playbook"+" " + playbook_dir +"/"+ j_obj + " " + "-e '%s'" % extra_vars
+        cmd ="ansible-playbook %s -i %s -e '%s'" % (job_obj,f_obj,extra_vars)
     elif j_obj.endswith('.ans'):
-        cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+#         cmd = "bash"+" " + playbook_dir +"/"+ j_obj + " " + h_obj
+        hosts_vars = "%s -i %s" % (h_obj,f_obj)
+        cmd = "bash %s '%s'" % (job_obj,hosts_vars)
     else:
         ret.append("您定义的job任务脚本不符合规范，playbook脚本名称必须以yml结尾，shell封装的ansible命令任务脚本ans结尾")
         
