@@ -294,27 +294,27 @@ def setuplist(request):
 
 
 def zabbixalart(request):
-    zabbix_subject = request.POST.get('subject', '')
-    zabbix_content = request.POST.get('content', '')
-    type = request.POST.get('type', '')
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
+        zabbix_subject = request.POST.get('subject', '')
+        zabbix_content = request.POST.get('content', '')
+        content = zabbix_content.split("||")
+        type = request.POST.get('type', '')
         log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + zabbix_content + ']')
         sub_data = zabbix_subject.split(',', 1)
         groupid = int(sub_data[0])
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
-        content = json.loads(zabbix_content)
         message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (
-        content[u'[故障名称]:'], content[u'[故障主机]:'], content[u'[故障时间]:'], content[u'[事件ID]:'], content[u'[错误日志]:'])
+        content[0], content[2], content[3], content[4], content[5])
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
             if config().get('record', 'zabbix_status') == 'On':
                 zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
-                                                 status=content[u'[故障状态]:'], host=content[u'[故障主机]:'],
-                                                 event=content[u'[事件ID]:'], content=content[u'[错误日志]:'])
+                                                 status=content[1], host=content[2],
+                                                 event=content[4], content=content[5])
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             wxlist = [wx.name.email for wx in userlist]
@@ -341,10 +341,10 @@ def zabbixalart(request):
                 "text": u"服务器故障"
             }
             body["title"] = subject
-            body["content"] = content[u'[错误日志]:']
-            form.append({'key': u'[故障主机]:', 'value': content[u'[故障主机]:']})
-            form.append({'key': u'[故障时间]:', 'value': content[u'[故障时间]:']})
-            form.append({'key': u'[事件ID]:', 'value': content[u'[事件ID]:']})
+            body["content"] = content[5]
+            form.append({'key': u'[故障主机]:', 'value': content[2]})
+            form.append({'key': u'[故障时间]:', 'value': content[3]})
+            form.append({'key': u'[事件ID]:', 'value': content[4]})
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
@@ -527,5 +527,4 @@ def alarmlogdetail(request, ids):
 
 def ddlogdetail(request, ids):
     obj = get_object(ZabbixRecord, id=ids)
-    af = ZabbixRecordForm(instance=obj)
     return render_to_response('skapi/ddlogdetail.html', locals(), RequestContext(request))

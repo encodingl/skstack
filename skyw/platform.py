@@ -25,8 +25,8 @@ def platformclass_add(request):
            tips = u"增加失败"
            display_control = ""
     else:
+        display_control = "none"
         platformclasss = platformclassform()
-        tips = u"空数据"
     return render_to_response("skyw/platformclass_add.html", locals(), RequestContext(request))
 
 def platformclass_delete(request,ids):
@@ -47,8 +47,8 @@ def platformclass_edit(request,ids):
             tips=u"编辑失败"
             display_control=" "
     else:
+        display_control = "none"
         platformclassforms= platformclassform(instance=platformclassedit)
-        
     return render_to_response('skyw/platformclass_edit.html',locals(),RequestContext(request))
 
 def platform_add(request):
@@ -63,6 +63,7 @@ def platform_add(request):
            tips = u"增加失败"
            display_control = ""
     else:
+        display_control = "none"
         platform = platformform()
     return render_to_response("skyw/platform_add.html", locals(), RequestContext(request))
 
@@ -86,6 +87,7 @@ def platform_edit(request,ids):
             tips="编辑失败"
             display_control=" "
     else:
+        display_control = "none"
         nform= platformform(instance=platformedit)
     return render_to_response('skyw/platform_edit.html',locals(),RequestContext(request))
 

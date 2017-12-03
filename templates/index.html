@@ -307,17 +307,17 @@ function rota(){
           var ywarr={{ yw_spell_list | safe }}
           var ywkeys=Object.keys(ywarr)
           ywx = weekofyear%3;
-          if(ywx=0){
+          if(ywx==0){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
           }
-          else if(ywx=1){
+          else if(ywx==1){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
           }
-          else if(ywx=2){
+          else if(ywx==2){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));

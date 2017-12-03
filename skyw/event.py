@@ -24,8 +24,8 @@ def event_add(request):
            tips = u"增加失败"
            display_control = ""
     else:
+        display_control = "none"
         events = eventform()
-        tips = u"空数据"
     return render_to_response("skyw/event_add.html", locals(), RequestContext(request))
 
 def event_delete(request,ids):
@@ -48,6 +48,7 @@ def event_edit(request,ids):
             tips=u"编辑成功"
             display_control=""
     else:
+        display_control = "none"
         event_form= eventform(instance=events_edit)
     return render_to_response('skyw/event_edit.html',locals(),RequestContext(request))
 

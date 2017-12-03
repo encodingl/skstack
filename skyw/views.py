@@ -70,7 +70,6 @@ def index(request):
     print telarrdba
     telarr=OrderedDict(telarrdba.items()+telarryw.items())
     telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
-    print telarr
 
 
     type = PlatFormclass.objects.all()
@@ -117,8 +116,8 @@ def add(request):
            tips = u"增加失败"
            display_control = ""
     else:
+        display_control = "none"
         devops = devopsform()
-        tips = u"空数据"
     return render_to_response("skyw/add.html", locals(), RequestContext(request))
 
 def delete(request,ids):
@@ -141,6 +140,7 @@ def yw_edit(request,ids):
             tips = u"编辑失败！"
             display_control = ""
     else:
+        display_control = "none"
         nform = devopsform(instance=devops_edit)
     return render_to_response('skyw/edit.html',locals(),RequestContext(request))
 

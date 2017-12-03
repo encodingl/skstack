@@ -23,6 +23,7 @@ def rota_add(request):
            tips = u"增加失败"
            displ_control = ""
     else:
+        display_control = "none"
         rota = rotaform()
     return render_to_response("skyw/rota_add.html",locals(),RequestContext(request))
 
@@ -49,5 +50,6 @@ def rota_edit(request,ids):
             tips = u"编辑失败！"
             display_control = ""
     else:
+        display_control = "none"
         rota_form= rotaform(instance=rota_edit)
     return render_to_response('skyw/rota_edit.html',locals(),RequestContext(request))

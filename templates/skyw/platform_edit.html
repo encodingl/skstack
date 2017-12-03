@@ -19,13 +19,14 @@
 
         <div id="dialog">
             <div class="box" id="devops">
+               <div class="box-body">
             <form action="{% url 'platform_edit' ids %}" method="post">
               {% csrf_token %}
               {{ nform.as_p }}
               <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
               <a href="{% url 'list' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
             </form>
-
+               </div>
             </div>
 
         </div>
