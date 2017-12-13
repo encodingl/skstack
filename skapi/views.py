@@ -43,6 +43,8 @@ def zabbix_sender(request):
     zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
     agent_ip = request.POST.get('agent_ip', '')
     data = request.POST.get('data', '')
+    urls = list(Url.objects.filter(status=1).values_list('name'))
+    url_d = [url[0] for url in urls]
     if data and agent_ip:
         datas = data.split('\n')
         count = 0
@@ -51,25 +53,26 @@ def zabbix_sender(request):
             if data:
                 _data = data.split(',')
                 url = _data[0].split('-')[0]
-                pay_loads = {
-                    'bytes_in': int(_data[1]),
-                    'bytes_out': int(_data[2]),
-                    'http_2xx': int(_data[5]),
-                    'http_3xx': int(_data[6]),
-                    'http_4xx': int(_data[7]),
-                    'http_5xx': int(_data[8]),
-                    'rt': int(_data[10]),
-                }
-                if url in data_dict:
-                    data_dict[url]['bytes_in'] += pay_loads['bytes_in']
-                    data_dict[url]['bytes_out'] += pay_loads['bytes_out']
-                    data_dict[url]['http_2xx'] += pay_loads['http_2xx']
-                    data_dict[url]['http_3xx'] += pay_loads['http_3xx']
-                    data_dict[url]['http_4xx'] += pay_loads['http_4xx']
-                    data_dict[url]['http_5xx'] += pay_loads['http_5xx']
-                    data_dict[url]['rt'] += pay_loads['rt']
-                else:
-                    data_dict[url] = pay_loads
+                if url in url_d:
+                    pay_loads = {
+                        'bytes_in': int(_data[1]),
+                        'bytes_out': int(_data[2]),
+                        'http_2xx': int(_data[5]),
+                        'http_3xx': int(_data[6]),
+                        'http_4xx': int(_data[7]),
+                        'http_5xx': int(_data[8]),
+                        'rt': int(_data[10]),
+                    }
+                    if url in data_dict:
+                        data_dict[url]['bytes_in'] += pay_loads['bytes_in']
+                        data_dict[url]['bytes_out'] += pay_loads['bytes_out']
+                        data_dict[url]['http_2xx'] += pay_loads['http_2xx']
+                        data_dict[url]['http_3xx'] += pay_loads['http_3xx']
+                        data_dict[url]['http_4xx'] += pay_loads['http_4xx']
+                        data_dict[url]['http_5xx'] += pay_loads['http_5xx']
+                        data_dict[url]['rt'] += pay_loads['rt']
+                    else:
+                        data_dict[url] = pay_loads
         for url in data_dict:
             for key in data_dict[url]:
                 cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (
