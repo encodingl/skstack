@@ -287,6 +287,12 @@ LOGGING = {
             'filename': '/opt/data/logs/skipper/skipper-api.log',
             'formatter': 'standard'
         },
+        'nginx_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/opt/data/logs/skipper/nginx_req_info.log',
+            'formatter': 'standard'
+        },
         'console': {
             'level': 'DEBUG',
             'filters': ['require_debug_false'],
@@ -324,7 +330,12 @@ LOGGING = {
             'handlers': ['api_file'],
             'level': 'INFO',
             'propagate': False,
-        }
+        },
+        'nginx_info': {
+            'handlers': ['nginx_info'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     }
 }
 
