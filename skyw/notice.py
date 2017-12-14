@@ -21,8 +21,8 @@ def notice_add(request):
            tips = u"增加失败"
            display_control = ""
     else:
+        display_control = "none"
         notice = noticeform()
-        tips = u"空数据"
     return render_to_response("skyw/notice_add.html",locals(),RequestContext(request))
 
 
@@ -46,5 +46,6 @@ def notice_edit(request,ids):
             display_control = ""
       #      return HttpResponseRedirect(reverse('notice_edit'))
     else:
+        display_control = "none"
         notice_form= noticeform(instance=obj)
     return render_to_response('skyw/notice_edit.html',locals(),RequestContext(request))

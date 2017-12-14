@@ -1,34 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-
-
-  <div class="content-wrapper">
+<head>
+	<meta charset="utf-8">
+	<title>Bootstrap 实例 - 标签页（Tab）插件</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-
+    </section>
+<!-- Default box -->
+    <section class="content-body">
     </section>
 
-    <!-- Main content -->
-    <section class="content">
-        {% if allnavi %}
-        {% for navi in allnavi %}
-            <a href="{{ navi.url }}" target="view_window">
-        <div class="col-md-3">
-          <div class="box box-solid box-info">
-            <div class="box-header">
-                    <h3 class="box-title">{{ navi.name }}</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-              {{ navi.description }}
-            </div><!-- /.box-body -->
-          </div><!-- /.box -->
-        </div>
-            </a>
-        {% endfor %}
-        {% endif %}
-      <!-- Your Page Content Here -->
+</div>
+<script>
+function checkAll(sender, checkClass) {
+    var checkItems = document.getElementsByTagName('input');
+    for (var i = 0; i < checkItems.length; i++) {
+        var checkItem = checkItems[i];
+        if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
+            checkItem.checked = sender.checked;
+        }
+    }
+}
+function checkSubmit() {
+    if (!confirm("确定删除？")) {
+        window.event.returnValue = false;
+    }
+}
+$(function(){
+function number(){
+for(var i=0;i< $(".numberClass").length;i++){
+$(".numberClass").get(i).innerHTML =i+1;
+}
+}
+number();
+});
+</script>
 
-    </section>
-    <!-- /.content -->
-  </div>
 {% endblock %}

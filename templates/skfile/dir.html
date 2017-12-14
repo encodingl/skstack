@@ -61,14 +61,12 @@
          </tr>
        </thead>
        <tbody>
+          {% csrf_token %}
           {% if dirmanager %}
           {% for dir in dirmanager %}
              <tr class="even gradeX">
                 <td><input type="checkbox" id="dir_id" class="item1" value="{{ i.id }}" name="id" /></td>
                 <td>{{dir}}</td>
-                <td>
-                  <a href="{% url 'dir_delete' i.id %}" onclick="return confirm('确认删除吗？？')"><span class="btn btn-sm btn-danger ">删除</span></a>
-                </td>
              </tr>
           {% endfor %}
           {% endif %}
@@ -82,8 +80,8 @@
 
     // 添加入库操作
     function add_info(){
-        //var data = $("#form1").serializeArray(); //自动将form表单封装成json
-        //alert(JSON.stringify(data));
+        var data = $("#form1").serializeArray(); //自动将form表单封装成json
+        alert(JSON.stringify(data));
         //定义form_data的字符类型，避免乱码产生
         var form_data = 'multipart/form-data;charset=UTF-8';
         //获取input中输入的内容组成数组对象
@@ -91,18 +89,12 @@
         //alert(JSON.stringify(form_data));
         $.ajax({
         type: 'POST',
-        url:'/skfile/adddir',
+        url:'/skfile/dir_add',
         data:form_data,
         success: function( data_get ){
          }
         });
-     //   $.ajax({
-     //    type: 'POST',
-      //   url: '/skfile/adddir',
-      //   data: languages,
-       //  dataType: 'json'
 
-      //});
     }
 
 

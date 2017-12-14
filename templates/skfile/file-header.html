@@ -3,7 +3,7 @@
     <!-- Logo -->
     <a href="{% url 'index' %}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>SK</b></span>
+      <span class="logo-mini"><b>S</b>K</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Skipper</b></span>
     </a>
@@ -15,13 +15,15 @@
         <span class="sr-only">Toggle navigation</span>
       </a>
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li id="navi_index" style="font-size: medium"><a href="{% url 'index' %}"><b>配置文件树</b></a></li>
-            <li id="navi_dir" style="font-size: medium"><a href="{% url 'dir' %}"><b>目录管理</b></a></li>
-            <li id="navi_history" style="font-size: medium"><a href="{% url 'history' %}"><b>历史记录</b></a></li>
+          <ul class="nav navbar-nav" id="navbar-nav">
+                <li style="font-size: medium" id="file"><a href="{% url 'file' %}"><b>配置文件</b></a></li>
+                <li style="font-size: medium" id="dirmanager"><a href="{% url 'dirmanager' %}"><b>目录管理</b></a></li>
+                <li style="font-size: medium" id="fhistory"><a href="{% url 'fhistory' %}"><b>历史记录</b></a></li>
+                
           </ul>
         </div>
-      <!-- Navbar Right Menu -->
+			<!-- Navbar Right Menu -->
       {% include 'navbar-custom-menu.html' %}
     </nav>
   </header>
+  

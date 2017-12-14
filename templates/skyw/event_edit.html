@@ -8,7 +8,7 @@
 
 
 <div class="content-wrapper">
-        <section class="content-header">
+    <section class="content-header">
         <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h4>{{ tips }}</h4>
@@ -16,9 +16,9 @@
     </section>
 
     <section class="content">
-
         <div id="dialog">
             <div class="box" id="devops">
+            <div class="box-body">
             <form action="{% url 'event_edit' ids %}" method="post">
               {% csrf_token %}
               {{ event_form.as_p }}
@@ -27,7 +27,7 @@
             </form>
 
             </div>
-
+            </div>
         </div>
 
     </section>

@@ -13,13 +13,6 @@ from skaccounts.permission import permission_verify
 @permission_verify()
 def rota_add(request):
     temp_name = "skyw/yw-header.html"
-    rotadata = Rota.objects.all()
-    dbadata = Devops.objects.all()
-    for i in dbadata:
-        job=i.job
-        if job == 3:
-            print i.name , i.iphone
-
     if request.method == "POST":
        rota=rotaform(request.POST)
        if rota.is_valid():
@@ -30,6 +23,7 @@ def rota_add(request):
            tips = u"增加失败"
            displ_control = ""
     else:
+        display_control = "none"
         rota = rotaform()
     return render_to_response("skyw/rota_add.html",locals(),RequestContext(request))
 
@@ -56,5 +50,6 @@ def rota_edit(request,ids):
             tips = u"编辑失败！"
             display_control = ""
     else:
+        display_control = "none"
         rota_form= rotaform(instance=rota_edit)
     return render_to_response('skyw/rota_edit.html',locals(),RequestContext(request))
