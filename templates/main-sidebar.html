@@ -1,3 +1,5 @@
+s
+s
 <aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
@@ -58,12 +60,12 @@
     $(document).ready(function () {
         var url = window.location.pathname;
 
-        $("[href='" + url + "']").parent().addClass('bg-info').siblings().removeClass('bg-info');
+        $("[href='" + url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
 
         url = url.split("/");
         var sidebar_url = url[1];
 
-        $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-info').siblings().removeClass('bg-info');
+        $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
 
 
     });
