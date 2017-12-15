@@ -33,9 +33,17 @@ class Record(models.Model):
     def __unicode__(self):
         return self.name
 
+class Faq_list(models.Model):
+    name = models.CharField(u"问题类别", max_length=30, null=True)
+    describe = models.CharField(u"描述", max_length=100, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 class Faq(models.Model):
     title = models.CharField(u"系统名称", max_length=100, null=True)
-    problemclass = models.CharField(u"问题类别", max_length=100, null=True)
+    #problemclass = models.CharField(u"问题类别", max_length=100, null=True)
+    problemclass = models.ForeignKey(Faq_list, verbose_name=u"问题类别", on_delete=models.SET_NULL, null=True, blank=True)
     describe = models.TextField(u"问题描述", max_length=2000, null=True)
     solution = models.TextField(u"解决方案", max_length=2000, null=True)
     developername = models.CharField(u"系统开发人员", max_length=30, null=True)
@@ -46,18 +54,18 @@ class Faq(models.Model):
         return self.name
 
 class Assessment_list(models.Model):
-    name = models.CharField(u"考核项", max_length=30, null=True)
+    name = models.CharField(u"类型", max_length=30, null=True)
     describe = models.CharField(u"描述", max_length=100, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
 class Assessment(models.Model):
-    assessmentname = models.CharField(u"考核人员", max_length=100, null=True)
-    assessmentclass = models.ForeignKey(Assessment_list, verbose_name=u"考核项", on_delete=models.SET_NULL, null=True, blank=True)
-    assessmentnum = models.TextField(u"考核分值", max_length=2000, null=True)
-    assessmentcontent = models.TextField(u"考核内容", max_length=2000, null=True)
-    assessmenttime = models.CharField(u"考核时间", max_length=30, null=True)
+    assessmentname = models.CharField(u"对象", max_length=100, null=True)
+    assessmentclass = models.ForeignKey(Assessment_list, verbose_name=u"类型", on_delete=models.SET_NULL, null=True, blank=True)
+    assessmentnum = models.TextField(u"权重", max_length=2000, null=True)
+    assessmentcontent = models.TextField(u"内容", max_length=2000, null=True)
+    assessmenttime = models.CharField(u"时间", max_length=30, null=True)
     recordpersonnel = models.CharField(u"记录人员", max_length=30, null=True)
     remarks= models.CharField(u"备注", max_length=30, null=True, blank=True)
 
