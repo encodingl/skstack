@@ -76,14 +76,31 @@
                                 <ul class="js-extravars-box" id="vars_ul">Please choose job first</ul>
                             </div>
                             <div class="col-md-3">
-
-
-                                <select id="ansible_hosts" name="ansible_hosts" class="form-control"
-                                        data-placeholder="ansible hosts" size="15" style="width: 100%;">
-                                    {% for hosts in all_ansible_hosts %}
-                                        <option value="{{ hosts }}">{{ hosts }}</option>
-                                    {% endfor %}
-                                </select>
+                            
+                            
+		                            <ul class="list" id="HostsFile_ul">
+		                                    {% if all_HostsFile %}
+		
+		                                        {% for f in all_HostsFile %}
+		                                            <li>
+		                                                <input type="radio" name="iCheck_HostsFile"  id={{ f }} value={{ f }}>
+		                                                <label  for="{{ f }}" >{{ f }}</label>
+		                                            </li>
+		                                        {% endfor %}
+		                                    {% else %}
+		                                        <p>No Item are available.</p>
+		                                    {% endif %}
+		                                </ul>
+									
+									
+                                
+	                                <select id="ansible_hosts" name="ansible_hosts" class="form-control"
+	                                        data-placeholder="ansible hosts" size="15" style="width: 80%;">
+	                                    {% for hosts in all_ansible_hosts %}
+	                                        <option value="{{ hosts }}">{{ hosts }}</option>
+	                                    {% endfor %}
+	                                </select>
+	                             
 
                             </div>
                         </div>
@@ -112,9 +129,10 @@
 
             aj_p = $("#project_ul div[aria-checked='true'] input").val();
             aj_j = $("#job_ul div[aria-checked='true'] input").val();
-            console.log(aj_j)
+            
             aj_v = $("#vars_ul div[aria-checked='true'] input").val();
-            console.log(aj_v)
+            aj_f = $("#HostsFile_ul div[aria-checked='true'] input").val();
+           
             aj_h = $("#ansible_hosts  option:selected").val();
             if (typeof(aj_j) == "undefined") {
                 layer.msg('请选择任务!');
@@ -139,6 +157,7 @@
                     iCheck_project: aj_p,
                     iCheck_job: aj_j,
                     iCheck_extravars: aj_v,
+                    iCheck_HostsFile: aj_f,
                     ansible_hosts: aj_h,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
@@ -360,4 +379,42 @@
                 return false;
         });
     </script>
+<script type="text/javascript">
+    
+$('#{{ default_check_HostsFile }}').iCheck('check');
+</script>
+
+<script>
+$(function () {
+    $("[name='iCheck_HostsFile']").on("ifChecked", function (event) {
+        
+    	  var icheck_HostsFile_value = $(this).val();
+        $.ajax({
+            url: '/sktask/task/hostsfilechange/',
+            data: {icheck_HostsFile: icheck_HostsFile_value, csrfmiddlewaretoken: '{{ csrf_token }}'},
+            type: 'POST',
+            success: function (callback) {
+                var obj = jQuery.parseJSON(callback),
+                        $con = $();
+                
+                $.each(obj, function (index, item) {
+                
+                   var option = $('<option>', {
+                        value: item,
+                        html: item,
+                   		   });
+                    
+       
+                    $con.push(option[0]);
+                });
+
+
+                $("select#ansible_hosts").html($con);
+               
+         
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
