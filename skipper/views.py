@@ -7,4 +7,4 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return redirect('/skyw/')
+    return redirect('/skrpt/')
