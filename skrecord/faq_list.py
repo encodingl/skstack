@@ -5,63 +5,66 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
 from forms import Record_form
+from forms import Faq_form
+from forms import Faq_list_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from models import Record
-
+from models import Faq
+from models import Faq_list
 
 @login_required()
 @permission_verify()
-def index(request):
+def faq_list(request):
     temp_name = "skrecord/navi-header.html"
-    record_info = Record.objects.all()
+    faq_list_info = Faq_list.objects.all()
 #    allnavi = navi.objects.all()
-    return render_to_response("skrecord/index.html", locals(), RequestContext(request))
+    return render_to_response("skrecord/faq_list.html", locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
 def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
-        record_form = Record_form(request.POST)
+        faq_list_form = Faq_list_form(request.POST)
 
-        if record_form.is_valid():
-            record_form.save()
+        if faq_list_form.is_valid():
+            faq_list_form.save()
             tips = u"增加成功！"
             display_control = ""
         else:
             tips = u"增加失败！"
             display_control = ""
-        return render_to_response("skrecord/record_add.html", locals(), RequestContext(request))
+        return render_to_response("skrecord/faq_list_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
-        record_form = Record_form()
+        faq_list_form = Faq_list_form()
 
-        return render_to_response("skrecord/record_add.html", locals(), RequestContext(request))
+        return render_to_response("skrecord/faq_list_add.html", locals(), RequestContext(request))
 
 
 
 @login_required
 @permission_verify()
-def delete(request, ids):
-    Record.objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('record'))
+def faq_list_delete(request, ids):
+    Faq_list.objects.filter(id=ids).delete()
+    return HttpResponseRedirect(reverse('faq_list'))
 
 @login_required()
 @permission_verify()
-def message(request, EVENT_STATUS=None):
+def message(request):
     temp_name = "skrecord/navi-header.html"
 
     event_status = EVENT_STATUS
     P_type = request.GET.get('P_type', '')
     print "p_type value:%s" % P_type
     if P_type:
-        allnavi = Record.objects.filter(P_status=P_type)
+        allnavi = Faq_list.objects.filter(P_status=P_type)
     else:
-        allnavi = Record.objects.all()
+        allnavi = Faq_list.objects.all()
     print "the allnavi is %s" % allnavi;
-    return render_to_response("skrecord/record.html", locals(), RequestContext(request))
+    return render_to_response("skrecord/faq_list.html", locals(), RequestContext(request))
 
 
 
@@ -69,16 +72,16 @@ def message(request, EVENT_STATUS=None):
 @login_required()
 @permission_verify()
 def edit(request,ids):
-    obj = Record.objects.get(id=ids)
+    obj = Faq_list.objects.get(id=ids)
 
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
-        record_form = Record_form(request.POST,instance=obj)
-        if record_form.is_valid():
-            record_form.save()
-            return HttpResponseRedirect(reverse('record'))
+        faq_list_form = Faq_list_form(request.POST,instance=obj)
+        if faq_list_form.is_valid():
+            faq_list_form.save()
+            return HttpResponseRedirect(reverse('faq_list'))
     else:
-        record_form = Record_form(instance=obj)
+        faq_list_form = Faq_list_form(instance=obj)
 #     print "the n_form is:%s" % n_form
 #     kwvars = {
 #         'temp_name': temp_name,
@@ -87,22 +90,22 @@ def edit(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/record_edit.html', locals(), RequestContext(request))
+    return render_to_response('skrecord/faq_list_edit.html', locals(), RequestContext(request))
 
 
 @login_required()
 @permission_verify()
 def detail(request,ids):
-    obj = Record.objects.get(id=ids)
+    obj = Faq_list.objects.get(id=ids)
 
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
-        record_form = Record_form(request.POST,instance=obj)
-        if record_form.is_valid():
-            record_form.save()
-            return HttpResponseRedirect(reverse('record'))
+        faq_list_form = Faq_list_form(request.POST,instance=obj)
+        if faq_list_form.is_valid():
+            faq_list_form.save()
+            return HttpResponseRedirect(reverse('faq_list'))
     else:
-        record_form = Record_form(instance=obj)
+        faq_list_form = Faq_list_form(instance=obj)
 #     print "the n_form is:%s" % n_form
 #     kwvars = {
 #         'temp_name': temp_name,
@@ -111,7 +114,7 @@ def detail(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/record_detail.html', locals(), RequestContext(request))
+    return render_to_response('skrecord/faq_list_detail.html', locals(), RequestContext(request))
 
 
 

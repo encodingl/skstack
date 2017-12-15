@@ -1,9 +1,9 @@
 
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.conf.urls import url,include
+from django.conf.urls import url
 #from . import views
-from skrecord import views,record_list,faq,assessment,assessment_list,change
+from skrecord import views,record_list,faq,faq_list,assessment,assessment_list,change
 
 urlpatterns = [
     #url(r'^$', views.index, name='record'),
@@ -35,6 +35,16 @@ urlpatterns = [
     url(r'^faq/save/$', faq.message, name='faq_message'),
     url(r'^faq/edit/(?P<ids>\d+)/$', faq.edit, name='faq_edit'),
     url(r'^faq/detail/(?P<ids>\d+)/$', faq.detail, name='faq_detail'),
+
+    url(r'^faq_list/$', faq_list.faq_list, name='faq_list'),
+    url(r'^add/$', faq_list.add, name='add'),
+    url(r'^faq_list/delete/(?P<ids>\d+)/$', faq_list.faq_list_delete, name='faq_list_delete'),
+    url(r'^edit/(?P<ids>\d+)/$', faq_list.edit, name='edit'),
+    url(r'^faq_list/add/$', faq_list.add, name='faq_list_add'),
+    #url(r'^faq/del/$', faq.faq_del, name='faq_del'),
+    url(r'^faq_list/save/$', faq_list.message, name='faq_list_message'),
+    url(r'^faq_list/edit/(?P<ids>\d+)/$', faq_list.edit, name='faq_list_edit'),
+    url(r'^faq_list/detail/(?P<ids>\d+)/$', faq_list.detail, name='faq_list_detail'),
 
     url(r'^assessment/$', assessment.assessment, name='assessment'),
     url(r'^add/$', assessment.add, name='add'),

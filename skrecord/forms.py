@@ -4,7 +4,7 @@
 from django import forms
 from django.forms.widgets import *
 
-from .models import Record,Record_list,Faq,Assessment,Assessment_list,Change
+from .models import Record,Record_list,Faq,Faq_list,Assessment,Assessment_list,Change
 
 
 class Record_form(forms.ModelForm):
@@ -65,12 +65,24 @@ class Faq_form(forms.ModelForm):
         exclude = ("id",)
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'problemclass': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            #'problemclass': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'problemclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'solution': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'developername': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'telephone': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'mail': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+
+        }
+
+class Faq_list_form(forms.ModelForm):
+
+    class Meta:
+        model = Faq_list
+        exclude = ("id",)
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
 
         }
 
