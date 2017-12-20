@@ -59,7 +59,7 @@
         var url = window.location.pathname;
 
         $("[href='" + url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
-
+        $("[href='" + url + "']").parents("li.dropdown").addClass('bg-primary').siblings().removeClass('bg-primary');
         url = url.split("/");
         var sidebar_url = url[1];
 

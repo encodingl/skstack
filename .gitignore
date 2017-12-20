@@ -3,6 +3,7 @@
 .pydevproject
 .settings/
 gitpush.sh
+start.sh
 *.pyc
 /tmp/*
 00*.py
