@@ -12,7 +12,7 @@ from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, Alar
 from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
 from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm, \
     AlarmRecordForm, ZabbixRecordForm
-from lib.com import get_object, config, cfg, config_path
+from lib.com import get_object, config, cfg, configfile
 from utils import initAlarmList
 import logging
 
@@ -264,7 +264,7 @@ def setuplist(request):
         cfg.set('api', 'szyw_token', szyw_token)
         cfg.set('api', 'zhoujie_token', zhoujie_token)
         cfg.set('record', 'zabbix_status', zabbix_status)
-        fp = open(config_path, 'w')
+        fp = open(configfile, 'w')
         cfg.write(fp)
         fp.close()
         tips = u"保存成功！"

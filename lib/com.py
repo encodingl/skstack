@@ -2,15 +2,14 @@
 import ConfigParser, os
 from django.conf import settings
 
-config_path = os.path.join(settings.BASE_DIR, 'skipper.conf')
+configfile = settings.CONFIGFILE
 
-def config(path=config_path):
+def config(path=configfile):
     obj = ConfigParser.ConfigParser()
     obj.read(path)
     return obj
 
 cfg = config()
-
 
 
 def get_object(model, **kwargs):

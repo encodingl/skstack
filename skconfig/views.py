@@ -8,7 +8,7 @@ from skaccounts.permission import permission_verify
 from django.contrib.auth import get_user_model
 import logging
 from lib.log import dic
-from lib.com import config, config_path
+from lib.com import config, configfile
 
 
 @login_required()
@@ -48,7 +48,7 @@ def index(request):
         cfg.set('token', 'token', token)
         cfg.set('log', 'log_path', log_path)
         cfg.set('log', 'log_level', log_level)
-        fp = open(config_path, 'w')
+        fp = open(configfile, 'w')
         cfg.write(fp)
         fp.close()
         tips = u"保存成功！"

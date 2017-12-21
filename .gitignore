@@ -13,4 +13,5 @@ ignoreupdate.sh
 .idea
 .gitignore
 *.swp
-00*.py 
+00*.py
+ski*_dev.conf
