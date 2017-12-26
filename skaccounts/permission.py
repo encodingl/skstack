@@ -96,7 +96,9 @@ def permission_verify_ids():
         return _wrapped_view
 
     return decorator
+
 @login_required
+@permission_verify()
 def permission_deny(request, *args, **kwargs):
     temp_name = "main-header.html"
     kwvars = {
