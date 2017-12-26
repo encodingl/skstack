@@ -7,11 +7,11 @@ import logging
 from skcmdb.models import Url
 
 
-def grafana(request):
+def grafana(request, *args, **kwargs):
     return HttpResponse("ok")
 
 
-def grafana_search(request):
+def grafana_search(request, *args, **kwargs):
     if request.method == 'OPTIONS':
         return HttpResponse("")
 
@@ -38,7 +38,7 @@ def grafana_search(request):
     return HttpResponse("args error")
 
 
-def zabbix_sender(request):
+def zabbix_sender(request, *args, **kwargs):
     log = logging.getLogger('nginx_info')
     zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
     agent_ip = request.POST.get('agent_ip', '')
@@ -89,7 +89,7 @@ def zabbix_sender(request):
     return HttpResponse('Error')
 
 
-def get_urllist(request):
+def get_urllist(request, *args, **kwargs):
     urls = list(Url.objects.filter(status=1).values_list('name'))
     url_d = [url[0] for url in urls]
     return HttpResponse(json.dumps(url_d), content_type="application/json")

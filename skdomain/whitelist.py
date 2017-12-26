@@ -5,12 +5,12 @@ from django.shortcuts import render_to_response, RequestContext
 from models import navi, WhiteList
 from forms import WhiteList_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 
 
 @login_required()
 @permission_verify()
-def whitelist(request):
+def whitelist(request, *args, **kwargs):
     temp_name = "skdomain/navi-header.html"
     allwhitelist = WhiteList.objects.all()
     return render_to_response('skdomain/whitelist.html', locals(), RequestContext(request))
@@ -18,7 +18,7 @@ def whitelist(request):
 
 @login_required()
 @permission_verify()
-def whitelist_add(request):
+def whitelist_add(request, *args, **kwargs):
     temp_name = "skdomain/navi-header.html"
     if request.method == "POST":
         whitelist_form = WhiteList_form(request.POST)
@@ -38,7 +38,7 @@ def whitelist_add(request):
 
 # @login_required()
 # @permission_verify()
-# def whitelist_add_mini(request):
+# def whitelist_add_mini(request, *args, **kwargs):
 #     temp_name = "skdomain/navi-header.html"
 #     if request.method == "POST":
 #         whitelist_form = WhiteList_form(request.POST)
@@ -59,7 +59,7 @@ def whitelist_add(request):
 
 @login_required()
 @permission_verify()
-def whitelist_del(request):
+def whitelist_del(request, *args, **kwargs):
     temp_name = "skdomain/navi-header.html"
     if request.method == 'POST':
         whitelist_items = request.POST.getlist('whitelist_check', [])
@@ -71,7 +71,7 @@ def whitelist_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def whitelist_edit(request, ids):
     obj = WhiteList.objects.get(id=ids)
     allwhitelist = WhiteList.objects.all()
@@ -80,7 +80,7 @@ def whitelist_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def whitelist_save(request):
+def whitelist_save(request, *args, **kwargs):
     temp_name = "skdomain/navi-header.html"
     if request.method == 'POST':
         whitelist_id = request.POST.get('id')

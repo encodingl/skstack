@@ -7,9 +7,9 @@ from django.shortcuts import render_to_response,redirect,RequestContext
 from forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 # Create your views here.
-def notice_add(request):
+def notice_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        notice=noticeform(request.POST)

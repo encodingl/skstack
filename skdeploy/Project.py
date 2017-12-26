@@ -8,7 +8,7 @@ from models import AuditFlow,Project,ProjectGroup,Project,TaskStatus,Environment
 import os,shutil
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from lib.file import new_file
@@ -34,7 +34,7 @@ proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
-def Project_index(request):
+def Project_index(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"    
     tpl_all = Project.objects.filter(template_enable = False)
     
@@ -42,7 +42,7 @@ def Project_index(request):
 
 @login_required()
 @permission_verify()
-def Project_add(request):
+def Project_add(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"
     if request.method == "POST":
         tpl_Project_form = Project_form(request.POST)
@@ -69,7 +69,7 @@ def Project_add(request):
 
 @login_required()
 @permission_verify()
-def Project_del(request):
+def Project_del(request, *args, **kwargs):
 #    temp_name = "skdeploy/skdeploy-header.html"
     Project_id = request.GET.get('id', '')
     if Project_id:
@@ -87,7 +87,7 @@ def Project_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def Project_edit(request, ids):
     temp_name = "skdeploy/skdeploy-header.html"
     
@@ -127,7 +127,7 @@ def Project_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def Project_init(request):
+def Project_init(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"
 
     Project_id = request.GET.get('id')
@@ -202,14 +202,14 @@ def Project_init(request):
 
 @login_required()
 @permission_verify()
-def Project_template(request):
+def Project_template(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"    
     tpl_all = Project.objects.filter(template_enable = True)
     
     return render_to_response('skdeploy/Project_template.html', locals(), RequestContext(request))
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def Project_add_from_template(request,ids):
     temp_name = "skdeploy/skdeploy-header.html"
     

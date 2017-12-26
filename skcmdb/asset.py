@@ -11,7 +11,7 @@ from skcmdb.api import get_object
 from skcmdb.api import pages, str2gb
 import csv, datetime
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 from skaccounts.models import UserInfo
 from django.views.decorators.csrf import csrf_exempt
 import sys
@@ -22,12 +22,12 @@ sys.setdefaultencoding('utf8')
 
 @login_required()
 @permission_verify()
-def other(request):
+def other(request, *args, **kwargs):
     return HttpResponse("敬请期待...")
 
 @login_required()
 @permission_verify()
-def asset(request):
+def asset(request, *args, **kwargs):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()
     sa_info = UserInfo.objects.filter(type=1)
@@ -164,7 +164,7 @@ def asset(request):
 
 @login_required()
 @permission_verify()
-def asset_add(request):
+def asset_add(request, *args, **kwargs):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         a_form = AssetForm(request.POST)
@@ -184,7 +184,7 @@ def asset_add(request):
 
 @login_required()
 @permission_verify()
-def asset_del(request):
+def asset_del(request, *args, **kwargs):
     asset_id = request.GET.get('id', '')
     if asset_id:
         Host.objects.filter(id=asset_id).delete()
@@ -202,7 +202,7 @@ def asset_del(request):
 
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def asset_edit(request, ids):
     status = 0
     obj = get_object(Host, id=ids)
@@ -220,7 +220,7 @@ def asset_edit(request, ids):
 
 @login_required
 @permission_verify()
-def asset_import(request):
+def asset_import(request, *args, **kwargs):
     local_idc_info = Idc.objects.all()
     local_group_info = HostGroup.objects.all()
     local_type_info = MiddleType.objects.all()

@@ -7,11 +7,11 @@ from django.shortcuts import render_to_response,redirect,RequestContext
 from forms import devopsform,rotaform
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 # Create your views here.
 @login_required()
 @permission_verify()
-def rota_add(request):
+def rota_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        rota=rotaform(request.POST)

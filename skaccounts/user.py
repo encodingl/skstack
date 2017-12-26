@@ -9,10 +9,10 @@ from forms import LoginUserForm, EditUserForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
 from forms import AddUserForm
 from django.core.urlresolvers import reverse
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 
 
-def login(request):
+def login(request, *args, **kwargs):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
 
@@ -38,18 +38,18 @@ def login(request):
         'next': next,
     }
 
-    return render_to_response('skaccounts/login.html', kwvars, RequestContext(request))
+    return render_to_response('skaccounts/login.html', locals(), RequestContext(request))
 
 
 @login_required
-def logout(request):
+def logout(request, *args, **kwargs):
     auth.logout(request)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required()
 @permission_verify()
-def user_list(request):
+def user_list(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     all_user = get_user_model().objects.all()
     return render_to_response('skaccounts/user_list.html', locals(), RequestContext(request))
@@ -57,7 +57,7 @@ def user_list(request):
 
 @login_required
 @permission_verify()
-def user_add(request):
+def user_add(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == 'POST':
         form = AddUserForm(request.POST)
@@ -76,11 +76,11 @@ def user_add(request):
         'temp_name': temp_name,
     }
 
-    return render_to_response('skaccounts/user_add.html', kwvars, RequestContext(request))
+    return render_to_response('skaccounts/user_add.html', locals(), RequestContext(request))
 
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def user_del(request, ids):
     if ids:
         get_user_model().objects.filter(id=ids).delete()
@@ -88,7 +88,7 @@ def user_del(request, ids):
 
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def user_edit(request, ids):
     user = get_user_model().objects.get(id=ids)
 
@@ -112,7 +112,7 @@ def user_edit(request, ids):
 
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def reset_password(request, ids):
     user = get_user_model().objects.get(id=ids)
     newpassword = get_user_model().objects.make_random_password(length=10, allowed_chars='abcdefghjklmnpqrstuvwxyABCDEFGHJKLMNPQRSTUVWXY3456789')
@@ -126,11 +126,11 @@ def reset_password(request, ids):
         'request': request,
     }
 
-    return render_to_response('skaccounts/reset_password.html', kwvars, RequestContext(request))
+    return render_to_response('skaccounts/reset_password.html', locals(), RequestContext(request))
 
 
 @login_required
-def change_password(request):
+def change_password(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == 'POST':
         form = ChangePasswordForm(user=request.user, data=request.POST)
@@ -146,4 +146,4 @@ def change_password(request):
         'temp_name': temp_name,
     }
 
-    return render_to_response('skaccounts/change_password.html', kwvars, RequestContext(request))
+    return render_to_response('skaccounts/change_password.html', locals(), RequestContext(request))

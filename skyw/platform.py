@@ -8,12 +8,12 @@ from forms import *
 from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 # Create your views here.
 
 @login_required()
 @permission_verify()
-def platformclass_add(request):
+def platformclass_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        platformclasss =  platformclassform(request.POST)
@@ -55,7 +55,7 @@ def platformclass_edit(request,ids):
     return render_to_response('skyw/platformclass_edit.html',locals(),RequestContext(request))
 @login_required()
 @permission_verify()
-def platform_add(request):
+def platform_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        platform = platformform(request.POST)

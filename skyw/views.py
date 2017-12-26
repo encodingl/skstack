@@ -9,12 +9,12 @@ from forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 from collections import OrderedDict
 # Create your views here.
 @login_required()
 @permission_verify()
-def daohang(request):
+def daohang(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()
@@ -92,7 +92,7 @@ def daohang(request):
     return render_to_response("skyw/index.html", locals(), RequestContext(request))
 @login_required()
 @permission_verify()
-def index(request):
+def index(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()
@@ -107,7 +107,7 @@ def index(request):
 
 @login_required()
 @permission_verify()
-def add(request):
+def add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        devops=devopsform(request.POST)

@@ -8,7 +8,7 @@ import os
 import re
 from skconfig.views import get_dir,get_ansible_config
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 from skaccounts.models import RoleJob,UserInfo
 import logging
 from lib.log import log
@@ -37,7 +37,7 @@ ansible_dir = get_dir("a_path")
 
 @login_required()
 @permission_verify()
-def index(request):
+def index(request, *args, **kwargs):
     proj_base_dir = get_dir("pro_path")
     inventory = get_ansible_config("inventory")   
     default_check_HostsFile = inventory.split('/')[-1]
@@ -51,7 +51,7 @@ def index(request):
 
 @login_required()
 @permission_verify()
-def hostfile_change(request):
+def hostfile_change(request, *args, **kwargs):
   
     inventory = request.POST.get('icheck_HostsFile')   
     inventory_abs = ansible_dir+inventory
@@ -66,7 +66,7 @@ def hostfile_change(request):
 
 @login_required()
 @permission_verify()
-def job_search(request):
+def job_search(request, *args, **kwargs):
     """
     任务执行模块，先校验所属用户权限，只显示授权的任务
     """
@@ -94,7 +94,7 @@ def job_search(request):
 
 @login_required()
 @permission_verify()
-def extravars_search(request):
+def extravars_search(request, *args, **kwargs):
     job_id = request.POST.get('pid')
     obj = extravars.objects.filter(job=job_id,online_status='1').values('id','name','vars')
   
@@ -107,7 +107,7 @@ def extravars_search(request):
 
 @login_required()
 @permission_verify()
-def playbook(request):
+def playbook(request, *args, **kwargs):
     proj_base_dir = get_dir("pro_path")
     
     ret = []
@@ -187,7 +187,7 @@ def playbook(request):
     
 @login_required()
 @permission_verify()
-def playbook_back(request):
+def playbook_back(request, *args, **kwargs):
     proj_base_dir = get_dir("pro_path")
    
     ret = []

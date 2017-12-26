@@ -6,14 +6,14 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
 from forms import Record_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 from django.core.urlresolvers import reverse
 from models import Record
 
 
 @login_required()
 @permission_verify()
-def index(request):
+def index(request, *args, **kwargs):
     temp_name = "skrecord/navi-header.html"
     record_info = Record.objects.all()
 #    allnavi = navi.objects.all()
@@ -21,7 +21,7 @@ def index(request):
 
 @login_required()
 @permission_verify()
-def add(request):
+def add(request, *args, **kwargs):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
         record_form = Record_form(request.POST)
@@ -43,7 +43,7 @@ def add(request):
 
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def delete(request, ids):
     Record.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('record'))
@@ -67,7 +67,7 @@ def message(request, EVENT_STATUS=None):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def edit(request,ids):
     obj = Record.objects.get(id=ids)
 
@@ -91,7 +91,7 @@ def edit(request,ids):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def detail(request,ids):
     obj = Record.objects.get(id=ids)
 

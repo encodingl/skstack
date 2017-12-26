@@ -5,7 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response,redirect,RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 import json
 from models import Dirmanager
@@ -28,7 +28,7 @@ def dirlist(dir, fileList, tabnum=0):
     return fileList
 
 
-def index(request):
+def index(request, *args, **kwargs):
     temp_name = "skfile/file-header.html"
     dirmanager = Dirmanager.objects.all()
     topdir=[]
@@ -56,7 +56,7 @@ def index(request):
 
 
 #管理配置目录 增删改查
-def dir(request):
+def dir(request, *args, **kwargs):
     temp_name = "skfile/file-header.html"
     dirmanager = Dirmanager.objects.all()
     for dir in dirmanager:
@@ -64,7 +64,7 @@ def dir(request):
         print dirname
     return render_to_response("skfile/dir.html", locals(), RequestContext(request))
 
-def adddir(request):
+def adddir(request, *args, **kwargs):
     if request.is_ajax() and request.method == 'POST':
         for key in request.POST:
             valuelist = request.POST.getlist(key)
@@ -101,7 +101,7 @@ def dir_edit(request,ids):
     return render_to_response('skfile/dir_edit.html',locals(),RequestContext(request))
 
 
-def file_history(request):
+def file_history(request, *args, **kwargs):
     temp_name = "skfile/file-header.html"
     return render_to_response("skfile/history.html", locals(), RequestContext(request))
 

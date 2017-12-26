@@ -8,7 +8,7 @@ from models import extravars
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles
@@ -24,14 +24,14 @@ proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
-def extravars_index(request):
+def extravars_index(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     allextravars = extravars.objects.all()
     return render_to_response('sktask/extravars_index.html', locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
-def extravars_add(request):
+def extravars_add(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     if request.method == "POST":
         extravars_form = Extravars_form(request.POST)
@@ -54,7 +54,7 @@ def extravars_add(request):
 
 @login_required()
 @permission_verify()
-def extravars_del(request):
+def extravars_del(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     extravars_id = request.GET.get('id', '')
     if extravars_id:
@@ -69,7 +69,7 @@ def extravars_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 # def extravars_edit(request, ids):
 #     obj = extravars.objects.get(id=ids)
 #     allextravars = extravars.objects.all()

@@ -8,7 +8,7 @@ from models import AuditFlow,ProjectGroup,Project,TaskStatus,Environment
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from lib.lib_git import get_git_taglist, get_git_commitid
@@ -42,7 +42,7 @@ git_path = get_dir("git_path")
 
 @login_required()
 @permission_verify()
-def TaskCommit_index(request):
+def TaskCommit_index(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"    
  
     obj_user = UserInfo.objects.get(username=request.user)
@@ -55,7 +55,7 @@ def TaskCommit_index(request):
 
 @login_required()
 @permission_verify()
-def TaskCommit_undo(request):
+def TaskCommit_undo(request, *args, **kwargs):
 #    temp_name = "skdeploy/skdeploy-header.html"
     TaskCommit_id = request.GET.get('id', '')
     if TaskCommit_id:
@@ -72,7 +72,7 @@ def TaskCommit_undo(request):
  #   return render_to_response("skdeploy/TaskCommit.html", locals(), RequestContext(request))
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def TaskCommit_add(request, ids):
     temp_name = "skdeploy/skdeploy-header.html"
     status = 0
@@ -186,7 +186,7 @@ def TaskCommit_add(request, ids):
 
 @login_required()
 @permission_verify()
-def TaskCommit_check(request):
+def TaskCommit_check(request, *args, **kwargs):
     obj_env=request.POST.get('env') 
     
     obj_project = request.POST.get('project')  
@@ -269,7 +269,7 @@ def TaskCommit_check(request):
 
 @login_required()
 @permission_verify()
-def TaskCommit_checkstatus(request):
+def TaskCommit_checkstatus(request, *args, **kwargs):
     obj_env=request.POST.get('env') 
     obj_project = request.POST.get('project')  
     redis_chanel=obj_project+obj_env

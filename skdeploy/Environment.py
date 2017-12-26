@@ -8,7 +8,7 @@ from models import AuditFlow,Environment,ProjectGroup,Project,TaskStatus
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from .forms import Environment_form
@@ -29,7 +29,7 @@ proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
-def Environment_index(request):
+def Environment_index(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"    
     tpl_all = Environment.objects.all()
     
@@ -37,7 +37,7 @@ def Environment_index(request):
 
 @login_required()
 @permission_verify()
-def Environment_add(request):
+def Environment_add(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"
     if request.method == "POST":
         tpl_Environment_form = Environment_form(request.POST)
@@ -70,7 +70,7 @@ def Environment_add(request):
 
 @login_required()
 @permission_verify()
-def Environment_del(request):
+def Environment_del(request, *args, **kwargs):
 #    temp_name = "skdeploy/skdeploy-header.html"
     Environment_id = request.GET.get('id', '')
     if Environment_id:
@@ -88,7 +88,7 @@ def Environment_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def Environment_edit(request, ids):
     status = 0
     obj = get_object(Environment, id=ids)

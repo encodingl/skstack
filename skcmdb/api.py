@@ -110,7 +110,7 @@ def pages(post_objects, request):
 
 @csrf_exempt
 @token_verify()
-def collect(request):
+def collect(request, *args, **kwargs):
     req = request
     if req.POST:
         vendor = req.POST.get('vendor')
@@ -154,7 +154,7 @@ def collect(request):
 
 
 @token_verify()
-def get_host(request):
+def get_host(request, *args, **kwargs):
     try:
         hostname = request.GET['name']
     except:
@@ -168,7 +168,7 @@ def get_host(request):
 
 
 @token_verify()
-def get_group(request):
+def get_group(request, *args, **kwargs):
     if request.GET:
         d = []
         try:

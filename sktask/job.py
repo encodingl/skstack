@@ -8,7 +8,7 @@ from models import job,extravars,project
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles
@@ -25,14 +25,14 @@ proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
-def job_index(request):
+def job_index(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     alljob = job.objects.all()
     return render_to_response('sktask/job_index.html', locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
-def job_add(request):
+def job_add(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     if request.method == "POST":
         job_form = Job_form(request.POST)
@@ -55,7 +55,7 @@ def job_add(request):
 
 @login_required()
 @permission_verify()
-def job_del(request):
+def job_del(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
     job_id = request.GET.get('id', '')
     if job_id:
@@ -71,7 +71,7 @@ def job_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 # def job_edit(request, ids):
 #     obj = job.objects.get(id=ids)
 #     alljob = job.objects.all()
@@ -94,7 +94,7 @@ def job_edit(request, ids):
     return render_to_response("sktask/job_edit.html", locals(), RequestContext(request))
 
 @login_required
-@permission_verify()
+@permission_verify_ids()
 def job_detail(request, ids):
     proj_base_dir = get_dir("pro_path")
     obj={}  

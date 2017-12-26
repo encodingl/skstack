@@ -8,7 +8,7 @@ from django.http import HttpResponse
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles
@@ -26,7 +26,7 @@ log("setup.log", level, log_path)
 
 @login_required()
 @permission_verify()
-def index(request):
+def index(request, *args, **kwargs):
     temp_name = "sktask/setup-header.html"
 #     all_host = Host.objects.all()
 #     all_dir = get_roles(roles_dir)
@@ -38,7 +38,7 @@ def index(request):
 
 @login_required()
 @permission_verify()
-def playbook(request):
+def playbook(request, *args, **kwargs):
     ret = []
     temp_name = "sktask/setup-header.html"
     if os.path.exists(ansible_dir + '/gexec.yml'):
@@ -143,7 +143,7 @@ def playbook(request):
 
 @login_required()
 @permission_verify()
-def ansible_command(request):
+def ansible_command(request, *args, **kwargs):
     command_list = []
     ret = []
     count = 1
@@ -202,7 +202,7 @@ def ansible_command(request):
 
 @login_required()
 @permission_verify()
-def host_sync(request):
+def host_sync(request, *args, **kwargs):
  
     group = HostGroup.objects.all()
     ansible_file = open(ansible_dir+"/hosts", "wb")

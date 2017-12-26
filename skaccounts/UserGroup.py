@@ -8,7 +8,7 @@ from models import UserGroup
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify,permission_verify_ids
 import logging
 from lib.log import log
 from .forms import UserGroup_form
@@ -25,14 +25,14 @@ from django.core.urlresolvers import reverse
 
 @login_required()
 @permission_verify()
-def UserGroup_index(request):
+def UserGroup_index(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"    
     tpl_all = UserGroup.objects.all()
     return render_to_response('skaccounts/UserGroup_index.html', locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
-def UserGroup_add(request):
+def UserGroup_add(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == "POST":
         tpl_UserGroup_form = UserGroup_form(request.POST)
@@ -53,7 +53,7 @@ def UserGroup_add(request):
 
 @login_required()
 @permission_verify()
-def UserGroup_del(request):
+def UserGroup_del(request, *args, **kwargs):
 #    temp_name = "skaccounts/accounts-header.html"
     UserGroup_id = request.GET.get('id', '')
     if UserGroup_id:
@@ -68,7 +68,7 @@ def UserGroup_del(request):
 
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def UserGroup_edit(request, ids):
     temp_name = "skaccounts/accounts-header.html"
     status = 0
