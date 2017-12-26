@@ -28,7 +28,7 @@ def rota_add(request, *args, **kwargs):
     return render_to_response("skyw/rota_add.html",locals(),RequestContext(request))
 
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def rota_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Rota.objects.filter(id=ids).delete()
@@ -36,7 +36,7 @@ def rota_delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def rota_edit(request,ids):
     temp_name = "skyw/yw-header.html"
     rota_edit = Rota.objects.get(id=ids)

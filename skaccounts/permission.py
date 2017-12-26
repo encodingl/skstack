@@ -168,3 +168,4 @@ def permission_del(request, ids):
     PermissionList.objects.filter(id=ids).delete()
 
     return HttpResponseRedirect(reverse('permission_list'))
+

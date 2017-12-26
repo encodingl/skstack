@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify,permission_verify_ids
 # Create your views here.
 
-
+@login_required()
+@permission_verify()
 def event_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
@@ -27,14 +28,16 @@ def event_add(request, *args, **kwargs):
         display_control = "none"
         events = eventform()
     return render_to_response("skyw/event_add.html", locals(), RequestContext(request))
-
+@login_required()
+@permission_verify_ids()
 def event_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     event.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('list'))
 def str2gb(args):
     return str(args).encode('gb2312')
-
+@login_required()
+@permission_verify_ids()
 def event_edit(request,ids):
     events_edit = event.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"

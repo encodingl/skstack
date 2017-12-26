@@ -9,6 +9,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify,permission_verify_ids
 # Create your views here.
+@login_required()
+@permission_verify()
 def notice_add(request, *args, **kwargs):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
@@ -25,14 +27,16 @@ def notice_add(request, *args, **kwargs):
         notice = noticeform()
     return render_to_response("skyw/notice_add.html",locals(),RequestContext(request))
 
-
+@login_required()
+@permission_verify_ids()
 def notice_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Notice.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('list'))
 def str2gb(args):
     return str(args).encode('gb2312')
-
+@login_required()
+@permission_verify_ids()
 def notice_edit(request,ids):
     obj = Notice.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"

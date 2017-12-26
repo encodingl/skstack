@@ -123,7 +123,7 @@ def add(request, *args, **kwargs):
         devops = devopsform()
     return render_to_response("skyw/add.html", locals(), RequestContext(request))
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Devops.objects.filter(id=ids).delete()
@@ -131,7 +131,7 @@ def delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
-@permission_verify()
+@permission_verify_ids()
 def yw_edit(request,ids):
     devops_edit = Devops.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"
