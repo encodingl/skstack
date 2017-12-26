@@ -45,7 +45,7 @@ def permission_verify():
                 for l in role_permission_list:
                     args.append(str(l.url))
 #                 args=json.dumps(args)
-                print args
+                
             else:
                 args=['/all/']
 

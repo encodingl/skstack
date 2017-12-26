@@ -107,12 +107,12 @@ $(document).ready(function () {
 	
 	$("ul.navbar-nav").find("a").each(function(){
 		var navbar_href = $(this).attr("href");
-		console.log(navbar_href);
+		
 		url1 = "/" + navbar_href.split("/")[1] + "/"
 		
 		
 		if (permission_navbar_list.contains(url1)){
-			console.log(url1);
+			;
 			
 		}
 		else if(permission_navbar_list.contains(navbar_href)){
