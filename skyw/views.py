@@ -12,7 +12,8 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from collections import OrderedDict
 # Create your views here.
-
+@login_required()
+@permission_verify()
 def index(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
@@ -104,6 +105,8 @@ def list(request):
        iphone = yw.iphone
     return render_to_response("skyw/list.html", locals(), RequestContext(request))
 
+@login_required()
+@permission_verify()
 def add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
@@ -119,14 +122,16 @@ def add(request):
         display_control = "none"
         devops = devopsform()
     return render_to_response("skyw/add.html", locals(), RequestContext(request))
-
+@login_required()
+@permission_verify()
 def delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Devops.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('list'))
 def str2gb(args):
     return str(args).encode('gb2312')
-
+@login_required()
+@permission_verify()
 def yw_edit(request,ids):
     devops_edit = Devops.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"

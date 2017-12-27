@@ -4,8 +4,8 @@ from django.conf.urls import url,include
 from skfile  import views
 
 urlpatterns = [
-   url(r'^skfile',views.index,name="skfile"),
-   url(r'^dir',views.dir,name="dir"),
-   url(r'^file_history',views.file_history,name="file_history"),
-   url(r'^adddir',views.adddir,name="adddir"),
+   url(r'file',views.index,name="file"),
+   url(r'^dirmanager',views.dir,name="dirmanager"),
+   url(r'^fhistory',views.file_history,name="fhistory"),
+   url(r'^dir_add',views.adddir,name="dir_add"),
 ]
