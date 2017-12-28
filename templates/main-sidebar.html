@@ -6,41 +6,41 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" id="sidebar-menu">
 
-            {% if request.user.is_superuser or '/skyw/lis1t' in url_permission_list %}
+            {% if '/skyw/list' in url_permission_list %}
                 <li id="skyw"><a href="{% url 'list' %}"><i class="fa fa-link"></i> <span>运维导航</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skcmdb/asset' in url_permission_list %}
+            {% if permission_flag or '/skcmdb/asset' in url_permission_list %}
                 <li id="skcmdb"><a href="{% url 'cmdb' %}"><i class="fa fa-database"></i> <span>资产管理</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/sktask/task' in url_permission_list %}
+            {% if permission_flag or '/sktask/task' in url_permission_list %}
                 <li id="sktask"><a href="{% url 'task' %}"><i class="fa fa-cogs"></i> <span>运维任务</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skdeploy/TaskStatus' in url_permission_list %}
+            {% if permission_flag or '/skdeploy/TaskStatus' in url_permission_list %}
                 <li id="skdeploy"><a href="{% url 'TaskStatus_index' %}"><i class="fa fa-file-code-o"></i><span>项目上线</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skaccounts/user/list' in url_permission_list %}
+            {% if permission_flag or '/skaccounts/user/list' in url_permission_list %}
                 <li id="skaccounts"><a href="{% url 'user_list' %}"><i class="fa fa-users"></i> <span>用户管理</span></a>
                 </li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skrecord/faq' in url_permission_list %}
+            {% if permission_flag or '/skrecord/faq' in url_permission_list %}
                 <li id="skrecord"><a href="{% url 'faq' %}"><i class="fa fa-book"></i> <span>登记管理</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skrpt' in url_permission_list %}
+            {% if permission_flag or '/skrpt' in url_permission_list %}
                 <li id="skrpt"><a href="{% url 'rpt' %}"><i class="fa fa fa-line-chart"></i> <span>报表平台</span></a></li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skapi/monitor/index' in url_permission_list %}
+            {% if permission_flag or '/skapi/monitor/index' in url_permission_list %}
                 <li id="skapi"><a href="{% url 'monitor_index' %}"><i class="fa fa-files-o"></i> <span>监控平台</span></a>
                 </li>
             {% endif %}
 
-            {% if request.user.is_superuser or '/skconfig' in url_permission_list %}
+            {% if permission_flag or '/skconfig' in url_permission_list %}
                 <li id="skconfig"><a href="{% url 'config' %}"><i class="fa fa fa-cog"></i> <span>系统配置</span></a></li>
             {% endif %}
         </ul>
@@ -50,30 +50,30 @@
 
 <script>
     $(document).ready(function () {
+        var url_list = ['{{ url_permission_list }}'];
+        for (i in url_list[0])
+        {
+{#            alert(i);#}
+        }
+
         $("#sidebar-menu").children().each(function(){
+            alert($(this).children("a").val("href"));
 {#            alert($(this).text())#}
 {#            alert({{ url_permission_list.0 }});#}
         });
     });
 </script>
 
-{#<script>#}
-{##}
-{#    $(document).ready(function () {#}
-{#        var url = window.location.pathname;#}
-{##}
-{#        $("[href='" + url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');#}
-{#        $("[href='" + url + "']").parents("li.dropdown").addClass('bg-primary').siblings().removeClass('bg-primary');#}
-{#        url = url.split("/");#}
-{#        var sidebar_url = url[1];#}
-{##}
-{#        $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');#}
-{##}
-{##}
-{#    });#}
-{##}
-{##}
-{#</script>#}
+<script>
+    $(document).ready(function () {
+        var url = window.location.pathname;
+        $("[href='" + url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
+        $("[href='" + url + "']").parents("li.dropdown").addClass('bg-primary').siblings().removeClass('bg-primary');
+        url = url.split("/");
+        var sidebar_url = url[1];
+        $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
+    });
+</script>
 {#<script type="text/javascript">#}
 {#$(document).ready(function () {#}
 {#	Array.prototype.contains = function ( needle ) {#}
