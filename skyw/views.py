@@ -14,7 +14,7 @@ from collections import OrderedDict
 # Create your views here.
 @login_required()
 @permission_verify()
-def index(request):
+def daohang(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()
@@ -89,10 +89,10 @@ def index(request):
     #print dicts
     #print d1
 
-    return render_to_response("index.html", locals(), RequestContext(request))
+    return render_to_response("skyw/index.html", locals(), RequestContext(request))
 @login_required()
 @permission_verify()
-def list(request):
+def index(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()

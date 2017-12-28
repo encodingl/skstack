@@ -2,11 +2,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 #import views
-from skyw import views
+from skrpt import views
 
 urlpatterns = [
     url(r'^$',views.index,name="index"),
-    url(r'^list', views.list, name='list'),
     url(r'^skcmdb/', include('skcmdb.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^sktask/', include('sktask.urls')),
