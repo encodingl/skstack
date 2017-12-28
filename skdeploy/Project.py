@@ -87,11 +87,13 @@ def Project_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
-def Project_edit(request, ids):
+@permission_verify()
+def Project_edit(request, *args, **kwargs):
     temp_name = "skdeploy/skdeploy-header.html"
-    
+    ids = request.GET.get('id', '')
+    print "ids:%s" % ids
     obj = get_object(Project, id=ids)
+    
     
     if request.method == 'POST':
         tpl_Project_form = Project_form(request.POST, instance=obj)
@@ -121,8 +123,10 @@ def Project_edit(request, ids):
             display_control = ""
             return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
     else:
+     
         tpl_Project_form = Project_form(instance=obj)      
         display_control = "none"
+        print display_control
         return render_to_response("skdeploy/Project_edit.html", locals(), RequestContext(request))
 
 @login_required()

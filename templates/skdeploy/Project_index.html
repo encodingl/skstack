@@ -5,10 +5,10 @@
 {% block content %}
 
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-    </section>
+  <!-- Content Header (Page header) -->
+<section class="content-header">
 
+</section>
     <!-- Main content -->
     <section class="content">
         <form action="{% url 'Project_del' %}" method="post">
@@ -50,7 +50,7 @@
                                         <td>{{ x.status }}</td>
                                         <td class="text-center" data-editable='false'>
                                         <a href="{% url 'Project_init' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_init">验证</a>
-                                        <a href="{% url "Project_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
+                                        <a href="{% url 'Project_edit' %}?id={{ x.id }}" class="btn btn-sm btn-info">编辑</a>
                                         <a value="{% url 'Project_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                     </td>
                                     </tr>
