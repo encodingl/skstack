@@ -47,23 +47,6 @@
     </section>
 </aside>
 
-
-<script>
-    $(document).ready(function () {
-        var url_list = ['{{ url_permission_list }}'];
-        for (i in url_list[0])
-        {
-{#            alert(i);#}
-        }
-
-        $("#sidebar-menu").children().each(function(){
-            alert($(this).children("a").val("href"));
-{#            alert($(this).text())#}
-{#            alert({{ url_permission_list.0 }});#}
-        });
-    });
-</script>
-
 <script>
     $(document).ready(function () {
         var url = window.location.pathname;
@@ -74,6 +57,25 @@
         $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
     });
 </script>
+
+
+{#<script>#}
+{#    $(document).ready(function () {#}
+{#        var url_list = ['{{ url_permission_list }}'];#}
+{#        for (i in url_list[0])#}
+{#        {#}
+{#            alert(i);#}
+{#        }#}
+{##}
+{#        $("#sidebar-menu").children().each(function(){#}
+{#            alert($(this).children("a").val("href"));#}
+{#            alert($(this).text())#}
+{#            alert({{ url_permission_list.0 }});#}
+{#        });#}
+{#    });#}
+{#</script>#}
+
+
 {#<script type="text/javascript">#}
 {#$(document).ready(function () {#}
 {#	Array.prototype.contains = function ( needle ) {#}
