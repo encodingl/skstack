@@ -13,7 +13,6 @@ urlpatterns = [
     url(r'^skaccounts/', include('skaccounts.urls')),
     url(r'^skdomain/', include('skdomain.urls')),
     url(r'^skyw/', include('skyw.urls')),
-    url(r'^skfile/', include('skfile.urls')),
     url(r'^skapi/', include('skapi.urls')),
     url(r'^skrecord/', include('skrecord.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
