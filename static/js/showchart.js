@@ -35,7 +35,7 @@ $(function(){
 				},
 
 
-				width : 1450,
+				width : 1260,
 				height : 400,
 				shadow:false,
 				shadow_color : '#fff',
@@ -63,7 +63,7 @@ $(function(){
 					point_size:8
 				},
 				coordinate:{
-					width:1350,
+					width:1160,
 					height:260,
 					striped_factor : 0.18,
 
