@@ -33,10 +33,6 @@ def permission_verify():
                     # 判断request.path是否以permission表中的某一条url开头
                     elif request.path.startswith(x.url):
                         matchUrl.append(x.url)
-                    else:
-                        pass
-
-                print '%s---->matchUrl:%s' %(request.user,str(matchUrl))
                 
                 if len(matchUrl) == 0:
                     return HttpResponseRedirect(reverse('permission_deny'))
@@ -98,14 +94,12 @@ def permission_verify_ids():
     return decorator
 
 @login_required
-@permission_verify()
 def permission_deny(request, *args, **kwargs):
     temp_name = "main-header.html"
     kwvars = {
         'temp_name': temp_name,
         'request': request,
     }
-
     return render_to_response('skaccounts/permission_deny.html', locals(), RequestContext(request))
 
 

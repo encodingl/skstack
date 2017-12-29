@@ -16,14 +16,12 @@
       </a>
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li style="font-size: medium" id="user_list"><a href="{% url 'user_list' %}"><b>用户管理</b></a></li>
-            <li style="font-size: medium" id="user_list"><a href="{% url 'UserGroup_index' %}"><b>用户组管理</b></a></li>
-            <li style="font-size: medium" id="role_list"><a href="{% url 'role_list' %}"><b>URL角色</b></a></li>           
-            <li style="font-size: medium" id="permission_list"><a href="{% url 'permission_list' %}"><b>URL权限</b></a></li>
-            <li style="font-size: medium" id="role_job_list"><a href="{% url 'role_job_list' %}"><b>JOB角色</b></a></li>
-            <li style="font-size: medium" id="role_job_list"><a href="{% url 'AuditFlow_index' %}"><b>审核流程</b></a></li>
-{#            <li style="font-size: medium"><a href="{% url 'roles' %}"><b>角色管理</b></a></li>#}
-
+            <li id="user_list" style="font-size: medium;display: none;"><a href="{% url 'user_list' %}"><b>用户管理</b></a></li>
+            <li id="user_group" style="font-size: medium;display: none;"><a href="{% url 'UserGroup_index' %}"><b>用户组管理</b></a></li>
+            <li id="role_name" style="font-size: medium;display: none;"><a href="{% url 'role_list' %}"><b>URL角色</b></a></li>
+            <li id="permission_list" style="font-size: medium;display: none;"><a href="{% url 'permission_list' %}"><b>URL权限</b></a></li>
+            <li id="role_name" style="font-size: medium;display: none;"><a href="{% url 'role_job_list' %}"><b>JOB角色</b></a></li>
+            <li id="audit_name" style="font-size: medium;display: none;"><a href="{% url 'AuditFlow_index' %}"><b>审核流程</b></a></li>
           </ul>
         </div>
       <!-- Navbar Right Menu -->
