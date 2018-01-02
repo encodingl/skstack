@@ -22,30 +22,30 @@
                         <b>FAQ</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium" id="asset"><a href="{% url 'faq' %}"><b>FAQ</b></a></li>
-                        <li style="font-size: medium" id="app_list"><a href="{% url 'faq_list' %}"><b>问题类别</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq"><a href="{% url 'faq' %}"><b>FAQ</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq_issue_list"><a href="{% url 'faq_list' %}"><b>问题类别</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
 
-              <li class="dropdown" style="font-size: medium" id="manage">
+              <li class="dropdown" style="font-size: medium;display: none" id="faq_manage">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <b>负面清单</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium" id="asset"><a href="{% url 'assessment' %}"><b>负面清单</b></a></li>
-                        <li style="font-size: medium" id="app_list"><a href="{% url 'assessment_list' %}"><b>分类</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq_list"><a href="{% url 'assessment' %}"><b>负面清单</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq_type"><a href="{% url 'assessment_list' %}"><b>分类</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
-            <li id="navi_manage" style="font-size: medium"><a href="{% url 'change' %}"><b>变更登记</b></a></li>
-              <li class="dropdown" style="font-size: medium" id="manage">
+            <li id="faq_change_record" style="font-size: medium;display: none"><a href="{% url 'change' %}"><b>变更登记</b></a></li>
+              <li class="dropdown" style="font-size: medium;display: none" id="faq_event_record">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <b>事件登记</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium" id="asset"><a href="{% url 'record' %}"><b>事件登记</b></a></li>
-                        <li style="font-size: medium" id="app_list"><a href="{% url 'record_list' %}"><b>故障等级</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq_event"><a href="{% url 'record' %}"><b>事件登记</b></a></li>
+                        <li style="font-size: medium;display: none" id="faq_level"><a href="{% url 'record_list' %}"><b>故障等级</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>

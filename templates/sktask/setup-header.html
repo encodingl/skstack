@@ -16,25 +16,25 @@
       </a>
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav" id="navbar-nav">
-                <li style="font-size: medium" id="task"><a href="{% url 'task' %}"><b>Task</b></a></li>
-                <li style="font-size: medium" id="inventories"><a href="{% url 'inventories' %}"><b>Inventories</b></a></li>
-					  <li class="dropdown" style="font-size: medium" id="manage">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-										<b>Manage</b> <span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu">
-                                        <li style="font-size: medium" id="project"><a href="{% url 'project_manage' %}"><b>Project</b></a></li>
-					                    <li style="font-size: medium" id="job_index"><a href="{% url 'job_index' %}"><b>Job</b></a></li>
-					                    <li style="font-size: medium" id="extravars_index"><a href="{% url 'extravars_index' %}"><b>Extravars</b></a></li>
-									</ul>
-					 </li>
-	
-                
-                
-                <li style="font-size: medium" id="ansible"><a href="{% url 'ansible' %}"><b>Ansible</b></a></li>
+                <li style="font-size: medium;display: none" id="task"><a href="{% url 'task' %}"><b>Task</b></a></li>
+                <li style="font-size: medium;display: none" id="inventories"><a href="{% url 'inventories' %}"><b>Inventories</b></a></li>
+                <li class="dropdown" style="font-size: medium;display: none" id="manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>Manage</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="project"><a
+                                href="{% url 'project_manage' %}"><b>Project</b></a></li>
+                        <li style="font-size: medium;display: none" id="job_index"><a href="{% url 'job_index' %}"><b>Job</b></a></li>
+                        <li style="font-size: medium;display: none" id="extravars_index"><a href="{% url 'extravars_index' %}"><b>Extravars</b></a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li style="font-size: medium;display: none" id="ansible"><a href="{% url 'ansible' %}"><b>Ansible</b></a></li>
                 <li class="divider"></li>
     <!--             <li style="font-size: medium" id="shell"><a href="{% url 'shell' %}"><b>Shell</b></a></li> -->
-                <li style="font-size: medium" id="history"><a href="{% url 'history' %}"><b>History</b></a></li>
+                <li style="font-size: medium;display: none" id="history"><a href="{% url 'history' %}"><b>History</b></a></li>
                 
           </ul>
         </div>

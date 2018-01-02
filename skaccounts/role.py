@@ -1,8 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response,RequestContext
 from django.contrib.auth.decorators import login_required
 from forms import RoleListForm,RoleJobForm
@@ -10,7 +9,7 @@ from models import RoleList,RoleJob
 from skaccounts.permission import permission_verify,permission_verify_ids
 
 
-@login_required
+@login_required()
 @permission_verify()
 def role_add(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
@@ -31,15 +30,15 @@ def role_add(request, *args, **kwargs):
     return render_to_response('skaccounts/role_add.html',locals(),RequestContext(request))
 
 
-@login_required
+@login_required()
 @permission_verify()
 def role_list(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleList.objects.all()
-    return render_to_response('skaccounts/role_list.html', locals())
+    return render_to_response('skaccounts/role_list.html', locals(),RequestContext(request))
 
 
-@login_required
+@login_required()
 @permission_verify_ids()
 def role_edit(request, ids):
     iRole = RoleList.objects.get(id=ids)
@@ -63,7 +62,7 @@ def role_edit(request, ids):
     return render_to_response('skaccounts/role_edit.html', locals(), RequestContext(request))
 
 
-@login_required
+@login_required()
 @permission_verify_ids()
 def role_del(request, ids):
     RoleList.objects.filter(id=ids).delete()
@@ -97,7 +96,7 @@ def role_job_add(request, *args, **kwargs):
 def role_job_list(request, *args, **kwargs):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleJob.objects.all()
-    return render_to_response('skaccounts/role_job_list.html', locals())
+    return render_to_response('skaccounts/role_job_list.html', locals(),RequestContext(request))
 
 
 @login_required
