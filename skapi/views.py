@@ -1,16 +1,19 @@
 # coding: utf-8
 import json, commands
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from skcmdb.models import App
 import logging
 from skcmdb.models import Url
 
 
+@csrf_exempt
 def grafana(request):
     return HttpResponse("ok")
 
 
+@csrf_exempt
 def grafana_search(request):
     if request.method == 'OPTIONS':
         return HttpResponse("")
@@ -38,6 +41,7 @@ def grafana_search(request):
     return HttpResponse("args error")
 
 
+@csrf_exempt
 def zabbix_sender(request):
     log = logging.getLogger('nginx_info')
     zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
@@ -76,7 +80,7 @@ def zabbix_sender(request):
         for url in data_dict:
             for key in data_dict[url]:
                 cmd = '''/usr/bin/zabbix_sender -s "%s" -z "%s" -k url[%s,%s] -o "%s"''' % (
-                agent_ip, zabbbix_server, url, key, data_dict[url][key])
+                    agent_ip, zabbbix_server, url, key, data_dict[url][key])
                 code, result = commands.getstatusoutput(cmd)
                 if code != 0:
                     count += 1
@@ -89,8 +93,8 @@ def zabbix_sender(request):
     return HttpResponse('Error')
 
 
+@csrf_exempt
 def get_urllist(request):
     urls = list(Url.objects.filter(status=1).values_list('name'))
     url_d = [url[0] for url in urls]
     return HttpResponse(json.dumps(url_d), content_type="application/json")
-

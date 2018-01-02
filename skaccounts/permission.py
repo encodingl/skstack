@@ -85,7 +85,7 @@ def permission_add(request):
 def permission_list(request):
     all_permission = PermissionList.objects.all()
     temp_name = "skaccounts/accounts-header.html"
-    return render_to_response('skaccounts/permission_list.html', locals())
+    return render_to_response('skaccounts/permission_list.html', locals(),RequestContext(request))
 
 
 @login_required
