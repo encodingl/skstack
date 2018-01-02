@@ -8,12 +8,12 @@ from forms import *
 from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 # Create your views here.
 
 @login_required()
 @permission_verify()
-def platformclass_add(request, *args, **kwargs):
+def platformclass_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        platformclasss =  platformclassform(request.POST)
@@ -30,13 +30,13 @@ def platformclass_add(request, *args, **kwargs):
         platformclasss = platformclassform()
     return render_to_response("skyw/platformclass_add.html", locals(), RequestContext(request))
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def platformclass_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     PlatFormclass.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('list'))
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def platformclass_edit(request,ids):
     temp_name = "skyw/yw-header.html"
     platformclassedit = PlatFormclass.objects.get(id=ids)
@@ -55,7 +55,7 @@ def platformclass_edit(request,ids):
     return render_to_response('skyw/platformclass_edit.html',locals(),RequestContext(request))
 @login_required()
 @permission_verify()
-def platform_add(request, *args, **kwargs):
+def platform_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        platform = platformform(request.POST)
@@ -71,7 +71,7 @@ def platform_add(request, *args, **kwargs):
         platform = platformform()
     return render_to_response("skyw/platform_add.html", locals(), RequestContext(request))
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def platform_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Platform.objects.filter(id=ids).delete()
@@ -79,7 +79,7 @@ def platform_delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def platform_edit(request,ids):
     platformedit = Platform.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"

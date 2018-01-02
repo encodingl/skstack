@@ -7,7 +7,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
 from forms import history_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from skcmdb.api import get_object
 from django.forms.models import model_to_dict  
@@ -16,7 +16,7 @@ import re
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "sktask/setup-header.html"
     allhistory = history.objects.all()
 #     allhistory = model_to_dict(allhistory) 
@@ -24,7 +24,7 @@ def index(request, *args, **kwargs):
     return render_to_response("sktask/history.html", locals(), RequestContext(request))
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def detail(request, ids):  
     obj = get_object(history, id=ids)
     obj_cmd = obj.cmd

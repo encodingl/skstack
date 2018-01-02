@@ -9,10 +9,10 @@ from forms import LoginUserForm, EditUserForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
 from forms import AddUserForm
 from django.core.urlresolvers import reverse
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 
 
-def login(request, *args, **kwargs):
+def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
 
@@ -42,14 +42,14 @@ def login(request, *args, **kwargs):
 
 
 @login_required
-def logout(request, *args, **kwargs):
+def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required()
 @permission_verify()
-def user_list(request, *args, **kwargs):
+def user_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_user = get_user_model().objects.all()
     return render_to_response('skaccounts/user_list.html', locals(), RequestContext(request))
@@ -57,7 +57,7 @@ def user_list(request, *args, **kwargs):
 
 @login_required
 @permission_verify()
-def user_add(request, *args, **kwargs):
+def user_add(request):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == 'POST':
         form = AddUserForm(request.POST)
@@ -80,7 +80,7 @@ def user_add(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def user_del(request, ids):
     if ids:
         get_user_model().objects.filter(id=ids).delete()
@@ -88,7 +88,7 @@ def user_del(request, ids):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def user_edit(request, ids):
     user = get_user_model().objects.get(id=ids)
 
@@ -112,7 +112,7 @@ def user_edit(request, ids):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def reset_password(request, ids):
     user = get_user_model().objects.get(id=ids)
     newpassword = get_user_model().objects.make_random_password(length=10, allowed_chars='abcdefghjklmnpqrstuvwxyABCDEFGHJKLMNPQRSTUVWXY3456789')
@@ -130,7 +130,7 @@ def reset_password(request, ids):
 
 
 @login_required
-def change_password(request, *args, **kwargs):
+def change_password(request):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == 'POST':
         form = ChangePasswordForm(user=request.user, data=request.POST)

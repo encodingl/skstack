@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response, HttpResponse, HttpResponseRedir
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from skcmdb.api import pages, get_object
 from skcmdb.forms import IdcForm, EnvForm, YwGroupForm, MiddleTypeForm, AssetForm, AppForm, HostGroupForm, DbSourceForm, \
     UrlForm, WhileIpForm
@@ -19,7 +19,7 @@ import commands
 
 @login_required()
 @permission_verify()
-def opssa_list(request, *args, **kwargs):
+def opssa_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     opssa_info = UserInfo.objects.filter(type__gte=1).filter(type__lte=5)
     return render_to_response('skcmdb/opssa_list.html', locals(), RequestContext(request))
@@ -27,7 +27,7 @@ def opssa_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def env_list(request, *args, **kwargs):
+def env_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = Env.objects.all()
     return render_to_response('skcmdb/env_list.html', locals(), RequestContext(request))
@@ -35,7 +35,7 @@ def env_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def env_add(request, *args, **kwargs):
+def env_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = EnvForm(request.POST)
@@ -54,7 +54,7 @@ def env_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def env_del(request, *args, **kwargs):
+def env_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('idc_check', [])
@@ -66,7 +66,7 @@ def env_del(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def env_edit(request, ids):
     status = 0
     obj = get_object(Env, id=ids)
@@ -84,7 +84,7 @@ def env_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def ywgroup_list(request, *args, **kwargs):
+def ywgroup_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = YwGroup.objects.all()
     return render_to_response('skcmdb/ywgroup_list.html', locals(), RequestContext(request))
@@ -92,7 +92,7 @@ def ywgroup_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def ywgroup_add(request, *args, **kwargs):
+def ywgroup_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = YwGroupForm(request.POST)
@@ -111,7 +111,7 @@ def ywgroup_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def ywgroup_del(request, *args, **kwargs):
+def ywgroup_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('idc_check', [])
@@ -123,7 +123,7 @@ def ywgroup_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def ywgroup_edit(request, ids):
     obj = YwGroup.objects.get(id=ids)
     allidc = YwGroup.objects.all()
@@ -132,7 +132,7 @@ def ywgroup_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def ywgroup_save(request, *args, **kwargs):
+def ywgroup_save(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -152,7 +152,7 @@ def ywgroup_save(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def hostgroup_list(request, *args, **kwargs):
+def hostgroup_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = HostGroup.objects.all()
     return render_to_response('skcmdb/hostgroup_list.html', locals(), RequestContext(request))
@@ -160,7 +160,7 @@ def hostgroup_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def hostgroup_add(request, *args, **kwargs):
+def hostgroup_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = HostGroupForm(request.POST)
@@ -180,7 +180,7 @@ def hostgroup_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def hostgroup_del(request, *args, **kwargs):
+def hostgroup_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('g_check', [])
@@ -192,7 +192,7 @@ def hostgroup_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def hostgroup_edit(request, ids):
     obj = HostGroup.objects.get(id=ids)
     return render_to_response("skcmdb/hostgroup_edit.html", locals(), RequestContext(request))
@@ -200,7 +200,7 @@ def hostgroup_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def hostgroup_save(request, *args, **kwargs):
+def hostgroup_save(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -218,7 +218,7 @@ def hostgroup_save(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def middletype_list(request, *args, **kwargs):
+def middletype_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = MiddleType.objects.all()
     return render_to_response('skcmdb/middletype_list.html', locals(), RequestContext(request))
@@ -226,7 +226,7 @@ def middletype_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def middletype_add(request, *args, **kwargs):
+def middletype_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = MiddleTypeForm(request.POST)
@@ -246,7 +246,7 @@ def middletype_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def middletype_del(request, *args, **kwargs):
+def middletype_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('idc_check', [])
@@ -258,7 +258,7 @@ def middletype_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def middletype_edit(request, ids):
     obj = MiddleType.objects.get(id=ids)
     allidc = MiddleType.objects.all()
@@ -267,7 +267,7 @@ def middletype_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def middletype_save(request, *args, **kwargs):
+def middletype_save(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -285,7 +285,7 @@ def middletype_save(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def app_list(request, *args, **kwargs):
+def app_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     sa_info = UserInfo.objects.filter(type=1)
     env_info = Env.objects.all()
@@ -329,7 +329,7 @@ def app_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def app_add(request, *args, **kwargs):
+def app_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         a_form = AppForm(request.POST)
@@ -349,7 +349,7 @@ def app_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def app_del(request, *args, **kwargs):
+def app_del(request):
     app_id = request.GET.get('id', '')
     if app_id:
         App.objects.filter(id=app_id).delete()
@@ -366,7 +366,7 @@ def app_del(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def app_edit(request, ids):
     status = 0
     obj = get_object(App, id=ids)
@@ -385,7 +385,7 @@ def app_edit(request, ids):
 
 @login_required
 @permission_verify()
-def url_list(request, *args, **kwargs):
+def url_list(request):
     temp_name = "skcmdb/cmdb-header.html"
 
     sa_info = UserInfo.objects.filter(type=1)
@@ -417,7 +417,7 @@ def url_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def url_add(request, *args, **kwargs):
+def url_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         a_form = UrlForm(request.POST)
@@ -436,7 +436,7 @@ def url_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def url_del(request, *args, **kwargs):
+def url_del(request):
     url_id = request.GET.get('id', '')
     if url_id:
         Url.objects.filter(id=url_id).delete()
@@ -451,7 +451,7 @@ def url_del(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def url_edit(request, ids):
     status = 0
     obj = get_object(Url, id=ids)
@@ -469,7 +469,7 @@ def url_edit(request, ids):
 
 @login_required
 @permission_verify()
-def kafka_list(request, *args, **kwargs):
+def kafka_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     kafka_info = KafkaTopic.objects.all()
     return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
@@ -477,7 +477,7 @@ def kafka_list(request, *args, **kwargs):
 
 @login_required
 @permission_verify()
-def kafka_update(request, *args, **kwargs):
+def kafka_update(request):
     temp_name = "skcmdb/cmdb-header.html"
     cmd = "ssh 10.8.45.103 /opt/soft/kafka/bin/kafka-topics.sh --zookeeper 10.8.45.103:2181 --list"
     code, result = commands.getstatusoutput(cmd)
@@ -499,7 +499,7 @@ def kafka_update(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def dbsource_list(request, *args, **kwargs):
+def dbsource_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = DbSource.objects.all()
     return render_to_response('skcmdb/dbsource_list.html', locals(), RequestContext(request))
@@ -507,7 +507,7 @@ def dbsource_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def dbsource_add(request, *args, **kwargs):
+def dbsource_add(request):
     print "data=", request.method
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
@@ -527,7 +527,7 @@ def dbsource_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def dbsource_del(request, *args, **kwargs):
+def dbsource_del(request):
     id = request.GET.get('id', '')
     if id:
         DbSource.objects.filter(id=id).delete()
@@ -535,7 +535,7 @@ def dbsource_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def dbsource_edit(request, ids):
     obj = DbSource.objects.get(id=ids)
     pwd = obj.password
@@ -556,7 +556,7 @@ def dbsource_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def whileip_list(request, *args, **kwargs):
+def whileip_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = WhileIp.objects.all()
     return render_to_response('skcmdb/whileip_list.html', locals(), RequestContext(request))
@@ -564,7 +564,7 @@ def whileip_list(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def whileip_add(request, *args, **kwargs):
+def whileip_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = WhileIpForm(request.POST)
@@ -583,7 +583,7 @@ def whileip_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def whileip_del(request, *args, **kwargs):
+def whileip_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('idc_check', [])
@@ -595,7 +595,7 @@ def whileip_del(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def whileip_edit(request, ids):
     status = 0
     obj = get_object(WhileIp, id=ids)

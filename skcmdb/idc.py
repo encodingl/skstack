@@ -5,12 +5,12 @@ from django.shortcuts import render_to_response, RequestContext
 from forms import IdcForm
 from .models import Idc
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 
 
 @login_required()
 @permission_verify()
-def idc(request, *args, **kwargs):
+def idc(request):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()
     return render_to_response('skcmdb/idc.html', locals(), RequestContext(request))
@@ -18,7 +18,7 @@ def idc(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def idc_add(request, *args, **kwargs):
+def idc_add(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         idc_form = IdcForm(request.POST)
@@ -37,7 +37,7 @@ def idc_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def idc_del(request, *args, **kwargs):
+def idc_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         idc_items = request.POST.getlist('idc_check', [])
@@ -49,7 +49,7 @@ def idc_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def idc_edit(request, ids):
     obj = Idc.objects.get(id=ids)
     allidc = Idc.objects.all()
@@ -58,7 +58,7 @@ def idc_edit(request, ids):
 
 @login_required()
 @permission_verify()
-def idc_save(request, *args, **kwargs):
+def idc_save(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         idc_id = request.POST.get('id')

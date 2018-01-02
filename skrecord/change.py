@@ -8,7 +8,7 @@ from forms import Record_form
 from forms import Faq_form
 from forms import Change_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from models import Record
 from models import Faq
@@ -17,7 +17,7 @@ from models import Change
 
 @login_required()
 @permission_verify()
-def change(request, *args, **kwargs):
+def change(request):
     temp_name = "skrecord/navi-header.html"
     change_info = Change.objects.all()
 #    allnavi = navi.objects.all()
@@ -25,7 +25,7 @@ def change(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def add(request, *args, **kwargs):
+def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
         change_form = Change_form(request.POST)
@@ -47,14 +47,14 @@ def add(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def change_delete(request, ids):
     Change.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('change'))
 
 @login_required()
 @permission_verify()
-def message(request, *args, **kwargs):
+def message(request):
     temp_name = "skrecord/navi-header.html"
 
     event_status = EVENT_STATUS
@@ -71,7 +71,7 @@ def message(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def edit(request,ids):
     obj = Change.objects.get(id=ids)
 
@@ -95,7 +95,7 @@ def edit(request,ids):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def detail(request,ids):
     obj = Change.objects.get(id=ids)
 

@@ -8,7 +8,7 @@ from models import project,job,extravars
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic
@@ -34,14 +34,14 @@ ansible_dir = get_dir("a_path")
 
 @login_required()
 @permission_verify()
-def project_manage(request, *args, **kwargs):
+def project_manage(request):
     temp_name = "sktask/setup-header.html"
     allproject = project.objects.all()
     return render_to_response('sktask/project_manage.html', locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()
-def project_add(request, *args, **kwargs):
+def project_add(request):
     temp_name = "sktask/setup-header.html"
     if request.method == "POST":
         project_form = Project_form(request.POST)
@@ -64,7 +64,7 @@ def project_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def project_del(request, *args, **kwargs):
+def project_del(request):
 #    temp_name = "sktask/setup-header.html"
     project_id = request.GET.get('id', '')
     if project_id:
@@ -82,7 +82,7 @@ def project_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 # def project_edit(request, ids):
 #     obj = project.objects.get(id=ids)
 #     allproject = project.objects.all()

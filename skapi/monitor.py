@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.db.models import Q
 import json
 
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
 from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
@@ -21,7 +21,7 @@ log = logging.getLogger('zabbix')
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "skapi/api-header.html"
     alarmgroup_info = AlarmGroup.objects.all()
     alarmgroup_id = request.GET.get('alarmgroup', '')
@@ -53,7 +53,7 @@ def alarmlistedit(request, ids):
 
 @login_required()
 @permission_verify()
-def userlist(request, *args, **kwargs):
+def userlist(request):
     temp_name = "skapi/api-header.html"
     obj_info = AlarmUser.objects.all()
     return render_to_response('skapi/userlist.html', locals(), RequestContext(request))
@@ -61,7 +61,7 @@ def userlist(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def useradd(request, *args, **kwargs):
+def useradd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
         obj_form = AddAlarmUserForm(request.POST)
@@ -80,7 +80,7 @@ def useradd(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def userdel(request, *args, **kwargs):
+def userdel(request):
     id = request.GET.get('id', '')
     if id:
         auser = AlarmUser.objects.get(id=id)
@@ -91,7 +91,7 @@ def userdel(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def useredit(request, ids):
     temp_name = "skapi/api-header.html"
     status = 0
@@ -110,7 +110,7 @@ def useredit(request, ids):
 
 @login_required()
 @permission_verify()
-def policy(request, *args, **kwargs):
+def policy(request):
     temp_name = "skapi/api-header.html"
     obj_info = UserPolicy.objects.all()
     return render_to_response('skapi/policy.html', locals(), RequestContext(request))
@@ -118,7 +118,7 @@ def policy(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def policyadd(request, *args, **kwargs):
+def policyadd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
         obj_form = UserPolicyForm(request.POST)
@@ -137,7 +137,7 @@ def policyadd(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def policydel(request, *args, **kwargs):
+def policydel(request):
     id = request.GET.get('id', '')
     if id:
         UserPolicy.objects.get(id=id).delete()
@@ -145,7 +145,7 @@ def policydel(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def policyedit(request, ids):
     temp_name = "skapi/api-header.html"
     status = 0
@@ -164,7 +164,7 @@ def policyedit(request, ids):
 
 @login_required()
 @permission_verify()
-def grouplist(request, *args, **kwargs):
+def grouplist(request):
     temp_name = "skapi/api-header.html"
     obj_info = AlarmGroup.objects.all()
     return render_to_response('skapi/grouplist.html', locals(), RequestContext(request))
@@ -172,7 +172,7 @@ def grouplist(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def groupadd(request, *args, **kwargs):
+def groupadd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
         obj_form = AlarmGroupForm(request.POST)
@@ -193,7 +193,7 @@ def groupadd(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def groupdel(request, *args, **kwargs):
+def groupdel(request):
     id = request.GET.get('id', '')
     if id:
         ag = AlarmGroup.objects.get(id=id)
@@ -203,7 +203,7 @@ def groupdel(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def groupedit(request, ids):
     temp_name = "skapi/api-header.html"
     status = 0
@@ -224,7 +224,7 @@ def groupedit(request, ids):
 
 @login_required()
 @permission_verify()
-def setuplist(request, *args, **kwargs):
+def setuplist(request):
     temp_name = "skapi/api-header.html"
     cfg = config()
     if request.method == 'POST':
@@ -293,7 +293,7 @@ def setuplist(request, *args, **kwargs):
     return render_to_response('skapi/setup.html', locals(), RequestContext(request))
 
 
-def zabbixalart(request, *args, **kwargs):
+def zabbixalart(request):
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
         zabbix_subject = request.POST.get('subject', '')
@@ -457,7 +457,7 @@ def api(request, method):
 
 @login_required()
 @permission_verify()
-def tokenlist(request, *args, **kwargs):
+def tokenlist(request):
     temp_name = "skapi/api-header.html"
     obj_info = TokenAuth.objects.all()
     return render_to_response('skapi/tokenlist.html', locals(), RequestContext(request))
@@ -465,7 +465,7 @@ def tokenlist(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def tokenadd(request, *args, **kwargs):
+def tokenadd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
         obj_form = TokenAuthForm(request.POST)
@@ -484,7 +484,7 @@ def tokenadd(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def tokendel(request, *args, **kwargs):
+def tokendel(request):
     id = request.GET.get('id', '')
     if id:
         TokenAuth.objects.get(id=id).delete()
@@ -493,14 +493,14 @@ def tokendel(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def alarmapirecord(request, *args, **kwargs):
+def alarmapirecord(request):
     temp_name = "skapi/api-header.html"
     obj_info = AlarmRecord.objects.all()
     return render_to_response('skapi/alarmapirecord.html', locals(), RequestContext(request))
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def alarmapidetail(request, ids):
     temp_name = "skapi/api-header.html"
     obj = get_object(AlarmRecord, id=ids)
@@ -510,14 +510,14 @@ def alarmapidetail(request, ids):
 
 @login_required()
 @permission_verify()
-def alarmlogrecord(request, *args, **kwargs):
+def alarmlogrecord(request):
     temp_name = "skapi/api-header.html"
     obj_info = ZabbixRecord.objects.all()[0:200]
     return render_to_response('skapi/alarmlogrecord.html', locals(), RequestContext(request))
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def alarmlogdetail(request, ids):
     temp_name = "skapi/api-header.html"
     obj = get_object(ZabbixRecord, id=ids)

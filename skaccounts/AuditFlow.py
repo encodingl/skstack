@@ -8,7 +8,7 @@ from models import AuditFlow
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 
@@ -24,7 +24,7 @@ from datetime import datetime
 
 @login_required()
 @permission_verify()
-def AuditFlow_index(request, *args, **kwargs):
+def AuditFlow_index(request):
     temp_name = "skaccounts/accounts-header.html"    
     tpl_all = AuditFlow.objects.all()
     
@@ -32,7 +32,7 @@ def AuditFlow_index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def AuditFlow_add(request, *args, **kwargs):
+def AuditFlow_add(request):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == "POST":
         tpl_AuditFlow_form = AuditFlow_form(request.POST)
@@ -53,7 +53,7 @@ def AuditFlow_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def AuditFlow_del(request, *args, **kwargs):
+def AuditFlow_del(request):
 #    temp_name = "skaccounts/accounts-header.html"
     AuditFlow_id = request.GET.get('id', '')
     if AuditFlow_id:
@@ -68,7 +68,7 @@ def AuditFlow_del(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def AuditFlow_edit(request, ids):
     status = 0
     obj = get_object(AuditFlow, id=ids)

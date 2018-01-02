@@ -9,12 +9,12 @@ from forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from collections import OrderedDict
 # Create your views here.
 @login_required()
 @permission_verify()
-def daohang(request, *args, **kwargs):
+def daohang(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()
@@ -92,7 +92,7 @@ def daohang(request, *args, **kwargs):
     return render_to_response("skyw/index.html", locals(), RequestContext(request))
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
     rota = Rota.objects.all()
@@ -107,7 +107,7 @@ def index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def add(request, *args, **kwargs):
+def add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        devops=devopsform(request.POST)
@@ -123,7 +123,7 @@ def add(request, *args, **kwargs):
         devops = devopsform()
     return render_to_response("skyw/add.html", locals(), RequestContext(request))
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Devops.objects.filter(id=ids).delete()
@@ -131,7 +131,7 @@ def delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def yw_edit(request,ids):
     devops_edit = Devops.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"

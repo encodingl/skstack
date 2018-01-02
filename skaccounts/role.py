@@ -6,12 +6,12 @@ from django.shortcuts import render_to_response,RequestContext
 from django.contrib.auth.decorators import login_required
 from forms import RoleListForm,RoleJobForm
 from models import RoleList,RoleJob
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 
 
 @login_required()
 @permission_verify()
-def role_add(request, *args, **kwargs):
+def role_add(request):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == "POST":
         form = RoleListForm(request.POST)
@@ -32,14 +32,14 @@ def role_add(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def role_list(request, *args, **kwargs):
+def role_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleList.objects.all()
     return render_to_response('skaccounts/role_list.html', locals(),RequestContext(request))
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def role_edit(request, ids):
     iRole = RoleList.objects.get(id=ids)
 #     print "the iRole is:%s" % iRole
@@ -63,7 +63,7 @@ def role_edit(request, ids):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def role_del(request, ids):
     RoleList.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('role_list'))
@@ -72,7 +72,7 @@ def role_del(request, ids):
 
 @login_required
 @permission_verify()
-def role_job_add(request, *args, **kwargs):
+def role_job_add(request):
     temp_name = "skaccounts/accounts-header.html"
     if request.method == "POST":
         form = RoleJobForm(request.POST)
@@ -93,14 +93,14 @@ def role_job_add(request, *args, **kwargs):
 
 @login_required
 @permission_verify()
-def role_job_list(request, *args, **kwargs):
+def role_job_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleJob.objects.all()
     return render_to_response('skaccounts/role_job_list.html', locals(),RequestContext(request))
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def role_job_edit(request, ids):
     iRole = RoleJob.objects.get(id=ids)
 #     print "the iRole is:%s" % iRole
@@ -124,7 +124,7 @@ def role_job_edit(request, ids):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def role_job_del(request, ids):
     RoleJob.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('role_job_list'))

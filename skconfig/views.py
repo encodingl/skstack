@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response, HttpResponse, redirect, Request
 import ConfigParser
 import os
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.contrib.auth import get_user_model
 import logging
 from lib.log import dic
@@ -13,7 +13,7 @@ from lib.com import config, configfile
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "skconfig/config-header.html"
     display_control = "none"
     all_level = dic
@@ -97,7 +97,7 @@ def get_dir(args):
         return git_path
 
 
-def get_token(request, *args, **kwargs):
+def get_token(request):
     if request.method == 'POST':
         new_token = get_user_model().objects.make_random_password(length=12,
                                                                   allowed_chars='abcdefghjklmnpqrstuvwxyABCDEFGHJKLMNPQRSTUVWXY3456789')

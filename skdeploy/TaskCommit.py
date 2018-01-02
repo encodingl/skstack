@@ -8,7 +8,7 @@ from models import AuditFlow,ProjectGroup,Project,TaskStatus,Environment
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from lib.lib_git import get_git_taglist, get_git_commitid
@@ -42,7 +42,7 @@ git_path = get_dir("git_path")
 
 @login_required()
 @permission_verify()
-def TaskCommit_index(request, *args, **kwargs):
+def TaskCommit_index(request):
     temp_name = "skdeploy/skdeploy-header.html"    
  
     obj_user = UserInfo.objects.get(username=request.user)
@@ -55,7 +55,7 @@ def TaskCommit_index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskCommit_undo(request, *args, **kwargs):
+def TaskCommit_undo(request):
 #    temp_name = "skdeploy/skdeploy-header.html"
     TaskCommit_id = request.GET.get('id', '')
     if TaskCommit_id:
@@ -72,7 +72,7 @@ def TaskCommit_undo(request, *args, **kwargs):
  #   return render_to_response("skdeploy/TaskCommit.html", locals(), RequestContext(request))
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def TaskCommit_add(request, ids):
     temp_name = "skdeploy/skdeploy-header.html"
     status = 0
@@ -89,6 +89,8 @@ def TaskCommit_add(request, ids):
     obj2 =  UserInfo.objects.get(username=obj_user)  
     obj_user_type = obj2.type 
     obj_path = git_path + str(obj_env) + "/" + str(obj_project)
+    print "obj_path:%s" % obj_path
+    print git_path
     obj_git_url=obj.repo_url 
     obj_title = str(obj_project) + "-" + str(obj_env)
     obj_audit = obj.audit_flow
@@ -186,7 +188,7 @@ def TaskCommit_add(request, ids):
 
 @login_required()
 @permission_verify()
-def TaskCommit_check(request, *args, **kwargs):
+def TaskCommit_check(request):
     obj_env=request.POST.get('env') 
     
     obj_project = request.POST.get('project')  
@@ -269,7 +271,7 @@ def TaskCommit_check(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskCommit_checkstatus(request, *args, **kwargs):
+def TaskCommit_checkstatus(request):
     obj_env=request.POST.get('env') 
     obj_project = request.POST.get('project')  
     redis_chanel=obj_project+obj_env

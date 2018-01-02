@@ -8,7 +8,7 @@ from forms import Record_form
 from forms import Faq_form
 from forms import Assessment_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from models import Record
 from models import Faq
@@ -17,7 +17,7 @@ from models import Assessment
 
 @login_required()
 @permission_verify()
-def assessment(request, *args, **kwargs):
+def assessment(request):
     temp_name = "skrecord/navi-header.html"
     assessment_info = Assessment.objects.all()
 #    allnavi = navi.objects.all()
@@ -25,7 +25,7 @@ def assessment(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def add(request, *args, **kwargs):
+def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
         assessment_form = Assessment_form(request.POST)
@@ -53,8 +53,8 @@ def assessment_delete(request, ids):
     return HttpResponseRedirect(reverse('assessment'))
 
 @login_required()
-@permission_verify_ids()
-def message(request, *args, **kwargs):
+@permission_verify()
+def message(request):
     temp_name = "skrecord/navi-header.html"
 
     event_status = EVENT_STATUS
@@ -71,7 +71,7 @@ def message(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def edit(request,ids):
     obj = Assessment.objects.get(id=ids)
 
@@ -94,7 +94,7 @@ def edit(request,ids):
     return render_to_response('skrecord/assessment_edit.html', locals(), RequestContext(request))
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def detail(request,ids):
     obj = Assessment.objects.get(id=ids)
 

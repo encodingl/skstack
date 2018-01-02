@@ -13,7 +13,7 @@
 # pbook_dir = ansible_dir+"/pbook/"
 #
 #
-# def ansible(request, *args, **kwargs):
+# def ansible(request):
 #     temp_name = "ansible/ansible-header.html"
 #     all_host = Host.objects.all()
 #     all_dir = get_roles(roles_dir)
@@ -50,7 +50,7 @@
 #     return files_list
 #
 #
-# def playbook(request, *args, **kwargs):
+# def playbook(request):
 #     ret = []
 #     temp_name = "ansible/ansible-header.html"
 #     if os.path.exists(ansible_dir + '/gexec.yml'):
@@ -93,7 +93,7 @@
 #         return render_to_response('ansible/result.html', locals())
 #
 #
-# def ansible_command(request, *args, **kwargs):
+# def ansible_command(request):
 #     command_list = []
 #     ret = []
 #     temp_name = "ansible/ansible-header.html"
@@ -113,7 +113,7 @@
 #         return render_to_response('ansible/result.html', locals())
 #
 #
-# # def host_sync(request, *args, **kwargs):
+# # def host_sync(request):
 # #     group = HostGroup.objects.all()
 # #     ansible_file = open(ansible_dir+"/hosts", "wb")
 # #     for g in group:
@@ -127,7 +127,7 @@
 # #     ansible_file.close()
 # #     return HttpResponse("ok")
 #
-# def host_sync(request, *args, **kwargs):
+# def host_sync(request):
 #     group = HostGroup.objects.all()
 #     ansible_file = open(ansible_dir+"/hosts", "wb")
 #     all_host = Host.objects.all()
@@ -146,5 +146,5 @@
 #     return HttpResponse("ok")
 #
 #
-# def shell(request, *args, **kwargs):
+# def shell(request):
 #     pass

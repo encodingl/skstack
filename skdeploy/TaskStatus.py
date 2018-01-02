@@ -8,7 +8,7 @@ from models import AuditFlow,TaskStatus,ProjectGroup,Project,TaskStatus
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from .forms import TaskStatus_detail_form,TaskStatus_release_form,TaskStatus_rollback_form
@@ -34,7 +34,7 @@ from lib.lib_redis import RedisLock
 
 @login_required()
 @permission_verify()
-def TaskStatus_index(request, *args, **kwargs):
+def TaskStatus_index(request):
     temp_name = "skdeploy/skdeploy-header.html"    
     
     tpl_all = TaskStatus.objects.filter(user_commit=request.user)
@@ -56,7 +56,7 @@ def TaskStatus_index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_revoke(request, *args, **kwargs):
+def TaskStatus_revoke(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
     time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     TaskStatus_id = request.GET.get('id', '')
@@ -88,7 +88,7 @@ def TaskStatus_revoke(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def TaskStatus_detail(request, ids):
     
     obj = get_object(TaskStatus, id=ids)
@@ -98,7 +98,7 @@ def TaskStatus_detail(request, ids):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def TaskStatus_release(request, ids):
     temp_name = "skdeploy/skdeploy-header.html"
     obj = get_object(TaskStatus, id=ids) 
@@ -131,7 +131,7 @@ def TaskStatus_release(request, ids):
 
 @login_required()
 @permission_verify()
-def TaskStatus_release_run(request, *args, **kwargs):
+def TaskStatus_release_run(request):
     """release步骤发布视图函数
     主要分为如下几个部分：
     1 判断是否通过审核，只有通过审核后才能进行上线
@@ -292,7 +292,7 @@ def TaskStatus_release_run(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_release_status(request, *args, **kwargs):
+def TaskStatus_release_status(request):
     TaskStatus_id = request.POST.get('id') 
     obj = TaskStatus.objects.get(id=TaskStatus_id)
     obj_project = obj.project
@@ -319,7 +319,7 @@ def TaskStatus_release_status(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_rollback_add(request, *args, **kwargs):
+def TaskStatus_rollback_add(request):
     temp_name = "skdeploy/skdeploy-header.html"
     TaskStatus_id = request.GET.get('id', '')
     obj = get_object(TaskStatus, id=TaskStatus_id) 
@@ -351,7 +351,7 @@ def TaskStatus_rollback_add(request, *args, **kwargs):
     
 @login_required()
 @permission_verify()
-def TaskStatus_rollback_run(request, *args, **kwargs):
+def TaskStatus_rollback_run(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
     TaskStatus_id = request.POST.get('id') 
     if TaskStatus_id:
@@ -399,7 +399,7 @@ def TaskStatus_rollback_run(request, *args, **kwargs):
     
 @login_required()
 @permission_verify()
-def TaskStatus_history(request, *args, **kwargs):
+def TaskStatus_history(request):
     temp_name = "skdeploy/skdeploy-header.html"    
     
     tpl_all = TaskStatus.objects.all()
@@ -410,7 +410,7 @@ def TaskStatus_history(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_audit(request, *args, **kwargs):
+def TaskStatus_audit(request):
     temp_name = "skdeploy/skdeploy-header.html"    
     
 #     obj_user_commit = TaskStatus.objects.filter(user_commit=request.user)
@@ -428,7 +428,7 @@ def TaskStatus_audit(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_permit(request, *args, **kwargs):
+def TaskStatus_permit(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
     time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
     TaskStatus_id = request.GET.get('id', '')
@@ -485,7 +485,7 @@ def TaskStatus_permit(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def TaskStatus_deny(request, *args, **kwargs):
+def TaskStatus_deny(request):
 #     temp_name = "skdeploy/skdeploy-header.html"
     time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
    

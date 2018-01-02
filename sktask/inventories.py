@@ -8,7 +8,7 @@ from models import job,job,extravars
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles,get_AnsibleHostsDic,get_hostsFile
@@ -26,7 +26,7 @@ ansible_dir = get_dir("a_path")
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "sktask/setup-header.html"
     list_hostsFile = get_hostsFile(ansible_dir)
     

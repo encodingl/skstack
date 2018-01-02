@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response, redirect, RequestContext
 from forms import Record_form
 from forms import Faq_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from models import Record
 from models import Faq
@@ -15,7 +15,7 @@ from models import Faq
 
 @login_required()
 @permission_verify()
-def faq(request, *args, **kwargs):
+def faq(request):
     temp_name = "skrecord/navi-header.html"
     faq_info = Faq.objects.all()
 #    allnavi = navi.objects.all()
@@ -23,7 +23,7 @@ def faq(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def add(request, *args, **kwargs):
+def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
         faq_form = Faq_form(request.POST)
@@ -45,14 +45,14 @@ def add(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def faq_delete(request, ids):
     Faq.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('faq'))
 
 @login_required()
 @permission_verify()
-def message(request, *args, **kwargs):
+def message(request):
     temp_name = "skrecord/navi-header.html"
 
     event_status = EVENT_STATUS
@@ -69,7 +69,7 @@ def message(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def edit(request,ids):
     obj = Faq.objects.get(id=ids)
 
@@ -93,7 +93,7 @@ def edit(request,ids):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def detail(request,ids):
     obj = Faq.objects.get(id=ids)
 

@@ -15,7 +15,7 @@ except ImportError, e:
 def token_verify():
 
     def decorator(view_func):
-        def _wrapped_view(request, *args, **kwargs):
+        def _wrapped_view(request):
             iToken = get_dir('token')
             if request.POST:
                 pToken = request.POST.get('token')
@@ -110,7 +110,7 @@ def pages(post_objects, request):
 
 @csrf_exempt
 @token_verify()
-def collect(request, *args, **kwargs):
+def collect(request):
     req = request
     if req.POST:
         vendor = req.POST.get('vendor')
@@ -154,7 +154,7 @@ def collect(request, *args, **kwargs):
 
 
 @token_verify()
-def get_host(request, *args, **kwargs):
+def get_host(request):
     try:
         hostname = request.GET['name']
     except:
@@ -168,7 +168,7 @@ def get_host(request, *args, **kwargs):
 
 
 @token_verify()
-def get_group(request, *args, **kwargs):
+def get_group(request):
     if request.GET:
         d = []
         try:

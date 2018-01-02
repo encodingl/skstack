@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE
 import sh
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from lib.log import log
 from lib.setup import get_scripts
 import logging
@@ -19,7 +19,7 @@ log("setup.log", level, log_path)
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "sktask/setup-header.html"
     all_host = Host.objects.all()
     all_group = HostGroup.objects.all()
@@ -29,7 +29,7 @@ def index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def exec_scripts(request, *args, **kwargs):
+def exec_scripts(request):
     ret = []
     temp_name = "sktask/setup-header.html"
     if request.method == 'POST':

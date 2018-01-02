@@ -7,13 +7,13 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
 from forms import navi_form
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 
 
 @login_required()
 @permission_verify()
-def index(request, *args, **kwargs):
+def index(request):
     temp_name = "skdomain/navi-header.html"
     allnavi = navi.objects.all()
     return render_to_response("skdomain/index.html", locals(), RequestContext(request))
@@ -21,7 +21,7 @@ def index(request, *args, **kwargs):
 
 @login_required()
 @permission_verify()
-def add(request, *args, **kwargs):
+def add(request):
     temp_name = "skdomain/navi-header.html"
     if request.method == "POST":
         n_form = navi_form(request.POST)
@@ -42,14 +42,14 @@ def add(request, *args, **kwargs):
 
 
 @login_required
-@permission_verify_ids()
+@permission_verify()
 def delete(request, ids):
     navi.objects.filter(id=ids).delete()
     return HttpResponseRedirect(reverse('manage'))
 
 @login_required()
 @permission_verify()
-def manage(request, *args, **kwargs):
+def manage(request):
     temp_name = "skdomain/navi-header.html"
     
     online_status = NAVI_STATUS
@@ -66,7 +66,7 @@ def manage(request, *args, **kwargs):
 
 
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def edit(request,ids):
     obj = navi.objects.get(id=ids)
     

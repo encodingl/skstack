@@ -7,12 +7,12 @@ from django.shortcuts import render_to_response,redirect,RequestContext
 from forms import devopsform,rotaform,noticeform,eventform
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from skaccounts.permission import permission_verify,permission_verify_ids
+from skaccounts.permission import permission_verify
 # Create your views here.
 
 @login_required()
 @permission_verify()
-def event_add(request, *args, **kwargs):
+def event_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        events = eventform(request.POST)
@@ -29,7 +29,7 @@ def event_add(request, *args, **kwargs):
         events = eventform()
     return render_to_response("skyw/event_add.html", locals(), RequestContext(request))
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def event_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     event.objects.filter(id=ids).delete()
@@ -37,7 +37,7 @@ def event_delete(request,ids):
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
-@permission_verify_ids()
+@permission_verify()
 def event_edit(request,ids):
     events_edit = event.objects.get(id=ids)
     temp_name = "skyw/yw-header.html"
