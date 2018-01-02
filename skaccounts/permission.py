@@ -37,13 +37,10 @@ def permission_verify():
                 if len(matchUrl) == 0:
                     return HttpResponseRedirect(reverse('permission_deny'))
                 
-                args=[]
-                for l in role_permission_list:
-                    args.append(str(l.url))
-#                 args=json.dumps(args)
+               
                 
             else:
-                args=['/all/']
+                pass
 
             return view_func(request, *args, **kwargs)
         return _wrapped_view
