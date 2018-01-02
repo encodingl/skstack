@@ -4,10 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Q
-import json
-
+from django.views.decorators.csrf import csrf_exempt
 from skaccounts.permission import permission_verify
-
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
 from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
 from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm, \
@@ -293,6 +291,7 @@ def setuplist(request):
     return render_to_response('skapi/setup.html', locals(), RequestContext(request))
 
 
+@csrf_exempt
 def zabbixalart(request):
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
@@ -307,7 +306,7 @@ def zabbixalart(request):
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
         message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (
-        content[0], content[2], content[3], content[4], content[5])
+            content[0], content[2], content[3], content[4], content[5])
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
@@ -379,6 +378,7 @@ def zabbixalart(request):
     return HttpResponse("error")
 
 
+@csrf_exempt
 def api(request, method):
     token = request.GET.get('token', '')
     if request.method == 'POST' and TokenAuth.objects.filter(token=token):
