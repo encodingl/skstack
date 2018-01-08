@@ -71,8 +71,8 @@ def index(request):
 
 def get_dir(args):
     config = ConfigParser.RawConfigParser()
-    dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    with open(dirs + '/skipper.conf', 'r') as cfgfile:
+#     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
 
