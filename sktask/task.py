@@ -25,6 +25,7 @@ from .models import history
 from datetime import datetime
 from sktask.models import ONLINE_STATUS
 
+
 level = get_dir("log_level")
 log_path = get_dir("log_path")
 log("setup.log", level, log_path)

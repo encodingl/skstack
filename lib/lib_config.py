@@ -6,6 +6,7 @@ import os
 import re
 from lib.com import  configfile
 
+
 def get_redis_config():
     config = ConfigParser.RawConfigParser()
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

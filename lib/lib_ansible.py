@@ -9,6 +9,8 @@ import ConfigParser
 import os
 import re
 from lib.com import  configfile
+
+
 def get_AnsibleHostsList(hostsfile,group):
     dic = {}
     pattern = r'^\s*\[.+\]'
