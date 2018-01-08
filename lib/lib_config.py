@@ -4,11 +4,12 @@
 import ConfigParser
 import os
 import re
+from lib.com import  configfile
 
 def get_redis_config():
     config = ConfigParser.RawConfigParser()
-    dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    with open(dirs+'/skipper.conf', 'r') as cfgfile:
+#     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
         host = config.get('redis', 'host')     
         port = config.get('redis', 'port')
@@ -25,8 +26,8 @@ def get_redis_config():
 
 def get_config_var(args):
     config = ConfigParser.RawConfigParser()
-    dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    with open(dirs+'/skipper.conf', 'r') as cfgfile:
+#     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
         pro_path = config.get('config', 'project_base_path')

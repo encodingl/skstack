@@ -8,6 +8,7 @@ Created on 2017-09-13 17:46:59;  @author: LZ
 import ConfigParser
 import os
 import re
+from lib.com import  configfile
 def get_AnsibleHostsList(hostsfile,group):
     dic = {}
     pattern = r'^\s*\[.+\]'
@@ -35,8 +36,8 @@ def get_AnsibleHostsList(hostsfile,group):
 
 def get_ansible_config_var(args):
     config = ConfigParser.RawConfigParser()
-    dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    with open(dirs+'/skipper.conf', 'r') as cfgfile:
+#     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
         

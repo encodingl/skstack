@@ -212,7 +212,8 @@ def playbook_back(request):
         
         p_obj = request.POST.get('iCheck_project')
         j_obj = request.POST.get('iCheck_job')
-        f_obj = ansible_dir + request.POST.get('iCheck_HostsFile')
+        if request.POST.get('iCheck_HostsFile'):
+            f_obj = ansible_dir + request.POST.get('iCheck_HostsFile')
                 
         
     playbook_dir = proj_base_dir +  p_obj
