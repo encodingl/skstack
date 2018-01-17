@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 #from . import views
-from skrecord import views,record_list,faq,faq_list,assessment,assessment_list,change
+from skrecord import views,record_list,faq,faq_list,assessment,assessment_list,change,track,track_list
 
 urlpatterns = [
     #url(r'^$', views.index, name='record'),
@@ -72,4 +72,22 @@ urlpatterns = [
     url(r'^change/save/$', change.message, name='change_message'),
     url(r'^change/edit/(?P<ids>\d+)/$', change.edit, name='change_edit'),
     url(r'^change/detail/(?P<ids>\d+)/$', change.detail, name='change_detail'),
+
+url(r'^track/$', track.track, name='track'),
+    url(r'^add/$', track.add, name='add'),
+    url(r'^track/delete/(?P<ids>\d+)/$', track.track_delete, name='track_delete'),
+    url(r'^edit/(?P<ids>\d+)/$', track.edit, name='edit'),
+    url(r'^track/add/$', track.add, name='track_add'),
+    url(r'^track/save/$', track.message, name='track_message'),
+    url(r'^track/edit/(?P<ids>\d+)/$', track.edit, name='track_edit'),
+    url(r'^track/detail/(?P<ids>\d+)/$', track.detail, name='track_detail'),
+
+    url(r'^track_list/$', track_list.track_list, name='track_list'),
+    url(r'^add/$', track_list.add, name='add'),
+    url(r'^track_list/delete/(?P<ids>\d+)/$', track_list.track_list_delete, name='track_list_delete'),
+    url(r'^edit/(?P<ids>\d+)/$', track_list.edit, name='edit'),
+    url(r'^track_list/add/$', track_list.add, name='track_list_add'),
+    url(r'^track_list/save/$', track_list.message, name='track_list_message'),
+    url(r'^track_list/edit/(?P<ids>\d+)/$', track_list.edit, name='track_list_edit'),
+    url(r'^track_list/detail/(?P<ids>\d+)/$', track_list.detail, name='track_list_detail'),
 ]

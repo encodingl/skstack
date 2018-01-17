@@ -4,21 +4,10 @@
 from django import forms
 from django.forms.widgets import *
 
-from .models import Record,Record_list,Faq,Faq_list,Assessment,Assessment_list,Change
+from .models import Record,Record_list,Faq,Faq_list,Assessment,Assessment_list,Change,Track,Track_list
 
 
 class Record_form(forms.ModelForm):
-
-    # 验证字段
-    # def clean(self):
-    #     cleaned_data = super(AssetForm, self).clean()
-    #     value = cleaned_data.get('hostname')
-    #     try:
-    #         Host.objects.get(hostname=value)
-    #         self._errors['hostname'] = self.error_class(["%s的信息已经存在" % value])
-    #     except Host.DoesNotExist:
-    #         pass
-    #     return cleaned_data
 
     class Meta:
         model = Record
@@ -46,6 +35,31 @@ class Record_list_form(forms.ModelForm):
 
         }
 
+class Track_form(forms.ModelForm):
+
+    class Meta:
+        model = Track
+        exclude = ("id",)
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'trackclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'trackdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'trackdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            #'tracktime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'remarks': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+
+        }
+
+class Track_list_form(forms.ModelForm):
+
+    class Meta:
+        model = Track_list
+        exclude = ("id",)
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+
+        }
 
 class Faq_form(forms.ModelForm):
 

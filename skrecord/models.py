@@ -5,14 +5,6 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-#EVENT_STATUS = (
-#    (str(1), u"P0:服务完全不可用"),
-#    (str(2), u"P1:个别业务的服务部分不可用"),
-#    (str(3), u"P2:造成个别用户无法访问"),
-#    (str(4), u"P3:无影响"),
-#    )
-
-
 class Record_list(models.Model):
     name = models.CharField(u"故障等级", max_length=30, null=True)
     describe = models.CharField(u"描述", max_length=100, null=True, blank=True)
@@ -32,6 +24,26 @@ class Record(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Track_list(models.Model):
+    name = models.CharField(u"名称", max_length=30, null=True)
+    describe = models.CharField(u"描述", max_length=100, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+class Track(models.Model):
+    title = models.CharField(u"标题", max_length=100, null=True)
+    trackclass = models.ForeignKey(Track_list, verbose_name=u"分类", on_delete=models.SET_NULL, null=True, blank=True)
+    trackdescribe = models.TextField(u"问题描述", max_length=1000, null=True)
+    trackdispose = models.TextField(u"改进方法", max_length=1000, null=True, blank=True)
+   # tracktime = models.CharField(u"记录时间", max_length=100, null=True)
+    tracktime = models.DateTimeField(u"记录时间", auto_now=True)
+    remarks = models.CharField(u"备注", max_length=50, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 
 class Faq_list(models.Model):
     name = models.CharField(u"问题类别", max_length=30, null=True)

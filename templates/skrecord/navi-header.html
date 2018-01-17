@@ -33,8 +33,8 @@
                         <b>负面清单</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium;display: none" id="faq_list"><a href="{% url 'assessment' %}"><b>负面清单</b></a></li>
-                        <li style="font-size: medium;display: none" id="faq_type"><a href="{% url 'assessment_list' %}"><b>分类</b></a></li>
+                        <li style="font-size: medium;display: none" id="assessment_list"><a href="{% url 'assessment' %}"><b>负面清单</b></a></li>
+                        <li style="font-size: medium;display: none" id="assessment_type"><a href="{% url 'assessment_list' %}"><b>分类</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
@@ -44,11 +44,21 @@
                         <b>事件登记</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium;display: none" id="faq_event"><a href="{% url 'record' %}"><b>事件登记</b></a></li>
-                        <li style="font-size: medium;display: none" id="faq_level"><a href="{% url 'record_list' %}"><b>故障等级</b></a></li>
+                        <li style="font-size: medium;display: none" id="record_event"><a href="{% url 'record' %}"><b>事件登记</b></a></li>
+                        <li style="font-size: medium;display: none" id="record_level"><a href="{% url 'record_list' %}"><b>故障等级</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
+              <li class="dropdown" style="font-size: medium;display: none" id="faq_event_record">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>问题跟踪</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="track_event"><a href="{% url 'track' %}"><b>问题跟踪</b></a></li>
+                        <li style="font-size: medium;display: none" id="track_level"><a href="{% url 'track_list' %}"><b>问题分类</b></a></li>
+                    </ul>
+                </li>
+              <li class="divider"></li>
 
           </ul>
         </div>
