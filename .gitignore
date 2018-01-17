@@ -4,7 +4,7 @@
 .settings/
 gitpush.sh
 start.sh
-*.pyc
+#*.pyc
 /tmp/*
 00*.py
 *.log
