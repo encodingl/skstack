@@ -44,7 +44,7 @@ def grafana_search(request):
 @csrf_exempt
 def zabbix_sender(request):
     log = logging.getLogger('nginx_info')
-    zabbbix_server = request.POST.get('zabbbix_server', '10.8.48.211')
+    zabbbix_server = request.POST.get('zabbix_server', '10.8.105.211')
     agent_ip = request.POST.get('agent_ip', '')
     data = request.POST.get('data', '')
     urls = list(Url.objects.filter(status=1).values_list('name'))
