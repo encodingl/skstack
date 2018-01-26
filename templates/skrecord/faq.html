@@ -18,7 +18,7 @@
             <div class="box">
                 <div class="box-header">
                     <div class="btn-group">
-						 <a href="{% url 'faq_add' %}"><li class="btn btn-success" ><b>新增FAQ</b></li></a>
+						 <a href="{% url 'faq_add' %}"><li class="btn btn-success" ><b>新增</b></li></a>
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -30,11 +30,8 @@
                                <!-- <input type="checkbox" onclick="checkAll(this, 'item1');" /> -->
                                 <input id="checkall" type="checkbox" class="i-checks" name="checkall" value="checkall" data-editable='false' onclick="check_all('faq_info')">
                             </th>
-                                    <th>系统名称</th>
-                                    <th>问题类别</th>
-                                    <th>问题描述</th>
-                                    <th>解决方案</th>
-                                    <th>系统开发人员</th>
+                                    <th>问题标题</th>
+                                    <th>问题分类</th>
                                     <th class="text-center">操作</th>
                                 </tr>
                             </thead>
@@ -44,9 +41,6 @@
                                         <td><input type="checkbox" id="id" class="i-checks" value="{{ Faq.id }}" name="id" /></td>
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ Faq.id }}"> {{ Faq.title }}</li></a></td>
                                         <td>{{ Faq.problemclass }}</td>
-                                        <td>{{ Faq.describe }}</td>
-                                        <td>{{ Faq.solution }}</td>
-                                        <td>{{ Faq.developername }}</td>
                                         <td class="text-center" data-editable='false'>
 {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                             <a href="{% url "faq_edit" Faq.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
@@ -109,7 +103,7 @@ function checkSubmit() {
     }
 }
 </script>
-<script>
+<!--<script>
 function tanchu(n){
   layer.open({
   type: 2,
@@ -138,4 +132,5 @@ function tanchu(n){
   });
 }
 </script>
+-->
 {% endblock %}

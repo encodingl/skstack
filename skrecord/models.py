@@ -46,21 +46,18 @@ class Track(models.Model):
 
 
 class Faq_list(models.Model):
-    name = models.CharField(u"问题类别", max_length=30, null=True)
+    name = models.CharField(u"问题分类", max_length=30, null=True)
     describe = models.CharField(u"描述", max_length=100, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
 class Faq(models.Model):
-    title = models.CharField(u"系统名称", max_length=100, null=True)
+    title = models.CharField(u"问题标题", max_length=100, null=True)
     #problemclass = models.CharField(u"问题类别", max_length=100, null=True)
-    problemclass = models.ForeignKey(Faq_list, verbose_name=u"问题类别", on_delete=models.SET_NULL, null=True, blank=True)
+    problemclass = models.ForeignKey(Faq_list, verbose_name=u"问题分类", on_delete=models.SET_NULL, null=True, blank=True)
     describe = models.TextField(u"问题描述", max_length=2000, null=True)
     solution = models.TextField(u"解决方案", max_length=2000, null=True)
-    developername = models.CharField(u"系统开发人员", max_length=30, null=True)
-    telephone = models.CharField(u"联系电话", max_length=30, null=True)
-    mail= models.CharField(u"邮箱", max_length=30, null=True, blank=True)
 
     def __unicode__(self):
         return self.name

@@ -83,9 +83,6 @@ class Faq_form(forms.ModelForm):
             'problemclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'solution': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'developername': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'telephone': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'mail': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
 
         }
 
