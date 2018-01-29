@@ -10,6 +10,7 @@ from requests.packages.urllib3.exceptions import SNIMissingWarning
 requests.packages.urllib3.disable_warnings(SNIMissingWarning)
 
 import logging
+
 log = logging.getLogger('api')
 
 
@@ -22,13 +23,11 @@ class SendMail:
         if cfg.get('api', 'email_status') == 'On':
             try:
                 send_mail(subject, message, self._from, receiverlist, fail_silently=False)
-                log.info(
-                    '[邮件信息发送成功]:' + '[标题:' + subject + ']' + '[收件人:' + ','.join(
-                        receiverlist) + ']' + '[内容:' + message + ']')
+                log.info(u'[邮件信息发送成功]:[标题:%s][收件人:%s][内容:%s]' % (subject, ','.join(receiverlist), message))
             except Exception, msg:
                 log.error(msg)
         else:
-            log.warning("邮件功能未开启.")
+            log.warning(u"邮件功能未开启.")
 
 
 class SendWeixin:
@@ -55,11 +54,11 @@ class SendWeixin:
                 Purl = "%s?access_token=%s" % (cfg.get('api', 'weixin_purl'), token)
                 requests.post(Purl, data=json.dumps(body))
                 log.info(
-                    '[微信信息发送成功]:' + '[编号:' + serial + ']' + '[收件人:' + receiver + ']' + '[内容:' + message + ']')
+                    u'[微信信息发送成功]:[编号:%s][收件人:%s][内容:%s]' % (serial, receiver, message))
             except Exception, msg:
                 log.error(msg)
         else:
-            log.warning("微信功能未开启.")
+            log.warning(u"微信功能未开启.")
 
 
 class SendSms:
@@ -75,11 +74,11 @@ class SendSms:
             }
             try:
                 requests.get(self._url, message)
-                log.info('[短信信息发送成功]:' + '[收件人:' + mobile + ']' + '[内容:' + message['msg'] + ']')
+                log.info(u'[短信信息发送成功]:[收件人:%s][内容:%s]' % (mobile, message['msg']))
             except Exception, msg:
                 log.error(msg)
         else:
-            log.warning("短信功能未开启.")
+            log.warning(u"短信功能未开启.")
 
 
 class SendMobile:
@@ -100,11 +99,11 @@ class SendMobile:
             message = "{content:'%s'}" % content
             try:
                 requests.post(self._url, message, headers=headers)
-                log.info('[电话信息发送成功]:' + '[token:' + self._token + ']' + '[内容:' + message + ']')
+                log.info(u"[电话信息发送成功]:[token:%s][内容:%s][type:%s]" % (self._token, message, type))
             except Exception, msg:
                 log.error(msg)
         else:
-            log.warning("电话功能未开启.")
+            log.warning(u"电话功能未开启.")
 
 
 class SendDingding:
@@ -131,7 +130,7 @@ class SendDingding:
         except:
             self.__raise_error(res)
 
-    def send(self, agentid='', messages='', userid='', toparty='',message=''):
+    def send(self, agentid='', messages='', userid='', toparty='', message=''):
         cfg = config()
         if cfg.get('api', 'dd_status') == 'On':
             payload = {
@@ -145,8 +144,8 @@ class SendDingding:
             params = self.__token_params
             try:
                 requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
-                log.info('[钉钉信息发送成功]:' + '[ 接收用户ID:' + userid + ']' + '[内容:' + message + ']')
+                log.info(u'[钉钉信息发送成功][接收用户ID:%s][内容:%s]' % (userid, message))
             except Exception, msg:
                 log.error(msg)
         else:
-            log.warning("钉钉功能未开启.")
+            log.warning(u"钉钉功能未开启.")
