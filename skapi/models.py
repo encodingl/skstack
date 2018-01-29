@@ -23,7 +23,7 @@ class AlarmUser(models.Model):
     email = models.EmailField(max_length=30, verbose_name=u"* 邮箱", null=True)
     tel = models.CharField(max_length=20, verbose_name=u"* 电话号码", null=True)
     dd = models.CharField(max_length=20, verbose_name=u"* 钉钉号", null=True)
-    policy = models.ForeignKey(UserPolicy, verbose_name=u"用户策略", on_delete=models.SET_NULL, null=True)
+    policy = models.ForeignKey(UserPolicy, verbose_name=u"* 用户策略", on_delete=models.SET_NULL, null=True)
     app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
 
     def __unicode__(self):

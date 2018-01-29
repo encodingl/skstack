@@ -310,10 +310,11 @@ def zabbixalart(request):
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
+            log_id = ''
             if config().get('record', 'zabbix_status') == 'On':
-                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
-                                                 status=content[1], host=content[2],
-                                                 event=content[4], content=content[5])
+                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
+                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[5].split(':',1)[1])
+                log_id = zr.id
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
                 Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
             wxlist = [wx.name.email for wx in userlist]
@@ -333,17 +334,17 @@ def zabbixalart(request):
             messages = {}
             body = {}
             form = []
-            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % zr.id
-            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % zr.id
+            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
+            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
             messages["head"] = {
                 "bgcolor": "DBE97659",  # 前两位表示透明度
                 "text": u"服务器故障"
             }
             body["title"] = subject
             body["content"] = content[5]
-            form.append({'key': u'[故障主机]:', 'value': content[2]})
-            form.append({'key': u'[故障时间]:', 'value': content[3]})
-            form.append({'key': u'[事件ID]:', 'value': content[4]})
+            form.append({'key': u'', 'value': content[2]})
+            form.append({'key': u'', 'value': content[3]})
+            form.append({'key': u'', 'value': content[4]})
             body['form'] = form
             body["author"] = u"来自深圳运维监控系统"
             messages['body'] = body
@@ -356,8 +357,15 @@ def zabbixalart(request):
                     SendMobile().send(message)
                 elif ag_obj.tel_status == 2:
                     SendMobile().send(content, type='linkedsee_zhoujie')
+                elif ag_obj.tel_status == 3:
+                    SendMobile().send(content, type='linkedsee_mingai')
             return HttpResponse("ok")
         else:
+            log_id = ''
+            if config().get('record', 'zabbix_status') == 'On':
+                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=type,status=content[1].split(':',1)[1],
+                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[5].split(':',1)[1])
+                log_id = zr.id
             userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
             wxlist = [wx.name.email for wx in userlist]
             SendWeixin().send('|'.join(wxlist), message, serial)
@@ -374,6 +382,29 @@ def zabbixalart(request):
                     SendMobile().send(message)
                 elif ag_obj.tel_status == 2:
                     SendMobile().send(content, type='linkedsee_zhoujie')
+                elif ag_obj.tel_status == 3:
+                    SendMobile().send(content, type='linkedsee_mingai')
+            userlist = AlarmList.objects.filter(group=ag_obj, dd_status=1)
+            ddlist = [ul.name.dd for ul in userlist]
+            messages = {}
+            body = {}
+            form = []
+            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
+            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
+            messages["head"] = {
+                "bgcolor": "DBE97659",  # 前两位表示透明度
+                "text": u"服务器故障"
+            }
+            body["title"] = subject
+            body["content"] = content[5]
+            form.append({'key': u'', 'value': content[2]})
+            form.append({'key': u'', 'value': content[3]})
+            form.append({'key': u'', 'value': content[4]})
+            body['form'] = form
+            body["author"] = u"来自深圳运维监控系统"
+            messages['body'] = body
+            SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
+                                messages=messages)
             return HttpResponse("ok")
     return HttpResponse("error")
 

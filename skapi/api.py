@@ -6,6 +6,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+from requests.packages.urllib3.exceptions import SNIMissingWarning
+requests.packages.urllib3.disable_warnings(SNIMissingWarning)
 
 import logging
 log = logging.getLogger('api')
@@ -90,6 +92,8 @@ class SendMobile:
         if cfg.get('api', 'tel_status') == 'On':
             if type == 'linkedsee_zhoujie':
                 self._token = cfg.get('api', 'zhoujie_token')
+            if type == 'linkedsee_mingai':
+                self._token = cfg.get('api', 'mingai_token')
             headers = {
                 'servicetoken': self._token
             }
