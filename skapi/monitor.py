@@ -337,6 +337,10 @@ def zabbixalart(request):
 
         smslist = [ul.name.tel for ul in sms_user_obj]
         for sms in smslist:
+            if content[1] == 'OK':
+                subject = u'[告警恢复通知]:%s' % subject
+            elif content[1] == 'PROBLEM':
+                subject = u'[告警故障通知]:%s' % subject
             SendSms().send(sms, subject)
         ddlist = [ul.name.dd for ul in dd_user_obj]
         messages = {}
