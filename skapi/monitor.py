@@ -305,8 +305,7 @@ def zabbixalart(request):
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
-        message = u"[故障名称]:%s\n[故障主机]:%s\n[故障时间]:%s\n[事件ID]:%s\n[错误日志]:%s\n" % (
-            content[0], content[2], content[3], content[4], content[5])
+        message = u"%s\n%s\n%s\n%s\n%s\n" % (content[0], content[2], content[3], content[4], content[5])
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
