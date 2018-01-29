@@ -305,106 +305,66 @@ def zabbixalart(request):
         subject = sub_data[1]
         ag_obj = AlarmGroup.objects.get(id=groupid)
         serial = ag_obj.serial
-        message = u"%s\n%s\n%s\n%s\n%s\n" % (content[0], content[2], content[3], content[4], content[5])
+        message = '\n'.join(content)
+        appname = '-'
+        log_id = ''
         if type == 'appname':
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
-            log_id = ''
-            if config().get('record', 'zabbix_status') == 'On':
-                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
-                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[5].split(':',1)[1])
-                log_id = zr.id
-            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1).filter(
-                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            wxlist = [wx.name.email for wx in userlist]
-            SendWeixin().send('|'.join(wxlist), message, serial)
-            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1).filter(
-                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            emaillist = [ul.name.email for ul in userlist]
-            SendMail().send(subject, emaillist, message)
-            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1).filter(
-                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            tellist = [ul.name.tel for ul in userlist]
-            for tel in tellist:
-                SendSms().send(tel, subject)
-            userlist = AlarmList.objects.filter(group=ag_obj, dd_status=1).filter(
-                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            ddlist = [ul.name.dd for ul in userlist]
-            messages = {}
-            body = {}
-            form = []
-            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
-            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
-            messages["head"] = {
-                "bgcolor": "DBE97659",  # 前两位表示透明度
-                "text": u"服务器故障"
-            }
-            body["title"] = subject
-            body["content"] = content[5]
-            form.append({'key': u'', 'value': content[2]})
-            form.append({'key': u'', 'value': content[3]})
-            form.append({'key': u'', 'value': content[4]})
-            body['form'] = form
-            body["author"] = u"来自深圳运维监控系统"
-            messages['body'] = body
-            SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
-                                messages=messages)
-            userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1).filter(
-                Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            for u in userlist:
-                if u.tel_status == 1:
-                    SendMobile().send(message)
-                elif ag_obj.tel_status == 2:
-                    SendMobile().send(content, type='linkedsee_zhoujie')
-                elif ag_obj.tel_status == 3:
-                    SendMobile().send(content, type='linkedsee_mingai')
-            return HttpResponse("ok")
-        else:
-            log_id = ''
-            if config().get('record', 'zabbix_status') == 'On':
-                zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=type,status=content[1].split(':',1)[1],
-                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[5].split(':',1)[1])
-                log_id = zr.id
-            userlist = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
-            wxlist = [wx.name.email for wx in userlist]
-            SendWeixin().send('|'.join(wxlist), message, serial)
-            userlist = AlarmList.objects.filter(group=ag_obj, email_status=1)
-            emaillist = [ul.name.email for ul in userlist]
-            SendMail().send(subject, emaillist, message)
-            userlist = AlarmList.objects.filter(group=ag_obj, sms_status=1)
-            tellist = [ul.name.tel for ul in userlist]
-            for tel in tellist:
-                SendSms().send(tel, subject)
-            userlist = AlarmList.objects.filter(group=ag_obj, tel_status=1)
-            for u in userlist:
-                if u.tel_status == 1:
-                    SendMobile().send(message)
-                elif ag_obj.tel_status == 2:
-                    SendMobile().send(content, type='linkedsee_zhoujie')
-                elif ag_obj.tel_status == 3:
-                    SendMobile().send(content, type='linkedsee_mingai')
-            userlist = AlarmList.objects.filter(group=ag_obj, dd_status=1)
-            ddlist = [ul.name.dd for ul in userlist]
-            messages = {}
-            body = {}
-            form = []
-            messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
-            messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
-            messages["head"] = {
-                "bgcolor": "DBE97659",  # 前两位表示透明度
-                "text": u"服务器故障"
-            }
-            body["title"] = subject
-            body["content"] = content[5]
-            form.append({'key': u'', 'value': content[2]})
-            form.append({'key': u'', 'value': content[3]})
-            form.append({'key': u'', 'value': content[4]})
-            body['form'] = form
-            body["author"] = u"来自深圳运维监控系统"
-            messages['body'] = body
-            SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
-                                messages=messages)
-            return HttpResponse("ok")
+        if config().get('record', 'zabbix_status') == 'On':
+            zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
+                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[-1].split(':',1)[1])
+            log_id = zr.id
+
+        wx_user_obj = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
+        email_user_obj = AlarmList.objects.filter(group=ag_obj, email_status=1)
+        sms_user_obj = AlarmList.objects.filter(group=ag_obj, sms_status=1)
+        dd_user_obj = AlarmList.objects.filter(group=ag_obj, dd_status=1)
+        tel_user_obj = AlarmList.objects.filter(group=ag_obj, tel_status=1)
+
+        if type == 'appname':
+            wx_user_obj = wx_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            email_user_obj = email_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            sms_user_obj = sms_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            dd_user_obj = dd_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            tel_user_obj = tel_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+
+        wxlist = [wx.name.email for wx in wx_user_obj]
+        SendWeixin().send('|'.join(wxlist), message, serial)
+
+        emaillist = [ul.name.email for ul in email_user_obj]
+        SendMail().send(subject, emaillist, message)
+
+        smslist = [ul.name.tel for ul in sms_user_obj]
+        for sms in smslist:
+            SendSms().send(sms, subject)
+        ddlist = [ul.name.dd for ul in dd_user_obj]
+        messages = {}
+        body = {}
+        form = []
+        messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
+        messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
+        messages["head"] = {
+            "bgcolor": "DBE97659",  # 前两位表示透明度
+            "text": u"服务器故障"
+        }
+        body["title"] = subject
+        body["content"] = content[-1]
+        for text in content[1:-1]:
+            form.append({'key': u'', 'value': text})
+        body['form'] = form
+        body["author"] = u"来自深圳运维监控系统"
+        messages['body'] = body
+        SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
+                            messages=messages)
+        for u in tel_user_obj:
+            if u.tel_status == 1:
+                SendMobile().send(message)
+            elif ag_obj.tel_status == 2:
+                SendMobile().send(content, type='linkedsee_zhoujie')
+            elif ag_obj.tel_status == 3:
+                SendMobile().send(content, type='linkedsee_mingai')
+        return HttpResponse("ok")
     return HttpResponse("error")
 
 
