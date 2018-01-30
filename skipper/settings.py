@@ -241,7 +241,7 @@ LOGGING = {
     },
     'formatters': {
         'standard': {
-            'format': '%(asctime)s|%(levelname)s|%(pathname)s|%(funcName)s|%(lineno)d|msg:%(message)s'
+            'format': '%(asctime)s|%(levelname)s|%(process)d|%(funcName)s|%(lineno)d|msg:%(message)s'
         },
     },
     'handlers': {
