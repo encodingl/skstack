@@ -24,4 +24,5 @@ def get_ex_link(hosts,dir):
     return ex_link
 
 if __name__ == "__main__":
-    print get_ex_link(hosts="yyappgw", dir="/opt/soft/tomcat/yyappgw/webapps/ROOT")
+#     print get_ex_link(hosts="yyappgw", dir="/opt/soft/tomcat/yyappgw/webapps/ROOT")
+    print "haha"
