@@ -3,11 +3,20 @@ from django.core.mail import send_mail
 from lib.com import config, cfg
 import requests, json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
+
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 from requests.packages.urllib3.exceptions import SNIMissingWarning
+
 requests.packages.urllib3.disable_warnings(SNIMissingWarning)
+
+from aliyunsdkdyvmsapi.request.v20170525 import SingleCallByTtsRequest
+from aliyunsdkdyvmsapi.request.v20170525 import SingleCallByVoiceRequest
+from aliyunsdkcore.client import AcsClient
+import uuid
+from aliyunsdkcore.profile import region_provider
 
 import logging
 
@@ -149,3 +158,49 @@ class SendDingding:
                 log.error(msg)
         else:
             log.warning(u"钉钉功能未开启.")
+
+
+class AliyunMobile:
+    def __init__(self):
+        self.__business_id = uuid.uuid1()
+        self.tts_code = cfg.get('aliyun', 'tts_code')
+        self.show_number = cfg.get('aliyun', 'show_number')
+        self.REGION = cfg.get('aliyun', 'region')
+        self.PRODUCT_NAME = cfg.get('aliyun', 'product_name')
+        self.DOMAIN = cfg.get('aliyun', 'domain')
+        self.ACCESS_KEY_ID = cfg.get('aliyun', 'access_key_id')
+        self.ACCESS_KEY_SECRET = cfg.get('aliyun', 'access_key_secret')
+        self.acs_client = AcsClient(self.ACCESS_KEY_ID, self.ACCESS_KEY_SECRET, self.REGION)
+        region_provider.add_endpoint(self.PRODUCT_NAME, self.REGION, self.DOMAIN)
+
+    def tts_call(self, called_number, tts_param=None):
+        ttsRequest = SingleCallByTtsRequest.SingleCallByTtsRequest()
+        ttsRequest.set_TtsCode(self.tts_code)
+        ttsRequest.set_OutId(self.__business_id)
+        ttsRequest.set_CalledNumber(called_number)
+        ttsRequest.set_CalledShowNumber(self.show_number)
+        if tts_param is not None:
+            ttsRequest.set_TtsParam(tts_param)
+        try:
+            ttsResponse = self.acs_client.do_action_with_exception(ttsRequest)
+            log.info(u'[阿里云tts电话发送成功][接收用户ID:%s][show_number:%s][tts_code:%s][tts_param:%s]' % (
+            called_number, self.show_number, self.tts_code, tts_param))
+            return ttsResponse
+        except Exception, e:
+            log.error(e)
+            return None
+
+    def voice_call(self, called_number, voice_code):
+        voiceRequest = SingleCallByVoiceRequest.SingleCallByVoiceRequest()
+        voiceRequest.set_VoiceCode(voice_code)
+        voiceRequest.set_OutId(self.__business_id)
+        voiceRequest.set_CalledNumber(called_number)
+        voiceRequest.set_CalledShowNumber(self.show_number)
+        try:
+            voiceResponse = self.acs_client.do_action_with_exception(voiceRequest)
+            log.info(u'[阿里云voice电话发送成功][接收用户ID:%s][show_number:%s][voice_code:%s]' % (
+            called_number, self.show_number, voice_code))
+            return voiceResponse
+        except Exception, e:
+            log.error(e)
+            return None

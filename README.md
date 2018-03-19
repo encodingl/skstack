@@ -107,7 +107,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求数据格式:
 {
     'level':'',                       #指定事件级别
-    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多.人以逗号分隔
+    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多人以逗号分隔
     'content','xxxxx',       #指定接收的内容
 }
 
@@ -152,6 +152,16 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
     'content','xxxxx',  #json格式数据
 }
 
+8.阿里云语音服务接口:
+请求方url: http://10.8.48.195:8000/skapi/api/aliyun_voice?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'level':'',         #指定事件级别,可选项
+    'type':'',          #自定义语音类播报类型,可选项.
+    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多人以逗号分隔,必选项.
+    'content','xxxxx',  #备注信息记录,可选项.
+}
 
 
 

@@ -12,6 +12,7 @@ from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUs
     AlarmRecordForm, ZabbixRecordForm
 from lib.com import get_object, config, cfg, configfile
 from utils import initAlarmList
+from api import AliyunMobile
 import logging
 
 log = logging.getLogger('zabbix')
@@ -371,7 +372,6 @@ def zabbixalart(request):
         return HttpResponse("ok")
     return HttpResponse("error")
 
-
 @csrf_exempt
 def api(request, method):
     token = request.GET.get('token', '')
@@ -380,7 +380,7 @@ def api(request, method):
         level = request.POST.get('level', '')
         subject = request.POST.get('subject', 'Default Subject...')
         content = request.POST.get('content', '')
-        temp_reveiver = request.POST.get('receiverlist', '').split(',')
+        temp_reveiver = [ i.strip() for i in request.POST.get('receiverlist', '').split(',')]
         sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
         if method == 'sendmail':
             receiverlist = []
@@ -414,6 +414,18 @@ def api(request, method):
                                            receiver=type, content=content, level=level)
         if method == 'senddingding':
             pass
+
+        if method == 'aliyun_voice':
+            results = []
+            type = request.POST.get('type', u'有用分期')
+            mobiles = [i.strip() for i in request.POST.get('mobiles', '').split(',')]
+            params = "{\"code\":\"98123\",\"product\":\"%s\"}" % type
+            aliyunMobile = AliyunMobile()
+            for mobile in mobiles:
+                result = aliyunMobile.tts_call(mobile, params)
+                results.append(result)
+                log.info(result)
+            return HttpResponse(results)
 
         if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
             groupid = request.POST.get('groupid', '')
