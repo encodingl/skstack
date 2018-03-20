@@ -77,7 +77,8 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 
 
 
-<api接口文档,共7个接口,包含邮件接口,微信接口,电话接口,短信接口,组接口,zabbix调用接口,grafana接口>
+<api接口文档,共7个接口,包含邮件接口,微信接口,电话接口,短信接口,组接口,zabbix调用接口,grafana接口,阿里云语音接口>
+level级别为:debug,info,warning,error,fatal.
 接口使用说明:
 1.邮件接口:
 请求方url: http://10.8.48.195:8000/skapi/api/sendmail?token=xxxxxxxx
@@ -157,10 +158,10 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 请求方法: POST
 请求数据格式:
 {
-    'level':'',         #指定事件级别,可选项
-    'type':'',          #自定义语音类播报类型,可选项.
-    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多人以逗号分隔,必选项.
-    'content','xxxxx',  #备注信息记录,可选项.
+    'level':'',         #指定事件级别,如:debug,info,warning,error,fatal.
+    'type':'',          #替换阿里云语音播报中的变量${type}. 如果为空, 默认是  "有用分期" ,可选项
+    'mobiles':'186216281xxx,123456',  #指定接收人的电话号码,多人以逗号分隔,必选项.
+    'content','xxxxx',  #指定事件备注描述,后台日志记录用.
 }
 
 
