@@ -81,7 +81,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 level级别为:debug,info,warning,error,fatal.
 接口使用说明:
 1.邮件接口:
-请求方url: http://10.8.48.195:8000/skapi/api/sendmail?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/api/sendmail?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -92,7 +92,7 @@ level级别为:debug,info,warning,error,fatal.
 }
 
 2.微信接口:
-请求方url: http://10.8.48.195:8000/skapi/api/sendweixin?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/api/sendweixin?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -103,7 +103,7 @@ level级别为:debug,info,warning,error,fatal.
 }
 
 3.短信接口:
-请求方url: http://10.8.48.195:8000/skapi/api/sendsms?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/api/sendsms?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -114,7 +114,7 @@ level级别为:debug,info,warning,error,fatal.
 
 
 4.电话接口:
-请求方url: http://10.8.48.195:8000/skapi/api/aliyun_voice?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/api/sendtel?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -128,7 +128,7 @@ level级别为:debug,info,warning,error,fatal.
    ....
 
 6.组接口:(通过组管里前面5种接口)
-请求方url: http://10.8.48.195:8000/skapi/monitor/sendgroup?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/monitor/sendgroup?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -136,7 +136,7 @@ level级别为:debug,info,warning,error,fatal.
 }
 
 7.zabbix接口:
-请求方url: http://10.8.48.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -146,7 +146,7 @@ level级别为:debug,info,warning,error,fatal.
 }
 
 8.grafana接口:
-请求方url: http://10.8.48.195:8000/skapi/grafana/?token=xxxxxxxx
+请求方url: http://10.8.105.195:8000/skapi/grafana/?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
