@@ -21,19 +21,18 @@
                         <b>监控管理</b> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li style="font-size: medium;display: none" id="monitor_userpolicy"><a href="{% url 'monitor_policy' %}"><b>用户策略</b></a></li>
-                        <li style="font-size: medium;display: none" id="monitor_userlist"><a href="{% url 'monitor_userlist' %}"><b>用户管理</b></a>
+                        <li style="font-size: medium;display: none" id="monitor_userlist"><a href="{% url 'monitor_userlist' %}"><b>告警用户</b></a>
                         </li>
                         <li style="font-size: medium;display: none" id="monitor_group"><a
-                                href="{% url 'monitor_grouplist' %}"><b>分组管理</b></a></li>
-                        <li style="font-size: medium;display: none" id="monitor_policy"><a href="index"><b>监控管理</b></a></li>
+                                href="{% url 'monitor_grouplist' %}"><b>告警分组</b></a></li>
+                        <li style="font-size: medium;display: none" id="monitor_policy"><a href="index"><b>告警开关</b></a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
                 <ul class="nav navbar-nav">
                     <li class="dropdown" style="font-size: medium;display: none" id="manage">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <b>历史查询</b> <span class="caret"></span>
+                            <b>日志查询</b> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li style="font-size: medium;display: none" id="apilog_history"><a href="{% url 'monitor_alarmapirecord' %}"><b>API调用查询</b></a></li>

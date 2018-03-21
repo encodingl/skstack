@@ -77,7 +77,7 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 
 
 
-<api接口文档,共7个接口,包含邮件接口,微信接口,电话接口,短信接口,组接口,zabbix调用接口,grafana接口,阿里云语音接口>
+<api接口文档,共8个接口,包含邮件接口,微信接口,电话接口,短信接口,钉钉接口,组接口(只包含前面5种接口),zabbix调用接口,grafana接口>
 level级别为:debug,info,warning,error,fatal.
 接口使用说明:
 1.邮件接口:
@@ -108,52 +108,12 @@ level级别为:debug,info,warning,error,fatal.
 请求数据格式:
 {
     'level':'',                       #指定事件级别
-    'mobiles':'186216281xxx,123456',  #指定接收信息的电话号码,多人以逗号分隔
+    'mobiles':'186216281xxx,123456',  #指定接收人的电话号码,多个号码以逗号分隔
     'content','xxxxx',       #指定接收的内容
 }
 
-4.电话接口:(目前只购买了灵犀云2个通道,运维专用和周杰专用)
-请求方url: http://10.8.48.195:8000/skapi/api/sendmobile?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'level':'',         #指定事件级别
-    'type':'',          #可选项,如为:linkedsee_szyw,指定运维通道,如为:linkedsee_zhoujie, 指定周杰通道.可以不指定此参数,默认为运维通道.
-    'content','xxxxx',  #指定告警内容,仅作为后台收集数据.
-}
 
-5.zabbix接口:
-请求方url: http://10.8.48.195:8000/skapi/monitor/zabbixgroup?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'groupid':'组编号号',  #组编号,权限受组策略控制
-    'receiverlist':'',   #指定邮箱和微信收件人,多人用逗号分隔,权限受单用户策略控制
-    'subject':'xxx',    #标题
-    'content','xxxxx',  #内容
-
-}
-
-
-6.zabbix接口:
-请求方url: http://10.8.48.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'subject':'xxx',    #标题
-    'content','xxxxx',  #内容
-    'type','xxxxx',  #可选,特殊了分组使用
-}
-
-7.grafana接口:
-请求方url: http://10.8.48.195:8000/skapi/grafana/?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'content','xxxxx',  #json格式数据
-}
-
-8.阿里云语音服务接口:
+4.电话接口:
 请求方url: http://10.8.48.195:8000/skapi/api/aliyun_voice?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
@@ -163,6 +123,37 @@ level级别为:debug,info,warning,error,fatal.
     'mobiles':'186216281xxx,123456',  #指定接收人的电话号码,多人以逗号分隔,必选项.
     'content','xxxxx',  #指定事件备注描述,后台日志记录用.
 }
+
+5.钉钉接口
+   ....
+
+6.组接口:(通过组管里前面5种接口)
+请求方url: http://10.8.48.195:8000/skapi/monitor/sendgroup?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    ...
+}
+
+7.zabbix接口:
+请求方url: http://10.8.48.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'subject':'xxx',    #标题
+    'content','xxxxx',  #内容
+    'type','xxxxx',  #可选,特殊了分组使用
+}
+
+8.grafana接口:
+请求方url: http://10.8.48.195:8000/skapi/grafana/?token=xxxxxxxx
+请求方法: POST
+请求数据格式:
+{
+    'content','xxxxx',  #json格式数据
+}
+
+
 
 
 

@@ -12,7 +12,7 @@ from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUs
     AlarmRecordForm, ZabbixRecordForm
 from lib.com import get_object, config, cfg, configfile
 from utils import initAlarmList
-from api import AliyunMobile
+from api import AliyunAPI
 import logging
 
 log = logging.getLogger('zabbix')
@@ -165,7 +165,7 @@ def policyedit(request, ids):
 @permission_verify()
 def grouplist(request):
     temp_name = "skapi/api-header.html"
-    obj_info = AlarmGroup.objects.all()
+    obj_info = AlarmGroup.objects.all().order_by("-id")
     return render_to_response('skapi/grouplist.html', locals(), RequestContext(request))
 
 
@@ -397,35 +397,30 @@ def api(request, method):
                     SendWeixin().send(receiver, content, serial)
                     AlarmRecord.objects.create(type=u'微信', name=name, token=token, serial=serial, receiver=receiver,
                                                content=content, level=level)
-        if method == 'sendsms':
-            mobiles = request.POST.get('mobiles', '').split(',')
-            for m in mobiles:
-                if sinal_alarmlist.filter(name__tel=m).filter(sms_status=1):
-                    SendSms().send(m, content)
-                    AlarmRecord.objects.create(type=u'短信', name=name, token=token, receiver=m, content=content,
-                                               level=level)
-        if method == 'sendmobile':
-            type = request.POST.get('type', '')
-            if sinal_alarmlist.filter(name__name=name).filter(tel_status=1):
-                SendMobile().send(content, type)
-                if type != 'linkedsee_zhoujie':
-                    type = 'linkedsee_szyw'
-                AlarmRecord.objects.create(type=u'电话', name=name, token=token,
-                                           receiver=type, content=content, level=level)
-        if method == 'senddingding':
-            pass
 
-        if method == 'aliyun_voice':
+        if method == 'sendtel':
             results = []
             type = request.POST.get('type', u'有用分期')
             mobiles = [i.strip() for i in request.POST.get('mobiles', '').split(',')]
             params = "{\"code\":\"98123\",\"product\":\"%s\"}" % type
-            aliyunMobile = AliyunMobile()
+            aliyun = AliyunAPI()
             for mobile in mobiles:
-                result = aliyunMobile.tts_call(mobile, params)
+                result = aliyun.tts_call(mobile, params)
                 results.append(result)
                 log.info(result)
             return HttpResponse(results)
+
+        if method == 'sendsms':
+            content = request.POST.get('content', u'无')
+            mobiles = request.POST.get('mobiles', '')
+            params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % content
+            aliyun = AliyunAPI()
+            result = aliyun.send_sms(mobiles, params)
+            log.info(result)
+            return HttpResponse(result)
+
+        if method == 'senddingding':
+            pass
 
         if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
             groupid = request.POST.get('groupid', '')
@@ -457,6 +452,7 @@ def api(request, method):
             for u in group_alarmlist:
                 if u.name.tel not in receiverlist:
                     SendSms().send(m, content)
+
         return HttpResponse("ok")
     return HttpResponse("error")
 

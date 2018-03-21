@@ -36,8 +36,7 @@
                                 <th>邮箱</th>
                                 <th>电话号码</th>
                                 <th>钉钉号</th>
-                                <th>用户策略</th>
-                                <th>授权APP</th>
+                                <th>授权App数量</th>
                                 <th class="text-center">功能</th>
                             </tr>
                             </thead>
@@ -56,11 +55,12 @@
                                         <td width="12%" style="vertical-align:middle">{{ obj.email }}</td>
                                         <td width="11%" style="vertical-align:middle">{{ obj.tel }}</td>
                                         <td width="10%" style="vertical-align:middle">{{ obj.dd }}</td>
-                                        <td width="10%" style="vertical-align:middle">{{ obj.policy }}</td>
                                         <td width="18%" style="vertical-align:middle">
-                                            {% for i in obj.app.all %}
-                                                {{ i|get_app }}<br>
-                                            {% endfor %}</td>
+                                            {{ obj.app.count }}
+{#                                            {% for i in obj.app.all %}#}
+{#                                                {{ i|get_app }}<br>#}
+{#                                            {% endfor %}#}
+                                        </td>
                                         <td width="12%" style="vertical-align:middle" class="text-center" data-editable='false'>
                                             <a href="#">
                                                 <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"
