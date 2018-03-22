@@ -2,12 +2,10 @@ from models import AlarmList
 
 
 def initAlarmList(instance):
-    user_objs = instance.user.all()
-    if user_objs:
-        for user in user_objs:
-            AlarmList.objects.get_or_create(name=user, group=instance)
+    user_objs = instance.user1.all()
+    for user in user_objs:
+        AlarmList.objects.get_or_create(user=user, group=instance)
     alarmlists = AlarmList.objects.filter(group=instance)
-    if alarmlists:
-        for alarmlist in alarmlists:
-            if alarmlist.name not in user_objs:
-                alarmlist.delete()
+    for alarmlist in alarmlists:
+        if alarmlist.user not in user_objs:
+            alarmlist.delete()
