@@ -44,6 +44,7 @@ class AlarmGroup(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 分组名称", unique=True)
     serial = models.IntegerField(default=0, verbose_name=u"微信通道", null=True, blank=True)
     user = models.ManyToManyField(AlarmUser, verbose_name=u"告警名单", blank=True)
+    user1 = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)
     tokens = models.ManyToManyField(TokenAuth, verbose_name=u"授权Token", blank=True)
     descrition = models.TextField(max_length=200, verbose_name=u"监控范围", null=True, blank=True)
 
@@ -52,22 +53,9 @@ class AlarmGroup(models.Model):
 
 
 class AlarmList(models.Model):
-    name = models.ForeignKey(AlarmUser, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True, blank=True)
-    weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")
-    email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
-    sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
-    dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
-    tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
-    app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
-
-    def __unicode__(self):
-        return self.name.name
-
-
-class AlarmSwitch(models.Model):
-    name = models.ForeignKey(UserInfo, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.ForeignKey(AlarmUser, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(UserInfo, verbose_name=u"用户ID", on_delete=models.SET_NULL, null=True)
+    group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True)
     weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")
     email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
     sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
