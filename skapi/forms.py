@@ -84,6 +84,7 @@ class AlarmListForm(forms.ModelForm):
                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'tel_status': Select(choices=((0, u'禁用'), (1, u'启用-运维通道'), (2, u'启用-周杰通道'),  (3, u'启动-旷明爱通道')),
                                  attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'app': SelectMultiple(attrs={'class': 'form-control'}),
         }
 
 

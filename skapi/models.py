@@ -58,6 +58,7 @@ class AlarmList(models.Model):
     sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
     dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
     tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
+    app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
 
     def __unicode__(self):
         return self.name.name

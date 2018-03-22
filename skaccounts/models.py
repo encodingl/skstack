@@ -63,7 +63,7 @@ class UserManager(BaseUserManager):
 
 class UserInfo(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True, db_index=True)
-    email = models.EmailField(max_length=255)
+    email = models.EmailField(max_length=255, unique=True)
     tel = models.CharField(max_length=20, null=True, blank=True)
     dd = models.CharField(max_length=20, null=True, blank=True)
     is_active = models.BooleanField(default=False)

@@ -5,6 +5,15 @@
     <title>Title</title>
     {% include 'link_css.html' %}
     {% include 'head_script.html' %}
+    <style>
+        .content-wrapper {
+            margin-left: 0;
+        }
+        .col-sm-6 {
+            width: 50%;
+            float: left;
+        }
+    </style>
 </head>
 <body>
 <div class="content-wrapper">
@@ -43,5 +52,17 @@
         parent.layer.close(index);
     }
 </script>
+
+<script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+<script>
+    var demo1 = $('select[name="app"]').bootstrapDualListbox({
+        nonSelectedListLabel: '可选择',
+        selectedListLabel: '已选择',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+    });
+</script>
+
+
 </body>
 </html>
