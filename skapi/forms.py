@@ -73,7 +73,7 @@ class AlarmListForm(forms.ModelForm):
         exclude = ("id", "group")
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;', 'readonly': True}),
+            'user': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;', 'readonly': True}),
             'weixin_status': Select(choices=((True, u'启用'), (False, u'禁用')),
                                     attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'email_status': Select(choices=((True, u'启用'), (False, u'禁用')),
