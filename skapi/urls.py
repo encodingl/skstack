@@ -30,5 +30,5 @@ urlpatterns = [
     url(r'^monitor/ddlogdetail/(?P<ids>\d+)/$', monitor.ddlogdetail, name='monitor_ddlogdetail'),
     url(r'^monitor/setuplist', monitor.setuplist, name='monitor_setuplist'),
     url(r'^monitor/zabbixalart', monitor.zabbixalart, name='monitor_zabbixalart'),
-    url(r'^api/(?P<method>\w+)', monitor.api, name='api'),
+    url(r'^monitor/api/(?P<method>\w+)', monitor.api, name='monitor_api'),
 ]

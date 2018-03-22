@@ -4,6 +4,7 @@ from django.db import models
 import django.utils.timezone as timezone
 from lib.type import Alarm_TYPE
 from skcmdb.models import App
+from skaccounts.models import UserInfo
 
 
 class UserPolicy(models.Model):
@@ -52,6 +53,20 @@ class AlarmGroup(models.Model):
 
 class AlarmList(models.Model):
     name = models.ForeignKey(AlarmUser, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True, blank=True)
+    weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")
+    email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
+    sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
+    dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
+    tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
+    app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
+
+    def __unicode__(self):
+        return self.name.name
+
+
+class AlarmSwitch(models.Model):
+    name = models.ForeignKey(UserInfo, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True, blank=True)
     group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True, blank=True)
     weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")
     email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
