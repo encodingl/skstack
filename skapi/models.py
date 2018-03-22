@@ -53,7 +53,6 @@ class AlarmGroup(models.Model):
 
 
 class AlarmList(models.Model):
-    name = models.ForeignKey(AlarmUser, verbose_name=u"编号ID", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(UserInfo, verbose_name=u"用户ID", on_delete=models.SET_NULL, null=True)
     group = models.ForeignKey(AlarmGroup, verbose_name=u"所属分组", on_delete=models.SET_NULL, null=True)
     weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")

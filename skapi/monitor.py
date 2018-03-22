@@ -293,86 +293,6 @@ def setuplist(request):
 
 
 @csrf_exempt
-def zabbixalart_bak(request):
-    token = request.GET.get('token', '')
-    if request.method == 'POST' and token == cfg.get('token', 'token'):
-        zabbix_subject = request.POST.get('subject', '')
-        zabbix_content = request.POST.get('content', '')
-        content = zabbix_content.split("||")
-        type = request.POST.get('type', '')
-        log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + zabbix_content + ']')
-        sub_data = zabbix_subject.split(',', 1)
-        groupid = int(sub_data[0])
-        subject = sub_data[1]
-        ag_obj = AlarmGroup.objects.get(id=groupid)
-        serial = ag_obj.serial
-        message = '\n'.join(content)
-        appname = '-'
-        log_id = ''
-        if type == 'appname':
-            sub_data = zabbix_subject.split(',', 2)
-            appname = sub_data[1]
-        if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
-                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[-1].split(':',1)[1])
-            log_id = zr.id
-
-        wx_user_obj = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
-        email_user_obj = AlarmList.objects.filter(group=ag_obj, email_status=1)
-        sms_user_obj = AlarmList.objects.filter(group=ag_obj, sms_status=1)
-        dd_user_obj = AlarmList.objects.filter(group=ag_obj, dd_status=1)
-        tel_user_obj = AlarmList.objects.filter(group=ag_obj, tel_status=1)
-
-        if type == 'appname':
-            wx_user_obj = wx_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
-            email_user_obj = email_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
-            sms_user_obj = sms_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
-            dd_user_obj = dd_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
-            tel_user_obj = tel_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
-
-        wxlist = [wx.name.email for wx in wx_user_obj]
-        SendWeixin().send('|'.join(wxlist), message, serial)
-
-        emaillist = [ul.name.email for ul in email_user_obj]
-        SendMail().send(subject, emaillist, message)
-
-        smslist = [ul.name.tel for ul in sms_user_obj]
-        for sms in smslist:
-            if content[1] == 'OK':
-                subject = u'[告警恢复通知]:%s' % subject
-            elif content[1] == 'PROBLEM':
-                subject = u'[告警故障通知]:%s' % subject
-            SendSms().send(sms, subject)
-        ddlist = [ul.name.dd for ul in dd_user_obj]
-        messages = {}
-        body = {}
-        form = []
-        messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
-        messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
-        messages["head"] = {
-            "bgcolor": "DBE97659",  # 前两位表示透明度
-            "text": u"服务器故障"
-        }
-        body["title"] = subject
-        body["content"] = content[-1]
-        for text in content[1:-1]:
-            form.append({'key': u'', 'value': text})
-        body['form'] = form
-        body["author"] = u"来自深圳运维监控系统"
-        messages['body'] = body
-        SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
-                            messages=messages)
-        for u in tel_user_obj:
-            if u.tel_status == 1:
-                SendMobile().send(message)
-            elif ag_obj.tel_status == 2:
-                SendMobile().send(content, type='linkedsee_zhoujie')
-            elif ag_obj.tel_status == 3:
-                SendMobile().send(content, type='linkedsee_mingai')
-        return HttpResponse("ok")
-    return HttpResponse("error")
-
-@csrf_exempt
 def zabbixalart(request):
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
@@ -393,8 +313,10 @@ def zabbixalart(request):
             sub_data = zabbix_subject.split(',', 2)
             appname = sub_data[1]
         if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
-                            host=content[2].split(':',1)[1],event=content[4].split(':',1)[1], content=content[-1].split(':',1)[1])
+            zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
+                                             status=content[1].split(':', 1)[1],
+                                             host=content[2].split(':', 1)[1], event=content[4].split(':', 1)[1],
+                                             content=content[-1].split(':', 1)[1])
             log_id = zr.id
 
         wx_user_obj = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
@@ -404,26 +326,26 @@ def zabbixalart(request):
         tel_user_obj = AlarmList.objects.filter(group=ag_obj, tel_status=1)
 
         if type == 'appname':
-            wx_user_obj = wx_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            email_user_obj = email_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            sms_user_obj = sms_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            dd_user_obj = dd_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
-            tel_user_obj = tel_user_obj.filter(Q(name__app__name=appname) | Q(name__app__name='all')).distinct()
+            wx_user_obj = wx_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
+            email_user_obj = email_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
+            sms_user_obj = sms_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
+            dd_user_obj = dd_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
+            tel_user_obj = tel_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
 
-        wxlist = [wx.name.email for wx in wx_user_obj]
+        wxlist = [wx.user.email for wx in wx_user_obj]
         SendWeixin().send('|'.join(wxlist), message, serial)
 
-        emaillist = [ul.name.email for ul in email_user_obj]
+        emaillist = [ul.user.email for ul in email_user_obj]
         SendMail().send(subject, emaillist, message)
 
-        smslist = [ul.name.tel for ul in sms_user_obj]
+        smslist = [ul.user.tel for ul in sms_user_obj]
         for sms in smslist:
             if content[1] == 'OK':
                 subject = u'[告警恢复通知]:%s' % subject
             elif content[1] == 'PROBLEM':
                 subject = u'[告警故障通知]:%s' % subject
             SendSms().send(sms, subject)
-        ddlist = [ul.name.dd for ul in dd_user_obj]
+        ddlist = [ul.user.dd for ul in dd_user_obj]
         messages = {}
         body = {}
         form = []
@@ -452,6 +374,7 @@ def zabbixalart(request):
         return HttpResponse("ok")
     return HttpResponse("error")
 
+
 @csrf_exempt
 def api(request, method):
     token = request.GET.get('token', '')
@@ -460,7 +383,7 @@ def api(request, method):
         level = request.POST.get('level', '')
         subject = request.POST.get('subject', 'Default Subject...')
         content = request.POST.get('content', '')
-        temp_reveiver = [ i.strip() for i in request.POST.get('receiverlist', '').split(',')]
+        temp_reveiver = [i.strip() for i in request.POST.get('receiverlist', '').split(',')]
         sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
         if method == 'sendmail':
             receiverlist = []
