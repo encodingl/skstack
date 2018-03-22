@@ -514,7 +514,7 @@ def alarmapidetail(request, ids):
 @permission_verify()
 def alarmlogrecord(request):
     temp_name = "skapi/api-header.html"
-    obj_info = ZabbixRecord.objects.all()[0:200]
+    obj_info = ZabbixRecord.objects.all()[0:100]
     return render_to_response('skapi/alarmlogrecord.html', locals(), RequestContext(request))
 
 

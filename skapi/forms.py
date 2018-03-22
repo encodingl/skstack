@@ -2,7 +2,7 @@
 from django import forms
 from django.forms.widgets import *
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
-
+from lib.type import WeiXin_Type
 
 class UserPolicyForm(forms.ModelForm):
     class Meta:
@@ -60,8 +60,9 @@ class AlarmGroupForm(forms.ModelForm):
 
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
-            'serial': TextInput(attrs={'class': 'form-control'}),
+            'serial': Select(choices=WeiXin_Type, attrs={'class': 'form-control'}),
             'user': SelectMultiple(attrs={'class': 'form-control'}),
+            'tokens': SelectMultiple(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control'}),
         }
 

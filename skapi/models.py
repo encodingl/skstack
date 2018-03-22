@@ -19,7 +19,7 @@ class UserPolicy(models.Model):
 
 
 class AlarmUser(models.Model):
-    name = models.CharField(max_length=30, verbose_name=u"* 告警收件人", unique=True)
+    name = models.CharField(max_length=30, verbose_name=u"* 姓名", unique=True)
     email = models.EmailField(max_length=30, verbose_name=u"* 邮箱", null=True)
     tel = models.CharField(max_length=20, verbose_name=u"* 电话号码", null=True)
     dd = models.CharField(max_length=20, verbose_name=u"* 钉钉号", null=True)
@@ -30,10 +30,20 @@ class AlarmUser(models.Model):
         return self.name
 
 
+class TokenAuth(models.Model):
+    name = models.CharField(max_length=20, verbose_name=u"* 名称", unique=True)
+    token = models.CharField(max_length=20, verbose_name=u"* Token", null=True)
+    descrition = models.CharField(max_length=50, verbose_name=u"用途", null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class AlarmGroup(models.Model):
-    name = models.CharField(max_length=50, verbose_name=u"* 告警分组名称", unique=True)
-    serial = models.CharField(max_length=20, default='0', verbose_name=u"微信通道", null=True, blank=True)
+    name = models.CharField(max_length=50, verbose_name=u"* 分组名称", unique=True)
+    serial = models.IntegerField(default=0, verbose_name=u"微信通道", null=True, blank=True)
     user = models.ManyToManyField(AlarmUser, verbose_name=u"告警名单", blank=True)
+    tokens = models.ManyToManyField(TokenAuth, verbose_name=u"授权Token", blank=True)
     descrition = models.TextField(max_length=200, verbose_name=u"监控范围", null=True, blank=True)
 
     def __unicode__(self):
@@ -47,19 +57,10 @@ class AlarmList(models.Model):
     email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
     sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
     dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
-    tel_status = models.IntegerField(default=0, verbose_name=u"电话状态")
+    tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
 
     def __unicode__(self):
         return self.name.name
-
-
-class TokenAuth(models.Model):
-    name = models.CharField(max_length=20, verbose_name=u"* 授权用户", unique=True)
-    token = models.CharField(max_length=20, verbose_name=u"* Token", null=True)
-    descrition = models.CharField(max_length=50, verbose_name=u"用途", null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
 
 
 class AlarmRecord(models.Model):
