@@ -2,7 +2,7 @@ from models import AlarmList
 
 
 def initAlarmList(instance):
-    user_objs = instance.user1.all()
+    user_objs = instance.user.all()
     for user in user_objs:
         AlarmList.objects.get_or_create(user=user, group=instance)
     alarmlists = AlarmList.objects.filter(group=instance)

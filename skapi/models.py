@@ -43,7 +43,7 @@ class TokenAuth(models.Model):
 class AlarmGroup(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 分组名称", unique=True)
     serial = models.IntegerField(default=0, verbose_name=u"微信通道", null=True, blank=True)
-    user1 = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)
+    user = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)
     tokens = models.ManyToManyField(TokenAuth, verbose_name=u"授权Token", blank=True)
     descrition = models.TextField(max_length=200, verbose_name=u"监控范围", null=True, blank=True)
 
