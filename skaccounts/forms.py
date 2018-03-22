@@ -7,7 +7,6 @@ from models import UserInfo, RoleList, PermissionList, RoleJob, AuditFlow, UserG
 from lib.type import User_TYPE
 
 
-
 class LoginUserForm(forms.Form):
     username = forms.CharField(label=u'账 号', error_messages={'required': u'账号不能为空'},
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -39,16 +38,18 @@ class LoginUserForm(forms.Form):
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ('username', 'password', 'email', 'nickname', 'type', 'role', 'role_job', 'is_active')
+        fields = ('username', 'password', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'role_job', 'is_active')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': ' form-control'}),
+            'tel': forms.TextInput(attrs={'class': ' form-control'}),
+            'dd': forms.TextInput(attrs={'class': ' form-control'}),
             'nickname': forms.TextInput(attrs={'class': 'form-control'}),
             'type': forms.Select(choices=User_TYPE, attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'role': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'role_job': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'is_active': forms.Select(choices=((True, u'启用'), (False, u'禁用')), attrs={'class': 'form-control'}),
+            'is_active': forms.Select(choices=((True, u'启用'), (False, u'禁用')), attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -59,6 +60,8 @@ class AddUserForm(forms.ModelForm):
         self.fields['password'].error_messages = {'required': u'请输入密码'}
         self.fields['email'].label = u'邮 箱'
         self.fields['email'].error_messages = {'required': u'请输入邮箱', 'invalid': u'请输入有效邮箱'}
+        self.fields['tel'].label = u'电 话'
+        self.fields['dd'].label = u'钉 钉'
         self.fields['nickname'].label = u'姓 名'
         self.fields['nickname'].error_messages = {'required': u'请输入姓名'}
         self.fields['type'].label = u'类 型'
@@ -76,10 +79,12 @@ class AddUserForm(forms.ModelForm):
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ('username', 'email', 'nickname', 'type', 'role', 'role_job', 'is_active')
+        fields = ('username', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'role_job', 'is_active')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'email': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'tel': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'dd': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'nickname': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'type': forms.Select(choices=User_TYPE, attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'role': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
@@ -94,6 +99,8 @@ class EditUserForm(forms.ModelForm):
         self.fields['username'].error_messages = {'required': u'请输入账号'}
         self.fields['email'].label = u'邮 箱'
         self.fields['email'].error_messages = {'required': u'请输入邮箱', 'invalid': u'请输入有效邮箱'}
+        self.fields['tel'].label = u'电 话'
+        self.fields['dd'].label = u'钉 钉'
         self.fields['nickname'].label = u'姓 名'
         self.fields['nickname'].error_messages = {'required': u'请输入姓名'}
         self.fields['type'].label = u'类 型'

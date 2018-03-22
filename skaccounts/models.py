@@ -8,6 +8,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from sktask.models import job
 from lib.type import AuditFlow_LEVEL
 
+
 class PermissionList(models.Model):
     name = models.CharField(max_length=64)
     url = models.CharField(max_length=255)
@@ -23,7 +24,8 @@ class RoleList(models.Model):
 
     def __unicode__(self):
         return self.name
-    
+
+
 class RoleJob(models.Model):
     name = models.CharField(max_length=64)
     # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
@@ -34,7 +36,7 @@ class RoleJob(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self,email,username,password=None):
+    def create_user(self, email, username, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -49,9 +51,9 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, username, password):
         user = self.create_user(email,
-            username=username,
-            password=password,
-        )
+                                username=username,
+                                password=password,
+                                )
 
         user.is_active = True
         user.is_superuser = True
@@ -59,10 +61,11 @@ class UserManager(BaseUserManager):
         return user
 
 
-    
 class UserInfo(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True, db_index=True)
     email = models.EmailField(max_length=255)
+    tel = models.CharField(max_length=20, null=True, blank=True)
+    dd = models.CharField(max_length=20, null=True, blank=True)
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     nickname = models.CharField(max_length=64, null=True)
@@ -76,21 +79,29 @@ class UserInfo(AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         if self.is_active and self.is_superuser:
             return True
+
     def __unicode__(self):
         return self.username
-    
+
+
 class UserGroup(models.Model):
-    name = models.CharField(max_length=64)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
+    name = models.CharField(max_length=64)  # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
     desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
-    members = models.ManyToManyField(UserInfo,blank=True)
+    members = models.ManyToManyField(UserInfo, blank=True)
+
     def __unicode__(self):
         return self.name
 
+
 class AuditFlow(models.Model):
-    name = models.CharField(u"登录用户",max_length=50)
+    name = models.CharField(u"登录用户", max_length=50)
     level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
-    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l1')
-    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l2')
-    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,related_name='l3')
+    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+                           related_name='l1')
+    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+                           related_name='l2')
+    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+                           related_name='l3')
+
     def __unicode__(self):
         return self.name
