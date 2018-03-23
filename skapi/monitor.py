@@ -165,7 +165,7 @@ def policyedit(request, ids):
 @permission_verify()
 def grouplist(request):
     temp_name = "skapi/api-header.html"
-    obj_info = AlarmGroup.objects.all().order_by("-id")
+    obj_info = AlarmGroup.objects.order_by("-id")
     return render_to_response('skapi/grouplist.html', locals(), RequestContext(request))
 
 
@@ -314,9 +314,9 @@ def zabbixalart(request):
             appname = sub_data[1]
         if config().get('record', 'zabbix_status') == 'On':
             zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
-                                             status=content[1].split(':', 1)[1],
-                                             host=content[2].split(':', 1)[1], event=content[4].split(':', 1)[1],
-                                             content=content[-1].split(':', 1)[1])
+                                             status=content[1],
+                                             host=content[2], event=content[4],
+                                             content=content[-1])
             log_id = zr.id
 
         wx_user_obj = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
