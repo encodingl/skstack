@@ -17,7 +17,6 @@ from aliyunsdkdysmsapi.request.v20170525 import SendSmsRequest
 from aliyunsdkcore.client import AcsClient
 import uuid
 
-
 import logging
 
 log = logging.getLogger('api')
@@ -163,8 +162,6 @@ class SendDingding:
 class AliyunAPI:
     def __init__(self):
         self.__BUSINESS_ID = uuid.uuid1()
-        self.TTS_CODE = cfg.get('aliyun', 'tts_code')
-        self.SMS_CODE = cfg.get('aliyun', 'sms_code')
         self.SIGN_NAME = cfg.get('aliyun', 'sign_name')
         self.SHOW_NUMBER = cfg.get('aliyun', 'show_number')
         self.REGION = cfg.get('aliyun', 'region')
@@ -172,9 +169,10 @@ class AliyunAPI:
         self.ACCESS_KEY_SECRET = cfg.get('aliyun', 'access_key_secret')
         self.acs_client = AcsClient(self.ACCESS_KEY_ID, self.ACCESS_KEY_SECRET, self.REGION)
 
-    def tts_call(self, called_number, params=None):
+    def tts_call(self, called_number, params, tts_code='tts_code'):
+        tts_code = cfg.get('aliyun', tts_code)
         ttsRequest = SingleCallByTtsRequest.SingleCallByTtsRequest()
-        ttsRequest.set_TtsCode(self.TTS_CODE)
+        ttsRequest.set_TtsCode(tts_code)
         ttsRequest.set_OutId(self.__BUSINESS_ID)
         ttsRequest.set_CalledNumber(called_number)
         ttsRequest.set_CalledShowNumber(self.SHOW_NUMBER)
@@ -189,9 +187,10 @@ class AliyunAPI:
             log.error(e)
             return u"请求异常!"
 
-    def send_sms(self, called_number, params=None):
+    def send_sms(self, called_number, params,sms_code='sms_code'):
+        sms_code = cfg.get('aliyun', sms_code)
         smsRequest = SendSmsRequest.SendSmsRequest()
-        smsRequest.set_TemplateCode(self.SMS_CODE)
+        smsRequest.set_TemplateCode(sms_code)
         if params is not None:
             smsRequest.set_TemplateParam(params)
         smsRequest.set_OutId(self.__BUSINESS_ID)

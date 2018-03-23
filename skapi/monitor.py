@@ -301,15 +301,17 @@ def zabbixalart(request):
         type = request.POST.get('type', '')
         subject = request.POST.get('subject', '')
         content = request.POST.get('content', '').split('||')
-        log.info('[token:%s][groupid:%s][appname:%s][type:%s][subject:%s][content:%s]'%(token,groupid,appname,type,subject,content))
+        log.info('[token:%s][groupid:%s][appname:%s][type:%s][subject:%s][content:%s]' % (
+            token, groupid, appname, type, subject, content))
         alarmGroup = AlarmGroup.objects.get(id=groupid)
         serial = alarmGroup.serial
         message = '\n'.join(content)
         logid = ''
 
         if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,status=content[1],
-                                             host=content[2], event=content[4],content=content[-1])
+            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,
+                                             status=content[1],
+                                             host=content[2], event=content[4], content=content[-1])
             logid = zr.id
 
         wx_user_obj = AlarmList.objects.filter(group=alarmGroup, weixin_status=1)
@@ -339,11 +341,10 @@ def zabbixalart(request):
             aliyun = AliyunAPI()
             smslist = [ul.user.tel for ul in sms_user_obj]
             params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
-            aliyun.send_sms(','.join(smslist), params)
+            aliyun.send_sms(','.join(smslist), params, 'sms_code1')
 
-            params = "{\"code\":\"98123\",\"product\":\"有用分期\"}"
             for tel in tel_user_obj:
-                aliyun.tts_call(tel.user.tel, params)
+                aliyun.tts_call(tel.user.tel, params, 'tts_code1')
 
         ddlist = [ul.user.dd for ul in dd_user_obj]
         messages = {}
