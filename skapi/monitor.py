@@ -296,36 +296,29 @@ def setuplist(request):
 def zabbixalart(request):
     token = request.GET.get('token', '')
     if request.method == 'POST' and token == cfg.get('token', 'token'):
-        zabbix_subject = request.POST.get('subject', '')
-        zabbix_content = request.POST.get('content', '')
-        content = zabbix_content.split("||")
+        groupid = request.POST.get('groupid', '')
+        appname = request.POST.get('appname', '')
         type = request.POST.get('type', '')
-        log.info('[token:' + token + ']' + '[subject:' + zabbix_subject + ']' + '[content:' + zabbix_content + ']')
-        sub_data = zabbix_subject.split(',', 1)
-        groupid = int(sub_data[0])
-        subject = sub_data[1]
-        ag_obj = AlarmGroup.objects.get(id=groupid)
-        serial = ag_obj.serial
+        subject = request.POST.get('subject', '')
+        content = request.POST.get('content', '').split('||')
+        log.info('[token:%s][groupid:%s][appname:%s][type:%s][subject:%s][content:%s]'%(token,groupid,appname,type,subject,content))
+        alarmGroup = AlarmGroup.objects.get(id=groupid)
+        serial = alarmGroup.serial
         message = '\n'.join(content)
-        appname = '-'
-        log_id = ''
-        if type == 'appname':
-            sub_data = zabbix_subject.split(',', 2)
-            appname = sub_data[1]
+        logid = ''
+
         if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name='zabbix', token=token, subject=subject, appname=appname,
-                                             status=content[1],
-                                             host=content[2], event=content[4],
-                                             content=content[-1])
-            log_id = zr.id
+            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,status=content[1],
+                                             host=content[2], event=content[4],content=content[-1])
+            logid = zr.id
 
-        wx_user_obj = AlarmList.objects.filter(group=ag_obj, weixin_status=1)
-        email_user_obj = AlarmList.objects.filter(group=ag_obj, email_status=1)
-        sms_user_obj = AlarmList.objects.filter(group=ag_obj, sms_status=1)
-        dd_user_obj = AlarmList.objects.filter(group=ag_obj, dd_status=1)
-        tel_user_obj = AlarmList.objects.filter(group=ag_obj, tel_status=1)
+        wx_user_obj = AlarmList.objects.filter(group=alarmGroup, weixin_status=1)
+        email_user_obj = AlarmList.objects.filter(group=alarmGroup, email_status=1)
+        sms_user_obj = AlarmList.objects.filter(group=alarmGroup, sms_status=1)
+        dd_user_obj = AlarmList.objects.filter(group=alarmGroup, dd_status=1)
+        tel_user_obj = AlarmList.objects.filter(group=alarmGroup, tel_status=1)
 
-        if type == 'appname':
+        if appname != 'normal':
             wx_user_obj = wx_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
             email_user_obj = email_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
             sms_user_obj = sms_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
@@ -338,19 +331,26 @@ def zabbixalart(request):
         emaillist = [ul.user.email for ul in email_user_obj]
         SendMail().send(subject, emaillist, message)
 
-        smslist = [ul.user.tel for ul in sms_user_obj]
-        for sms in smslist:
-            if content[1] == 'OK':
-                subject = u'[告警恢复通知]:%s' % subject
-            elif content[1] == 'PROBLEM':
-                subject = u'[告警故障通知]:%s' % subject
-            SendSms().send(sms, subject)
+        if content[1] == 'OK':
+            subject = u'[告警恢复通知]:%s' % subject
+        elif content[1] == 'PROBLEM':
+            subject = u'[告警故障通知]:%s' % subject
+
+            aliyun = AliyunAPI()
+            smslist = [ul.user.tel for ul in sms_user_obj]
+            params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
+            aliyun.send_sms(','.join(smslist), params)
+
+            params = "{\"code\":\"98123\",\"product\":\"有用分期\"}"
+            for tel in tel_user_obj:
+                aliyun.tts_call(tel.user.tel, params)
+
         ddlist = [ul.user.dd for ul in dd_user_obj]
         messages = {}
         body = {}
         form = []
-        messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % log_id
-        messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % log_id
+        messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % logid
+        messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % logid
         messages["head"] = {
             "bgcolor": "DBE97659",  # 前两位表示透明度
             "text": u"服务器故障"
@@ -364,13 +364,6 @@ def zabbixalart(request):
         messages['body'] = body
         SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
                             messages=messages)
-        for u in tel_user_obj:
-            if u.tel_status == 1:
-                SendMobile().send(message)
-            elif ag_obj.tel_status == 2:
-                SendMobile().send(content, type='linkedsee_zhoujie')
-            elif ag_obj.tel_status == 3:
-                SendMobile().send(content, type='linkedsee_mingai')
         return HttpResponse("ok")
     return HttpResponse("error")
 
