@@ -309,8 +309,8 @@ def zabbixalart(request):
         logid = ''
 
         if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,status=content[1].split(':')[1],
-                                     host=content[2].split(':')[1], event=content[4].split(':')[1], content=content[-1].split(':')[1])
+            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
+                                     host=content[2].split(':',1)[1], event=content[4].split(':',1)[1], content=content[-1].split(':',1)[1])
             logid = zr.id
 
         wx_user_obj = AlarmList.objects.filter(group=alarmGroup, weixin_status=1)
