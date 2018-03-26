@@ -6,14 +6,17 @@ from django.template import RequestContext
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from skaccounts.permission import permission_verify
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, ServiceType, \
+    LevelPolicy
 from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
 from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm, \
-    AlarmRecordForm, ZabbixRecordForm
+    AlarmRecordForm, ZabbixRecordForm, LevelPolicyForm
 from lib.com import get_object, config, cfg, configfile
+from lib.type import Alarm_TYPE_Code, Log_Type
 from utils import initAlarmList
 from api import AliyunAPI
 import logging
+from json import dumps
 
 log = logging.getLogger('zabbix')
 
@@ -31,7 +34,7 @@ def index(request):
     else:
         temp = AlarmGroup.objects.first()
         if temp:
-            obj_info = AlarmList.objects.filter(group=temp)
+            obj_info = temp.alarmlist_set.all()
     return render_to_response('skapi/index.html', locals(), RequestContext(request))
 
 
@@ -43,8 +46,8 @@ def alarmlistedit(request, ids):
         if form.is_valid():
             form.save()
             status = 1
-            # else:
-            #     status = 2
+        else:
+            status = 2
     else:
         form = AlarmListForm(instance=obj)
     return render_to_response("skapi/alarmlistedit.html", locals(), RequestContext(request))
@@ -111,7 +114,7 @@ def useredit(request, ids):
 @permission_verify()
 def policy(request):
     temp_name = "skapi/api-header.html"
-    obj_info = UserPolicy.objects.all()
+    obj_info = LevelPolicy.objects.all()
     return render_to_response('skapi/policy.html', locals(), RequestContext(request))
 
 
@@ -120,7 +123,7 @@ def policy(request):
 def policyadd(request):
     temp_name = "skapi/api-header.html"
     if request.method == "POST":
-        obj_form = UserPolicyForm(request.POST)
+        obj_form = LevelPolicyForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
             tips = u"增加成功！"
@@ -130,7 +133,7 @@ def policyadd(request):
             display_control = ""
     else:
         display_control = "none"
-        obj_form = UserPolicyForm()
+        obj_form = LevelPolicyForm()
     return render_to_response('skapi/policyadd.html', locals(), RequestContext(request))
 
 
@@ -139,7 +142,7 @@ def policyadd(request):
 def policydel(request):
     id = request.GET.get('id', '')
     if id:
-        UserPolicy.objects.get(id=id).delete()
+        LevelPolicy.objects.get(id=id).delete()
     return HttpResponse(u'删除成功')
 
 
@@ -148,16 +151,16 @@ def policydel(request):
 def policyedit(request, ids):
     temp_name = "skapi/api-header.html"
     status = 0
-    obj = get_object(UserPolicy, id=ids)
+    obj = get_object(LevelPolicy, id=ids)
     if request.method == 'POST':
-        af = UserPolicyForm(request.POST, instance=obj)
+        af = LevelPolicyForm(request.POST, instance=obj)
         if af.is_valid():
             af.save()
             status = 1
         else:
             status = 2
     else:
-        af = UserPolicyForm(instance=obj)
+        af = LevelPolicyForm(instance=obj)
     return render_to_response('skapi/policyedit.html', locals(), RequestContext(request))
 
 
@@ -215,7 +218,7 @@ def groupedit(request, ids):
             initAlarmList(group)
             status = 1
         else:
-            status = 2
+             status = 2
     else:
         af = AlarmGroupForm(instance=obj)
     return render_to_response('skapi/groupedit.html', locals(), RequestContext(request))
@@ -303,21 +306,23 @@ def zabbixalart(request):
         content = request.POST.get('content', '').split('||')
         log.info('[token:%s][groupid:%s][appname:%s][type:%s][subject:%s][content:%s]' % (
             token, groupid, appname, type, subject, content))
-        alarmGroup = AlarmGroup.objects.get(id=groupid)
-        serial = alarmGroup.serial
+        ag = AlarmGroup.objects.get(id=groupid)
+        serial = ag.serial
         message = '\n'.join(content)
         logid = ''
 
         if config().get('record', 'zabbix_status') == 'On':
-            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,status=content[1].split(':',1)[1],
-                                     host=content[2].split(':',1)[1], event=content[4].split(':',1)[1], content=content[-1].split(':',1)[1])
+            zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,
+                                             status=content[1].split(':', 1)[1],
+                                             host=content[2].split(':', 1)[1], event=content[4].split(':', 1)[1],
+                                             content=content[-1].split(':', 1)[1])
             logid = zr.id
 
-        wx_user_obj = AlarmList.objects.filter(group=alarmGroup, weixin_status=1)
-        email_user_obj = AlarmList.objects.filter(group=alarmGroup, email_status=1)
-        sms_user_obj = AlarmList.objects.filter(group=alarmGroup, sms_status=1)
-        dd_user_obj = AlarmList.objects.filter(group=alarmGroup, dd_status=1)
-        tel_user_obj = AlarmList.objects.filter(group=alarmGroup, tel_status=1)
+        wx_user_obj = ag.alarmlist_set.filter(weixin_status=1)
+        email_user_obj = ag.alarmlist_set.filter(email_status=1)
+        sms_user_obj = ag.alarmlist_set.filter(sms_status=1)
+        dd_user_obj = ag.alarmlist_set.filter(dd_status=1)
+        tel_user_obj = ag.alarmlist_set.filter(tel_status=1)
 
         if appname != 'normal':
             wx_user_obj = wx_user_obj.filter(Q(app__name=appname) | Q(app__name='all')).distinct()
@@ -373,10 +378,72 @@ def api(request, method):
     token = request.GET.get('token', '')
     if request.method == 'POST' and TokenAuth.objects.filter(token=token):
         name = TokenAuth.objects.get(token=token).name
-        level = request.POST.get('level', '')
-        subject = request.POST.get('subject', 'Default Subject...')
-        content = request.POST.get('content', '')
-        temp_reveiver = [i.strip() for i in request.POST.get('receiverlist', '').split(',')]
+        typecode = request.POST.get('typeCode', '').strip()
+        policy = request.POST.get('policy', '').strip()
+        level = request.POST.get('level', '').strip()
+        subject = request.POST.get('subject', 'Default Subject...').strip()
+        content = request.POST.get('content', '').strip()
+        groupid = request.POST.get('groupid', '').strip()
+
+        reveivers = [i.strip() for i in request.POST.get('receiverlist', '').split(',')]
+
+        msg = {'Code': 'Error'}
+        if method == 'sendbygroup':
+            if '' in [groupid, content, type]:
+                msg['Message'] = '参数错误!'
+                return HttpResponse(dumps(msg))
+            if policy:
+                _policy = [p.strip() for p in policy.split(',')]
+                for p in _policy:
+                    if p not in Alarm_TYPE_Code:
+                        msg['Message'] = '策略参数错误!'
+                        return HttpResponse(dumps(msg))
+                if not ServiceType.objects.filter(typecode=typecode):
+                    msg['Message'] = '业务类型不存在,请联系运维人员!'
+                    return HttpResponse(dumps(msg))
+
+                alarmGroup = AlarmGroup.objects.filter(id=groupid).first()
+                if not alarmGroup:
+                    msg['Message'] = '分组ID不存在,请联系运维人员!'
+                    return HttpResponse(dumps(msg))
+                alarmList = AlarmList.objects.filter(group=alarmGroup)
+                if 'mobile' in _policy:
+                    tel_user_obj = alarmList.filter(tel_status=1)
+                    aliyun = AliyunAPI()
+                    params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
+                    for tel in tel_user_obj:
+                        aliyun.tts_call(tel.user.tel, params, 'tts_code1')
+
+                if 'dingding' in _policy:
+                    dd_user_obj = alarmList.filter(dd_status=1)
+
+                if 'email' in _policy:
+                    email_user_obj = alarmList.filter(email_status=1)
+                    emaillist = [u.user.email for u in email_user_obj]
+                    SendMail().send(subject, emaillist, content)
+
+                if 'weixin' in _policy:
+                    wx_user_obj = alarmList.filter(weixin_status=1)
+                    wxlist = [wx.user.email for wx in wx_user_obj]
+                    SendWeixin().send('|'.join(wxlist), content, alarmGroup.serial)
+
+                if 'sms' in _policy:
+                    sms_user_obj = alarmList.filter(sms_status=1)
+                    aliyun = AliyunAPI()
+                    smslist = [u.user.tel for u in sms_user_obj]
+                    params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
+                    aliyun.send_sms(','.join(smslist), params, 'sms_code1')
+                msg['Message'] = '请求成功!'
+                msg['Code'] = 'OK'
+                return HttpResponse(dumps(msg))
+
+            else:
+                pass
+
+                if level not in ['info', 'warn', 'error', 'fatal']:
+                    msg['Message'] = 'level级别错误,请填写正确的级别名称!'
+                    return HttpResponse(dumps(msg))
+
         sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
         if method == 'sendmail':
             receiverlist = []

@@ -42,7 +42,9 @@
                             <th>用户数量</th>
                             <th>微信通道</th>
                             <th>Token数量</th>
-                            <th>监控范围</th>
+                            <th>服务类型</th>
+                            <th>默认策略</th>
+                            <th>详细描述</th>
                             <th class="text-center">功能</th>
                         </tr>
                         </thead>
@@ -63,6 +65,8 @@
                             </td>
                             <td width="8%" style="vertical-align:middle">{{ obj.serial }}</td>
                             <td width="10%" style="vertical-align:middle">{{ obj.tokens.count }}</td>
+                            <td width="10%" style="vertical-align:middle">{{ obj.servicetype|default:"" }}</td>
+                            <td width="10%" style="vertical-align:middle">{{ obj.levelpolicy|default:"" }}</td>
                             <td width="20%" style="vertical-align:middle">{{ obj.descrition }}</td>
                             <td width="10%" style="vertical-align:middle" class="text-center" data-editable='false'>
                                 <a href="#">

@@ -1,9 +1,4 @@
 {% extends 'base.html' %}
-{% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-{% endblock %}
-
-
 
 {% block content %}
     <div class="content-wrapper">
@@ -43,13 +38,4 @@
         </section>
 
     </div>
-    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
-    <script>
-        var demo = $('select[name="app"]').bootstrapDualListbox({
-            nonSelectedListLabel: '可选择',
-            selectedListLabel: '已选择',
-            preserveSelectionOnMove: 'moved',
-            moveOnSelect: false,
-        });
-    </script>
 {% endblock %}

@@ -1,8 +1,9 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, LevelPolicy
 from lib.type import WeiXin_Type
+
 
 class UserPolicyForm(forms.ModelForm):
     class Meta:
@@ -21,6 +22,24 @@ class UserPolicyForm(forms.ModelForm):
                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'tel_status': Select(choices=((True, u'启用'), (False, u'禁用')),
                                  attrs={'class': 'form-control', 'style': 'width:500px;'}),
+        }
+
+
+class LevelPolicyForm(forms.ModelForm):
+    class Meta:
+        model = LevelPolicy
+        exclude = ("id",)
+
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'info_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                    attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'warn_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                   attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'error_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'fatal_status': Select(choices=((True, u'启用'), (False, u'禁用')),
+                                attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
 
 
@@ -62,7 +81,8 @@ class AlarmGroupForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control'}),
             'serial': Select(choices=WeiXin_Type, attrs={'class': 'form-control'}),
             'user': SelectMultiple(attrs={'class': 'form-control'}),
-            'user1': SelectMultiple(attrs={'class': 'form-control'}),
+            'servicetype': Select(attrs={'class': 'form-control'}),
+            'levelpolicy': Select(attrs={'class': 'form-control'}),
             'tokens': SelectMultiple(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control'}),
         }
@@ -83,7 +103,7 @@ class AlarmListForm(forms.ModelForm):
                                  attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'dd_status': Select(choices=((True, u'启用'), (False, u'禁用')),
                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'tel_status': Select(choices=((0, u'禁用'), (1, u'启用-运维通道'), (2, u'启用-周杰通道'),  (3, u'启动-旷明爱通道')),
+            'tel_status': Select(choices=((0, u'禁用'), (1, u'启用-运维通道'), (2, u'启用-周杰通道'), (3, u'启动-旷明爱通道')),
                                  attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'app': SelectMultiple(attrs={'class': 'form-control'}),
         }

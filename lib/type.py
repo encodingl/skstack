@@ -58,3 +58,6 @@ WeiXin_Type = (
     (0,u'无')
 
 )
+
+Alarm_TYPE_Code = ['mobile', 'dingding', 'email', 'weixin', 'sms']
+Log_Type = ['info', 'warn', 'error', 'fatal']
