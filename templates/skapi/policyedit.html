@@ -55,7 +55,25 @@
 </script>
 <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
 <script>
-    var demo = $('select[name="app"]').bootstrapDualListbox({
+    var demo1 = $('select[name="info_poliy"]').bootstrapDualListbox({
+        nonSelectedListLabel: '可选择',
+        selectedListLabel: '已选择',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+    });
+    var demo2 = $('select[name="warn_poliy"]').bootstrapDualListbox({
+        nonSelectedListLabel: '可选择',
+        selectedListLabel: '已选择',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+    });
+    var demo3 = $('select[name="error_poliy"]').bootstrapDualListbox({
+        nonSelectedListLabel: '可选择',
+        selectedListLabel: '已选择',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+    });
+    var demo4 = $('select[name="fatal_poliy"]').bootstrapDualListbox({
         nonSelectedListLabel: '可选择',
         selectedListLabel: '已选择',
         preserveSelectionOnMove: 'moved',

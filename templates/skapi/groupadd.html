@@ -1,21 +1,5 @@
 {% extends 'base.html' %}
-{% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-{% endblock %}
 {% block content %}
-    <script>
-        window.onload = init;
-        function init() {
-            showhide(2);
-        }
-        function showhide(n) {
-            var box = document.getElementById("group");
-            box.className = "active";
-            var box = document.getElementById("cmdb");
-            box.className = "active";
-        }
-    </script>
-
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -74,7 +58,7 @@
             moveOnSelect: false,
         });
     </script>
-       <script>
+    <script>
         var demo2 = $('select[name="tokens"]').bootstrapDualListbox({
             nonSelectedListLabel: '可选择',
             selectedListLabel: '已选择',

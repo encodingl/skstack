@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+{% endblock %}
 
 {% block content %}
     <div class="content-wrapper">
@@ -37,5 +40,34 @@
             <!-- /.box -->
         </section>
 
+        <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+        <script>
+            var demo1 = $('select[name="info_poliy"]').bootstrapDualListbox({
+                nonSelectedListLabel: '可选择',
+                selectedListLabel: '已选择',
+                preserveSelectionOnMove: 'moved',
+                moveOnSelect: false,
+            });
+            var demo2 = $('select[name="warn_poliy"]').bootstrapDualListbox({
+                nonSelectedListLabel: '可选择',
+                selectedListLabel: '已选择',
+                preserveSelectionOnMove: 'moved',
+                moveOnSelect: false,
+            });
+            var demo3 = $('select[name="error_poliy"]').bootstrapDualListbox({
+                nonSelectedListLabel: '可选择',
+                selectedListLabel: '已选择',
+                preserveSelectionOnMove: 'moved',
+                moveOnSelect: false,
+            });
+            var demo4 = $('select[name="fatal_poliy"]').bootstrapDualListbox({
+                nonSelectedListLabel: '可选择',
+                selectedListLabel: '已选择',
+                preserveSelectionOnMove: 'moved',
+                moveOnSelect: false,
+            });
+        </script>
+
     </div>
 {% endblock %}
+

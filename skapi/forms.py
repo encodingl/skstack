@@ -2,7 +2,7 @@
 from django import forms
 from django.forms.widgets import *
 from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, LevelPolicy
-from lib.type import WeiXin_Type
+from lib.type import WeiXin_Type, Alarm_TYPE
 
 
 class UserPolicyForm(forms.ModelForm):
@@ -31,15 +31,11 @@ class LevelPolicyForm(forms.ModelForm):
         exclude = ("id",)
 
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'info_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                    attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'warn_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                   attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'error_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'fatal_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'info_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'warn_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'error_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'fatal_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
         }
 
 
