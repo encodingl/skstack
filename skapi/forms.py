@@ -32,10 +32,10 @@ class LevelPolicyForm(forms.ModelForm):
 
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
-            'info_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
-            'warn_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
-            'error_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
-            'fatal_poliy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'info_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'warn_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'error_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
+            'fatal_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
         }
 
 

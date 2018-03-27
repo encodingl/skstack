@@ -42,10 +42,10 @@ class TokenAuth(models.Model):
 
 class LevelPolicy(models.Model):
     name = models.CharField(max_length=30, verbose_name=u"* 策略名称", default='', unique=True)
-    info_poliy = models.CharField(max_length=30, verbose_name=u"Info策略", default='', blank=True)
-    warn_poliy = models.CharField(max_length=30, verbose_name=u"Warn策略", default='', blank=True)
-    error_poliy = models.CharField(max_length=30, verbose_name=u"Error策略", default='', blank=True)
-    fatal_poliy = models.CharField(max_length=30, verbose_name=u"Fatal策略", default='', blank=True)
+    info_policy = models.CharField(max_length=30, verbose_name=u"Info策略", default='', blank=True)
+    warn_policy = models.CharField(max_length=30, verbose_name=u"Warn策略", default='', blank=True)
+    error_policy = models.CharField(max_length=30, verbose_name=u"Error策略", default='', blank=True)
+    fatal_policy = models.CharField(max_length=30, verbose_name=u"Fatal策略", default='', blank=True)
 
     def __unicode__(self):
         return self.name

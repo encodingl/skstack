@@ -218,7 +218,7 @@ def groupedit(request, ids):
             initAlarmList(group)
             status = 1
         else:
-             status = 2
+            status = 2
     else:
         af = AlarmGroupForm(instance=obj)
     return render_to_response('skapi/groupedit.html', locals(), RequestContext(request))
