@@ -334,9 +334,9 @@ def zabbixalart(request):
         emaillist = [ul.user.email for ul in email_user_obj]
         SendMail().send(subject, emaillist, message)
 
-        if content[1] == 'OK':
+        if content[1].split(':')[1] == 'OK':
             subject = u'[告警恢复通知]:%s' % subject
-        elif content[1] == 'PROBLEM':
+        elif content[1].split(':')[1] == 'PROBLEM':
             subject = u'[告警故障通知]:%s' % subject
 
             aliyun = AliyunAPI()
