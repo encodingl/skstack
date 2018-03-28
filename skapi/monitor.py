@@ -6,10 +6,10 @@ from django.template import RequestContext
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from skaccounts.permission import permission_verify
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, ServiceType, \
-    LevelPolicy
-from skapi.api import SendWeixin, SendMail, SendSms, SendMobile, SendDingding
-from skapi.forms import AlarmUserForm, AlarmGroupForm, AlarmListForm, AddAlarmUserForm, TokenAuthForm, UserPolicyForm, \
+from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, ServiceType, \
+    LevelPolicy, ApiRecord
+from skapi.api import SendWeixin, SendMail, SendDingding
+from skapi.forms import AlarmGroupForm, AlarmListForm, TokenAuthForm, \
     AlarmRecordForm, ZabbixRecordForm, LevelPolicyForm, ServiceTypeForm
 from lib.com import get_object, config, cfg, configfile
 from lib.type import Alarm_TYPE_Code, Log_Type
@@ -405,24 +405,8 @@ def zabbixalart(request):
                 aliyun.tts_call(tel.user.tel, params, 'tts_code1')
 
         ddlist = [ul.user.dd for ul in dd_user_obj]
-        messages = {}
-        body = {}
-        form = []
-        messages["message_url"] = cfg.get('dingding', 'url') + "/%s" % logid
-        messages["pc_message_url"] = cfg.get('dingding', 'pc_url') + "/%s" % logid
-        messages["head"] = {
-            "bgcolor": "DBE97659",  # 前两位表示透明度
-            "text": u"服务器故障"
-        }
-        body["title"] = subject
-        body["content"] = content[-1]
-        for text in content[1:-1]:
-            form.append({'key': u'', 'value': text})
-        body['form'] = form
-        body["author"] = u"来自深圳运维监控系统"
-        messages['body'] = body
-        SendDingding().send(agentid=cfg.get('dingding', 'agentid'), userid='|'.join(ddlist), message=message,
-                            messages=messages)
+        SendDingding().send(subject, content, userid='|'.join(ddlist), logid=logid)
+
         return HttpResponse("ok")
     return HttpResponse("error")
 
@@ -432,145 +416,131 @@ def api(request, method):
     token = request.GET.get('token', '')
     if request.method == 'POST' and TokenAuth.objects.filter(token=token):
         name = TokenAuth.objects.get(token=token).name
-        typecode = request.POST.get('typeCode', '').strip()
+
         policy = request.POST.get('policy', '').strip()
         level = request.POST.get('level', '').strip()
-        subject = request.POST.get('subject', 'Default Subject...').strip()
+        subject = request.POST.get('subject', 'Default Subject YYFQ Alart!').strip()
         content = request.POST.get('content', '').strip()
         groupid = request.POST.get('groupid', '').strip()
-
-        reveivers = [i.strip() for i in request.POST.get('receiverlist', '').split(',')]
 
         msg = {'Code': 'Error'}
         if method == 'sendbygroup':
             if '' in [groupid, content, type]:
-                msg['Message'] = '参数错误!'
+                msg['Message'] = u'参数错误:groupid,content,type字段不能为空!'
                 return HttpResponse(dumps(msg))
-            if policy:
-                _policy = [p.strip() for p in policy.split(',')]
-                for p in _policy:
-                    if p not in Alarm_TYPE_Code:
-                        msg['Message'] = '策略参数错误!'
-                        return HttpResponse(dumps(msg))
-                if not ServiceType.objects.filter(typecode=typecode):
-                    msg['Message'] = '业务类型不存在,请联系运维人员!'
-                    return HttpResponse(dumps(msg))
 
-                alarmGroup = AlarmGroup.objects.filter(id=groupid).first()
-                if not alarmGroup:
+            ag = AlarmGroup.objects.filter(id=groupid).first()
+            if policy:
+                policy = [p.strip() for p in policy.split(',')]
+                for p in policy:
+                    if p not in Alarm_TYPE_Code:
+                        msg['Message'] = '参数错误:策略参数不存在!'
+                        return HttpResponse(dumps(msg))
+                if not groupid.isdigit():
+                    msg['Message'] = u'参数错误:groupid 必须是纯数字!'
+                    return HttpResponse(dumps(msg))
+                if not ag:
                     msg['Message'] = '分组ID不存在,请联系运维人员!'
                     return HttpResponse(dumps(msg))
-                alarmList = AlarmList.objects.filter(group=alarmGroup)
-                if 'mobile' in _policy:
-                    tel_user_obj = alarmList.filter(tel_status=1)
-                    aliyun = AliyunAPI()
-                    params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
-                    for tel in tel_user_obj:
-                        aliyun.tts_call(tel.user.tel, params, 'tts_code1')
-
-                if 'dingding' in _policy:
-                    dd_user_obj = alarmList.filter(dd_status=1)
-
-                if 'email' in _policy:
-                    email_user_obj = alarmList.filter(email_status=1)
-                    emaillist = [u.user.email for u in email_user_obj]
-                    SendMail().send(subject, emaillist, content)
-
-                if 'weixin' in _policy:
-                    wx_user_obj = alarmList.filter(weixin_status=1)
-                    wxlist = [wx.user.email for wx in wx_user_obj]
-                    SendWeixin().send('|'.join(wxlist), content, alarmGroup.serial)
-
-                if 'sms' in _policy:
-                    sms_user_obj = alarmList.filter(sms_status=1)
-                    aliyun = AliyunAPI()
-                    smslist = [u.user.tel for u in sms_user_obj]
-                    params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
-                    aliyun.send_sms(','.join(smslist), params, 'sms_code1')
-                msg['Message'] = '请求成功!'
-                msg['Code'] = 'OK'
-                return HttpResponse(dumps(msg))
 
             else:
-                pass
-
-                if level not in ['info', 'warn', 'error', 'fatal']:
-                    msg['Message'] = 'level级别错误,请填写正确的级别名称!'
+                if level not in Log_Type:
+                    msg['Message'] = u'如果不指定策略,level参数错误!'
+                    return HttpResponse(dumps(msg))
+                if not ag.levelpolicy:
+                    msg['Message'] = u'没有授权日志策略,请联系运维授权!'
                     return HttpResponse(dumps(msg))
 
-        sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
-        if method == 'sendmail':
-            receiverlist = []
-            for receiver in temp_reveiver:
-                if sinal_alarmlist.filter(name__email=receiver).filter(email_status=1):
-                    receiverlist.append(receiver)
-                    AlarmRecord.objects.create(type=u'邮件', name=name, token=token, subject=subject, receiver=receiver,
-                                               content=content, level=level)
-            SendMail().send(subject, receiverlist, content)
-        if method == 'sendweixin':
-            serial = request.POST.get('serial', '')
-            for receiver in temp_reveiver:
-                if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
-                    SendWeixin().send(receiver, content, serial)
-                    AlarmRecord.objects.create(type=u'微信', name=name, token=token, serial=serial, receiver=receiver,
-                                               content=content, level=level)
+            logid = ''
+            if config().get('record', 'api_status') == 'On':
+                zr = ApiRecord.objects.create(name=name, groupid=groupid, token=token, subject=subject,
+                                              content=content, level=level, policy=policy)
+                logid = zr.id
 
-        if method == 'sendtel':
-            results = []
-            type = request.POST.get('type', u'有用分期')
-            mobiles = [i.strip() for i in request.POST.get('mobiles', '').split(',')]
-            params = "{\"code\":\"98123\",\"product\":\"%s\"}" % type
+            alarmList = ag.alarmlist_set.all()
+
+            email_user_obj = alarmList.filter(email_status=1)
+            emaillist = [u.user.email for u in email_user_obj]
+
+            wx_user_obj = alarmList.filter(weixin_status=1)
+            wxlist = [wx.user.email for wx in wx_user_obj]
+
+            dd_user_obj = alarmList.filter(dd_status=1)
+            ddlist = [ul.user.dd for ul in dd_user_obj]
+
+            sms_user_obj = alarmList.filter(sms_status=1)
+            smslist = [u.user.tel for u in sms_user_obj]
+
+            tel_user_obj = alarmList.filter(tel_status=1)
+            tellist = [u.user.tel for u in tel_user_obj]
+
             aliyun = AliyunAPI()
-            for mobile in mobiles:
-                result = aliyun.tts_call(mobile, params)
-                results.append(result)
+            params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
+
+            data = []
+            if not policy:
+                exec ("data = ag.levelpolicy.%s_policy" % level)
+
+            if '0' in data or 'email' in policy:
+                SendMail().send(subject, emaillist, content)
+            if '1' in data or 'sms' in policy:
+                aliyun.send_sms(','.join(smslist), params, 'sms_code1')
+            if '2' in data or 'weixin' in policy:
+                SendWeixin().send('|'.join(wxlist), content, ag.serial)
+            if '3' in data or 'dingding' in policy:
+                SendDingding().send(subject, content, userid='|'.join(ddlist), logid=logid)
+            if '4' in data or 'mobile' in policy:
+                for tel in tellist:
+                    aliyun.tts_call(tel, params, 'tts_code1')
+
+            msg['Message'] = u'请求成功!'
+            msg['Code'] = 'OK'
+            return HttpResponse(dumps(msg))
+        else:
+            sinal_alarmlist = AlarmList.objects.filter(group=AlarmGroup.objects.filter(id=6).first())
+            temp_reveiver = [r.strip() for r in request.POST.get('reveivers', '').split(',')]
+            if method == 'sendmail':
+                receiverlist = []
+                for receiver in temp_reveiver:
+                    if sinal_alarmlist.filter(name__email=receiver).filter(email_status=1):
+                        receiverlist.append(receiver)
+                        AlarmRecord.objects.create(type=u'邮件', name=name, token=token, subject=subject,
+                                                   receiver=receiver,
+                                                   content=content, level=level)
+                SendMail().send(subject, receiverlist, content)
+            if method == 'sendweixin':
+                serial = request.POST.get('serial', '')
+                for receiver in temp_reveiver:
+                    if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
+                        SendWeixin().send(receiver, content, serial)
+                        AlarmRecord.objects.create(type=u'微信', name=name, token=token, serial=serial, receiver=receiver,
+                                                   content=content, level=level)
+
+            if method == 'sendtel':
+                results = []
+                type = request.POST.get('type', u'有用分期')
+                mobiles = [i.strip() for i in request.POST.get('mobiles', '').split(',')]
+                params = "{\"code\":\"98123\",\"product\":\"%s\"}" % type
+                aliyun = AliyunAPI()
+                for mobile in mobiles:
+                    result = aliyun.tts_call(mobile, params)
+                    results.append(result)
+                    log.info(result)
+                return HttpResponse(results)
+
+            if method == 'sendsms':
+                content = request.POST.get('content', u'无')
+                mobiles = request.POST.get('mobiles', '')
+                params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % content
+                aliyun = AliyunAPI()
+                result = aliyun.send_sms(mobiles, params)
                 log.info(result)
-            return HttpResponse(results)
+                return HttpResponse(result)
 
-        if method == 'sendsms':
-            content = request.POST.get('content', u'无')
-            mobiles = request.POST.get('mobiles', '')
-            params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % content
-            aliyun = AliyunAPI()
-            result = aliyun.send_sms(mobiles, params)
-            log.info(result)
-            return HttpResponse(result)
+            if method == 'senddingding':
+                pass
 
-        if method == 'senddingding':
-            pass
-
-        if method == 'sendgroup' and AlarmGroup.objects.filter(id=request.POST.get('groupid', '')):
-            groupid = request.POST.get('groupid', '')
-            group_obj = AlarmGroup.objects.get(id=groupid)
-            group_alarmlist = AlarmList.objects.filter(group=group_obj)
-            AlarmRecord.objects.create(type=u'公共组', name=name, token=token, subject=subject, receiver=groupid,
-                                       content=content, level=level)
-            receiverlist = []
-            for receiver in temp_reveiver:
-                if sinal_alarmlist.filter(name__email=receiver).filter(email_status=1):
-                    receiverlist.append(receiver)
-            group_alarmlist = group_alarmlist.filter(email_status=1)
-            for u in group_alarmlist:
-                if u.name.email not in receiverlist:
-                    receiverlist.append(u.name.email)
-            SendMail().send(subject, receiverlist, content)
-            for receiver in temp_reveiver:
-                if sinal_alarmlist.filter(name__email=receiver).filter(weixin_status=1):
-                    SendWeixin().send(receiver, content, serial)
-            group_alarmlist = group_alarmlist.filter(weixin_status=1)
-            for u in group_alarmlist:
-                if u.name.email not in receiverlist:
-                    SendWeixin().send(receiver, content, serial)
-            mobiles = request.POST.get('mobiles', '').split(',')
-            for m in mobiles:
-                if sinal_alarmlist.filter(name__tel=m).filter(sms_status=1):
-                    SendSms().send(m, content)
-            group_alarmlist = group_alarmlist.filter(sms_status=1)
-            for u in group_alarmlist:
-                if u.name.tel not in receiverlist:
-                    SendSms().send(m, content)
-
-        return HttpResponse("ok")
+            return HttpResponse("ok")
     return HttpResponse("error")
 
 
@@ -614,7 +584,7 @@ def tokendel(request):
 @permission_verify()
 def alarmapirecord(request):
     temp_name = "skapi/api-header.html"
-    obj_info = AlarmRecord.objects.all()
+    obj_info = ApiRecord.objects.all()
     return render_to_response('skapi/alarmapirecord.html', locals(), RequestContext(request))
 
 

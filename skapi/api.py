@@ -120,8 +120,11 @@ class SendDingding:
             'corpid': cfg.get('dingding', 'corpid'),
             'corpsecret': cfg.get('dingding', 'corpsecret')
         }
+        self.agentid = cfg.get('dingding', 'agentid')
         self.url_get_token = cfg.get('dingding', 'url_get_token')
         self.url_send = cfg.get('dingding', 'url_send')
+        self.url = cfg.get('dingding', 'url')
+        self.pc_url = cfg.get('dingding', 'pc_url')
         self.__token = self.__get_token()
         self.__token_params = {
             'access_token': self.__token
@@ -138,21 +141,43 @@ class SendDingding:
         except:
             self.__raise_error(res)
 
-    def send(self, agentid='', messages='', userid='', toparty='', message=''):
+    def send(self, subject, content, userid='', logid=-1, toparty=''):
         cfg = config()
         if cfg.get('api', 'dd_status') == 'On':
+
+            messages = {}
+            body = {}
+            form = []
+            messages["message_url"] = self.url + "/%s" % logid
+            messages["pc_message_url"] = self.pc_url + "/%s" % logid
+            messages["head"] = {
+                "bgcolor": "DBE97659",  # 前两位表示透明度
+                "text": u"服务器故障"
+            }
+            body["title"] = subject
+            if isinstance(content, list):
+                body["content"] = content[-1]
+                for text in content[1:-1]:
+                    form.append({'key': u'', 'value': text})
+            else:
+                body["content"] = content
+            body['form'] = form
+            body["author"] = u"来自深圳运维监控系统"
+            messages['body'] = body
+
             payload = {
                 'touser': userid,
                 'toparty': toparty,
-                'agentid': agentid,
+                'agentid': self.agentid,
                 'msgtype': 'oa',
                 'oa': messages
             }
             headers = {'content-type': 'application/json'}
             params = self.__token_params
+
             try:
                 requests.post(self.url_send, headers=headers, params=params, data=json.dumps(payload))
-                log.info(u'[钉钉信息发送成功][接收用户ID:%s][内容:%s]' % (userid, message))
+                log.info(u'[钉钉信息发送成功][接收用户ID:%s][内容:%s]' % (userid, json.dumps(content)))
             except Exception, msg:
                 log.error(msg)
         else:
@@ -187,7 +212,7 @@ class AliyunAPI:
             log.error(e)
             return u"请求异常!"
 
-    def send_sms(self, called_number, params,sms_code='sms_code'):
+    def send_sms(self, called_number, params, sms_code='sms_code'):
         sms_code = cfg.get('aliyun', sms_code)
         smsRequest = SendSmsRequest.SendSmsRequest()
         smsRequest.set_TemplateCode(sms_code)

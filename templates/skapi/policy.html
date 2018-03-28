@@ -29,9 +29,7 @@
                         <table class="text-center table table-striped table-bordered" id="dataform">
                             <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox" onclick="checkAll(this, 'item1');"/>
-                                </th>
+                                <th><input type="checkbox" onclick="checkAll(this, 'item1');"/></th>
                                 <th>策略名称</th>
                                 <th>Info级别</th>
                                 <th>Warn级别</th>
@@ -52,20 +50,19 @@
                                             <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                                 value="{{ obj.id }}"> {{ obj.name }}</li>
                                         </a></td>
-                                        <td width="12%" style="vertical-align:middle">
+                                        <td width="10%" style="vertical-align:middle">
                                             {{ obj.info_policy|exec_data|linebreaksbr }}
                                         </td>
-                                        <td width="12%" style="vertical-align:middle">
+                                        <td width="10%" style="vertical-align:middle">
                                             {{ obj.warn_policy|exec_data|linebreaksbr }}
                                         </td>
                                         <td width="10%" style="vertical-align:middle">
                                             {{ obj.error_policy|exec_data|linebreaksbr }}
                                         </td>
-                                        <td width="15%" style="vertical-align:middle">
+                                        <td width="10%" style="vertical-align:middle">
                                             {{ obj.fatal_policy|exec_data|linebreaksbr }}
                                         </td>
-
-                                        <td width="20%" style="vertical-align:middle" class="text-center"
+                                        <td width="10%" style="vertical-align:middle" class="text-center"
                                             data-editable='false'>
                                             <a href="#">
                                                 <li class="btn btn-sm btn-info" onclick="return tanchu(this.value)"

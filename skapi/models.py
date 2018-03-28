@@ -7,30 +7,6 @@ from skcmdb.models import App
 from skaccounts.models import UserInfo
 
 
-class UserPolicy(models.Model):
-    name = models.CharField(max_length=30, verbose_name=u"* 策略名称", null=True, unique=True)
-    weixin_status = models.BooleanField(default=False, verbose_name=u"微信状态")
-    email_status = models.BooleanField(default=False, verbose_name=u"邮件状态")
-    sms_status = models.BooleanField(default=False, verbose_name=u"短信状态")
-    dd_status = models.BooleanField(default=False, verbose_name=u"钉钉状态")
-    tel_status = models.BooleanField(default=False, verbose_name=u"电话状态")
-
-    def __unicode__(self):
-        return self.name
-
-
-class AlarmUser(models.Model):
-    name = models.CharField(max_length=30, verbose_name=u"* 姓名", unique=True)
-    email = models.EmailField(max_length=30, verbose_name=u"* 邮箱", null=True)
-    tel = models.CharField(max_length=20, verbose_name=u"* 电话号码", null=True)
-    dd = models.CharField(max_length=20, verbose_name=u"* 钉钉号", null=True)
-    policy = models.ForeignKey(UserPolicy, verbose_name=u"* 用户策略", on_delete=models.SET_NULL, null=True)
-    app = models.ManyToManyField(App, verbose_name=u"授权APP", blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-
 class TokenAuth(models.Model):
     name = models.CharField(max_length=20, verbose_name=u"* 名称", unique=True)
     token = models.CharField(max_length=20, verbose_name=u"* Token", null=True)
@@ -111,6 +87,20 @@ class ZabbixRecord(models.Model):
     status = models.CharField(u"状态", max_length=30, null=True)
     host = models.CharField(u"主机", max_length=30, null=True)
     event = models.CharField(u"事件ID", max_length=30, null=True)
+    content = models.TextField(u"内容", max_length=200, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class ApiRecord(models.Model):
+    name = models.CharField(u"发送", max_length=10, null=True)
+    create_time = models.DateTimeField(u'保存日期', default=timezone.now)
+    token = models.CharField(u"授权Token", max_length=20, null=True)
+    groupid = models.IntegerField(u"组ID", null=True)
+    level = models.CharField(u"级别", max_length=10, null=True)
+    policy = models.CharField(u"策略", max_length=50, null=True)
+    subject = models.TextField(u"标题", max_length=50, null=True)
     content = models.TextField(u"内容", max_length=200, null=True)
 
     def __unicode__(self):

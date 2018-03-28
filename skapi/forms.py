@@ -1,29 +1,9 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, LevelPolicy, \
-    ServiceType
+from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, \
+    ServiceType, ApiRecord
 from lib.type import WeiXin_Type, Alarm_TYPE
-
-
-class UserPolicyForm(forms.ModelForm):
-    class Meta:
-        model = UserPolicy
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'weixin_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                    attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'email_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                   attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'sms_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'dd_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'tel_status': Select(choices=((True, u'启用'), (False, u'禁用')),
-                                 attrs={'class': 'form-control', 'style': 'width:500px;'}),
-        }
 
 
 class LevelPolicyForm(forms.ModelForm):
@@ -40,21 +20,6 @@ class LevelPolicyForm(forms.ModelForm):
         }
 
 
-class AlarmUserForm(forms.ModelForm):
-    class Meta:
-        model = AlarmUser
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'readonly': True}),
-            'email': TextInput(attrs={'class': 'form-control'}),
-            'tel': TextInput(attrs={'class': 'form-control'}),
-            'dd': TextInput(attrs={'class': 'form-control'}),
-            'app': SelectMultiple(attrs={'class': 'form-control'}),
-            'policy': Select(attrs={'class': 'form-control'}),
-        }
-
-
 class ServiceTypeForm(forms.ModelForm):
     class Meta:
         model = ServiceType
@@ -64,20 +29,6 @@ class ServiceTypeForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control'}),
             'typecode': TextInput(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control'}),
-        }
-
-
-class AddAlarmUserForm(forms.ModelForm):
-    class Meta:
-        model = AlarmUser
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:550px;'}),
-            'email': TextInput(attrs={'class': 'form-control', 'style': 'width:550px;'}),
-            'tel': TextInput(attrs={'class': 'form-control', 'style': 'width:550px;'}),
-            'dd': TextInput(attrs={'class': 'form-control', 'style': 'width:550px;'}),
-            'policy': Select(attrs={'class': 'form-control', 'style': 'width:550px;'}),
         }
 
 
@@ -157,5 +108,22 @@ class ZabbixRecordForm(forms.ModelForm):
             'status': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'host': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'event': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'content': Textarea(attrs={'class': 'form-control', 'readonly': True}),
+        }
+
+
+class ApiRecordForm(forms.ModelForm):
+    class Meta:
+        model = ApiRecord
+        exclude = ('id',)
+
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'create_time': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'token': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'groupid': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'level': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'policy': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'subject': TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'content': Textarea(attrs={'class': 'form-control', 'readonly': True}),
         }

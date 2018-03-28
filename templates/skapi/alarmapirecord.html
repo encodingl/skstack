@@ -23,10 +23,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>记录时间</th>
-                                <th>发送人</th>
-                                <th>类型</th>
+                                <th>Token</th>
                                 <th>级别</th>
-                                <th>接收人</th>
+                                <th>组ID</th>
+                                <th>策略</th>
                                 <th>标题</th>
                                 <th>内容</th>
                                 <th class="text-center">功能</th>
@@ -38,10 +38,10 @@
                                     <tr class="even gradeX">
                                         <td width="3%" style="vertical-align:middle">{{ obj.id }}</td>
                                         <td width="18%" style="vertical-align:middle">{{ obj.create_time|date:"Y-m-d H:i:s" }}</td>
-                                        <td width="10%" style="vertical-align:middle">{{ obj.name }}</td>
-                                        <td width="6%" style="vertical-align:middle">{{ obj.type }}</td>
-                                        <td width="5%" style="vertical-align:middle">{{ obj.level }}</td>
-                                        <td width="12%" style="vertical-align:middle">{{ obj.receiver|rec_str2uni }}</td>
+                                        <td width="10%" style="vertical-align:middle">{{ obj.token }}</td>
+                                        <td width="6%" style="vertical-align:middle">{{ obj.level }}</td>
+                                        <td width="5%" style="vertical-align:middle">{{ obj.groupid }}</td>
+                                        <td width="15%" style="vertical-align:middle">{{ obj.policy|sub_str2uni }}</td>
                                         <td width="15%" style="vertical-align:middle">{{ obj.subject|sub_str2uni }}</td>
                                         <td width="25%" style="vertical-align:middle">{{ obj.content|cont_str2uni }}</td>
                                         <td width="10%" style="vertical-align:middle" class="text-center" data-editable='false'>
