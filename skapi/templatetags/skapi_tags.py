@@ -10,7 +10,6 @@ register = template.Library()
 
 @register.filter(name='exec_data')
 def exec_data(value):
-    print "value=", value
     result = []
     if value:
         exec ("value=%s" % value)

@@ -52,8 +52,8 @@ class LevelPolicy(models.Model):
 
 
 class ServiceType(models.Model):
-    name = models.CharField(u"业务名称", max_length=20, null=True)
-    typecode = models.CharField(u"业务编码", max_length=10, null=True)
+    name = models.CharField(u"* 业务名称", max_length=20, null=True, unique=True)
+    typecode = models.CharField(u"* 业务编码", max_length=10, null=True, unique=True)
     descrition = models.TextField(u"描述", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
@@ -65,8 +65,8 @@ class AlarmGroup(models.Model):
     serial = models.IntegerField(default=0, verbose_name=u"微信通道", blank=True)
     servicetype = models.ForeignKey(ServiceType, verbose_name=u"服务类型", null=True, blank=True)
     levelpolicy = models.ForeignKey(LevelPolicy, verbose_name=u"日志策略", null=True, blank=True)
-    user = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)
     tokens = models.ManyToManyField(TokenAuth, verbose_name=u"授权Token", blank=True)
+    user = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)
     descrition = models.TextField(max_length=200, verbose_name=u"详细描述", default='', blank=True)
 
     def __unicode__(self):

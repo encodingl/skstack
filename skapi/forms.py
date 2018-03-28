@@ -1,7 +1,8 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, LevelPolicy
+from models import AlarmUser, AlarmGroup, AlarmList, TokenAuth, UserPolicy, AlarmRecord, ZabbixRecord, LevelPolicy, \
+    ServiceType
 from lib.type import WeiXin_Type, Alarm_TYPE
 
 
@@ -51,6 +52,18 @@ class AlarmUserForm(forms.ModelForm):
             'dd': TextInput(attrs={'class': 'form-control'}),
             'app': SelectMultiple(attrs={'class': 'form-control'}),
             'policy': Select(attrs={'class': 'form-control'}),
+        }
+
+
+class ServiceTypeForm(forms.ModelForm):
+    class Meta:
+        model = ServiceType
+        exclude = ("id",)
+
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'typecode': TextInput(attrs={'class': 'form-control'}),
+            'descrition': Textarea(attrs={'class': 'form-control'}),
         }
 
 
