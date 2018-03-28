@@ -55,63 +55,6 @@ def alarmlistedit(request, ids):
 
 @login_required()
 @permission_verify()
-def userlist(request):
-    temp_name = "skapi/api-header.html"
-    obj_info = AlarmUser.objects.all()
-    return render_to_response('skapi/userlist.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def useradd(request):
-    temp_name = "skapi/api-header.html"
-    if request.method == "POST":
-        obj_form = AddAlarmUserForm(request.POST)
-        if obj_form.is_valid():
-            obj_form.save()
-            tips = u"增加成功！"
-            display_control = ""
-        else:
-            tips = u"增加失败！"
-            display_control = ""
-    else:
-        display_control = "none"
-        obj_form = AddAlarmUserForm()
-    return render_to_response('skapi/useradd.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def userdel(request):
-    id = request.GET.get('id', '')
-    if id:
-        auser = AlarmUser.objects.get(id=id)
-        a_name = auser.name
-        auser.delete()
-        AlarmList.objects.filter(name=a_name).delete()
-    return HttpResponse(u'删除成功')
-
-
-@login_required()
-@permission_verify()
-def useredit(request, ids):
-    temp_name = "skapi/api-header.html"
-    status = 0
-    obj = get_object(AlarmUser, id=ids)
-    if request.method == 'POST':
-        af = AlarmUserForm(request.POST, instance=obj)
-        if af.is_valid():
-            af.save()
-            status = 1
-        else:
-            status = 2
-    else:
-        af = AlarmUserForm(instance=obj)
-    return render_to_response('skapi/useredit.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
 def policy(request):
     temp_name = "skapi/api-header.html"
     obj_info = LevelPolicy.objects.all()
