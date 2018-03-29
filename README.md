@@ -76,66 +76,38 @@ http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
 建议生产环境中使用https配置服务器<br>
 
 
+监控告警使用说明:
+--------------------
 
 <api接口文档,共8个接口,包含邮件接口,微信接口,电话接口,短信接口,钉钉接口,组接口(只包含前面5种接口),zabbix调用接口,grafana接口>
-level级别为:debug,info,warning,error,fatal.
+level级别为:info,warn,error,fatal.
 接口使用说明:
-1.邮件接口:
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendmail?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'level':'',                                      #指定事件级别
-    'subject':'xxxxx',                               #指定邮件标题
-    'receiverlist','test1@mljr.com,test2@mljr.com',  #指定邮件收件人,多人邮件已逗号分隔
-    'content','xxxxx',                               #指定邮件正文,默认为 text 格式.
-}
 
-2.微信接口:
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendweixin?token=xxxxxxxx
+1.组接口:(通过组管里前面5种接口)
+请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendbygroup?token=xxxxxxxx (token由运维分配)
 请求方法: POST
+返回数据: json字符串,通过查看Coke结果判断是否调条用成功.
 请求数据格式:
 {
-    'level':'',                                      #指定事件级别
-    'receiverlist':'test1@mljr.com,test2@mljr.com',  #指定微信接收人,多人以逗号分隔,账号统一用注册的个人企业邮箱.
-    'serial','xxxxx',             #指定微信分组编号
-    'content','xxxxx',            #指定微信内容.
-}
-
-3.短信接口:
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendsms?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'level':'',                       #指定事件级别
-    'mobiles':'186216281xxx,123456',  #指定接收人的电话号码,多个号码以逗号分隔
-    'content','xxxxx',       #指定接收的内容
+   "level" : "",    #指定事件级别,如:info,warn,error,fatal. 最多只能选一个.
+   "subject" : "",  #指定告警标题，.
+   "content" : "",  #指定告警内容.
+   "policy" : "",   #指定告警渠道, 如:mobile,dingding,email,weixin,sms 可以同时指定多个
+   "groupid" : "",  #指定分组id,由运维来分配.
 }
 
 
-4.电话接口:
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendtel?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'level':'',         #指定事件级别,如:debug,info,warning,error,fatal.
-    'type':'',          #替换阿里云语音播报中的变量${type}. 如果为空, 默认是  "有用分期" ,可选项
-    'mobiles':'186216281xxx,123456',  #指定接收人的电话号码,多人以逗号分隔,必选项.
-    'content','xxxxx',  #指定事件备注描述,后台日志记录用.
-}
+组接口上线步骤:
+1. 开发向运维申请接口告警
+2. 运维创建接收告警用户信息,
+3. 新建分组, 授权token,授权默认日志策略,授权用户.
+4. 在告警开关中进行开关控制.
+--------------------------------
 
-5.钉钉接口
-   ....
+单接口 暂时未上线,省略.
 
-6.组接口:(通过组管里前面5种接口)
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendgroup?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    ...
-}
 
-7.zabbix接口:
+2.zabbix接口:
 请求方url: http://10.8.105.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
@@ -145,7 +117,7 @@ level级别为:debug,info,warning,error,fatal.
     'type','xxxxx',  #可选,特殊了分组使用
 }
 
-8.grafana接口:
+3.grafana接口:
 请求方url: http://10.8.105.195:8000/skapi/grafana/?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
