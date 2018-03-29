@@ -239,8 +239,8 @@ def setuplist(request):
 
 @csrf_exempt
 def zabbixalart(request):
-    token = request.GET.get('token', '')
-    if request.method == 'POST' and token == cfg.get('token', 'token'):
+    if request.method == 'POST':
+        token = request.GET.get('token', '')
         groupid = request.POST.get('groupid', '')
         appname = request.POST.get('appname', '')
         type = request.POST.get('type', '')
@@ -252,6 +252,9 @@ def zabbixalart(request):
         serial = ag.serial
         message = '\n'.join(content)
         logid = ''
+
+        if not ag or not ag.tokens.filter(token=token).first():
+            return HttpResponse("error")
 
         if config().get('record', 'zabbix_status') == 'On':
             zr = ZabbixRecord.objects.create(name=type, token=token, subject=subject, appname=appname,
@@ -301,36 +304,41 @@ def zabbixalart(request):
 
 @csrf_exempt
 def api(request, method):
-    token = request.GET.get('token', '')
-    if request.method == 'POST' and TokenAuth.objects.filter(token=token):
-        name = TokenAuth.objects.get(token=token).name
+    if request.method == 'POST':
+        msg = {'Code': 'Error'}
 
+        token = request.GET.get('token', '').strip()
+        groupid = request.POST.get('groupid', '').strip()
+
+        if not groupid.isdigit():
+            msg['Message'] = u'参数错误:groupid 必须是纯数字!'
+            return HttpResponse(dumps(msg))
+
+        ag = AlarmGroup.objects.get(id=groupid)
+        if not ag:
+            msg['Message'] = '分组ID不存在,请联系运维人员!'
+            return HttpResponse(dumps(msg))
+        if not ag.tokens.filter(token=token).first():
+            msg['Message'] = u'你的Token没有权限,请联系运维!'
+            return HttpResponse(dumps(msg))
+
+        name = TokenAuth.objects.get(token=token).name
         policy = request.POST.get('policy', '').strip()
         level = request.POST.get('level', '').strip()
         subject = request.POST.get('subject', 'Default Subject YYFQ Alart!').strip()
         content = request.POST.get('content', '').strip()
-        groupid = request.POST.get('groupid', '').strip()
 
-        msg = {'Code': 'Error'}
         if method == 'sendbygroup':
             if '' in [groupid, content, type]:
                 msg['Message'] = u'参数错误:groupid,content,type字段不能为空!'
                 return HttpResponse(dumps(msg))
 
-            ag = AlarmGroup.objects.filter(id=groupid).first()
             if policy:
                 policy = [p.strip() for p in policy.split(',')]
                 for p in policy:
                     if p not in Alarm_TYPE_Code:
                         msg['Message'] = '参数错误:策略参数不存在!'
                         return HttpResponse(dumps(msg))
-                if not groupid.isdigit():
-                    msg['Message'] = u'参数错误:groupid 必须是纯数字!'
-                    return HttpResponse(dumps(msg))
-                if not ag:
-                    msg['Message'] = '分组ID不存在,请联系运维人员!'
-                    return HttpResponse(dumps(msg))
-
             else:
                 if level not in Log_Type:
                     msg['Message'] = u'如果不指定策略,level参数错误!'
