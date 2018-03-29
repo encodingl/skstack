@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
-from skaccounts.permission import permission_verify, auth_token
+from skaccounts.permission import permission_verify
 from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, ApiRecord
 from skapi.api import SendWeixin, SendMail, SendDingding
 from skapi.forms import AlarmGroupForm, AlarmListForm, TokenAuthForm, \
