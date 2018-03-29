@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 import django.utils.timezone as timezone
 from lib.type import Alarm_TYPE
-from skcmdb.models import App
+from skcmdb.models import App, YwGroup
 from skaccounts.models import UserInfo
 
 
@@ -27,19 +27,10 @@ class LevelPolicy(models.Model):
         return self.name
 
 
-class ServiceType(models.Model):
-    name = models.CharField(u"* 业务名称", max_length=20, null=True, unique=True)
-    typecode = models.CharField(u"* 业务编码", max_length=10, null=True, unique=True)
-    descrition = models.TextField(u"描述", max_length=200, null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-
 class AlarmGroup(models.Model):
     name = models.CharField(max_length=50, verbose_name=u"* 分组名称", unique=True)
     serial = models.IntegerField(default=0, verbose_name=u"微信通道", blank=True)
-    servicetype = models.ForeignKey(ServiceType, verbose_name=u"服务类型", null=True, blank=True)
+    ywgroup = models.ForeignKey(YwGroup, verbose_name=u"所属业务组", null=True, blank=True)
     levelpolicy = models.ForeignKey(LevelPolicy, verbose_name=u"日志策略", null=True, blank=True)
     tokens = models.ManyToManyField(TokenAuth, verbose_name=u"授权Token", blank=True)
     user = models.ManyToManyField(UserInfo, verbose_name=u"告警名单", blank=True)

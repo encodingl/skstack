@@ -1,8 +1,7 @@
 # coding:utf-8
 from django import forms
 from django.forms.widgets import *
-from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, \
-    ServiceType, ApiRecord
+from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, ApiRecord
 from lib.type import WeiXin_Type, Alarm_TYPE
 
 
@@ -17,18 +16,6 @@ class LevelPolicyForm(forms.ModelForm):
             'warn_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
             'error_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
             'fatal_policy': SelectMultiple(choices=Alarm_TYPE, attrs={'class': 'form-control'}),
-        }
-
-
-class ServiceTypeForm(forms.ModelForm):
-    class Meta:
-        model = ServiceType
-        exclude = ("id",)
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control'}),
-            'typecode': TextInput(attrs={'class': 'form-control'}),
-            'descrition': Textarea(attrs={'class': 'form-control'}),
         }
 
 
