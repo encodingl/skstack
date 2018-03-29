@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
-from skaccounts.permission import permission_verify
+from skaccounts.permission import permission_verify, auth_token
 from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, ApiRecord
 from skapi.api import SendWeixin, SendMail, SendDingding
 from skapi.forms import AlarmGroupForm, AlarmListForm, TokenAuthForm, \
@@ -104,60 +104,6 @@ def policyedit(request, ids):
     else:
         af = LevelPolicyForm(instance=obj)
     return render_to_response('skapi/policyedit.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def servicetype(request):
-    temp_name = "skapi/api-header.html"
-    obj_info = ServiceType.objects.all()
-    return render_to_response('skapi/servicetype.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def servicetypeadd(request):
-    temp_name = "skapi/api-header.html"
-    if request.method == "POST":
-        obj_form = ServiceTypeForm(request.POST)
-        if obj_form.is_valid():
-            obj_form.save()
-            tips = u"增加成功！"
-            display_control = ""
-        else:
-            tips = u"增加失败！"
-            display_control = ""
-    else:
-        display_control = "none"
-        obj_form = ServiceTypeForm()
-    return render_to_response('skapi/servicetypeadd.html', locals(), RequestContext(request))
-
-
-@login_required()
-@permission_verify()
-def servicetypedel(request):
-    id = request.GET.get('id', '')
-    if id:
-        ServiceType.objects.get(id=id).delete()
-    return HttpResponse(u'删除成功')
-
-
-@login_required()
-@permission_verify()
-def servicetypeedit(request, ids):
-    temp_name = "skapi/api-header.html"
-    status = 0
-    obj = get_object(ServiceType, id=ids)
-    if request.method == 'POST':
-        af = ServiceTypeForm(request.POST, instance=obj)
-        if af.is_valid():
-            af.save()
-            status = 1
-        else:
-            status = 2
-    else:
-        af = ServiceTypeForm(instance=obj)
-    return render_to_response('skapi/servicetypeedit.html', locals(), RequestContext(request))
 
 
 @login_required()

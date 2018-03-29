@@ -39,9 +39,9 @@
                         <tr>
                             <th>ID</th>
                             <th>名称</th>
-                            <th>用户数量</th>
-                            <th>Token数量</th>
+                            <th>所属业务组</th>
                             <th>微信通道</th>
+                            <th>Token数量</th>
                             <th>默认策略</th>
                             <th>详细描述</th>
                             <th class="text-center">功能</th>
@@ -56,9 +56,9 @@
                                 <li style="list-style-type:none" onclick="return tanchu(this.value)"
                                     value="{{ obj.id }}"> {{ obj.name }}</li>
                             </a></td>
-                            <td width="8%" style="vertical-align:middle">{{ obj.user.count }}</td>
+                            <td width="10%" style="vertical-align:middle">{{ obj.ywgroup.name }}</td>
+                            <td width="8%" style="vertical-align:middle">{{ obj.serial|sal_to_name }}</td>
                             <td width="10%" style="vertical-align:middle">{{ obj.tokens.count }}</td>
-                            <td width="8%" style="vertical-align:middle">{{ obj.serial }}</td>
                             <td width="10%" style="vertical-align:middle">{{ obj.levelpolicy|default:"" }}</td>
                             <td width="20%" style="vertical-align:middle">{{ obj.descrition }}</td>
                             <td width="10%" style="vertical-align:middle" class="text-center" data-editable='false'>

@@ -4,6 +4,8 @@
 from django import template
 import ast
 
+from lib.type import WeiXin_Type
+
 register = template.Library()
 
 
@@ -124,3 +126,11 @@ def logcont_str2uni(value):
         return value[:40]+'  ....'
     else:
         return value
+
+@register.filter(name='sal_to_name')
+def sal_to_name(value):
+    for wt in WeiXin_Type:
+        if value == wt[0]:
+            return wt[1]
+    return "unknown"
+
