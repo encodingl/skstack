@@ -28,7 +28,7 @@ class AlarmGroupForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control'}),
             'serial': Select(choices=WeiXin_Type, attrs={'class': 'form-control'}),
             'user': SelectMultiple(attrs={'class': 'form-control'}),
-            'servicetype': Select(attrs={'class': 'form-control'}),
+            'ywgroup': Select(attrs={'class': 'form-control'}),
             'levelpolicy': Select(attrs={'class': 'form-control'}),
             'tokens': SelectMultiple(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control'}),
