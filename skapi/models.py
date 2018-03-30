@@ -90,7 +90,7 @@ class ApiRecord(models.Model):
     token = models.CharField(u"授权Token", max_length=20, null=True)
     groupid = models.IntegerField(u"组ID", null=True)
     level = models.CharField(u"级别", max_length=10, null=True)
-    policy = models.CharField(u"策略", max_length=50, null=True)
+    policy = models.CharField(u"策略", max_length=200, null=True)
     subject = models.TextField(u"标题", max_length=50, null=True)
     content = models.TextField(u"内容", max_length=200, null=True)
 
