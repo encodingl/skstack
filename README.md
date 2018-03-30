@@ -92,7 +92,7 @@ level级别为:info,warn,error,fatal.
    "level" : "",    #指定事件级别,如:info,warn,error,fatal. 最多只能选一个.
    "subject" : "",  #指定告警标题，.
    "content" : "",  #指定告警内容.
-   "policy" : "",   #指定告警渠道, 如:mobile,dingding,email,weixin,sms 可以同时指定多个
+   "policy" : "",   #指定告警渠道, 如:mobile,dingding,email,weixin,sms 可以同时指定多个,逗号分隔
    "groupid" : "",  #指定分组id,由运维来分配.
 }
 

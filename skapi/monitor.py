@@ -329,8 +329,8 @@ def api(request, method):
         content = request.POST.get('content', '').strip()
 
         if method == 'sendbygroup':
-            if '' in [groupid, content, type]:
-                msg['Message'] = u'参数错误:groupid,content,type字段不能为空!'
+            if '' in [groupid, content]:
+                msg['Message'] = u'参数错误:groupid,content字段不能为空!'
                 return HttpResponse(dumps(msg))
 
             if policy:
