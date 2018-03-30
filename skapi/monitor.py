@@ -9,8 +9,8 @@ from skaccounts.permission import permission_verify
 from models import AlarmGroup, AlarmList, TokenAuth, AlarmRecord, ZabbixRecord, LevelPolicy, ApiRecord
 from skapi.api import SendWeixin, SendMail, SendDingding
 from skapi.forms import AlarmGroupForm, AlarmListForm, TokenAuthForm, \
-    AlarmRecordForm, ZabbixRecordForm, LevelPolicyForm
-from lib.com import get_object, config, cfg, configfile
+    AlarmRecordForm, ZabbixRecordForm, LevelPolicyForm, ApiRecordForm
+from lib.com import get_object, config, configfile
 from lib.type import Alarm_TYPE_Code, Log_Type
 from utils import initAlarmList
 from api import AliyunAPI
@@ -334,8 +334,8 @@ def api(request, method):
                 return HttpResponse(dumps(msg))
 
             if policy:
-                policy = [p.strip() for p in policy.split(',')]
-                for p in policy:
+                _policy = [p.strip() for p in policy.split(',')]
+                for p in _policy:
                     if p not in Alarm_TYPE_Code:
                         msg['Message'] = '参数错误:策略参数不存在!'
                         return HttpResponse(dumps(msg))
@@ -374,18 +374,18 @@ def api(request, method):
             params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
 
             data = []
-            if not policy:
+            if not _policy:
                 exec ("data = ag.levelpolicy.%s_policy" % level)
 
-            if '0' in data or 'email' in policy:
+            if '0' in data or 'email' in _policy:
                 SendMail().send(subject, emaillist, content)
-            if '1' in data or 'sms' in policy:
+            if '1' in data or 'sms' in _policy:
                 aliyun.send_sms(','.join(smslist), params, 'sms_code1')
-            if '2' in data or 'weixin' in policy:
+            if '2' in data or 'weixin' in _policy:
                 SendWeixin().send('|'.join(wxlist), content, ag.serial)
-            if '3' in data or 'dingding' in policy:
+            if '3' in data or 'dingding' in _policy:
                 SendDingding().send(subject, content, userid='|'.join(ddlist), logid=logid)
-            if '4' in data or 'mobile' in policy:
+            if '4' in data or 'mobile' in _policy:
                 for tel in tellist:
                     aliyun.tts_call(tel, params, 'tts_code1')
 
@@ -488,8 +488,8 @@ def alarmapirecord(request):
 @permission_verify()
 def alarmapidetail(request, ids):
     temp_name = "skapi/api-header.html"
-    obj = get_object(AlarmRecord, id=ids)
-    af = AlarmRecordForm(instance=obj)
+    obj = get_object(ApiRecord, id=ids)
+    af = ApiRecordForm(instance=obj)
     return render_to_response('skapi/alarmapidetail.html', locals(), RequestContext(request))
 
 
