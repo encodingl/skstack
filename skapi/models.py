@@ -55,13 +55,13 @@ class AlarmList(models.Model):
 
 
 class AlarmRecord(models.Model):
-    name = models.CharField(u"发送", max_length=10, null=True)
+    name = models.CharField(u"发送", max_length=50, null=True)
     create_time = models.DateTimeField(u'保存日期', default=timezone.now)
     token = models.CharField(u"授权Token", max_length=20, null=True)
     type = models.CharField(u"类型", choices=Alarm_TYPE, max_length=20, null=True)
     receiver = models.CharField(u"接收人", max_length=50, null=True)
     serial = models.CharField(u"微信通道", max_length=10, null=True)
-    level = models.CharField(u"级别", max_length=10, null=True)
+    level = models.CharField(u"级别", max_length=20, null=True)
     subject = models.TextField(u"标题", max_length=50, null=True)
     content = models.TextField(u"内容", max_length=200, null=True)
 
@@ -70,29 +70,29 @@ class AlarmRecord(models.Model):
 
 
 class ZabbixRecord(models.Model):
-    name = models.CharField(u"发送者", max_length=10, null=True)
+    name = models.CharField(u"发送者", max_length=50, null=True)
     create_time = models.DateTimeField(u'记录时间', default=timezone.now)
     token = models.CharField(u"授权Token", max_length=20, null=True)
     appname = models.CharField(u"APPNAME", max_length=50, null=True)
-    subject = models.TextField(u"标题", max_length=50, null=True)
+    subject = models.TextField(u"标题", max_length=500, null=True)
     status = models.CharField(u"状态", max_length=30, null=True)
     host = models.CharField(u"主机", max_length=30, null=True)
-    event = models.CharField(u"事件ID", max_length=30, null=True)
-    content = models.TextField(u"内容", max_length=200, null=True)
+    event = models.CharField(u"事件ID", max_length=500, null=True)
+    content = models.TextField(u"内容", max_length=1024 * 128, null=True)
 
     def __unicode__(self):
         return self.name
 
 
 class ApiRecord(models.Model):
-    name = models.CharField(u"发送", max_length=10, null=True)
+    name = models.CharField(u"发送", max_length=50, null=True)
     create_time = models.DateTimeField(u'保存日期', default=timezone.now)
     token = models.CharField(u"授权Token", max_length=20, null=True)
     groupid = models.IntegerField(u"组ID", null=True)
-    level = models.CharField(u"级别", max_length=10, null=True)
+    level = models.CharField(u"级别", max_length=20, null=True)
     policy = models.CharField(u"策略", max_length=200, null=True)
-    subject = models.TextField(u"标题", max_length=50, null=True)
-    content = models.TextField(u"内容", max_length=200, null=True)
+    subject = models.TextField(u"标题", max_length=500, null=True)
+    content = models.TextField(u"内容", max_length=1024 * 128, null=True)
 
     def __unicode__(self):
         return self.name
