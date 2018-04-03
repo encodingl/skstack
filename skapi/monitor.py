@@ -309,6 +309,14 @@ def api(request, method):
 
         token = request.GET.get('token', '').strip()
         groupid = request.POST.get('groupid', '').strip()
+        policy = request.POST.get('policy', '').strip()
+        level = request.POST.get('level', '').strip()
+        subject = request.POST.get('subject', 'Default Subject YYFQ Alart!').strip()
+        content = request.POST.get('content', '').strip()
+
+        if '' in [groupid, content]:
+            msg['Message'] = u'参数错误:groupid,content字段不能为空!'
+            return HttpResponse(dumps(msg))
 
         if not groupid.isdigit():
             msg['Message'] = u'参数错误:groupid 必须是纯数字!'
@@ -323,16 +331,8 @@ def api(request, method):
             return HttpResponse(dumps(msg))
 
         name = TokenAuth.objects.get(token=token).name
-        policy = request.POST.get('policy', '').strip()
-        level = request.POST.get('level', '').strip()
-        subject = request.POST.get('subject', 'Default Subject YYFQ Alart!').strip()
-        content = request.POST.get('content', '').strip()
 
         if method == 'sendbygroup':
-            if '' in [groupid, content]:
-                msg['Message'] = u'参数错误:groupid,content字段不能为空!'
-                return HttpResponse(dumps(msg))
-
             if policy:
                 _policy = [p.strip() for p in policy.split(',')]
                 for p in _policy:
