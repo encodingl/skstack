@@ -370,6 +370,10 @@ def api(request, method):
             tel_user_obj = alarmList.filter(tel_status=1)
             tellist = [u.user.tel for u in tel_user_obj]
 
+            if not emaillist and not wxlist and not ddlist and not smslist and tellist:
+                msg['Message'] = u'告警开关全部未打开,请联系运维!'
+                return HttpResponse(dumps(msg))
+
             aliyun = AliyunAPI()
             params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
 
