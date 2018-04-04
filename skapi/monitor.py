@@ -347,12 +347,6 @@ def api(request, method):
                     msg['Message'] = u'没有授权日志策略,请联系运维授权!'
                     return HttpResponse(dumps(msg))
 
-            logid = ''
-            if config().get('record', 'api_status') == 'On':
-                zr = ApiRecord.objects.create(name=name, groupid=groupid, token=token, subject=subject,
-                                              content=content, level=level, policy=policy)
-                logid = zr.id
-
             alarmList = ag.alarmlist_set.all()
 
             email_user_obj = alarmList.filter(email_status=1)
@@ -373,6 +367,12 @@ def api(request, method):
             if not emaillist and not wxlist and not ddlist and not smslist and not tellist:
                 msg['Message'] = u'告警开关全部未打开,请联系运维!'
                 return HttpResponse(dumps(msg))
+
+            logid = ''
+            if config().get('record', 'api_status') == 'On':
+                zr = ApiRecord.objects.create(name=name, groupid=groupid, token=token, subject=subject,
+                                              content=content, level=level, policy=policy)
+                logid = zr.id
 
             aliyun = AliyunAPI()
             params = "{\"code\":\"98123\",\"remark\":\"%s\"}" % subject
