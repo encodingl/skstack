@@ -113,7 +113,7 @@ if __name__ == "__main__":
     dic_list,list_key_set,list_group_key=get_AnsibleHostsDic('/etc/ansible/hosts-prd')
     list_ip=get_IpList('/etc/ansible/hosts-prd')
   
-    print  dic["yycs"]
+
    
     
     

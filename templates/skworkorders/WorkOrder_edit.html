@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
@@ -5,23 +6,34 @@
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
 {% endblock %}
 {% block content %}
-
 <div class="content-wrapper">
 
-    <!-- Main content -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <small></small>
+  </h1>
+    <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4>{{ tips }}</h4>
+          </div>
+ 
+</section>
 
+
+    <!-- Main content -->
     <section class="content">
 
 <div id="dialog">
         <div class="box box-info">
             <!-- /.box-header -->
             <!-- form start -->
-          <form action="{% url 'UserGroup_edit' ids %}" method="post">
+          <form action="{% url 'WorkOrder_edit' %}?id={{ obj.id }}" method="post">
             {% csrf_token %}
-            {{ tpl_UserGroup_form.as_p }}
+            {{ tpl_WorkOrder_form.as_p }}
             <input type="hidden" name="id" value="{{ obj.id }}">
             <input type="submit" class="btn btn-primary" style="width: 60pt" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{% url 'UserGroup_index' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+            <a href="{% url 'WorkOrder_index' %}"> <li class="btn btn-primary" style="width: 60pt">返回</li></a>
       
           </form>
       </div>
@@ -29,16 +41,22 @@
 
     </section>
 
-    </div>
+  </div>
 
 <script>
-var demo1 = $('select[name="members"]').bootstrapDualListbox({
-      nonSelectedListLabel: '可选择',
-      selectedListLabel: '已选择',
+var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
+      nonSelectedListLabel: '可选',
+      selectedListLabel: '已选',
       preserveSelectionOnMove: 'moved',
       moveOnSelect: false,
 });
 </script>
 
+<script>
+$(".backurl").click(function(){
+	 history.go(-1)
+});
+</script>
 {% endblock %}
+
 
