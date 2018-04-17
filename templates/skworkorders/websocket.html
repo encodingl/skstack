@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load mytags %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/js/base.js"></script>
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.css"></script>
+
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    
+    <!-- Main content -->
+    <section class="content">
+
+<br>
+<input type="text" id="message" value="Hello, World!"/>
+<button type="button" id="connect_websocket">连接 websocket</button>
+<button type="button" id="send_message">发送 message</button>
+<button type="button" id="close_websocket">关闭 websocket</button>
+<h1>Received Messages</h1>
+<div id="messagecontainer">
+
+</div>
+
+	 </section>
+</div>
+    <script type="text/javascript">//<![CDATA[
+    $(function () {
+        $('#connect_websocket').click(function () {
+            if (window.s) {
+                window.s.close()
+            }
+            /*创建socket连接*/
+            var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/echo/");
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印出服务端返回过来的数据
+                
+                var colorConfig = { "green": ["ok", "SUCCESS","执行成功"],"yellow": ["changed","WARNING" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
+               
+                    var text = e.data;  
+                    jQuery.each(colorConfig, function (color, values) {  
+                        jQuery.each(values, function (i, item) { 
+                      	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+
+                      	   
+                      	   text = text.replace(re,function(result){
+                      		   return '<font color="' + color + '">' + result + '</font>'
+                      	   });
+                      	   
+                      	   var re2 = new RegExp(item,"g");
+                      	   text = text.replace(re2,function(result){
+                      		   return '<font color="' + color + '">' + result + '</font>'
+                      	   });
+                      	   
+                        });  
+                    });  
+                
+             
+                
+                
+                $('#messagecontainer').append('<p>' + text + '</p>');
+                var h = document.documentElement.scrollHeight || document.body.scrollHeight;
+                window.scrollTo(h,h);
+            };
+            // Call onopen directly if socket is already open
+            if (socket.readyState == WebSocket.OPEN) socket.onopen();
+            window.s = socket;
+        });
+        $('#send_message').click(function () {
+            //如果未连接到websocket
+            if (!window.s) {
+                alert("websocket未连接.");
+            } else {
+                window.s.send($('#message').val());//通过websocket发送数据
+            }
+        });
+        $('#close_websocket').click(function () {
+            if (window.s) {
+                window.s.close();//关闭websocket
+                console.log('websocket已关闭');
+            }
+        });
+
+    });
+    //]]></script>
+{% endblock %}

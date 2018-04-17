@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup
+from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup,sk_websocket
 
 urlpatterns = [
       
@@ -50,12 +50,15 @@ urlpatterns = [
      url(r'^WorkOrderFlow/audit/$', WorkOrderFlow.WorkOrderFlow_audit, name='WorkOrderFlow_audit'),
      url(r'^WorkOrderFlow/audit/permit/$', WorkOrderFlow.WorkOrderFlow_permit, name='WorkOrderFlow_permit'),
      url(r'^WorkOrderFlow/audit/deny/$', WorkOrderFlow.WorkOrderFlow_deny, name='WorkOrderFlow_deny'),  
-     url(r'^WorkOrderFlow/WorkOrderCommit/$', WorkOrderCommit.WorkOrderCommit_index, name='WorkOrderCommit_index'),
-     
+    
+     url(r'^WorkOrderCommit/$', WorkOrderCommit.WorkOrderCommit_index, name='WorkOrderCommit_index'),
      url(r'^WorkOrderCommit/undo/$', WorkOrderCommit.WorkOrderCommit_undo, name='WorkOrderCommit_undo'),
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
      url(r'^WorkOrderCommit/check/$', WorkOrderCommit.WorkOrderCommit_check, name='WorkOrderCommit_check'),
      url(r'^WorkOrderCommit/checkstatus/$', WorkOrderCommit.WorkOrderCommit_checkstatus, name='WorkOrderCommit_checkstatus'),
+     
+     url(r'^websocket/$', sk_websocket.websocket_index, name='websocket_index'),
+     url(r'^echo/$', sk_websocket.echo, name='websocket_echo'),
  
     
 ]
