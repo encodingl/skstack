@@ -9,12 +9,12 @@ from lib.log import log
 import logging
 from subprocess import Popen, PIPE, STDOUT, call
 import sys
-
+from django import forms
 import os
 from lib.lib_config import get_config_var
 from skworkorders.VarsGroup import VarsGroup_add
 from skworkorders.models import VarsGroup,Vars
-from skworkorders.forms import Vars_Select_form
+from skworkorders.forms import Vars_Select_form,Custom_form
 from lib.lib_format import list_to_formlist
 
 
@@ -137,8 +137,15 @@ def var_change(str,**pDic):
 def get_Vars_form(obj_var):
     obj=obj_var
 #判断表单格式生成合适表单    
+    var_name = obj.name
+    content = {}
+    new_fields = {
+            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Select(attrs={'class': 'form-control'}))
+            }
     if obj.value_form_type == "Select":
-        tpl_var_check_form = Vars_Select_form()
+        tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
+        tpl_Custom_form = tpl_Custom_form(content)
+
     elif obj.value_form_type == "SelectMultiple":
         pass
     elif obj.value_form_type == "TextInput":
@@ -147,21 +154,17 @@ def get_Vars_form(obj_var):
         pass
     else:
         pass
-    
-    
+  
 #判断变量来源获取变量内容    
     if obj.value_method == "admin_def":
-        obj_value_optional = eval(obj.value_optional)
-        
-        tpl_var_check_form.fields["value_optional"].widget.choices = list_to_formlist(obj_value_optional)
-        
+        obj_value_optional = eval(obj.value_optional)       
+        tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
         pass
     elif obj.value_method == "manual":
         pass
-    tpl_var_check_form.fields["value_optional"].label = obj.label_name
-    
-    return tpl_var_check_form
+    tpl_Custom_form.fields[var_name].label = obj.label_name   
+    return tpl_Custom_form
     
 def get_VarsGroup_form(args):  
   
@@ -179,22 +182,33 @@ def get_VarsGroup_form(args):
 #         print form
         
      
- 
+
+def var_change2(arg,**kwargs):
+    for key,value in kwargs.items():       
+        key = "{%s}" % key
+        value = str(value)
+        arg=arg.replace(key,value)
+    return arg
+
+
 if __name__ == "__main__":
+    d = {"a":"avalue","b":"bvalue","c":1}
+    s = "{a} whata {b} fk {c}"
+    print var_change2(s,**d)
 #      get_VarsGroup_form("vg1_stg")
-    cmd1 = "ansible gtest -m shell -a 'du -sh /focus'"
-    cmd2 = "du -sh /focus"
-    cmd3 = "ansible localhost -m shell -a 'du -sh /focus'"
-    list_cmd = [cmd1,cmd2,cmd3]
-    for cmd1 in list_cmd:
-        pcmd1 = Popen(cmd1, stdout=PIPE, stderr=PIPE, shell=True)    
-        retcode1=pcmd1.wait()  
-        retcode_message1=pcmd1.communicate()
-        print retcode1
-        print retcode_message1
-        print retcode_message1[0]
-        print retcode_message1[1]
-       
+#     cmd1 = "ansible gtest -m shell -a 'du -sh /focus'"
+#     cmd2 = "du -sh /focus"
+#     cmd3 = "ansible localhost -m shell -a 'du -sh /focus'"
+#     list_cmd = [cmd1,cmd2,cmd3]
+#     for cmd1 in list_cmd:
+#         pcmd1 = Popen(cmd1, stdout=PIPE, stderr=PIPE, shell=True)    
+#         retcode1=pcmd1.wait()  
+#         retcode_message1=pcmd1.communicate()
+#         print retcode1
+#         print retcode_message1
+#         print retcode_message1[0]
+#         print retcode_message1[1]
+#        
      
     
    

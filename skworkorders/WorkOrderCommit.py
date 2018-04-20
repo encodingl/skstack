@@ -25,12 +25,14 @@ import redis
 import time
 import json
 from lib.lib_config import get_redis_config
-from lib_skworkorders import adv_task_step,get_VarsGroup_form
+from lib_skworkorders import adv_task_step,get_VarsGroup_form,var_change2
 from git  import Git,Repo
 from skaccounts.models import UserInfo,UserGroup,AuditFlow
 from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
 from django import forms
 from lib.lib_redis import RedisLock
+from dwebsocket.decorators import accept_websocket, require_websocket
+import subprocess
 
 
 
@@ -113,14 +115,8 @@ def WorkOrderCommit_add(request, ids):
             return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
     else:  
         tpl_WorkOrderCommit_form = WorkOrderCommit_form(initial=dic_init)  
-      
-        tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
-    
-         
-      
         if obj.var_opional: 
-       
-            pass
+            tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
         
     
         return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
@@ -132,8 +128,6 @@ def WorkOrderCommit_check(request):
     obj_env=request.POST.get('env') 
     
     obj_workorder = request.POST.get('workorder')  
-    obj_git_commit = request.POST.get('commit_id')
-    
     obj_workorder_id = request.POST.get('workorder_id')
     
     
@@ -229,3 +223,52 @@ def WorkOrderCommit_checkstatus(request):
    
 
     return  HttpResponse(obj_json)   
+
+@login_required()
+@permission_verify()
+@accept_websocket
+def pretask(request):
+    temp_name = "skworkorders/skworkorders-header.html" 
+    if not request.is_websocket():#判断是不是websocket连接
+       
+        try:#如果是普通的http方法
+            message = request.GET['message']
+            return HttpResponse(message)
+        except:
+            return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
+    else:
+        for message in request.websocket:
+            
+            message_dic = eval(message)
+  
+            WorkOrder_id = int(message_dic['id'])
+            
+            obj = get_object(WorkOrder, id=WorkOrder_id)
+            pre_task = var_change2(obj.pre_task,**message_dic) 
+            var_built_in_dic = eval(obj.var_built_in) 
+            pre_task = var_change2(pre_task,**var_built_in_dic)
+            print "pretask: %s" % pre_task
+            print type(pre_task)
+            pre_task_list = pre_task.encode("utf-8").split("\r")
+            print type(pre_task_list)
+            print "pre_task_list:%s" % pre_task_list
+            for cmd in pre_task_list:
+                print "cmd:%s" % cmd
+                pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+                while True: 
+                     line = pcmd.stdout.readline().strip()  #获取内容
+                     
+                     if line:
+                          request.websocket.send(line)
+                     else:    
+                         break
+                retcode=pcmd.wait()
+                if retcode==0:
+                    pass
+                else:
+                    ret_message="执行失败"
+                    break
+            if retcode==0:
+                ret_message="执行成功"
+            WorkOrderFlow.objects.create(**message_dic)
+            request.websocket.send(ret_message)

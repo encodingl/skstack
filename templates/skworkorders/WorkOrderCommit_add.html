@@ -18,7 +18,7 @@
         <div class="box box-info">
             <!-- /.box-header -->
             <!-- form start -->
-          <form action="{% url 'WorkOrderCommit_add' ids %}" method="post">
+          <form action="{% url 'WorkOrderCommit_add' ids %}" method="post" id="WorkOrderCommit_add_form">
             {% csrf_token %}
             {{ tpl_WorkOrderCommit_form.as_p }}
          
@@ -27,8 +27,10 @@
             {% endfor %}
             
             <input type="hidden" name="id" value="{{ obj.id }}">
-            <input type="button" class="btn btn-info" style="width: 60pt"  onclick="taskcommit_checkstatus();taskcommit_check();" value="前置检查">&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit" id="submit" class="btn btn-danger" style="width: 60pt" value="提交" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="btn btn-info" style="width: 60pt"  id="WorkOrderCommit_add" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'WorkOrderCommit_index' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+            
+          
       
           </form>
           
@@ -41,6 +43,7 @@
 		        </div>
 		        
 		        <div id="message_box"></div>
+		        <div id="messagecontainer"></div>
 				</div>
       </div>
 </div>
@@ -118,7 +121,6 @@ function taskcommit_check(){
 		data:{project:obj_project,
 			   env:obj_env,
 			   project_id:obj_project_id,
-			   commit_id:obj_commit_id,
 			   csrfmiddlewaretoken:'{{ csrf_token }}'},
 		
 		success:function(callback){
@@ -127,6 +129,95 @@ function taskcommit_check(){
 	});
 }
 </script>
+
+<script type="text/javascript">//<![CDATA[
+$(function () {
+	$.ajaxSetup({
+	    contentType: "application/x-www-form-urlencoded; charset=utf-8"
+	});
+	var DataDeal = {
+	//将从form中通过$('#form').serialize()获取的值转成json
+	           formToJson: function (data) {
+	               data=data.replace(/&/g,"\",\"");
+	               data=data.replace(/=/g,"\":\"");
+	               data="{\""+data+"\"}";
+	               return data;
+	            },
+	};
+
+    $('#WorkOrderCommit_add').click(function () {
+        if (window.s) {
+            window.s.close()
+        }
+        /*创建socket连接*/
+        var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+        window.s = socket;
+        socket.onopen = function () {
+            console.log('WebSocket open');//成功连接上Websocket
+            var form1 = document.getElementById("WorkOrderCommit_add_form");
+           
+            
+            var formData=$("#WorkOrderCommit_add_form").serialize();
+            var formData = decodeURIComponent(formData,true);//防止中文乱码
+            var formData = DataDeal.formToJson(formData);//转化为json
+            console.log(formData);
+         
+        	   window.s.send(formData);//通过websocket发送数据
+            
+        };
+   
+        
+        
+       
+        
+       
+        socket.onmessage = function (e) {
+            console.log('message: ' + e.data);//打印出服务端返回过来的数据
+            
+            var colorConfig = { "green": ["ok", "SUCCESS","执行成功"],"yellow": ["changed","WARNING" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
+           
+                var text = e.data;  
+                jQuery.each(colorConfig, function (color, values) {  
+                    jQuery.each(values, function (i, item) { 
+                  	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+
+                  	   
+                  	   text = text.replace(re,function(result){
+                  		   return '<font color="' + color + '">' + result + '</font>'
+                  	   });
+                  	   
+                  	   var re2 = new RegExp(item,"g");
+                  	   text = text.replace(re2,function(result){
+                  		   return '<font color="' + color + '">' + result + '</font>'
+                  	   });
+                  	   
+                    });  
+                });  
+            
+         
+            
+            
+            $('#messagecontainer').append('<p>' + text + '</p>');
+            var h = document.documentElement.scrollHeight || document.body.scrollHeight;
+            window.scrollTo(h,h);
+        };
+   
+        
+    });
+    $('#send_message').click(function () {
+        //如果未连接到websocket
+        if (!window.s) {
+            alert("websocket未连接.");
+        } else {
+            window.s.send($('#message').val());//通过websocket发送数据
+        }
+    });
+
+
+});
+//]]></script>
+
+
 <script>
 
 $("#submit").click(function(){

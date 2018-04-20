@@ -158,3 +158,5 @@ class Vars_form(forms.ModelForm):
 class Vars_Select_form(forms.Form):
     value_optional = forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},
                                widget=forms.Select(attrs={'class': 'form-control'}))
+class Custom_form(forms.Form):
+    pass

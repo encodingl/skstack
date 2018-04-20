@@ -56,6 +56,7 @@ urlpatterns = [
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
      url(r'^WorkOrderCommit/check/$', WorkOrderCommit.WorkOrderCommit_check, name='WorkOrderCommit_check'),
      url(r'^WorkOrderCommit/checkstatus/$', WorkOrderCommit.WorkOrderCommit_checkstatus, name='WorkOrderCommit_checkstatus'),
+     url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
      
      url(r'^websocket/$', sk_websocket.websocket_index, name='websocket_index'),
      url(r'^echo/$', sk_websocket.echo, name='websocket_echo'),
