@@ -65,7 +65,7 @@
                                             {% endif %}
                                         </td>
 
-                                        <td>{{ Track.tracktime }}</td>
+                                        <td>{{ Track.tracktime|date:"Y-m-d H:i:s" }}</td>
                                         <td>{{ Track.remarks }}</td>
                                         <td class="text-center" id="features" data-editable='false'>
 {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
