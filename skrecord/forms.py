@@ -45,6 +45,7 @@ class Track_form(forms.ModelForm):
             'trackclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'trackdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'trackdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'status': Select(choices=((u'已解决'), (u'跟进中'), (u'未解决')), attrs={'class': 'form-control', 'style': 'width:500px;'}),
             #'tracktime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'remarks': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
 
@@ -83,7 +84,6 @@ class Faq_form(forms.ModelForm):
             'problemclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'solution': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-
         }
 
 class Faq_list_form(forms.ModelForm):
