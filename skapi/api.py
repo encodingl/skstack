@@ -206,7 +206,7 @@ class AliyunAPI:
         try:
             ttsResponse = self.acs_client.do_action_with_exception(ttsRequest)
             log.info(u'[阿里云tts电话发送成功][接收用户ID:%s][show_number:%s][tts_code:%s][params:%s]' % (
-                called_number, self.SHOW_NUMBER, self.TTS_CODE, params))
+                called_number, self.SHOW_NUMBER, tts_code, params))
             return ttsResponse
         except Exception, e:
             log.error(e)
@@ -224,7 +224,7 @@ class AliyunAPI:
         try:
             smsResponse = self.acs_client.do_action_with_exception(smsRequest)
             log.info(u'[阿里云sms短信服务发送成功][接收用户ID:%s][sms_code:%s][params:%s]' % (
-                called_number, self.SMS_CODE, params))
+                called_number, sms_code, params))
 
             return smsResponse
         except Exception, e:
