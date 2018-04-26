@@ -11,6 +11,8 @@ from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from models import Record
 from models import Faq
+from skaccounts.models import UserInfo
+from django.db import models
 
 
 @login_required()
@@ -18,6 +20,8 @@ from models import Faq
 def faq(request):
     temp_name = "skrecord/navi-header.html"
     faq_info = Faq.objects.all()
+    #Faq.user = UserInfo.objects.get(username=request.user)
+    #Faq.user = request.user
 #    allnavi = navi.objects.all()
     return render_to_response("skrecord/faq.html", locals(), RequestContext(request))
 
@@ -26,10 +30,18 @@ def faq(request):
 def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
-        faq_form = Faq_form(request.POST)
-
+        faq_form = Faq_form(request.POST,request.FILES)
         if faq_form.is_valid():
-            faq_form.save()
+            #Faq.user = UserInfo.objects.get(username=request.user)
+            #user = Faq.user
+            #user = Faq.objects.create(user = Faq.user)
+            #faq_form.save()
+            Faq.user = request.user
+            title = faq_form.cleaned_data['title']
+            problemclass = faq_form.cleaned_data['problemclass']
+            describe = faq_form.cleaned_data['describe']
+            solution = faq_form.cleaned_data['solution']
+            user = Faq.objects.create(user=Faq.user, title=title, problemclass=problemclass, describe=describe, solution=solution)
             tips = u"增加成功！"
             display_control = ""
         else:
@@ -115,6 +127,14 @@ def detail(request,ids):
 
     return render_to_response('skrecord/faq_detail.html', locals(), RequestContext(request))
 
-
+#@login_required()
+#@permission_verify()
+#def save_models(self):
+#    Faq.objects.user = UserInfo.request.user
+#    Faq().save_models()
+#def save_models(request,ids):
+#    obj = Faq.objects.get(id=ids)
+#    faq.user = faq.request.user
+#    faq().save_models()
 
 

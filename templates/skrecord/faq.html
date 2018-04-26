@@ -32,6 +32,7 @@
                             </th>
                                     <th>问题标题</th>
                                     <th>问题分类</th>
+                                    <th>记录人</th>
                                     <th class="text-center">操作</th>
                                 </tr>
                             </thead>
@@ -41,6 +42,7 @@
                                         <td><input type="checkbox" id="id" class="i-checks" value="{{ Faq.id }}" name="id" /></td>
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ Faq.id }}"> {{ Faq.title }}</li></a></td>
                                         <td>{{ Faq.problemclass }}</td>
+                                        <td>{{ Faq.user }}</td>
                                         <td class="text-center" data-editable='false'>
 {#                                        <a href="{% url 'asset_edit' %}?id={{ host.id }}" class="btn btn-xs btn-info">编辑</a>#}
                                             <a href="{% url "faq_edit" Faq.id %}"><span class="btn btn-sm btn-info">编辑</span></a>

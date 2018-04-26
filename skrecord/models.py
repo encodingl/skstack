@@ -3,6 +3,13 @@
 
 from __future__ import unicode_literals
 from django.db import models
+from skaccounts.models import UserInfo
+
+TRACK_STATUS = (
+    (str(0), u"已解决"),
+    (str(1), u"跟进中"),
+    (str(2), u"未解决"),
+    )
 
 
 class Record_list(models.Model):
@@ -38,6 +45,9 @@ class Track(models.Model):
     trackdescribe = models.TextField(u"问题描述", max_length=1000, null=True)
     trackdispose = models.TextField(u"改进方法", max_length=1000, null=True, blank=True)
    # tracktime = models.CharField(u"记录时间", max_length=100, null=True)
+    user = models.CharField(editable=False, max_length=100, null=True)
+    #status = models.BooleanField(default=False, verbose_name=u"解决状态")
+    status = models.CharField(u"解决状态", choices=TRACK_STATUS, max_length=30, null=True, blank=True)
     tracktime = models.DateTimeField(u"记录时间", auto_now=True)
     remarks = models.CharField(u"备注", max_length=50, null=True, blank=True)
 
@@ -58,6 +68,7 @@ class Faq(models.Model):
     problemclass = models.ForeignKey(Faq_list, verbose_name=u"问题分类", on_delete=models.SET_NULL, null=True, blank=True)
     describe = models.TextField(u"问题描述", max_length=2000, null=True)
     solution = models.TextField(u"解决方案", max_length=2000, null=True)
+    user =  models.CharField(editable=False, max_length=100, null=True)
 
     def __unicode__(self):
         return self.name

@@ -26,10 +26,19 @@ def track(request):
 def add(request):
     temp_name = "skrecord/navi-header.html"
     if request.method == "POST":
-        track_form = Track_form(request.POST)
+        track_form = Track_form(request.POST, request.FILES)
 
         if track_form.is_valid():
-            track_form.save()
+            Track.user = request.user
+            title = track_form.cleaned_data['title']
+            trackclass = track_form.cleaned_data['trackclass']
+            trackdescribe = track_form.cleaned_data['trackdescribe']
+            trackdispose = track_form.cleaned_data['trackdispose']
+            #tracktime = track_form.cleaned_data['tracktime']
+            status = track_form.cleaned_data['status']
+            remarks = track_form.cleaned_data['remarks']
+            user = Track.objects.create(user=Track.user, title=title, trackclass=trackclass, trackdescribe=trackdescribe, trackdispose=trackdispose, status=status, remarks=remarks)
+            #track_form.save()
             tips = u"增加成功！"
             display_control = ""
         else:
