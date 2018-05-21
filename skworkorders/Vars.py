@@ -21,6 +21,7 @@ from billiard.util import INFO
 import sys
 from datetime import datetime
 from lib.lib_format import list_to_formlist
+import commands
 
 
 
@@ -114,25 +115,11 @@ def Vars_check(request,ids):
 #判断变量来源获取变量内容    
     if obj.value_method == "admin_def":
         obj_value_optional = eval(obj.value_optional)
-        
         tpl_var_check_form.fields["value_optional"].widget.choices = list_to_formlist(obj_value_optional)
-        
     elif obj.value_method == "script":
-        pass
+        obj_value_optional = eval(commands.getoutput(obj.value_script))
+        tpl_var_check_form.fields["value_optional"].widget.choices = list_to_formlist(obj_value_optional)
     elif obj.value_method == "manual":
         pass
 
-    
-#     try:
-# 
-#     except:
-#         exinfo=sys.exc_info()
-#         logging.error(exinfo)
-#         ret.append(exinfo)
-#     
-#     
-#     if len(ret) == 0:       
-#         message = "SUCCESS\nWorkOrder:%s\n Env:%s\n配置验证和初始化成功" % (obj_workorder,obj_env)
-#         ret.append(message)
-  
     return render_to_response("skworkorders/Vars_check.html", locals(), RequestContext(request))

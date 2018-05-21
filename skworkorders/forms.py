@@ -59,7 +59,7 @@ class WorkOrderCommit_form(forms.ModelForm):
         widgets = {    
             'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
             'workorder': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'workorder_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'workorder_id': forms.HiddenInput(attrs={'class': 'form-control','readonly':True}),
             'workorder_group': forms.HiddenInput(attrs={'class': 'form-control'}),
             'env': forms.HiddenInput(attrs={'class': 'form-control'}),
             'user_commit': forms.HiddenInput(attrs={'class': 'form-control'}),
@@ -80,12 +80,14 @@ class WorkOrderCommit_form(forms.ModelForm):
 class WorkOrderFlow_release_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("workorder","workorder_id","env")
+        fields = ("id","workorder","desc","env",'user_vars')
          
         widgets = {         
             'workorder': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
-            'workorder_id': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'id': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'user_vars': forms.Textarea(attrs={'class': 'form-control','style': 'height: 60px;','readonly':True}),
  
   
         }  
@@ -93,12 +95,12 @@ class WorkOrderFlow_release_form(forms.ModelForm):
 class WorkOrderFlow_detail_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("workorder","env","desc","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
+        fields = ("workorder","env","desc","user_vars","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
         widgets = {
             'workorder': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
-            
+            'user_vars': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
             'audit_level': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),

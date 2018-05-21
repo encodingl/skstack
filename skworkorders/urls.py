@@ -39,11 +39,8 @@ urlpatterns = [
      url(r'^WorkOrderFlow/revoke/$', WorkOrderFlow.WorkOrderFlow_revoke, name='WorkOrderFlow_revoke'),
      url(r'^WorkOrderFlow/release/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_release, name='WorkOrderFlow_release'),
      url(r'^WorkOrderFlow/release/run/$', WorkOrderFlow.WorkOrderFlow_release_run, name='WorkOrderFlow_release_run'),
-     url(r'^WorkOrderFlow/release/status/$', WorkOrderFlow.WorkOrderFlow_release_status, name='WorkOrderFlow_release_status'),
+    
      
-     
-#      url(r'^WorkOrderFlow/rollback/add/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_rollback_add, name='WorkOrderFlow_rollback_add'),
-     url(r'^WorkOrderFlow/rollback/add/$', WorkOrderFlow.WorkOrderFlow_rollback_add, name='WorkOrderFlow_rollback_add'),
      url(r'^WorkOrderFlow/detail/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_detail, name='WorkOrderFlow_detail'),
      url(r'^WorkOrderFlow/$', WorkOrderFlow.WorkOrderFlow_index, name='WorkOrderFlow_index'),
      url(r'^WorkOrderFlow/history/$', WorkOrderFlow.WorkOrderFlow_history, name='WorkOrderFlow_history'),
@@ -54,8 +51,6 @@ urlpatterns = [
      url(r'^WorkOrderCommit/$', WorkOrderCommit.WorkOrderCommit_index, name='WorkOrderCommit_index'),
      url(r'^WorkOrderCommit/undo/$', WorkOrderCommit.WorkOrderCommit_undo, name='WorkOrderCommit_undo'),
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
-     url(r'^WorkOrderCommit/check/$', WorkOrderCommit.WorkOrderCommit_check, name='WorkOrderCommit_check'),
-     url(r'^WorkOrderCommit/checkstatus/$', WorkOrderCommit.WorkOrderCommit_checkstatus, name='WorkOrderCommit_checkstatus'),
      url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
      
      url(r'^websocket/$', sk_websocket.websocket_index, name='websocket_index'),

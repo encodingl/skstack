@@ -13,9 +13,15 @@ from django import forms
 import os
 from lib.lib_config import get_config_var
 from skworkorders.VarsGroup import VarsGroup_add
-from skworkorders.models import VarsGroup,Vars
+from skworkorders.models import VarsGroup,Vars,WorkOrder,WorkOrderFlow
 from skworkorders.forms import Vars_Select_form,Custom_form
 from lib.lib_format import list_to_formlist
+from skcmdb.api import get_object
+from subprocess import Popen, PIPE, STDOUT, call
+import subprocess
+from skaccounts.models import UserInfo,UserGroup,AuditFlow
+from datetime import datetime
+import commands
 
 
 
@@ -24,71 +30,7 @@ level = get_config_var("log_level")
 log_path = get_config_var("log_path")
 log("setup.log", level, log_path)
 
-def adv_task_step(hosts,env,project,task_file,forks=30):
-    proj_base_dir = get_config_var("pro_path")
-    task_file_abs = proj_base_dir+env+"/"+project+"/"+task_file
-    
-    if hosts == "localhost":
-        
-        cmd = "bash" + " " + task_file_abs
-     
-        
-    else:
 
-        cmd = "ansible %s -f %s -m script -a %s" % (hosts,forks,task_file_abs)  
-        
-    try:        
-        pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
-        retcode=pcmd.wait()  
-        retcode_message=pcmd.communicate()
-        
-    
-    except:
-        exinfo=sys.exc_info()
-        logging.error(exinfo)
-    
-    
-    if retcode==0:
-        ret_message="success"
-    else:
-        ret_message="failed"
-    return ret_message
-#         else:
-#             ret_message="failed"
-#             return ret_message
-        
-        
-    
-
-
-def release_project(project,env,hosts,release_dir,release_to):
-    release_path = get_config_var("release_path")
-    project_dir = release_path+env+"/"+project+"/"
-    release_palybook=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/scripts/skworkorders/release_project.yml"
-    cmd= "ansible-playbook  %s -e 'h=%s project_dir=%s release_dir=%s'" %  (release_palybook,hosts,project_dir, release_dir)
-    
-    try:        
-        pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
-        retcode=pcmd.wait()  
-        ret_message = pcmd.communicate()
-        
-        if retcode != 0:    
-            logging.error(ret_message)
-        else:
-            logging.info(ret_message)
- 
-
-     
-    except:
-        exinfo=sys.exc_info()
-        logging.error(exinfo)
-    
-    
-    if retcode==0:
-        ret_message="success"
-    else:
-        ret_message="failed"
-    return ret_message
 
 def uni_to_str(args):
     obj_uni = args
@@ -99,40 +41,7 @@ def uni_to_str(args):
         obj_str=obj_str+h+","
     return obj_str
 
-def create_release_path(hosts,path):
-    
-    cmd= "ansible  %s -m shell -a 'mkdir -p %s'" %  (hosts,path)
-    
-    try:        
-        pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)    
-        retcode=pcmd.wait()  
-        ret_message = pcmd.communicate()
-        
-        if retcode != 0:    
-            logging.error(ret_message)
-        else:
-            logging.info(ret_message)
- 
-    except:
-        exinfo=sys.exc_info()
-        logging.error(exinfo)
-    
-    if retcode==0:
-        ret_message="success"
-    else:
-        ret_message="failed"
-    return ret_message
 
-def var_change(str,**pDic):
-    str=str.replace("{repo_path}",pDic["repo_path"])
-    str=str.replace("{pre_release_path}",pDic["pre_release_path"])
-    str=str.replace("{release_to}",pDic["release_to"])
-    str=str.replace("{release_lib}",pDic["release_lib"])
-    str=str.replace("{project}",pDic["project"])
-    str=str.replace("{env}",pDic["env"])
-    str=str.replace("{repo_url}",pDic["repo_url"])
-    str=str.replace("{release_user}",pDic["release_user"])
-    return str
     
 def get_Vars_form(obj_var):
     obj=obj_var
@@ -144,7 +53,7 @@ def get_Vars_form(obj_var):
             }
     if obj.value_form_type == "Select":
         tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
-        tpl_Custom_form = tpl_Custom_form(content)
+        tpl_Custom_form = tpl_Custom_form(initial=content)
 
     elif obj.value_form_type == "SelectMultiple":
         pass
@@ -160,7 +69,8 @@ def get_Vars_form(obj_var):
         obj_value_optional = eval(obj.value_optional)       
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
-        pass
+        obj_value_optional = eval(commands.getoutput(obj.value_script))
+        tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 
     elif obj.value_method == "manual":
         pass
     tpl_Custom_form.fields[var_name].label = obj.label_name   
@@ -190,6 +100,78 @@ def var_change2(arg,**kwargs):
         arg=arg.replace(key,value)
     return arg
 
+#该 函数用于将用户选择的变量格式化到一个字典存放到WorkOrderFlow数据库表的user_vars字段中
+def format_to_user_vars(**message_dic):
+    
+    WorkOrder_id = int(message_dic['id'])       
+    obj = get_object(WorkOrder, id=WorkOrder_id)
+    obj_VarsGroup=VarsGroup.objects.get(name=obj.var_opional)
+    user_vars_dic={}
+
+    for obj_var in obj_VarsGroup.vars.all():  
+        obj_var_name = str(obj_var.name)
+        print message_dic[obj_var_name]
+        if message_dic.has_key(obj_var_name):
+            
+            user_vars_dic[obj_var_name]=message_dic[obj_var_name]
+            message_dic.pop(obj_var_name)
+    message_dic.pop("csrfmiddlewaretoken")
+    message_dic.pop("id")
+    print "user_vars:%s" % user_vars_dic
+    message_dic["user_vars"]=user_vars_dic
+    return message_dic
+            
+def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
+    obj = obj_WorkOrder
+    var_built_in_dic = eval(obj.var_built_in) 
+    taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
+   
+    if taskname_dic[taskname]:
+        task = var_change2(taskname_dic[taskname],**user_vars_dic) 
+        task = var_change2(task,**var_built_in_dic)
+   
+        task_list = task.encode("utf-8").split("\r") 
+        ret_message="%s:开始执行" % taskname
+        request.websocket.send(ret_message)           
+        for cmd in task_list:
+            pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+            while True: 
+                line = pcmd.stdout.readline().strip()  #获取内容
+                if line:
+                    request.websocket.send(line)
+                else:    
+                    break
+            retcode=pcmd.wait()
+            if retcode==0:
+                pass
+            else:
+                ret_message="%s:执行失败" % taskname
+                break
+        if retcode==0:
+            
+            ret_message="%s:执行成功" % taskname
+
+        request.websocket.send(ret_message)
+    return retcode
+         
+def permission_submit_pass(user,WorkOrder_id):
+    # 判断用户是否有提单权限
+    obj_user = UserInfo.objects.get(username=user)
+    user_group = obj_user.usergroup_set.all()
+    user_WorkOrder = WorkOrder.objects.filter(user_dep__in=user_group,status="yes",template_enable = False)
+    obj_WorkOrder = WorkOrder.objects.get(id = WorkOrder_id)
+    
+    if obj_WorkOrder in user_WorkOrder:
+        return True
+    else:
+        return False
+def permission_audit_pass(obj_audit_level,obj_status):
+    #判断是否通过审核
+    if (obj_audit_level == "1" and obj_status != "1") or (obj_audit_level == "2" and obj_status != "5") or (obj_audit_level == "3" and obj_status != "7") :
+        return  False
+    else:
+        return True
+    
 
 if __name__ == "__main__":
     d = {"a":"avalue","b":"bvalue","c":1}

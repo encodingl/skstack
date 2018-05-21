@@ -10,12 +10,12 @@ def list_to_formlist(args):
     print list_args
  
     
-    list_tumple = []
+    list_tumple = [('', '---------')]
     for l in list_args:
         l=str(l)
         t1=(l,l)
         list_tumple.append(t1)
-    
+ 
         
     return list_tumple
 
