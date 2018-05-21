@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^skrecord/', include('skrecord.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
     url(r'^skdeploy/', include('skdeploy.urls')),
+    url(r'^skworkorders/', include('skworkorders.urls')),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

@@ -48,6 +48,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 INSTALLED_APPS = [
     'sktask',
+    'skworkorders',
     'skdomain',
     'skcmdb',
     'skconfig',
@@ -74,9 +75,11 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'skipper.urls'
+
 
 TEMPLATES = [
     {
