@@ -17,29 +17,62 @@
             <li id="skconfig" hidden="hidden"><a href="{% url 'config' %}"><i class="fa fa fa-cog"></i> <span>系统配置</span></a></li>
         </ul>
     </section>
+    
+ <ul id=permission_sidebar_list hidden="hidden">
+	 {% for i in url_permission_list %}
+	    <li>{{ i }}</li>
+	 {% endfor %}
+</ul>
+    
 </aside>
 
-<script>
-    function in_array(str,arr) {
-        for(i=0;i<arr.length;i++){
-            v = arr[i];
-            if (str==v){
-                return true;
-            }
-        }
-        return false;
-    }
-    $(document).ready(function () {
-        var data = '{{ url_permission_list|safe }}';
-        var permission_flag = '{{ permission_flag|safe }}';
-        var url_arr = jQuery.parseJSON(data);
-        $("li").each(function(){
-            var nav_id =  $(this).attr("id");
-            if(permission_flag=='True' || in_array(nav_id,url_arr)){
-                $(this).show();
-            }
-        });
-    });
+<<script type="text/javascript">
+$(document).ready(function () {
+	Array.prototype.contains = function ( needle ) {
+		  for (i in this) {
+		    if (this[i] == needle) return true;
+		  }
+		  return false;
+		}
+	
+	permission_navbar_list = new Array();
+	$("ul#permission_sidebar_list").children("li").each(function(){
+		var show_sidebar_id = $(this).text().split("/")[1]
+		if (show_sidebar_id == 'all'){
+			$("ul#sidebar-menu").children("li").show();
+		}
+		else {
+			$("ul#sidebar-menu").children("li#" + show_sidebar_id).show();
+		}
+		
+		
+		permission_navbar_list.push($(this).text());
+		
+		
+	});
+	console.log(permission_navbar_list);
+	
+	$("ul.navbar-nav").find("a").each(function(){
+		var navbar_href = $(this).attr("href");
+		console.log(navbar_href);
+		url1 = "/" + navbar_href.split("/")[1] + "/"
+		
+		
+		if (permission_navbar_list.contains(url1)){
+			$(this).parent().show();
+			
+		}
+		else if(permission_navbar_list.contains(navbar_href)){
+			$(this).parent().show();
+		
+		}
+		else {
+			;
+		}
+	});
+		
+});
+
 </script>
 
 

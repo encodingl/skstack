@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+from skaccounts.models import UserInfo, RoleList, PermissionList
 
 def url_permission(request):
-    url_permission_list = []
-    permission_flag = False
+    url_permission_list=[]
     if request.user.is_superuser:
-        permission_flag = True
+        url_permission_list=['/all/']
+        return {'url_permission_list': url_permission_list}
+        
+            
     elif request.user.username and request.user.role:
-        url_permission = request.user.role.permission.values_list('url')
-        url_permission_list = [u[0] for u in url_permission if not u[0].startswith('/')]
-        if 'show_all_menu' in url_permission_list:
-            permission_flag = True
-    url_permission_list=json.dumps(url_permission_list)
-    return {'url_permission_list': url_permission_list, 'permission_flag': permission_flag}
+        iUser = UserInfo.objects.get(username=request.user)
+        role_permission = RoleList.objects.get(name=iUser.role)
+        role_permission_list = role_permission.permission.all()
+        for l in role_permission_list:
+            url_permission_list.append(str(l.url))
+        
+    return {'url_permission_list': url_permission_list}
+  
