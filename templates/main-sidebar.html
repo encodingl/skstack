@@ -14,7 +14,7 @@
         
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" id="sidebar-menu">
-       	   <li class="header">主导航</li>
+       	   <li id="menuheader" class="header">主导航</li>
             <li id="skyw" hidden="hidden"><a href="{% url 'list' %}"><i class="fa fa-link"></i> <span>运维导航</span></a></li>
             <li id="skcmdb" hidden="hidden"><a href="{% url 'cmdb' %}"><i class="fa fa-database"></i> <span>资产管理</span></a></li>
             <li id="sktask" hidden="hidden"><a href="{% url 'task' %}"><i class="fa fa-cogs"></i> <span>运维任务</span></a></li>
@@ -56,8 +56,11 @@ $(document).ready(function () {
 	permission_navbar_list = new Array();
 	$("ul#permission_sidebar_list").children("li").each(function(){
 		show_sidebar_id = $(this).text().split("/")[1]
+
 		if (show_sidebar_id == 'all'){
 			$("ul#sidebar-menu").children("li").show();
+			$("ul.navbar-nav").find("li").show();
+			
 		}
 		else {
 			$("ul#sidebar-menu").children("li#" + show_sidebar_id).show();
@@ -70,23 +73,28 @@ $(document).ready(function () {
 	});
 	console.log(permission_navbar_list);
 	
-	$("ul.navbar-nav").find("a").each(function(){
+	$("ul.second-menu").find("a").each(function(){
 		var navbar_href = $(this).attr("href");
 		console.log(navbar_href);
 		url1 = "/" + navbar_href.split("/")[1] + "/"
+		console.log("heiheistart")
+		console.log(url1)
+		console.log("heiheiend")
 		
 		
 		if (permission_navbar_list.contains(url1)){
 			$(this).parent().show();
 			
+			$(this).parents("li.dropdown").show();
 		}
+		
 		else if(permission_navbar_list.contains(navbar_href)){
 			$(this).parent().show();
+			$(this).parents("li.dropdown").show();
+			
 		
 		}
-		else if(show_sidebar_id == 'all') {
-			$(this).parent().show();
-		}
+	
 	});
 		
 });
@@ -104,7 +112,7 @@ $(document).ready(function () {
         $("ul[id='sidebar-menu']  a[href*='" + sidebar_url + "']").parent().addClass('bg-primary').siblings().removeClass('bg-primary');
     });
 </script>
- <script src="/static/layer/layer.js"></script>
+<script src="/static/layer/layer.js"></script>
 <<script type="text/javascript">
 $("#tpl_unfinished_workorders").mouseover(function() {
 	
