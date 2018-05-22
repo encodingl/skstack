@@ -94,6 +94,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'skipper.context_processor.url_permission',
+                'skipper.context_processor.skworkorder_todo_statistics',
             ],
         },
     },
