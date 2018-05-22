@@ -37,7 +37,7 @@ $(document).ready(function () {
 	
 	permission_navbar_list = new Array();
 	$("ul#permission_sidebar_list").children("li").each(function(){
-		var show_sidebar_id = $(this).text().split("/")[1]
+		show_sidebar_id = $(this).text().split("/")[1]
 		if (show_sidebar_id == 'all'){
 			$("ul#sidebar-menu").children("li").show();
 		}
@@ -66,8 +66,8 @@ $(document).ready(function () {
 			$(this).parent().show();
 		
 		}
-		else {
-			;
+		else if(show_sidebar_id == 'all') {
+			$(this).parent().show();
 		}
 	});
 		
