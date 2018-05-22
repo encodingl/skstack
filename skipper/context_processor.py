@@ -7,7 +7,7 @@ def url_permission(request):
     url_permission_list=[]
     if request.user.is_superuser:
         url_permission_list=['/all/']
-        return {'url_permission_list': url_permission_list}
+        
         
             
     elif request.user.username and request.user.role:
