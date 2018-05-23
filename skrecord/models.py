@@ -104,3 +104,15 @@ class Change(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Memo(models.Model):
+    title = models.CharField(u"标题", max_length=50, null=True)
+    content = models.TextField(u"内容", max_length=2000, null=True)
+    noticetime = models.DateField(u"通知时间", max_length=100, null=True)
+    expirationtime = models.DateField(u"到期时间", max_length=100, null=True)
+    mail = models.EmailField(u"通知邮箱",max_length=200, null=True)
+    recordtime = models.DateTimeField(u"记录时间", auto_now=True)
+    user = models.CharField(editable=False, max_length=100, null=True)
+
+    def __unicode__(self):
+        return self.name

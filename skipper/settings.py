@@ -353,3 +353,7 @@ EMAIL_HOST = config.get('email', 'email_host')
 EMAIL_PORT = config.get('email', 'email_port')
 EMAIL_HOST_USER = config.get('email', 'email_user')
 EMAIL_HOST_PASSWORD = config.get('email', 'email_password')
+
+CRONJOBS = [
+    ('*/10 * * * *', 'skrecord.cron','>>/var/log/skrecord_cron.log')
+]

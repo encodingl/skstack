@@ -4,7 +4,7 @@
 from django import forms
 from django.forms.widgets import *
 
-from .models import Record,Record_list,Faq,Faq_list,Assessment,Assessment_list,Change,Track,Track_list
+from .models import Record,Record_list,Faq,Faq_list,Assessment,Assessment_list,Change,Track,Track_list,Memo
 
 
 class Record_form(forms.ModelForm):
@@ -140,4 +140,17 @@ class Change_form(forms.ModelForm):
             'rollback': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
             'recordtime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
 
+        }
+
+class Memo_form(forms.ModelForm):
+
+    class Meta:
+        model = Memo
+        exclude = ("id",)
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'content': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'noticetime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'expirationtime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'mail': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
         }

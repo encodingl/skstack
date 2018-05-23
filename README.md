@@ -126,7 +126,9 @@ level级别为:info,warn,error,fatal.
 }
 
 
-
+---------------------------------
+#### 加入django-crontab模块
+pip install django-crontab
 
 
 
