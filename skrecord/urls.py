@@ -3,7 +3,8 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 #from . import views
-from skrecord import views,record_list,faq,faq_list,assessment,assessment_list,change,track,track_list
+from skrecord import views,record_list,faq,faq_list,assessment,assessment_list,change,track,track_list,memo
+
 
 urlpatterns = [
     #url(r'^$', views.index, name='record'),
@@ -90,4 +91,14 @@ url(r'^track/$', track.track, name='track'),
     url(r'^track_list/save/$', track_list.message, name='track_list_message'),
     url(r'^track_list/edit/(?P<ids>\d+)/$', track_list.edit, name='track_list_edit'),
     url(r'^track_list/detail/(?P<ids>\d+)/$', track_list.detail, name='track_list_detail'),
+
+    url(r'^memo/$', memo.memo, name='memo'),
+    url(r'^add/$', memo.add, name='add'),
+    url(r'^memo/delete/(?P<ids>\d+)/$', memo.memo_delete, name='memo_delete'),
+    #url(r'^edit/(?P<ids>\d+)/$', change.edit, name='edit'),
+    url(r'^memo/add/$', memo.add, name='memo_add'),
+    url(r'^memo/save/$', memo.message, name='memo_message'),
+    url(r'^memo/edit/(?P<ids>\d+)/$', memo.edit, name='memo_edit'),
+    url(r'^memo/detail/(?P<ids>\d+)/$', memo.detail, name='memo_detail'),
+
 ]
