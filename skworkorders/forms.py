@@ -153,7 +153,9 @@ class Vars_form(forms.ModelForm):
             'value_optional': forms.Textarea(attrs={'class': 'form-control'}),
             'vars': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '10', 'multiple': 'multiple'}),
             'group': forms.Select(attrs={'class': 'form-control'}),
-            'evn': forms.Select(attrs={'class': 'form-control'}),
+            'env': forms.Select(attrs={'class': 'form-control'}),
+            'value_script': forms.TextInput(attrs={'class': 'form-control'}),
+            
         
         }
         
