@@ -159,7 +159,7 @@ def pretask(request):
             user = request.user
             if permission_submit_pass(user, WorkOrder_id):
                 obj_WorkOrder = get_object(WorkOrder, id=WorkOrder_id)  
-                user_vars_dic = format_to_user_vars(**message_dic)
+                message_dic_format,user_vars_dic = format_to_user_vars(**message_dic)
                 if obj_WorkOrder.pre_task:
                     custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
                 
@@ -172,21 +172,21 @@ def pretask(request):
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="post_task")
                         
                     obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    user_vars_dic["finished_at"]=obj_finished_at
+                    message_dic_format["finished_at"]=obj_finished_at
                     if retcode == 0:
-                        user_vars_dic["status"] = 3
-                        WorkOrderFlow.objects.create(**user_vars_dic)
+                        message_dic_format["status"] = 3
+                        WorkOrderFlow.objects.create(**message_dic_format)
                         request.websocket.send("finished:工单执行成功")
                     else:
-                        user_vars_dic["status"] = 4
-                        WorkOrderFlow.objects.create(**user_vars_dic)
+                        message_dic_format["status"] = 4
+                        WorkOrderFlow.objects.create(**message_dic_format)
                         request.websocket.send("finished:工单执行失败")
                     
                 else:
                     obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    user_vars_dic["finished_at"]=obj_finished_at
-                    user_vars_dic["status"] = 0
-                    WorkOrderFlow.objects.create(**user_vars_dic)
+                    message_dic_format["finished_at"]=obj_finished_at
+                    message_dic_format["status"] = 0
+                    WorkOrderFlow.objects.create(**message_dic_format)
                     request.websocket.send("finished:工单提交成功")
                
             else:
