@@ -125,7 +125,7 @@ def format_to_user_vars(**message_dic):
     message_dic.pop("id")
     print "user_vars:%s" % user_vars_dic
     message_dic["user_vars"]=user_vars_dic
-    return message_dic
+    return message_dic,user_vars_dic
             
 def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
     obj = obj_WorkOrder
@@ -134,8 +134,8 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
     taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
    
     if taskname_dic[taskname]:
-        user_vars = user_vars_dic["user_vars"]
-        task = var_change2(taskname_dic[taskname],**user_vars) 
+        
+        task = var_change2(taskname_dic[taskname],**user_vars_dic) 
         if obj.var_built_in:
             var_built_in_dic = eval(obj.var_built_in) 
             task = var_change2(task,**var_built_in_dic)
