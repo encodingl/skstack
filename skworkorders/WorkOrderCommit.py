@@ -153,13 +153,15 @@ def pretask(request):
             return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
     else:
         for message in request.websocket:          
-            message_dic = eval(message)       
+            message_dic = eval(message)    
+            print "message_dic:%s" %    message_dic
             WorkOrder_id = int(message_dic['id'])
             user = request.user
             if permission_submit_pass(user, WorkOrder_id):
                 obj_WorkOrder = get_object(WorkOrder, id=WorkOrder_id)  
                 user_vars_dic = format_to_user_vars(**message_dic)
-                custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
+                if obj_WorkOrder.pre_task:
+                    custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
                 
                 
                 if obj_WorkOrder.audit_enable == False:
@@ -178,7 +180,7 @@ def pretask(request):
                     else:
                         user_vars_dic["status"] = 4
                         WorkOrderFlow.objects.create(**user_vars_dic)
-                        request.websocket.send("finished:工单执行成功")
+                        request.websocket.send("finished:工单执行失败")
                     
                 else:
                     obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
