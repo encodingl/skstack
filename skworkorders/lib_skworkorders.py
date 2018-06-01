@@ -51,6 +51,11 @@ def get_Vars_form(obj_var):
     new_fields = {
             var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Select(attrs={'class': 'form-control'}))
             }
+    
+    TextInput_field = {
+            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.TextInput(attrs={'class': 'form-control'}))
+            }
+    
     if obj.value_form_type == "Select":
         tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
         tpl_Custom_form = tpl_Custom_form(initial=content)
@@ -58,7 +63,8 @@ def get_Vars_form(obj_var):
     elif obj.value_form_type == "SelectMultiple":
         pass
     elif obj.value_form_type == "TextInput":
-        pass
+        tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  TextInput_field)
+        tpl_Custom_form = tpl_Custom_form(initial=content)
     elif obj.value_form_type == "Textarea":
         pass
     else:
@@ -94,6 +100,7 @@ def get_VarsGroup_form(args):
      
 
 def var_change2(arg,**kwargs):
+    print "var_change2_kwargs:%s" % kwargs
     for key,value in kwargs.items():       
         key = "{%s}" % key
         value = str(value)
@@ -110,7 +117,6 @@ def format_to_user_vars(**message_dic):
 
     for obj_var in obj_VarsGroup.vars.all():  
         obj_var_name = str(obj_var.name)
-        print message_dic[obj_var_name]
         if message_dic.has_key(obj_var_name):
             
             user_vars_dic[obj_var_name]=message_dic[obj_var_name]
@@ -123,17 +129,22 @@ def format_to_user_vars(**message_dic):
             
 def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
     obj = obj_WorkOrder
-    var_built_in_dic = eval(obj.var_built_in) 
+    
+    
     taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
    
     if taskname_dic[taskname]:
-        task = var_change2(taskname_dic[taskname],**user_vars_dic) 
-        task = var_change2(task,**var_built_in_dic)
+        user_vars = user_vars_dic["user_vars"]
+        task = var_change2(taskname_dic[taskname],**user_vars) 
+        if obj.var_built_in:
+            var_built_in_dic = eval(obj.var_built_in) 
+            task = var_change2(task,**var_built_in_dic)
    
         task_list = task.encode("utf-8").split("\r") 
         ret_message="%s:开始执行" % taskname
         request.websocket.send(ret_message)           
         for cmd in task_list:
+            print cmd
             pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
             while True: 
                 line = pcmd.stdout.readline().strip()  #获取内容
