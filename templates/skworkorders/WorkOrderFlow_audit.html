@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load mytags %}
 {% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
+   
+    
+    
 {% endblock %}
 {% block content %}
 
@@ -35,6 +37,7 @@
                 	 </div>
                 	 
              <div class="tab-content">
+             <p  class="text-aqua">the data for the last month</p>
 		      	{% if tpl_dic_obj %}
                 {% for k,v in tpl_dic_obj.items %}   
                    <div class="tab-pane fade" id="{{ k }}">
@@ -134,20 +137,44 @@ function checkAll(sender, checkClass) {
 </script>
 <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script>
-$(function () {
-    $('.table').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true,
-      "aaSorting": [[0,'desc']],
-    });
-  });
-</script>
 
+<script>
+  $(document).ready(function() {
+	    $('.table').DataTable( {
+	    	  "paging": true,
+	        "lengthChange": true,
+	        "searching": true,
+	       
+	        "info": true,
+	        "autoWidth": false,
+	        "aaSorting": [[0,'desc']],
+	      
+	        initComplete: function () {
+	            var api = this.api();
+	            api.columns().indexes().flatten().each( function ( i ) {
+	                var column = api.column( i );
+	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
+	            	if (i == 3){
+	                var select = $('<select><option value="">All</option></select>')
+	                    .appendTo( $(column.header()) )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	                
+	            	} //end if
+	            } );
+	        }
+	    } );
+	} );
+</script>
 <script>
 function checkSubmit() {
     if (!confirm("确定删除？")) {
@@ -256,4 +283,6 @@ $(document).ready(function(){
 <script type='text/javascript'>
 $('#ul_env a:first').tab('show')
 </script>
+
+
 {% endblock %}

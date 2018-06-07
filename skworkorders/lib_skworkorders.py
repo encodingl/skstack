@@ -24,11 +24,8 @@ from datetime import datetime
 import commands
 
 
-
-
-level = get_config_var("log_level")
-log_path = get_config_var("log_path")
-log("setup.log", level, log_path)
+import logging
+log = logging.getLogger('skworkorders')
 
 
 
@@ -142,14 +139,19 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
    
         task_list = task.encode("utf-8").split("\r") 
         ret_message="%s:开始执行" % taskname
+        log.info(ret_message)
         request.websocket.send(ret_message)           
         for cmd in task_list:
-            print cmd
-            pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+            try:
+                log.info("cmd_start:%s"  % cmd )
+                pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+            except Exception, msg:
+                log.error("cmd_result:%s" % msg)
             while True: 
                 line = pcmd.stdout.readline().strip()  #获取内容
                 if line:
                     request.websocket.send(line)
+                    log.info("cmd_result:%s" % line)
                 else:    
                     break
             retcode=pcmd.wait()
@@ -157,10 +159,12 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 pass
             else:
                 ret_message="%s:执行失败" % taskname
+                log.error(ret_message)
                 break
         if retcode==0:
             
             ret_message="%s:执行成功" % taskname
+            log.info(ret_message)
 
         request.websocket.send(ret_message)
     return retcode
