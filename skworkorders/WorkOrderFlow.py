@@ -61,6 +61,8 @@ def WorkOrderFlow_index(request):
 def WorkOrderFlow_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
+    tpl_env = Environment.objects.all()
+    tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
         print from_date
@@ -70,18 +72,18 @@ def WorkOrderFlow_history(request):
         to_date = request.POST.get('to_date', '')
         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
         tpl_all = WorkOrderFlow.objects.filter(created_at__range=(from_date,to_date))
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date))
+            tpl_dic_obj[e.name_english]=obj
     else:
-        
-    
-        
     
         tpl_all = WorkOrderFlow.objects.filter(created_at__range=(current_date + timedelta(days=-30),current_date))
-    tpl_env = Environment.objects.all()
-    tpl_dic_obj={}
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
+            tpl_dic_obj[e.name_english]=obj
+    
     tpl_dic_obj["ALL"]=tpl_all
-    for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
-        tpl_dic_obj[e.name_english]=obj
+    
     return render_to_response('skworkorders/WorkOrderFlow_history.html', locals(), RequestContext(request))
  
  
