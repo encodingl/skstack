@@ -129,7 +129,9 @@ level级别为:info,warn,error,fatal.
 ---------------------------------
 #### 加入django-crontab模块
 pip install django-crontab
-
+#####加入django-ckeditor模块和pillow模块
+pip install django-ckeditor
+pip install pillow
 
 
 
