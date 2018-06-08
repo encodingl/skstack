@@ -20,17 +20,13 @@
             <li id="sktask" hidden="hidden"><a href="{% url 'task' %}"><i class="fa fa-cogs"></i> <span>运维任务</span></a></li>
             <li id="skworkorders" hidden="hidden"><a href="{% url 'WorkOrderCommit_index' %}"><i class="fa fa-cloud"></i>
             				<span> 工单系统</span>
-            				<span class="pull-right-container">
-            					  
-					              <small class="label pull-right bg-yellow" id="tpl_unfinished_workorders">{{ tpl_unfinished_workorders }}</small>
-					              
-          				  </span>
+            				
             				
             				</a></li>
-<!--             <li id="skdeploy" hidden="hidden"><a href="{% url 'TaskStatus_index' %}"><i class="fa fa-file-code-o"></i><span>版本迭代</span></a></li> -->
+             <li id="skdeploy" hidden="hidden"><a href="{% url 'TaskStatus_index' %}"><i class="fa fa-file-code-o"></i><span> 版本迭代</span></a></li> 
             <li id="skrecord" hidden="hidden"><a href="{% url 'faq' %}"><i class="fa fa-book"></i> <span>登记管理</span></a></li>
             <li id="skrpt" hidden="hidden"><a href="{% url 'rpt' %}"><i class="fa fa fa-line-chart"></i> <span>报表平台</span></a></li>
-            <li id="skapi" hidden="hidden"><a href="{% url 'monitor_index' %}"><i class="fa fa-files-o"></i> <span>监控平台</span></a></li>
+            <li id="skapi" hidden="hidden"><a href="{% url 'monitor_index' %}"><i class="fa fa-files-o"></i> <span>监控管理</span></a></li>
             <li id="skaccounts" hidden="hidden"><a href="{% url 'user_list' %}"><i class="fa fa-users"></i> <span>用户管理</span></a></li>
             <li id="skconfig" hidden="hidden"><a href="{% url 'config' %}"><i class="fa fa fa-cog"></i> <span>系统配置</span></a></li>
         </ul>

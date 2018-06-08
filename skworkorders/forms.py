@@ -39,6 +39,9 @@ class WorkOrder_form(forms.ModelForm):
             'status': forms.RadioSelect(),
             
             'var_built_in': forms.Textarea(attrs={'class': 'form-control'}),
+            'var_opional_switch': forms.RadioSelect(),
+            'var_opional': forms.Select(attrs={'class': 'form-control'}),
+            
             
             'pre_task': forms.Textarea(attrs={'class': 'form-control'}),
             'main_task': forms.Textarea(attrs={'class': 'form-control'}),

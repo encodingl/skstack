@@ -11,9 +11,6 @@ from skaccounts.models import UserGroup,AuditFlow
 
 # Create your models here.3
 
-import datetime
-from _mysql import NULL
-from celery.bin.control import status
 
 
 
@@ -107,7 +104,7 @@ class VarsGroup(models.Model):
     desc  = models.CharField(u"描述",max_length=300)
     vars = models.ManyToManyField(Vars, verbose_name=u"变量",blank=True)
     env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
     def __unicode__(self):
         return self.name
     

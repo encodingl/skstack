@@ -233,7 +233,7 @@ def Project_add_from_template(request,ids):
         obj = get_object(Project, id=ids)
         dic_init={
             'desc':obj.desc,
-            
+            'user_dep':obj.user_dep.all(),
             'env':obj.env,
             'group':obj.group,
             'status':obj.status,

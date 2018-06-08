@@ -57,20 +57,21 @@ def WorkOrderGroup_add(request):
 @login_required()
 @permission_verify()
 def WorkOrderGroup_del(request):
-#    temp_name = "skworkorders/skworkorders-header.html"
     WorkOrderGroup_id = request.GET.get('id', '')
     if WorkOrderGroup_id:
-        WorkOrderGroup.objects.filter(id=WorkOrderGroup_id).delete()
+        try:
+            WorkOrderGroup.objects.filter(id=WorkOrderGroup_id).delete()
+            return HttpResponse(u'删除成功')
+        except Exception, tpl_error_msg:
+            temp_name = "skworkorders/skworkorders-header.html"
+            return render_to_response("skworkorders/WorkOrderGroup_index.html", locals(), RequestContext(request))
+            
     
-    if request.method == 'POST':
-        WorkOrderGroup_items = request.POST.getlist('x_check', [])
-        if WorkOrderGroup_items:
-            for n in WorkOrderGroup_items:
-                WorkOrderGroup.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
- #   allworkorder = WorkOrderGroup.objects.all()
     
- #   return render_to_response("skworkorders/WorkOrderGroup.html", locals(), RequestContext(request))
+    
+
+    
+    
 
 
 @login_required()

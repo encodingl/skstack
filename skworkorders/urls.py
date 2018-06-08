@@ -8,9 +8,10 @@ urlpatterns = [
      url(r'^WorkOrder/del/$', WorkOrder.WorkOrder_del, name='WorkOrder_del'),
      url(r'^WorkOrder/$', WorkOrder.WorkOrder_index, name='WorkOrder_index'),
      url(r'^WorkOrder/add/$', WorkOrder.WorkOrder_add, name='WorkOrder_add'),
-#      url(r'^WorkOrder/edit/(?P<ids>\d+)/$', WorkOrder.WorkOrder_edit, name='WorkOrder_edit'),
      url(r'^WorkOrder/edit/$', WorkOrder.WorkOrder_edit, name='WorkOrder_edit'),
-     url(r'^WorkOrder/init/$', WorkOrder.WorkOrder_init, name='WorkOrder_init'),
+     url(r'^WorkOrder/off/$', WorkOrder.WorkOrder_off, name='WorkOrder_off'),
+     url(r'^WorkOrder/on/$', WorkOrder.WorkOrder_on, name='WorkOrder_on'),
+   
      url(r'^WorkOrder/template/$', WorkOrder.WorkOrder_template, name='WorkOrder_template'),
      url(r'^WorkOrder/add2/(?P<ids>\d+)/$', WorkOrder.WorkOrder_add_from_template, name='WorkOrder_add_from_template'),
      
@@ -28,12 +29,14 @@ urlpatterns = [
      url(r'^VarsGroup/del/$', VarsGroup.VarsGroup_del, name='VarsGroup_del'),
      url(r'^VarsGroup/add/$', VarsGroup.VarsGroup_add, name='VarsGroup_add'),
      url(r'^VarsGroup/edit/(?P<ids>\d+)/$', VarsGroup.VarsGroup_edit, name='VarsGroup_edit'),
+     url(r'^VarsGroup/copy/$', VarsGroup.VarsGroup_copy, name='VarsGroup_copy'),
 
      url(r'^Vars/$', Vars.Vars_index, name='Vars_index'),
      url(r'^Vars/del/$', Vars.Vars_del, name='Vars_del'),
      url(r'^Vars/add/$', Vars.Vars_add, name='Vars_add'),
      url(r'^Vars/edit/(?P<ids>\d+)/$', Vars.Vars_edit, name='Vars_edit'),
      url(r'^Vars/check/(?P<ids>\d+)/$', Vars.Vars_check, name='Vars_check'),
+     url(r'^Vars/copy/$', Vars.Vars_copy, name='Vars_copy'),
          
      
      url(r'^WorkOrderFlow/revoke/$', WorkOrderFlow.WorkOrderFlow_revoke, name='WorkOrderFlow_revoke'),
