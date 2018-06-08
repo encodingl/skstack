@@ -2,6 +2,7 @@
 {% block self_head_css_js %}
     <script src="/static/layer/layer.js"></script>
     <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
+    <script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
 
 {% endblock %}
@@ -28,6 +29,7 @@
         <div class="box-body">
       <form action="{% url 'faq_add' %}" method="post">
         {% csrf_token %}
+        {{ faq_form.media }}
         {{ faq_form.as_p }}
         <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">
         <a href="{% url 'faq' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>

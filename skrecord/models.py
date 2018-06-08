@@ -4,6 +4,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from skaccounts.models import UserInfo
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 TRACK_STATUS = (
     (str(0), u"已解决"),
@@ -66,7 +68,8 @@ class Faq(models.Model):
     title = models.CharField(u"问题标题", max_length=100, null=True)
     #problemclass = models.CharField(u"问题类别", max_length=100, null=True)
     problemclass = models.ForeignKey(Faq_list, verbose_name=u"问题分类", on_delete=models.SET_NULL, null=True, blank=True)
-    describe = models.TextField(u"问题描述", max_length=2000, null=True)
+    #describe = models.TextField(u"问题描述", max_length=2000, null=True)
+    describe = RichTextUploadingField(verbose_name="问题描述", max_length=2000, null=True)
     solution = models.TextField(u"解决方案", max_length=2000, null=True)
     user =  models.CharField(editable=False, max_length=100, null=True)
 

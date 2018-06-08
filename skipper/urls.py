@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^skyw/', include('skyw.urls')),
     url(r'^skapi/', include('skapi.urls')),
     url(r'^skrecord/', include('skrecord.urls')),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
     url(r'^skdeploy/', include('skdeploy.urls')),
     url(r'^skworkorders/', include('skworkorders.urls')),
