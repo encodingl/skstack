@@ -1,31 +1,15 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
-from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
-import os
-from skconfig.views import get_dir
+from models import Environment
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
 from .forms import Environment_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
 import logging
-from billiard.util import INFO
-import sys
-from datetime import datetime
+log = logging.getLogger('skworkorders')
 
-
-git_path = get_dir("git_path")
-level = get_dir("log_level")
-log_path = get_dir("log_path")
-log("setup.log", level, log_path)
-proj_base_dir = get_dir("pro_path")
 
 @login_required()
 @permission_verify()
@@ -41,17 +25,7 @@ def Environment_add(request):
     temp_name = "skworkorders/skworkorders-header.html"
     if request.method == "POST":
         tpl_Environment_form = Environment_form(request.POST)
-        if tpl_Environment_form.is_valid():
-            env_git_dir=git_path+request.POST.get('name_english')
-            env_proj_dir=proj_base_dir+request.POST.get('name_english')
-            try:
-                
-                os.makedirs(env_git_dir)
-                os.makedirs(env_proj_dir)
-            except:
-                exinfo=sys.exc_info()
-                logging.error(exinfo)
-                
+        if tpl_Environment_form.is_valid():     
             tpl_Environment_form.save()
             tips = u"增加成功！"
             display_control = ""
@@ -71,20 +45,15 @@ def Environment_add(request):
 @login_required()
 @permission_verify()
 def Environment_del(request):
-#    temp_name = "skworkorders/skworkorders-header.html"
-    Environment_id = request.GET.get('id', '')
-    if Environment_id:
-        Environment.objects.filter(id=Environment_id).delete()
-    
-    if request.method == 'POST':
-        Environment_items = request.POST.getlist('x_check', [])
-        if Environment_items:
-            for n in Environment_items:
-                Environment.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
- #   allworkorder = Environment.objects.all()
-    
- #   return render_to_response("skworkorders/Environment.html", locals(), RequestContext(request))
+    temp_name = "skworkorders/skworkorders-header.html"    
+    obj_id = request.GET.get('id', '')  
+    if obj_id:
+        try:
+            Environment.objects.filter(id=obj_id).delete()
+        except Exception, tpl_error_msg:
+            log.warning(tpl_error_msg)
+        tpl_all = Environment.objects.all()
+        return render_to_response("skworkorders/Environment_index.html", locals(), RequestContext(request))
 
 
 @login_required()
@@ -96,22 +65,7 @@ def Environment_edit(request, ids):
     if request.method == 'POST':
         tpl_Environment_form = Environment_form(request.POST, instance=obj)
         if tpl_Environment_form.is_valid():
-            env_git_dir=git_path+request.POST.get('name_english')
-            env_proj_dir=proj_base_dir+request.POST.get('name_english')
-            print env_proj_dir
-            try:
-                
-                os.mkdir(env_git_dir)
-                
-            except:
-                exinfo=sys.exc_info()
-                logging.error(exinfo)
-            try:
-                os.mkdir(env_proj_dir)
-            except:
-                exinfo=sys.exc_info()
-                logging.error(exinfo)
-        
+
             tpl_Environment_form.save()
             status = 1
         else:

@@ -1,27 +1,21 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
+from models import Vars 
 from django.http import HttpResponse
-from models import AuditFlow,Environment,Vars,WorkOrder,WorkOrderFlow,Vars,VarsGroup
-import os
-from skconfig.views import get_dir
+
+
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
+
 
 from .forms import Vars_form,Vars_Select_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
-import logging
-from billiard.util import INFO
-import sys
-from datetime import datetime
+
 from lib.lib_format import list_to_formlist
 import commands
+import time
 
 
 
@@ -30,7 +24,7 @@ import commands
 def Vars_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = Vars.objects.all()
-    print tpl_all
+    
     return render_to_response('skworkorders/Vars_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -70,9 +64,19 @@ def Vars_del(request):
             for n in Vars_items:
                 Vars.objects.filter(id=n).delete()
     return HttpResponse(u'删除成功')
- #   allworkorder = Vars.objects.all()
-    
- #   return render_to_response("skworkorders/Vars.html", locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def Vars_copy(request):
+    temp_name = "skworkorders/skworkorders-header.html"
+    Vars_id = request.GET.get('id', '')
+    if Vars_id:
+        obj = Vars.objects.get(id=Vars_id)
+        obj.pk=None
+        obj.name = obj.name + "_copy_" + time.strftime("%H%M%S", time.localtime()) 
+        obj.save()  
+    tpl_all = Vars.objects.all()
+    return render_to_response('skworkorders/Vars_index.html', locals(), RequestContext(request))
 
 
 @login_required()

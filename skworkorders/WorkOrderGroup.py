@@ -1,25 +1,20 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
-from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
-import os
-from skconfig.views import get_dir
+
+
+from models import WorkOrderGroup
+
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
+
 
 from .forms import WorkOrderGroup_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
+
 import logging
-from billiard.util import INFO
-import sys
-from datetime import datetime
+log = logging.getLogger('skworkorders')
 
 
 
@@ -28,7 +23,6 @@ from datetime import datetime
 def WorkOrderGroup_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = WorkOrderGroup.objects.all()
-    print tpl_all
     return render_to_response('skworkorders/WorkOrderGroup_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -57,20 +51,22 @@ def WorkOrderGroup_add(request):
 @login_required()
 @permission_verify()
 def WorkOrderGroup_del(request):
-#    temp_name = "skworkorders/skworkorders-header.html"
-    WorkOrderGroup_id = request.GET.get('id', '')
+    temp_name = "skworkorders/skworkorders-header.html"
+    WorkOrderGroup_id = request.GET.get('id', '')  
     if WorkOrderGroup_id:
-        WorkOrderGroup.objects.filter(id=WorkOrderGroup_id).delete()
+        try:
+            WorkOrderGroup.objects.filter(id=WorkOrderGroup_id).delete()
+        except Exception, tpl_error_msg:
+            log.warning(tpl_error_msg)
+        tpl_all = WorkOrderGroup.objects.all()
+        return render_to_response("skworkorders/WorkOrderGroup_index.html", locals(), RequestContext(request))
+            
     
-    if request.method == 'POST':
-        WorkOrderGroup_items = request.POST.getlist('x_check', [])
-        if WorkOrderGroup_items:
-            for n in WorkOrderGroup_items:
-                WorkOrderGroup.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
- #   allworkorder = WorkOrderGroup.objects.all()
     
- #   return render_to_response("skworkorders/WorkOrderGroup.html", locals(), RequestContext(request))
+    
+
+    
+    
 
 
 @login_required()

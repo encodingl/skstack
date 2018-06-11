@@ -1,47 +1,24 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
+
 from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
-import os
-from skconfig.views import get_dir
+from models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
-from lib.lib_git import get_git_taglist, get_git_commitid
 from .forms import WorkOrderCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
-import logging
-from billiard.util import INFO
-import sys
 from datetime import datetime
-
-import redis
-import time
 import json
-from lib.lib_config import get_redis_config
-
-from git  import Git,Repo
-from skaccounts.models import UserInfo,UserGroup,AuditFlow
-from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
+from skaccounts.models import UserInfo
 from django import forms
-from lib.lib_redis import RedisLock
-from dwebsocket.decorators import accept_websocket, require_websocket
-import subprocess
-from lib_skworkorders import get_VarsGroup_form,var_change2,format_to_user_vars,custom_task,permission_submit_pass
-from django.db.models import Count 
+from dwebsocket.decorators import accept_websocket
 
+from lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
 
-
-level = get_dir("log_level")
-log_path = get_dir("log_path")
-log("setup.log", level, log_path)
-git_path = get_dir("git_path")
+import logging
+log = logging.getLogger('skworkorders')
 
 
 @login_required()
@@ -159,16 +136,21 @@ def pretask(request):
             user = request.user
             if permission_submit_pass(user, WorkOrder_id):
                 obj_WorkOrder = get_object(WorkOrder, id=WorkOrder_id)  
+                log.error("User:%s,Env:%s,WorkOrderName:%s commit starting" % (user,obj_WorkOrder.env,obj_WorkOrder.name)) 
                 message_dic_format,user_vars_dic = format_to_user_vars(**message_dic)
                 if obj_WorkOrder.pre_task:
-                    custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
+                    retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
+                else:
+                    retcode = 0
+                    
                 
                 
-                if obj_WorkOrder.audit_enable == False:
+                if retcode == 0 and obj_WorkOrder.audit_enable == False:
+                    log.info("User:%s,Env:%s,WorkOrderName:%s execute starting" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
                     if obj_WorkOrder.main_task:
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="main_task")
     
-                    if obj_WorkOrder.post_task:
+                    if obj_WorkOrder.post_task and retcode==0:
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="post_task")
                         
                     obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -177,23 +159,29 @@ def pretask(request):
                         message_dic_format["status"] = 3
                         WorkOrderFlow.objects.create(**message_dic_format)
                         request.websocket.send("finished:工单执行成功")
+                        log.info("User:%s,Env:%s,WorkOrderName:%s finished:successful工单执行成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name)) 
                     else:
                         message_dic_format["status"] = 4
                         WorkOrderFlow.objects.create(**message_dic_format)
                         request.websocket.send("finished:工单执行失败")
+                        log.error("User:%s,Env:%s,WorkOrderName:%s finished:failed工单执行失败" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
                     
-                else:
-                    obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    message_dic_format["finished_at"]=obj_finished_at
+                elif retcode == 0 and obj_WorkOrder.audit_enable == True:                  
                     message_dic_format["status"] = 0
                     WorkOrderFlow.objects.create(**message_dic_format)
                     request.websocket.send("finished:工单提交成功")
+                    log.info("User:%s,Env:%s,WorkOrderName:%s finished:successful工单提交成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
+                else:
+                    request.websocket.send("finished:工单提交失败")
+                    log.warning("User:%s,Env:%s,WorkOrderName:%s finished:successful工单提交失败" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
+                        
                
             else:
                 response_data = {}  
                 response_data['result'] = 'failed'  
                 response_data['message'] = 'finished:You donot have permisson' 
                 request.websocket.send(json.dumps(response_data))
+                log.warning(response_data)
 # 
 # @login_required()
 # @permission_verify()

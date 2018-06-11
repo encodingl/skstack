@@ -25,6 +25,10 @@ from lib.lib_config import get_redis_config
 from lib.file import get_ex_link
 
 import time
+from django.utils import timezone
+from datetime import timedelta,date
+
+
 from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
 from itertools import chain
@@ -33,18 +37,20 @@ from lib.lib_redis import RedisLock
 from dwebsocket.decorators import accept_websocket, require_websocket
 from lib_skworkorders import get_VarsGroup_form,var_change2,format_to_user_vars,custom_task,permission_submit_pass,permission_audit_pass
 import subprocess
+import logging
+log = logging.getLogger('skworkorders')
 
 @login_required()
 @permission_verify()
 def WorkOrderFlow_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
-    
-    tpl_all = WorkOrderFlow.objects.filter(user_commit=request.user)
+    current_date=timezone.now()
+    tpl_all = WorkOrderFlow.objects.filter(user_commit=request.user,created_at__range=(current_date + timedelta(days=-30),current_date))
     tpl_env = Environment.objects.all()
     tpl_dic_obj={}
     tpl_dic_obj["ALL"]=tpl_all
     for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(user_commit=request.user,env=e.name_english)
+        obj = WorkOrderFlow.objects.filter(user_commit=request.user,env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
         tpl_dic_obj[e.name_english]=obj
 
     return render_to_response('skworkorders/WorkOrderFlow_index.html', locals(), RequestContext(request))
@@ -53,14 +59,31 @@ def WorkOrderFlow_index(request):
 @login_required()
 @permission_verify()
 def WorkOrderFlow_history(request):
-    temp_name = "skworkorders/skworkorders-header.html"    
-    tpl_all = WorkOrderFlow.objects.all()
+    temp_name = "skworkorders/skworkorders-header.html"  
+    current_date=timezone.now()  
     tpl_env = Environment.objects.all()
     tpl_dic_obj={}
+    if request.method == 'POST':
+        from_date = request.POST.get('from_date', '')
+        print from_date
+        print type(from_date)
+        from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
+       
+        to_date = request.POST.get('to_date', '')
+        to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
+        tpl_all = WorkOrderFlow.objects.filter(created_at__range=(from_date,to_date))
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date))
+            tpl_dic_obj[e.name_english]=obj
+    else:
+    
+        tpl_all = WorkOrderFlow.objects.filter(created_at__range=(current_date + timedelta(days=-30),current_date))
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
+            tpl_dic_obj[e.name_english]=obj
+    
     tpl_dic_obj["ALL"]=tpl_all
-    for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(env=e.name_english)
-        tpl_dic_obj[e.name_english]=obj
+    
     return render_to_response('skworkorders/WorkOrderFlow_history.html', locals(), RequestContext(request))
  
  
@@ -135,6 +158,7 @@ def WorkOrderFlow_release_run(request):
          
             user_vars_dic = eval(obj.user_vars)
             user = request.user
+            log.info("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s execute starting" % (user,obj_WorkOrder.env,obj_WorkOrder.name,WorkOrderFlow_id)) 
             if permission_audit_pass(obj_audit_level=obj.audit_level,obj_status= obj.status):
                 
                 if permission_submit_pass(user, WorkOrder_id=obj.workorder_id):
@@ -142,15 +166,18 @@ def WorkOrderFlow_release_run(request):
                     if obj_WorkOrder.main_task:
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="main_task")
     
-                    if obj_WorkOrder.post_task:
+                    if obj_WorkOrder.post_task and retcode==0:
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="post_task")
                     obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     if retcode == 0:
                         WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="3",finished_at=obj_finished_at)
                         request.websocket.send("finished:工单执行成功")
+                        log.info("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s finished:successful工单执行成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name,WorkOrderFlow_id)) 
+                        
                     else:
                         WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="4",finished_at=obj_finished_at)
                         request.websocket.send("finished:工单执行失败")
+                        log.error("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s finished:failed工单执行失败" % (user,obj_WorkOrder.env,obj_WorkOrder.name,WorkOrderFlow_id)) 
                    
            
                     
@@ -159,11 +186,13 @@ def WorkOrderFlow_release_run(request):
                     response_data['result'] = 'failed'  
                     response_data['message'] = 'You donot have permisson' 
                     request.websocket.send(json.dumps(response_data))
+                    log.warning(response_data)
             else:
                 response_data = {}  
                 response_data['result'] = 'failed'  
                 response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
                 request.websocket.send(json.dumps(response_data))
+                log.warning(response_data)
                 
 
    
@@ -186,13 +215,15 @@ def WorkOrderFlow_audit(request):
    
     obj_AuditFlow = AuditFlow.objects.filter(Q(l1__in=obj_group)|Q(l2__in=obj_group)|Q(l3__in=obj_group))
     obj_workorder = WorkOrder.objects.filter(audit_flow__in = obj_AuditFlow,audit_enable=True)
-    tpl_all = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder)
+    current_date=timezone.now()
+   
+    tpl_all = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,created_at__range=(current_date + timedelta(days=-30),current_date))
     
     tpl_env = Environment.objects.all()
     tpl_dic_obj={}
     tpl_dic_obj["ALL"]=tpl_all
     for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,env=e.name_english)
+        obj = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
         tpl_dic_obj[e.name_english]=obj
 
     return render_to_response('skworkorders/WorkOrderFlow_audit.html', locals(), RequestContext(request))

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import ConfigParser
+import skworkorders
 
 
 
@@ -82,6 +83,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 
 ]
 
@@ -108,16 +110,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'skipper.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 
 DATABASES = {}
@@ -152,14 +144,6 @@ else:
         }
     }
 
-# DATABASES['jumpserver_db'] = {
-#     'ENGINE': 'django.db.backends.mysql',
-#     'NAME': config.get('jumpserver_db', 'database'),
-#     'USER': config.get('jumpserver_db', 'user'),
-#     'PASSWORD': config.get('jumpserver_db', 'password'),
-#     'HOST': config.get('jumpserver_db', 'host'),
-#     'PORT': config.getint('jumpserver_db', 'port'),
-# }
 
 DATABASE_ROUTERS = ['skipper.utils.DatabaseAppsRouter']
 DATABASE_APPS_MAPPING = {
@@ -184,8 +168,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -251,21 +234,8 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'skaccounts.UserInfo'
 LOGIN_URL = '/skaccounts/login/'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'handlers': ['console'],
-#             'level': 'INFO' if DEBUG else 'INFO',
-#         },
-#     },
-# }
+
+log_path = config.get('log', 'log_path')
 
 LOGGING = {
     'version': 1,
@@ -285,16 +255,16 @@ LOGGING = {
     },
     'handlers': {
         'mail_admins': {
-            'level': 'INFO',
+            'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['require_debug_false'],  # 仅当 DEBUG = False 时才发送邮件
-            # 'include_html':True,
+            'include_html':True,
             'formatter': 'standard',
         },
         'default': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper.log',  # 日志输出文件
+            'filename': os.path.join(log_path,'skipper.log'),  # 日志输出文件
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
             'backupCount': 5,  # 备份份数
             'formatter': 'standard',  # 使用哪种formatters日志格式
@@ -302,19 +272,19 @@ LOGGING = {
         'error_file': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper-error.log',
+            'filename': os.path.join(log_path,'skipper-error.log'),
             'formatter': 'standard'
         },
         'info_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper-info.log',
+            'filename': os.path.join(log_path,'skipper-info.log'),
             'formatter': 'standard'
         },
         'debug': {  # 记录到日志文件(需要创建对应的目录，否则会出错)
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper-debug.log',  # 日志输出文件
+            'filename': os.path.join(log_path,'skipper-debug.log'),
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
             'backupCount': 5,  # 备份份数
             'formatter': 'standard',  # 使用哪种formatters日志格式
@@ -322,25 +292,31 @@ LOGGING = {
         'zabbix_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper-zabbix.log',
+            'filename': os.path.join(log_path,'skipper-zabbix.log'),
             'formatter': 'standard'
         },
         'api_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/skipper-api.log',
+            'filename': os.path.join(log_path,'skipper-api.log'),
             'formatter': 'standard'
         },
         'nginx_info': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/opt/data/logs/skipper/nginx_req_info.log',
+            'filename': os.path.join(log_path,'nginx_req_info.log'),
             'formatter': 'standard'
         },
         'console': {
             'level': 'DEBUG',
             'filters': ['require_debug_false'],
             'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+         'skworkorders_log': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_path,'skworkorders.log'),
             'formatter': 'standard'
         },
         # 对于不在 ALLOWED_HOSTS 中的请求不发送报错邮件
@@ -380,6 +356,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+         'skworkorders': {
+            'handlers': ['skworkorders_log','mail_admins','console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     }
 }
 
@@ -388,6 +369,16 @@ EMAIL_HOST = config.get('email', 'email_host')
 EMAIL_PORT = config.get('email', 'email_port')
 EMAIL_HOST_USER = config.get('email', 'email_user')
 EMAIL_HOST_PASSWORD = config.get('email', 'email_password')
+EMAIL_SUBJECT_PREFIX = 'skipper' #为邮件标题的前缀,默认是'[django]'
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER #设置发件人
+
+ADMINS = (
+
+('zhe.li','zhe.li@mljr.com'),
+
+)
+MANAGERS = ADMINS
+SEND_BROKEN_LINK_EMAILS = True
 
 CRONJOBS = [
     ('*/10 * * * *', 'skrecord.cron','>>/var/log/skrecord_cron.log')

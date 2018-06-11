@@ -1,25 +1,19 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
-from django.http import HttpResponse
+
 from models import AuditFlow
-import os
-from skconfig.views import get_dir
+
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
+
 
 from .forms import AuditFlow_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
+
 import logging
-from billiard.util import INFO
-import sys
-from datetime import datetime
+log = logging.getLogger('skworkorders')
 
 
 @login_required()
@@ -54,17 +48,15 @@ def AuditFlow_add(request):
 @login_required()
 @permission_verify()
 def AuditFlow_del(request):
-#    temp_name = "skaccounts/accounts-header.html"
-    AuditFlow_id = request.GET.get('id', '')
-    if AuditFlow_id:
-        AuditFlow.objects.filter(id=AuditFlow_id).delete()
-    
-    if request.method == 'POST':
-        AuditFlow_items = request.POST.getlist('x_check', [])
-        if AuditFlow_items:
-            for n in AuditFlow_items:
-                AuditFlow.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
+    temp_name = "skaccounts/accounts-header.html"
+    obj_id = request.GET.get('id', '')  
+    if obj_id:
+        try:
+            AuditFlow.objects.filter(id=obj_id).delete()
+        except Exception, tpl_error_msg:
+            log.warning(tpl_error_msg)
+        tpl_all = AuditFlow.objects.all()
+        return render_to_response("skaccounts/AuditFlow_index.html", locals(), RequestContext(request))
 
 
 @login_required()

@@ -3,32 +3,21 @@
 import django
 django.setup()
 
-
-from lib.lib_config import get_config_var
-from lib.log import log
-import logging
-from subprocess import Popen, PIPE, STDOUT, call
-import sys
 from django import forms
-import os
-from lib.lib_config import get_config_var
-from skworkorders.VarsGroup import VarsGroup_add
-from skworkorders.models import VarsGroup,Vars,WorkOrder,WorkOrderFlow
-from skworkorders.forms import Vars_Select_form,Custom_form
+
+from skworkorders.models import VarsGroup,WorkOrder
+from skworkorders.forms import Custom_form
 from lib.lib_format import list_to_formlist
 from skcmdb.api import get_object
-from subprocess import Popen, PIPE, STDOUT, call
+
 import subprocess
-from skaccounts.models import UserInfo,UserGroup,AuditFlow
-from datetime import datetime
+from skaccounts.models import UserInfo
+
 import commands
 
 
-
-
-level = get_config_var("log_level")
-log_path = get_config_var("log_path")
-log("setup.log", level, log_path)
+import logging
+log = logging.getLogger('skworkorders')
 
 
 
@@ -142,14 +131,19 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
    
         task_list = task.encode("utf-8").split("\r") 
         ret_message="%s:开始执行" % taskname
+        log.info(ret_message)
         request.websocket.send(ret_message)           
         for cmd in task_list:
-            print cmd
-            pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+            try:
+                log.info("cmd_start:%s"  % cmd )
+                pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+            except Exception, msg:
+                log.error("cmd_result:%s" % msg)
             while True: 
                 line = pcmd.stdout.readline().strip()  #获取内容
                 if line:
                     request.websocket.send(line)
+                    log.info("cmd_result:%s" % line)
                 else:    
                     break
             retcode=pcmd.wait()
@@ -157,10 +151,12 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 pass
             else:
                 ret_message="%s:执行失败" % taskname
+                log.error(ret_message)
                 break
         if retcode==0:
             
             ret_message="%s:执行成功" % taskname
+            log.info(ret_message)
 
         request.websocket.send(ret_message)
     return retcode
