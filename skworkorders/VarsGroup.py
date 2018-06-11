@@ -3,7 +3,7 @@
 
 
 from django.http import HttpResponse
-from models import Vars,VarsGroup
+from models import VarsGroup
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 
@@ -13,6 +13,8 @@ from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 
 import time
+import logging
+log = logging.getLogger('skipper')
 
 
 
@@ -50,17 +52,15 @@ def VarsGroup_add(request):
 @login_required()
 @permission_verify()
 def VarsGroup_del(request):
-#    temp_name = "skworkorders/skworkorders-header.html"
-    VarsGroup_id = request.GET.get('id', '')
-    if VarsGroup_id:
-        VarsGroup.objects.filter(id=VarsGroup_id).delete()
-    
-    if request.method == 'POST':
-        VarsGroup_items = request.POST.getlist('x_check', [])
-        if VarsGroup_items:
-            for n in VarsGroup_items:
-                VarsGroup.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
+    temp_name = "skworkorders/skworkorders-header.html"
+    obj_id = request.GET.get('id', '')  
+    if obj_id:
+        try:
+            VarsGroup.objects.filter(id=obj_id).delete()
+        except Exception, tpl_error_msg:
+            log.warning(tpl_error_msg)
+        tpl_all = VarsGroup.objects.all()
+        return render_to_response("skworkorders/VarsGroup_index.html", locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()

@@ -1,40 +1,22 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
+
 from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
-import os
-from skconfig.views import get_dir
+from models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
-from lib.lib_git import get_git_taglist, get_git_commitid
 from .forms import WorkOrderCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-import json
-import logging
-from billiard.util import INFO
-import sys
 from datetime import datetime
-
-import redis
-import time
 import json
-from lib.lib_config import get_redis_config
-
-from git  import Git,Repo
-from skaccounts.models import UserInfo,UserGroup,AuditFlow
-from lib.lib_ansible import get_AnsibleHostsList,get_ansible_config_var
+from skaccounts.models import UserInfo
 from django import forms
-from lib.lib_redis import RedisLock
-from dwebsocket.decorators import accept_websocket, require_websocket
-import subprocess
-from lib_skworkorders import get_VarsGroup_form,var_change2,format_to_user_vars,custom_task,permission_submit_pass
-from django.db.models import Count 
+from dwebsocket.decorators import accept_websocket
+
+from lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
+
 import logging
 log = logging.getLogger('skworkorders')
 

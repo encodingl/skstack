@@ -15,6 +15,19 @@
                 {% csrf_token %}
             <div class="box">
                 <div class="box-header">
+                	{% if tpl_error_msg %}
+			 <div class="box  box-solid box-warning">
+					  <div class="box-header with-border ">
+					    <h3 class="box-title">WARNING</h3>
+					    <div class="box-tools pull-right">
+					      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					    </div><!-- /.box-tools -->
+					  </div><!-- /.box-header -->
+					  <div class="box-body">
+					    {{ tpl_error_msg }}
+					  </div><!-- /.box-body -->
+			</div><!-- /.box -->
+ 			 {% endif %}
                   <div class="btn-group">
 						 <a href="{% url 'VarsGroup_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
                   </div>
@@ -46,7 +59,7 @@
                                         <td class="text-center" data-editable='false'>
                                        
                                         <a href="{% url "VarsGroup_edit" x.id %}"><span class="btn btn-sm btn-info">编辑</span></a>
-                                        <a value="{% url 'VarsGroup_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
+                                        <a href="{% url 'VarsGroup_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger " onclick="if(confirm('确定删除?')==false)return false;">删除</a>
                                         <a value="{% url 'VarsGroup_copy' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_check">复制</a>
                                     </td>
                                     </tr>
@@ -59,6 +72,13 @@
                   </table>
 
                 </div>
+                
+                 <div class="box-footer">
+ 			 
+ 		
+ 			 </div><!-- box-footer -->
+                
+                
             </div>
         </form>
 
@@ -67,29 +87,10 @@
 </div>
 
 
-<script>
-function checkSubmit() {
-    if (!confirm("确定删除？")) {
-        window.event.returnValue = false;
-    }
-}
-</script>
+
 <script>
     $(document).ready(function(){
-        $('.x_del').click(function(){
-            var row = $(this).closest('tr');
-            if (confirm("确定删除?")) {
-                $.get(
-                        $(this).attr('value'),
-                        {},
-                        function (data) {
-                            row.remove()
-                        }
-                )
-            }
-        });
-        
-        
+
         $('.x_check').click(function(){
        	 	var row = $(this).closest('tr');
             if (confirm("确定进行此操作?")) {

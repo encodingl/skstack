@@ -96,11 +96,11 @@ class UserGroup(models.Model):
 class AuditFlow(models.Model):
     name = models.CharField(u"登录用户", max_length=50)
     level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
-    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l1')
-    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l2')
-    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.SET_NULL, null=True, blank=True,
+    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l3')
 
     def __unicode__(self):

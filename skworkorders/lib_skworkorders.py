@@ -3,24 +3,16 @@
 import django
 django.setup()
 
-
-from lib.lib_config import get_config_var
-from lib.log import log
-import logging
-from subprocess import Popen, PIPE, STDOUT, call
-import sys
 from django import forms
-import os
-from lib.lib_config import get_config_var
-from skworkorders.VarsGroup import VarsGroup_add
-from skworkorders.models import VarsGroup,Vars,WorkOrder,WorkOrderFlow
-from skworkorders.forms import Vars_Select_form,Custom_form
+
+from skworkorders.models import VarsGroup,WorkOrder
+from skworkorders.forms import Custom_form
 from lib.lib_format import list_to_formlist
 from skcmdb.api import get_object
-from subprocess import Popen, PIPE, STDOUT, call
+
 import subprocess
-from skaccounts.models import UserInfo,UserGroup,AuditFlow
-from datetime import datetime
+from skaccounts.models import UserInfo
+
 import commands
 
 

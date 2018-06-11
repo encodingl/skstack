@@ -94,8 +94,8 @@ class Vars(models.Model):
     value_form_type = models.CharField(u"变量表单类型", choices=VARS_FORM_TYPE, max_length=10)
     value_optional  = models.CharField(u"变量值",max_length=300,blank=True)  
     value_script  = models.CharField(u"变量获取脚本",max_length=100,null=True,blank=True) 
-    env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.SET_NULL, null=True, blank=True) 
-    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.SET_NULL, null=True, blank=True)
+    env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.PROTECT, null=True, blank=True) 
+    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
     def __unicode__(self):
         return self.name
     
@@ -103,7 +103,7 @@ class VarsGroup(models.Model):
     name = models.CharField(u"名字",max_length=50,unique=True)
     desc  = models.CharField(u"描述",max_length=300)
     vars = models.ManyToManyField(Vars, verbose_name=u"变量",blank=True)
-    env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.SET_NULL, null=True, blank=True)
+    env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.PROTECT, null=True, blank=True)
     group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
     def __unicode__(self):
         return self.name
@@ -113,20 +113,20 @@ class WorkOrder(models.Model):
     name = models.CharField(u"工单名字",max_length=50,unique=True)
     desc  = models.CharField(u"项目描述",max_length=300)  
     user_dep = models.ManyToManyField(UserGroup, verbose_name=u"提单权限用户",blank=True)
-    env = models.ForeignKey(Environment, verbose_name=u"项目环境", on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.SET_NULL, null=True, blank=True)
+    env = models.ForeignKey(Environment, verbose_name=u"项目环境", on_delete=models.PROTECT, null=True, blank=True)
+    group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
     status = models.CharField(u"激活状态", choices=WorkOrder_STATUS, max_length=10,default="no")
     
     var_built_in = models.CharField(u"内置变量",max_length=300,blank=True)
     var_opional_switch = models.BooleanField(u"是否开启用户可选参数")
-    var_opional = models.ForeignKey(VarsGroup, verbose_name=u"可选参数组", on_delete=models.SET_NULL, null=True, blank=True)
+    var_opional = models.ForeignKey(VarsGroup, verbose_name=u"可选参数组", on_delete=models.PROTECT, null=True, blank=True)
     
     pre_task = models.CharField(u"前置任务",max_length=200,null=True, blank=True)
     main_task = models.CharField(u"主任务",max_length=200,null=True, blank=True)
     post_task = models.CharField(u"后置任务",max_length=200,null=True, blank=True)
    
     audit_enable = models.BooleanField(u"是否开启审核")
-    audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.SET_NULL, null=True, blank=True)
+    audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.PROTECT, null=True, blank=True)
     
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
     updated_at = models.DateTimeField(u'修改时间', auto_now_add=True,null=True)

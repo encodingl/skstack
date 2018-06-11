@@ -15,6 +15,22 @@
                 {% csrf_token %}
             <div class="box">
                 <div class="box-header">
+                
+                {% if tpl_error_msg %}
+			 <div class="box  box-solid box-warning">
+					  <div class="box-header with-border ">
+					    <h3 class="box-title">WARNING</h3>
+					    <div class="box-tools pull-right">
+					      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					    </div><!-- /.box-tools -->
+					  </div><!-- /.box-header -->
+					  <div class="box-body">
+					    {{ tpl_error_msg }}
+					  </div><!-- /.box-body -->
+			</div><!-- /.box -->
+ 			 {% endif %}
+ 			 
+ 			 
                   <div class="btn-group">
 						 <a href="{% url 'WorkOrderGroup_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
                   </div>
@@ -41,7 +57,7 @@
                                         <td>{{ x.desc }}</td>
                                         <td class="text-center" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
-                                        <a value="{% url 'WorkOrderGroup_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
+                                        <a href="{% url 'WorkOrderGroup_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger "  onclick="if(confirm('确定删除?')==false)return false;">删除</a>
                                     </td>
                                     </tr>
                                 {% endfor %}
@@ -56,19 +72,7 @@
        
          <div class="box-footer">
  			 
- 			 
-			 <div class="box  box-solid box-warning">
-					  <div class="box-header with-border ">
-					    <h3 class="box-title">WARNING</h3>
-					    <div class="box-tools pull-right">
-					      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-					    </div><!-- /.box-tools -->
-					  </div><!-- /.box-header -->
-					  <div class="box-body">
-					    {{ tpl_error_msg }}
-					  </div><!-- /.box-body -->
-			</div><!-- /.box -->
- 			 
+ 			
  			 </div><!-- box-footer -->
  			 
             </div>
@@ -85,19 +89,7 @@
 
 <input id="handle_status" value="" hidden="hidden">
 
-<script>
-function checkAll(sender, checkClass) {
-    var checkItems = document.getElementsByTagName('input');
-    for (var i = 0; i < checkItems.length; i++) {
-        var checkItem = checkItems[i];
-        if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
-            checkItem.checked = sender.checked;
-        }
-    }
-}
-</script>
-<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
 <script>
   $(function () {
     $('#dataform').DataTable({
@@ -110,13 +102,7 @@ function checkAll(sender, checkClass) {
     });
   });
 </script>
-<script>
-function checkSubmit() {
-    if (!confirm("确定删除？")) {
-        window.event.returnValue = false;
-    }
-}
-</script>
+
 <script>
 function tanchu(n){
     layer.open({
@@ -150,21 +136,6 @@ function tanchu(n){
   });
 }
 </script>
-<script>
-    $(document).ready(function(){
-        $('.x_del').click(function(){
-            var row = $(this).closest('tr');
-            if (confirm("确定删除?")) {
-                $.get(
-                        $(this).attr('value'),
-                        {},
-                        function (data) {
-                            row.remove()
-                        }
-                )
-            }
-        });
-    });
-</script>
+
 
 {% endblock %}
