@@ -1,42 +1,31 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT, call
-from django.shortcuts import render
 from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
-import os
-from skconfig.views import get_dir
+from models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
+
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-import logging
-from lib.log import log
-from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,WorkOrderFlow_rollback_form
+
+from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 import json
-import logging
-from billiard.util import INFO
-import sys
-from datetime import datetime
-from lib_skworkorders import uni_to_str
-import redis
-from lib.lib_config import get_redis_config
-from lib.file import get_ex_link
 
-import time
+
+from datetime import datetime
+
+
 from django.utils import timezone
-from datetime import timedelta,date
+from datetime import timedelta
 
 
 from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
-from itertools import chain
-from django.db.models import Max
-from lib.lib_redis import RedisLock
-from dwebsocket.decorators import accept_websocket, require_websocket
-from lib_skworkorders import get_VarsGroup_form,var_change2,format_to_user_vars,custom_task,permission_submit_pass,permission_audit_pass
-import subprocess
+
+from dwebsocket.decorators import accept_websocket
+from lib_skworkorders import custom_task,permission_submit_pass,permission_audit_pass
+
 import logging
 log = logging.getLogger('skworkorders')
 
