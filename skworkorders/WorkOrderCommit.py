@@ -10,7 +10,7 @@ from .forms import WorkOrderCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 from datetime import datetime
-import json,yaml
+import json
 from skaccounts.models import UserInfo
 from django import forms
 from dwebsocket.decorators import accept_websocket
