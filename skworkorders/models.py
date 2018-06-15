@@ -63,8 +63,10 @@ VARS_METHOD = (
     )
 
 VARS_FORM_TYPE = (
-    (str("Select"), u"单选"),
-    (str("SelectMultiple"), u"复选"),
+    (str("Select"), u"单选select2下拉框"),
+    (str("RadioSelect"), u"单选icheck Radio"),
+    (str("SelectMultiple"), u"复选select2下拉框"),
+    (str("CheckboxSelectMultiple"), u"复选icheck box"),
     (str("TextInput"), u"单行用户输入"),
     (str("Textarea"), u"多行用户输入"),
     )
@@ -90,8 +92,8 @@ class Vars(models.Model):
     name = models.CharField(u"变量名",max_length=50,unique=True)
     label_name = models.CharField(u"变量表单标签名",max_length=50)
     desc  = models.CharField(u"描述",max_length=100,blank=True)
-    value_method = models.CharField(u"变量取值方法", choices=VARS_METHOD, max_length=10)
-    value_form_type = models.CharField(u"变量表单类型", choices=VARS_FORM_TYPE, max_length=10)
+    value_method = models.CharField(u"变量取值方法", choices=VARS_METHOD, max_length=50)
+    value_form_type = models.CharField(u"变量表单类型", choices=VARS_FORM_TYPE, max_length=50)
     value_optional  = models.CharField(u"变量值",max_length=300,blank=True)  
     value_script  = models.CharField(u"变量获取脚本",max_length=100,null=True,blank=True) 
     env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.PROTECT, null=True, blank=True) 
@@ -115,7 +117,7 @@ class WorkOrder(models.Model):
     user_dep = models.ManyToManyField(UserGroup, verbose_name=u"提单权限用户",blank=True)
     env = models.ForeignKey(Environment, verbose_name=u"项目环境", on_delete=models.PROTECT, null=True, blank=True)
     group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
-    status = models.CharField(u"激活状态", choices=WorkOrder_STATUS, max_length=10,default="no")
+    status = models.CharField(u"是否激活工单", choices=WorkOrder_STATUS, max_length=10,default="no")
     
     var_built_in = models.CharField(u"内置变量",max_length=300,blank=True)
     var_opional_switch = models.BooleanField(u"是否开启用户可选参数")

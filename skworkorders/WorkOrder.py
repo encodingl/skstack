@@ -112,6 +112,8 @@ def WorkOrder_edit(request):
     temp_name = "skworkorders/skworkorders-header.html"
     ids = request.GET.get('id', '')
     obj = get_object(WorkOrder, id=ids)
+    print obj.var_built_in
+    print type(obj.var_built_in)
     
     
     if request.method == 'POST':

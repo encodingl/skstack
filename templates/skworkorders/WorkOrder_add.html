@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
+
 {% endblock %}
 {% block content %}
 
@@ -58,12 +56,13 @@
     </section>
 
   </div>
-      <script>
-        var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
-              nonSelectedListLabel: '可选',
-              selectedListLabel: '已选',
-              preserveSelectionOnMove: 'moved',
-              moveOnSelect: false,
-        });
-    </script>
+
+
+<script>
+  $(function () {
+  	$("select").select2({
+    	  theme: "bootstrap"
+      });
+  });
+ </script>  
 {% endblock %}

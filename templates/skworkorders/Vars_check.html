@@ -5,6 +5,11 @@
     <title>Title</title>
     {% include 'link_css.html' %}
     {% include 'head_script.html' %}
+    <link href="/static/plugins/iCheck/flat/green.css" rel="stylesheet">
+    <link href="/static/plugins/iCheck/flat/red.css" rel="stylesheet">
+    <link href="/static/plugins/iCheck/flat/blue.css" rel="stylesheet">
+    <script src="/static/plugins/iCheck/icheck.js"></script>
+    
 </head>
 <body>
 <div class="content-wrapper">
@@ -20,8 +25,9 @@
             <!-- form start -->
           <form action="#" method="post">
             {% csrf_token %}
+         
             {{ tpl_var_check_form.as_p }}
-           
+         
            
       
           </form>
@@ -31,18 +37,28 @@
     </section>
 
   </div>
-{#回传参数至父层#}
-<script type="text/javascript">
-        var index = parent.layer.getFrameIndex(window.name);
-        var success = {{ status }};
-        if ( success == '1' ) {
-            parent.$("#handle_status").val('1');
-            parent.layer.close(index);
-        } else if( success == '2' ) {
-            parent.$("#handle_status").val('2');
-            parent.layer.close(index);
-        }
+
+
+<script>
+$(function () {
+
+	$("select").select2({
+  	  theme: "bootstrap"
+    });
+   
+});
 </script>
+
+<script>
+$(document).ready(function () {
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green',
+        increaseArea: '20%' // optional
+    });
+});
+</script>
+
 </body>
 </html>
 

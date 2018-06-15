@@ -10,12 +10,15 @@ from .forms import WorkOrderCommit_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 from datetime import datetime
-import json
+import json,yaml
 from skaccounts.models import UserInfo
 from django import forms
 from dwebsocket.decorators import accept_websocket
 
 from lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
+from lib.lib_json import my_obj_pairs_hook
+
+
 
 import logging
 log = logging.getLogger('skworkorders')
@@ -37,7 +40,7 @@ def WorkOrderCommit_index(request):
         obj = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False,env=e.id).distinct()
 
         tpl_dic_obj[e.name_english]=obj
-    print tpl_dic_obj
+#     print tpl_dic_obj
   
         
 
@@ -83,34 +86,21 @@ def WorkOrderCommit_add(request, ids):
              'audit_level':obj_level,            
              
              }
-    
-    if request.method == 'POST':
-        tpl_WorkOrderCommit_form = WorkOrderCommit_form(request.POST)
-        if tpl_WorkOrderCommit_form.is_valid():
-    
-            tpl_WorkOrderCommit_form.save()
-            ret = []
-            message = "SUCCESS\nWorkOrder:%s\n Env:%s\n提单成功" % (obj.name,obj.env)
-            ret.append(message)
-            return render_to_response("skworkorders/WorkOrderCommit_result.html", locals(), RequestContext(request))
-        else:         
-            pass            
-            return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
-    else:  
-        if permission_submit_pass(user, WorkOrder_id=ids):
-            tpl_WorkOrderCommit_form = WorkOrderCommit_form(initial=dic_init)  
-            if obj.var_opional: 
-                tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
-            if obj.audit_enable == False:
-                tpl_WorkOrderCommit_form.fields["desc"].widget=forms.HiddenInput()
-            
+ 
+    if permission_submit_pass(user, WorkOrder_id=ids):
+        tpl_WorkOrderCommit_form = WorkOrderCommit_form(initial=dic_init)  
+        if obj.var_opional_switch == True and obj.var_opional: 
+            tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
+        if obj.audit_enable == False:
+            tpl_WorkOrderCommit_form.fields["desc"].widget=forms.HiddenInput()
         
-            return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
-        else:
-            response_data = {}  
-            response_data['result'] = 'failed'  
-            response_data['message'] = 'You donot have permisson' 
-            return HttpResponse(json.dumps(response_data), content_type="application/json")  
+    
+        return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
+    else:
+        response_data = {}  
+        response_data['result'] = 'failed'  
+        response_data['message'] = 'You donot have permisson' 
+        return HttpResponse(json.dumps(response_data), content_type="application/json")  
 
             
 
@@ -120,6 +110,7 @@ def WorkOrderCommit_add(request, ids):
 @permission_verify()
 @accept_websocket
 def pretask(request):
+    
     temp_name = "skworkorders/skworkorders-header.html" 
     if not request.is_websocket():#判断是不是websocket连接
        
@@ -129,9 +120,12 @@ def pretask(request):
         except:
             return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
     else:
-        for message in request.websocket:          
-            message_dic = eval(message)    
-            print "message_dic:%s" %    message_dic
+        for message in request.websocket:    
+#             print "message:%s" %    message   
+            request.websocket.send("开始执行任务,请耐心等待·······")
+            message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
+
+#             print "message_dic:%s" %    message_dic
             WorkOrder_id = int(message_dic['id'])
             user = request.user
             if permission_submit_pass(user, WorkOrder_id):
@@ -182,6 +176,7 @@ def pretask(request):
                 response_data['message'] = 'finished:You donot have permisson' 
                 request.websocket.send(json.dumps(response_data))
                 log.warning(response_data)
+        
 # 
 # @login_required()
 # @permission_verify()

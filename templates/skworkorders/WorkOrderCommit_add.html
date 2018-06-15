@@ -2,9 +2,12 @@
 
 {% extends 'base.html' %}
 {% block self_head_css_js %}
-    <script src="/static/layer/layer.js"></script>
-    <script src="/static/js/jquery.bootstrap-duallistbox.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-duallistbox.css">
+<link href="/static/plugins/iCheck/flat/green.css" rel="stylesheet">
+<link href="/static/plugins/iCheck/flat/red.css" rel="stylesheet">
+<link href="/static/plugins/iCheck/flat/blue.css" rel="stylesheet">
+<script src="/static/plugins/iCheck/icheck.js"></script>
+    
+   
 {% endblock %}
 {% block content %}
 
@@ -53,7 +56,23 @@
 
   </div>
 
+<script>
+  $(function () {
+      $("select").select2({
+    	  theme: "bootstrap"
+      });
+  });
+</script>
 
+<script>
+  $(document).ready(function () {
+      $('input').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green',
+          increaseArea: '20%' // optional
+      });
+  });
+</script>
 
 <script type="text/javascript">//<![CDATA[
 $(function () {
@@ -85,6 +104,7 @@ $(function () {
            
             
             var formData=$("#WorkOrderCommit_add_form").serialize();
+            console.log(formData);
             var formData = decodeURIComponent(formData,true);//防止中文乱码
             var formData = DataDeal.formToJson(formData);//转化为json
             console.log(formData);
@@ -125,6 +145,10 @@ $(function () {
             
             var h = document.documentElement.scrollHeight || document.body.scrollHeight;
             window.scrollTo(h,h);
+//            if (text.indexOf("finished") != -1) {
+//                window.s.close();//关闭websocket
+//                console.log('websocket已关闭');
+//            }
             
         };
    
@@ -141,15 +165,15 @@ $(function () {
 
 
 
+
+
 <script>
-var demo1 = $('select[name="hosts_cus"]').bootstrapDualListbox({
-      nonSelectedListLabel: '可选',
-      selectedListLabel: '已选',
-      preserveSelectionOnMove: 'moved',
-      moveOnSelect: false,
+$(function () {
+
+    $("#id_value_optional").select2();
+   
 });
 </script>
-
 
 {% endblock %}
 

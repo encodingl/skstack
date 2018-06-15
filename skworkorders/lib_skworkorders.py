@@ -14,6 +14,7 @@ import subprocess
 from skaccounts.models import UserInfo
 
 import commands
+import json
 
 
 import logging
@@ -37,28 +38,40 @@ def get_Vars_form(obj_var):
 #判断表单格式生成合适表单    
     var_name = obj.name
     content = {}
-    new_fields = {
+
+    if obj.value_form_type == "Select":
+        new_fields = {
             var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Select(attrs={'class': 'form-control'}))
             }
-    
-    TextInput_field = {
-            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.TextInput(attrs={'class': 'form-control'}))
-            }
-    
-    if obj.value_form_type == "Select":
-        tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
-        tpl_Custom_form = tpl_Custom_form(initial=content)
+           
+    elif obj.value_form_type == "RadioSelect":
+        new_fields = {
+            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.RadioSelect(attrs={'class': 'form-control'}))
+            }       
 
     elif obj.value_form_type == "SelectMultiple":
-        pass
+        new_fields = {
+            var_name: forms.MultipleChoiceField(label=u'变量名',error_messages={'required': u'不能为空'},widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
+            }
+        
+    elif obj.value_form_type == "CheckboxSelectMultiple":
+        new_fields = {
+            var_name: forms.MultipleChoiceField(label=u'变量名',error_messages={'required': u'不能为空'},widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
+            }
+        
     elif obj.value_form_type == "TextInput":
-        tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  TextInput_field)
-        tpl_Custom_form = tpl_Custom_form(initial=content)
+        new_fields = {
+            var_name: forms.CharField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.TextInput(attrs={'class': 'form-control'}))
+            }
     elif obj.value_form_type == "Textarea":
-        pass
+        new_fields = {
+            var_name: forms.CharField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Textarea(attrs={'class': 'form-control'}))
+            }
     else:
         pass
-  
+    
+    tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
+    tpl_Custom_form = tpl_Custom_form(initial=content)
 #判断变量来源获取变量内容    
     if obj.value_method == "admin_def":
         obj_value_optional = eval(obj.value_optional)       
@@ -68,6 +81,7 @@ def get_Vars_form(obj_var):
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 
     elif obj.value_method == "manual":
         pass
+    
     tpl_Custom_form.fields[var_name].label = obj.label_name   
     return tpl_Custom_form
     
@@ -112,8 +126,8 @@ def format_to_user_vars(**message_dic):
             message_dic.pop(obj_var_name)
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
-    print "user_vars:%s" % user_vars_dic
-    message_dic["user_vars"]=user_vars_dic
+
+    message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
     return message_dic,user_vars_dic
             
 def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):

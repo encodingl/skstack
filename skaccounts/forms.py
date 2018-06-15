@@ -65,8 +65,8 @@ class AddUserForm(forms.ModelForm):
         self.fields['nickname'].label = u'姓 名'
         self.fields['nickname'].error_messages = {'required': u'请输入姓名'}
         self.fields['type'].label = u'类 型'
-        self.fields['role'].label = u'角 色'
-        self.fields['role_job'].label = u'job角 色'
+        self.fields['role'].label = u'菜单角色'
+        self.fields['role_job'].label = u'Ansible任务角色'
         self.fields['is_active'].label = u'状 态'
 
     def clean_password(self):
@@ -104,8 +104,8 @@ class EditUserForm(forms.ModelForm):
         self.fields['nickname'].label = u'姓 名'
         self.fields['nickname'].error_messages = {'required': u'请输入姓名'}
         self.fields['type'].label = u'类 型'
-        self.fields['role'].label = u'url角 色'
-        self.fields['role_job'].label = u'job角 色'
+        self.fields['role'].label = u'菜单角色'
+        self.fields['role_job'].label = u'Ansible任务角色'
         self.fields['is_active'].label = u'状 态'
 
     def clean_password(self):

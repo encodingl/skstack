@@ -3,19 +3,14 @@
 
 from models import Vars 
 from django.http import HttpResponse
-
-
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-
-
-from .forms import Vars_form,Vars_Select_form
+from .forms import Vars_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
-
-from lib.lib_format import list_to_formlist
-import commands
 import time
+from lib_skworkorders import get_Vars_form
+
 
 
 
@@ -91,7 +86,7 @@ def Vars_edit(request, ids):
             tpl_Vars_form.save()
             status = 1
         else:
-            status = 2
+            pass
     else:
         tpl_Vars_form = Vars_form(instance=obj)      
     return render_to_response("skworkorders/Vars_edit.html", locals(), RequestContext(request))
@@ -100,30 +95,6 @@ def Vars_edit(request, ids):
 @permission_verify()
 def Vars_check(request,ids):
     temp_name = "skworkorders/skworkorders-header.html"
-
-
     obj = get_object(Vars, id=ids)
-    
-#判断表单格式生成合适表单    
-    if obj.value_form_type == "Select":
-        tpl_var_check_form = Vars_Select_form()
-    elif obj.value_form_type == "SelectMultiple":
-        pass
-    elif obj.value_form_type == "TextInput":
-        pass
-    elif obj.value_form_type == "Textarea":
-        pass
-    else:
-        pass
-    
-#判断变量来源获取变量内容    
-    if obj.value_method == "admin_def":
-        obj_value_optional = eval(obj.value_optional)
-        tpl_var_check_form.fields["value_optional"].widget.choices = list_to_formlist(obj_value_optional)
-    elif obj.value_method == "script":
-        obj_value_optional = eval(commands.getoutput(obj.value_script))
-        tpl_var_check_form.fields["value_optional"].widget.choices = list_to_formlist(obj_value_optional)
-    elif obj.value_method == "manual":
-        pass
-
+    tpl_var_check_form = get_Vars_form(obj)
     return render_to_response("skworkorders/Vars_check.html", locals(), RequestContext(request))

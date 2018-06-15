@@ -39,7 +39,7 @@ class WorkOrder_form(forms.ModelForm):
             'status': forms.RadioSelect(),
             
             'var_built_in': forms.Textarea(attrs={'class': 'form-control'}),
-            'var_opional_switch': forms.RadioSelect(),
+            'var_opional_switch': forms.CheckboxInput(),
             'var_opional': forms.Select(attrs={'class': 'form-control'}),
             
             
@@ -139,6 +139,7 @@ class VarsGroup_form(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
             'vars': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '10', 'multiple': 'multiple'}),
+            'env': forms.Select(attrs={'class': 'form-control'}),
             'group': forms.Select(attrs={'class': 'form-control'}),
         
         }
@@ -162,8 +163,7 @@ class Vars_form(forms.ModelForm):
         
         }
         
-class Vars_Select_form(forms.Form):
-    value_optional = forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},
-                               widget=forms.Select(attrs={'class': 'form-control'}))
+
+    
 class Custom_form(forms.Form):
     pass
