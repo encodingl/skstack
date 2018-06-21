@@ -208,9 +208,9 @@ class AuditFlow_form(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'level': forms.TextInput(attrs={'class': 'form-control'}),
-            'user_l1': forms.Select(attrs={'class': 'form-control'}),
-            'user_l2': forms.Select(attrs={'class': 'form-control'}),
-            'user_l3': forms.Select(attrs={'class': 'form-control'}),
+            'l1': forms.Select(attrs={'class': 'form-control'}),
+            'l2': forms.Select(attrs={'class': 'form-control'}),
+            'l3': forms.Select(attrs={'class': 'form-control'}),
 
         }
 
