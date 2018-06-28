@@ -9,6 +9,7 @@
     <section class="content-header">
         <div class="alert alert-info alert-dismissible" style="display: {{ display_control }};">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4>{{ tips }}</h4>
         </div>
     </section>
 
@@ -22,7 +23,7 @@
               {% csrf_token %}
               {{ nform.as_p }}
               <input type="submit" class="btn btn-primary" style="width: 60pt" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;
-              <a href="{% url 'manage' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+              <a href="{% url 'dutyuser' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
             </form>
 
             </div>

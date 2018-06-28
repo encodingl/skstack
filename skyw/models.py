@@ -58,7 +58,7 @@ class Rota(models.Model):
     emergency_contact = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否为重要联系人',null=False)
     iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False)
     rota_number=models.CharField(u'值班顺序',max_length=15,null=True, blank=False)
-    iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False, blank=False)
+    # iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False, blank=False)
 
     def __unicode__(self):
         return self.name

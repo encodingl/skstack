@@ -61,7 +61,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="nav navbar-nav">
             <p></p>
             <p></p>
-            <p><a href="/skyw/list"><b>管理后台</b></a></p>
+{#            <p><a href="{% url 'dutyuser' %}"><b>管理后台</b></a></p>#}
           </ul>
         </div>
     </nav>
@@ -275,7 +275,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script>
  $('.collapse').collapse()
-weekofyear =  (((new Date())-(new Date("2018-01-01")))/(24*60*60*7*1000)|0) +1;
+{#weekofyear =  (((new Date())-(new Date("2018-01-01")))/(24*60*60*7*1000)|0) +1;#}
+ weekofyear =  (((new Date('2018-07-17'))-(new Date("2018-01-01")))/(24*60*60*7*1000)|0) +1;
+{# document.write(weekofyear)#}
 rota()
 function rota(){
        //dba值班安排
@@ -284,7 +286,7 @@ function rota(){
        x = weekofyear%keys.length;
 
 
-        if((x+1)<4){
+        if((x+1)<5){
            //查找表 --> tbody -->tr --> td
            $("#datasform tbody").find('tr').each(function(){
             	$(this).find('.js-dba').text(dbarr[keys[x]][0]+' '+ (dbarr[keys[x]][1]));
@@ -299,7 +301,7 @@ function rota(){
          //运维轮流值班安排
           var ywarr={{ yw_spell_list | safe }}
           var ywkeys=Object.keys(ywarr)
-          ywx = weekofyear%3;
+          ywx = weekofyear%4;
           if(ywx==0){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
@@ -308,10 +310,15 @@ function rota(){
           else if(ywx==1){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
-            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[3]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
           }
           else if(ywx==2){
             $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[2]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[3]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+            $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
+          }
+           else if(ywx==3){
+            $('<tr><td>'+(5)+'</td><td>'+(ywarr[ywkeys[3]][0])+' '+(ywarr[ywkeys[1]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(6)+'</td><td>'+(ywarr[ywkeys[0]][0])+' '+(ywarr[ywkeys[2]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
             $('<tr><td>'+(7)+'</td><td>'+(ywarr[ywkeys[1]][0])+' '+(ywarr[ywkeys[0]][1])+'</td><td></td></tr>').insertBefore($('#datasform tr:last'));
           }
@@ -332,7 +339,7 @@ function rota(){
 
         //if((n+1)<= telkeys.length){
            //查找表 --> tbody -->tr --> td
-            $("#iphoneform tbody").find('tr').find('td.nowweek').text(telarrs[y][0]);
+            $("#iphoneform tbody").find('tr').find('td.nowweek').text(telarrs[y][0]+' '+ weekofyear);
             $("#iphoneform tbody").find('tr').find('td.nextweek').text(telarrs[z][0]);
 
           // }

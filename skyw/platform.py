@@ -13,6 +13,36 @@ from skaccounts.permission import permission_verify
 
 @login_required()
 @permission_verify()
+def platclass(request):
+    temp_name = "skyw/yw-header.html"
+    # person = Devops.objects.all()
+    # rota = Rota.objects.all()
+    # notice = Notice.objects.all()
+    # events = event.objects.all()
+    platform =  Platform.objects.all()
+    platformclasss=PlatFormclass.objects.all()
+    # for yw in person:
+    #    name = yw.name
+    #    iphone = yw.iphone
+    return render_to_response("skyw/platclass.html", locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
+def plat(request):
+    temp_name = "skyw/yw-header.html"
+    # person = Devops.objects.all()
+    # rota = Rota.objects.all()
+    # notice = Notice.objects.all()
+    # events = event.objects.all()
+    platform =  Platform.objects.all()
+    platformclasss=PlatFormclass.objects.all()
+    # for yw in person:
+    #    name = yw.name
+    #    iphone = yw.iphone
+    return render_to_response("skyw/plat.html", locals(), RequestContext(request))
+
+@login_required()
+@permission_verify()
 def platformclass_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
@@ -34,7 +64,7 @@ def platformclass_add(request):
 def platformclass_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     PlatFormclass.objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('list'))
+    return HttpResponseRedirect(reverse('platclass'))
 @login_required()
 @permission_verify()
 def platformclass_edit(request,ids):
@@ -75,7 +105,7 @@ def platform_add(request):
 def platform_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Platform.objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('list'))
+    return HttpResponseRedirect(reverse('plat'))
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()

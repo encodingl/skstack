@@ -12,6 +12,22 @@ from skaccounts.permission import permission_verify
 
 @login_required()
 @permission_verify()
+def ywevent(request):
+    temp_name = "skyw/yw-header.html"
+    # person = Devops.objects.all()
+    # rota = Rota.objects.all()
+    # notice = Notice.objects.all()
+    events = event.objects.all()
+    # platform =  Platform.objects.all()
+    # platformclasss=PlatFormclass.objects.all()
+    # for yw in person:
+    #    name = yw.name
+    #    iphone = yw.iphone
+    return render_to_response("skyw/ywevent.html", locals(), RequestContext(request))
+
+
+@login_required()
+@permission_verify()
 def event_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":

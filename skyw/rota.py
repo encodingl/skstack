@@ -9,17 +9,44 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 # Create your views here.
+
+@login_required()
+@permission_verify()
+def dutyinfo(request):
+    temp_name = "skyw/yw-header.html"
+    # person = Devops.objects.all()
+    rota = Rota.objects.all()
+    # notice = Notice.objects.all()
+    # events = event.objects.all()
+    # platform =  Platform.objects.all()
+    # platformclasss=PlatFormclass.objects.all()
+    # for yw in person:
+    #    name = yw.name
+    #    iphone = yw.iphone
+    return render_to_response("skyw/dutyinfo.html", locals(), RequestContext(request))
+
 @login_required()
 @permission_verify()
 def rota_add(request):
     temp_name = "skyw/yw-header.html"
     if request.method == "POST":
        rota=rotaform(request.POST)
+       #print(rota.cleaned_data)
        if rota.is_valid():
+           #print(rota.cleaned_data)
+           print('success')
            rota.save()
            tips = u'增加成功'
            display_control = ""
        else:
+           #rota.save()
+           print('test')
+           print(rota.cleaned_data['iphone'])
+           print(rota.cleaned_data['name'])
+           print(rota.cleaned_data['spell'])
+           # print(rota.cleaned_data['rota_number'])
+           print(rota.cleaned_data['emergency_contact'])
+           print(rota.cleaned_data['iphone_rota'])
            tips = u"增加失败"
            displ_control = ""
     else:
@@ -32,7 +59,7 @@ def rota_add(request):
 def rota_delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Rota.objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('list'))
+    return HttpResponseRedirect(reverse('dutyinfo'))
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()

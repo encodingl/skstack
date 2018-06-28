@@ -38,7 +38,7 @@ def daohang(request):
         names = Rota.objects.get(name=i.name)
         types = names.name.type
         if types == 1 and i.emergency_contact == 1 and i.iphone_rota == 0:
-            print i.rota_number, i.name.nickname, i.iphone.iphone
+            # print i.rota_number, i.name.nickname, i.iphone.iphone
             # yw_list[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
             yw_list[str(i.name.nickname)] = [str(i.iphone.iphone)]
     for i in listrota:
@@ -46,31 +46,37 @@ def daohang(request):
         types=names.name.type
         if types==1 and i.emergency_contact==1 and i.iphone_rota==0:
             if i.spell == 0:
-                print i.rota_number,i.name.nickname
+                # print i.rota_number,i.name.nickname
                 yw_spell_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
+
             if  i.iphone_rota==0:
                 telarryw[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
         elif types==4 and i.emergency_contact==1:
-            print i.rota_number,i.name.nickname
+            # print i.rota_number,i.name.nickname
             dba_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
             if i.spell==0:
                 dba_spell_list[i.rota_number]=[str(i.name.nickname),i.iphone.iphone]
             if i.iphone_rota == 0:
                 telarrdba[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
         elif i.emergency_contact ==0:
-            print i.name
+            print 'emery'
         else:
             print "error"
 
     yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False)
     dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False)
     dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False)
+    print yw_spell_list
+    print dba_list
     print dba_spell_list
+    # print ('spell_list:',dba_spell_list)
     #telarrdba=json.dumps(telarrdba, encoding="UTF-8", ensure_ascii=False)
 
-    print telarrdba
+    # print ('telarrdba:',telarrdba)
     telarr=OrderedDict(telarrdba.items()+telarryw.items())
+
     telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
+    print telarr
 
 
     type = PlatFormclass.objects.all()
@@ -90,20 +96,24 @@ def daohang(request):
     #print d1
 
     return render_to_response("skyw/index.html", locals(), RequestContext(request))
+
+
 @login_required()
 @permission_verify()
-def index(request):
+def dutyuser(request):
     temp_name = "skyw/yw-header.html"
     person = Devops.objects.all()
-    rota = Rota.objects.all()
-    notice = Notice.objects.all()
-    events = event.objects.all()
-    platform =  Platform.objects.all()
-    platformclasss=PlatFormclass.objects.all()
-    for yw in person:
-       name = yw.name
-       iphone = yw.iphone
-    return render_to_response("skyw/list.html", locals(), RequestContext(request))
+    # rota = Rota.objects.all()
+    # notice = Notice.objects.all()
+    # # events = event.objects.all()
+    # platform =  Platform.objects.all()
+    # platformclasss=PlatFormclass.objects.all()
+    # for yw in person:
+    #    name = yw.name
+    #    iphone = yw.iphone
+    return render_to_response("skyw/dutyuser.html", locals(), RequestContext(request))
+
+
 
 @login_required()
 @permission_verify()
@@ -115,19 +125,23 @@ def add(request):
            devops.save()
            tips = u'增加成功'
            display_control=""
+           # return HttpResponseRedirect(reverse('dutyuser'))
+
        else:
            tips = u"增加失败"
            display_control = ""
+           # return redirect('/skyw/dutyuser/')
     else:
         display_control = "none"
         devops = devopsform()
+    # return HttpResponseRedirect(reverse('dutyuser'))
     return render_to_response("skyw/add.html", locals(), RequestContext(request))
 @login_required()
 @permission_verify()
 def delete(request,ids):
     #yuming=get_object_or_404(yuming,pk=int(id))
     Devops.objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('list'))
+    return HttpResponseRedirect(reverse('dutyuser'))
 def str2gb(args):
     return str(args).encode('gb2312')
 @login_required()
