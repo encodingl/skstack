@@ -6,6 +6,9 @@
 <link href="/static/plugins/iCheck/flat/red.css" rel="stylesheet">
 <link href="/static/plugins/iCheck/flat/blue.css" rel="stylesheet">
 <script src="/static/plugins/iCheck/icheck.js"></script>
+
+<script src="/static/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
     
    
 {% endblock %}
@@ -55,6 +58,22 @@
     </section>
 
   </div>
+  
+  
+<script type="text/javascript">
+
+
+	$('input#id_celery_schedule_time').datetimepicker({
+	    format: "yyyy-mm-dd-hh:ii:ss",
+	    autoclose: true,
+	    todayHighlight: true,
+	    minuteStep: 1,
+	    
+	});
+
+
+</script>
+  
 
 <script>
   $(function () {
@@ -117,7 +136,7 @@ $(function () {
         socket.onmessage = function (e) {
 //            console.log('message: ' + e.data);//打印出服务端返回过来的数据
             
-            var colorConfig = { "green": ["ok", "SUCCESS","执行成功"],"yellow": ["changed","WARNING" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
+            var colorConfig = { "green": ["ok", "SUCCESS","执行成功"],"orange": ["changed","WARNING","warning"],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
            
                 var text = e.data;  
                 jQuery.each(colorConfig, function (color, values) {  
@@ -174,6 +193,8 @@ $(function () {
    
 });
 </script>
+
+
 
 {% endblock %}
 

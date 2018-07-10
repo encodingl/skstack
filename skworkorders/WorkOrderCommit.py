@@ -15,8 +15,13 @@ from skaccounts.models import UserInfo
 from django import forms
 from dwebsocket.decorators import accept_websocket
 
-from lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
+from skworkorders.lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
 from lib.lib_json import my_obj_pairs_hook
+
+from datetime import datetime,timedelta
+import pytz
+from skworkorders import tasks
+from skipper.celery import app as celery_app
 
 
 
@@ -28,9 +33,7 @@ log = logging.getLogger('skworkorders')
 @permission_verify()
 def WorkOrderCommit_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
- 
     obj_user = UserInfo.objects.get(username=request.user)
-    
     obj_group = obj_user.usergroup_set.all()
     tpl_all = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False).distinct()
     tpl_env = Environment.objects.all()
@@ -40,12 +43,6 @@ def WorkOrderCommit_index(request):
         obj = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False,env=e.id).distinct()
 
         tpl_dic_obj[e.name_english]=obj
-#     print tpl_dic_obj
-  
-        
-
-    
-   
     return render_to_response('skworkorders/WorkOrderCommit_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -93,8 +90,8 @@ def WorkOrderCommit_add(request, ids):
             tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
         if obj.audit_enable == False:
             tpl_WorkOrderCommit_form.fields["desc"].widget=forms.HiddenInput()
-        
-    
+        if obj.schedule_enable == False:
+            tpl_WorkOrderCommit_form.fields["celery_schedule_time"].widget=forms.HiddenInput()
         return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
     else:
         response_data = {}  
@@ -102,18 +99,13 @@ def WorkOrderCommit_add(request, ids):
         response_data['message'] = 'You donot have permisson' 
         return HttpResponse(json.dumps(response_data), content_type="application/json")  
 
-            
 
-
-    
 @login_required()
 @permission_verify()
 @accept_websocket
 def pretask(request):
-    
     temp_name = "skworkorders/skworkorders-header.html" 
     if not request.is_websocket():#判断是不是websocket连接
-       
         try:#如果是普通的http方法
             message = request.GET['message']
             return HttpResponse(message)
@@ -121,13 +113,11 @@ def pretask(request):
             return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
     else:
         for message in request.websocket:    
-#             print "message:%s" %    message   
-            request.websocket.send("开始执行任务,请耐心等待·······")
+            request.websocket.send("开始提交任务,请耐心等待·······")
             message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
-
-#             print "message_dic:%s" %    message_dic
             WorkOrder_id = int(message_dic['id'])
             user = request.user
+            
             if permission_submit_pass(user, WorkOrder_id):
                 obj_WorkOrder = get_object(WorkOrder, id=WorkOrder_id)  
                 log.error("User:%s,Env:%s,WorkOrderName:%s commit starting" % (user,obj_WorkOrder.env,obj_WorkOrder.name)) 
@@ -136,10 +126,8 @@ def pretask(request):
                     retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="pre_task")
                 else:
                     retcode = 0
-                    
-                
-                
-                if retcode == 0 and obj_WorkOrder.audit_enable == False:
+
+                if retcode == 0 and obj_WorkOrder.audit_enable == False and obj_WorkOrder.schedule_enable == False:
                     log.info("User:%s,Env:%s,WorkOrderName:%s execute starting" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
                     if obj_WorkOrder.main_task:
                         retcode = custom_task(obj_WorkOrder, user_vars_dic, request,taskname="main_task")
@@ -159,12 +147,53 @@ def pretask(request):
                         WorkOrderFlow.objects.create(**message_dic_format)
                         request.websocket.send("finished:工单执行失败")
                         log.error("User:%s,Env:%s,WorkOrderName:%s finished:failed工单执行失败" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
-                    
-                elif retcode == 0 and obj_WorkOrder.audit_enable == True:                  
+                        
+              
+                elif retcode == 0 and obj_WorkOrder.audit_enable == False and obj_WorkOrder.schedule_enable == True:
+                    request.websocket.send("开始提交定时任务")
+                    time01 = message_dic_format["celery_schedule_time"]
+                    if time01 == "":
+                        request.websocket.send("warning:请输入计划执行时间")
+                    else:
+                        time01 = datetime.strptime(time01, "%Y-%m-%d-%H:%M:%S")
+                        local_tz = pytz.timezone(celery_app.conf['CELERY_TIMEZONE'])
+                        format_eta = local_tz.localize(datetime.strptime(str(time01).strip(), '%Y-%m-%d %H:%M:%S'))
+                        taskname_dic = {"main_task":obj_WorkOrder.main_task,"post_task":obj_WorkOrder.post_task}
+                        print "taskname_dic: %s" % taskname_dic
+                        if obj_WorkOrder.var_built_in:
+                            var_built_in_dic = eval(obj_WorkOrder.var_built_in) 
+                        else:
+                            var_built_in_dic = {}
+                        task01 = tasks.schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=format_eta)
+                        message_dic_format["celery_task_id"]=task01.id    
+                        message_dic_format["status"] = "PENDING"
+                        message_dic_format["celery_schedule_time"] = time01
+                        
+                        WorkOrderFlow.objects.create(**message_dic_format)
+                        request.websocket.send("finished:提交定时任务成功")
+                        log.info("User:%s,Env:%s,WorkOrderName:%s finished:successful定时任务添加成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
+                 
+                        
+                
+                
+                
+                elif retcode == 0 and obj_WorkOrder.audit_enable == True and obj_WorkOrder.schedule_enable == False:                 
                     message_dic_format["status"] = 0
                     WorkOrderFlow.objects.create(**message_dic_format)
                     request.websocket.send("finished:工单提交成功")
                     log.info("User:%s,Env:%s,WorkOrderName:%s finished:successful工单提交成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
+                    
+                elif retcode == 0 and obj_WorkOrder.audit_enable == True and obj_WorkOrder.schedule_enable == True: 
+                    time01 = message_dic_format["celery_schedule_time"] 
+                    if time01 == "":
+                        request.websocket.send("warning:请输入计划执行时间")
+                    else:
+                        time01 = datetime.strptime(time01, "%Y-%m-%d-%H:%M:%S")                
+                        message_dic_format["status"] = 0
+                        message_dic_format["celery_schedule_time"] = time01
+                        WorkOrderFlow.objects.create(**message_dic_format)
+                        request.websocket.send("finished:工单提交成功")
+                        log.info("User:%s,Env:%s,WorkOrderName:%s finished:successful工单提交成功" % (user,obj_WorkOrder.env,obj_WorkOrder.name))
                 else:
                     request.websocket.send("finished:工单提交失败")
                     log.warning("User:%s,Env:%s,WorkOrderName:%s finished:successful工单提交失败" % (user,obj_WorkOrder.env,obj_WorkOrder.name))

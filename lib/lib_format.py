@@ -7,7 +7,7 @@ Created on 2018年4月10日 @author: skipper
 def list_to_formlist(args):
 
     list_args = args
-    print list_args
+
  
     
     list_tumple = []

@@ -1,0 +1,160 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+Created on 2018年7月9日 @author: skipper
+'''
+from lib.lib_celery import format_celery_eta_time
+from skworkorders.tasks import schedule_task
+from skworkorders.models import WorkOrder,WorkOrderFlow
+from datetime import datetime
+from skipper import celery_app
+from skaccounts.models import UserInfo
+from lib_skworkorders import custom_task
+import json
+import logging
+log = logging.getLogger('skworkorders')
+
+class WorkOrdkerFlowTask():
+    def __init__(self,WorkOrderFlow_id,login_user,request):
+        self.obj = WorkOrderFlow.objects.get(id=WorkOrderFlow_id) 
+        self.obj2 = WorkOrder.objects.get(id = self.obj.workorder_id)
+        self.user = login_user
+        self.request = request
+            
+    def celery_task_add(self):
+        obj_WorkOrder = WorkOrder.objects.get(id=self.obj.workorder_id)
+        taskname_dic = {"main_task":obj_WorkOrder.main_task,"post_task":obj_WorkOrder.post_task}
+        if obj_WorkOrder.var_built_in:
+            var_built_in_dic = eval(obj_WorkOrder.var_built_in) 
+        else:
+            var_built_in_dic = {}
+        user_vars_dic=eval(self.obj.user_vars)
+        if self.obj.celery_schedule_time:
+            eta_time = format_celery_eta_time(str(self.obj.celery_schedule_time))
+        else:
+            eta_time = format_celery_eta_time(str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=eta_time)
+        self.obj.celery_task_id = task01.id
+        self.obj.status="PENDING"
+        self.obj.save()
+        
+    def celery_task_revoke(self):
+        celery_id = self.obj.celery_task_id
+        celery_app.AsyncResult(celery_id).revoke()
+        self.obj.status="9"
+        self.obj.save()
+        
+    def celery_task_kill(self):
+        celery_id = self.obj.celery_task_id
+        celery_app.control.revoke(celery_id,terminate=True, signal='SIGKILL')
+        
+    def celery_task_changeto_manual_task(self):
+        self.celery_task_revoke()
+        self.obj.desc = self.obj.desc + "\n" + "原后台任务id:%s 变更为前台手动执行" % self.obj.celery_task_id
+        self.obj.celery_task_id = ""
+        self.obj.save()
+        content_str = "celery task revoked"
+        self.log_celery_id("info", content_str)
+        self.request.websocket.send(content_str)
+        
+
+    def permission_submit_pass(self):
+         # 判断用户是否有提单权限
+        obj_user = UserInfo.objects.get(username=self.user)
+        user_group = obj_user.usergroup_set.all()
+        user_WorkOrder = WorkOrder.objects.filter(user_dep__in=user_group,status="yes",template_enable = False)
+        if self.obj2 in user_WorkOrder:
+            return True
+        else:
+            return False
+    def permission_submit_deny(self):
+        response_data = {}  
+        response_data['result'] = 'failed'  
+        response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
+        self.request.websocket.send(json.dumps(response_data))
+        log.warning(response_data)
+        
+    def permission_audit_pass(self):
+          #判断是否通过审核
+        obj_audit_level = self.obj.audit_level
+        obj_status = self.obj.status
+        if (obj_audit_level == "1" and obj_status != "1") or (obj_audit_level == "2" and obj_status != "5") or (obj_audit_level == "3" and obj_status != "7") :
+            return  False
+        else:
+            return True
+        
+    def permission_audit_deny(self):
+        response_data = {}  
+        response_data['result'] = 'failed'  
+        response_data['message'] = 'You donot have permisson' 
+        self.request.websocket.send(json.dumps(response_data))
+        log.warning(response_data)
+        
+        
+    def log(self,level,content_str):
+        if level == "info":
+            log.info("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s %s " % (self.user,self.obj.env,self.obj2.name,self.obj.id,content_str))
+        elif level == "error":
+            log.error("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s %s " % (self.user,self.obj.env,self.obj2.name,self.obj.id,content_str))
+        elif level == "warning":
+            log.warning("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s %s " % (self.user,self.obj.env,self.obj2.name,self.obj.id,content_str))
+            
+    def log_celery_id(self,level,content_str):
+        if level == "info":
+            log.info("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s,celery_task_id:%s %s " % \
+                     (self.user,self.obj.env,self.obj2.name,self.obj.id,self.obj.celery_task_id,content_str))
+        elif level == "error":
+            log.error("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s,celery_task_id:%s %s " % \
+                      (self.user,self.obj.env,self.obj2.name,self.obj.id,self.obj.celery_task_id,content_str))
+        elif level == "warning":
+            log.warning("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s,celery_task_id:%s %s " % \
+                        (self.user,self.obj.env,self.obj2.name,self.obj.id,self.obj.celery_task_id,content_str))
+        
+       
+    def all_task_do(self):
+        user_vars_dic = eval(self.obj.user_vars)
+        if self.obj2.main_task:
+            retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="main_task")
+   
+        if self.obj2.post_task and retcode==0:
+            retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="post_task")
+            
+        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if retcode == 0:
+            self.obj.status="3"
+            self.obj.finished_at = obj_finished_at
+            self.obj.save()
+            content_str = "finished:successful工单执行成功"
+            self.request.websocket.send(content_str)
+            self.log("info", content_str)
+
+        else:
+            self.obj.status="4"
+            self.obj.finished_at = obj_finished_at
+            self.obj.save()
+            content_str = "finished:failed工单执行失败"
+            self.request.websocket.send(content_str)
+            self.log("error", content_str)
+            
+
+def celery_schedule_task(WorkOrderFlow_id):
+    obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
+    obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id)
+    taskname_dic = {"main_task":obj_WorkOrder.main_task,"post_task":obj_WorkOrder.post_task}
+    if obj_WorkOrder.var_built_in:
+        var_built_in_dic = eval(obj_WorkOrder.var_built_in) 
+    else:
+        var_built_in_dic = {}
+    user_vars_dic=eval(obj_WorkOrderFlow.user_vars)
+    format_eta = format_celery_eta_time(str(obj_WorkOrderFlow.celery_schedule_time))
+     
+    task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=format_eta)
+    obj_WorkOrderFlow.celery_task_id = task01.id
+    obj_WorkOrderFlow.status="PENDING"
+    obj_WorkOrderFlow.save()
+
+
+if __name__ == '__main__':
+    eta_time = format_celery_eta_time(str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    print eta_time
+    

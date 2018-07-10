@@ -26,9 +26,20 @@
                         href="{% url 'WorkOrderFlow_index' %}"><b>执行</b></a></li>
                 <li class="divider"></li>
 
-                <li style="font-size: medium;display: none" id="project_hostory"><a
-                        href="{% url 'WorkOrderFlow_history' %}"><b>历史</b></a></li>
-                <li class="divider"></li>
+     
+                
+                 <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>审计</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="project_history"><a
+                                href="{% url 'WorkOrderFlow_history' %}"><b>普通任务</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_schedule"><a
+                                href="{% url 'WorkOrderFlow_schedule' %}"><b>计划任务</b></a></li>
+                       
+                    </ul>
+                </li>
 
                 <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

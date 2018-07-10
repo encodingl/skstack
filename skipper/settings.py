@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -233,6 +234,12 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'skaccounts.UserInfo'
 LOGIN_URL = '/skaccounts/login/'
+
+#celery config
+CELERY_BROKER_URL = 'redis://:redis0619@localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_TASK_RESULT_EXPIRES = 0
 
 
 log_path = config.get('log', 'log_path')

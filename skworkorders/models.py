@@ -47,6 +47,8 @@ WorkOrderFlow_STATUS = (
     (str(7), u"l3审核通过"),
     (str(8), u"l3审核拒绝"),
     (str(9), u"撤销"),
+    (str("PENDING"), u"后台执行"),
+    (str("REVOKED"), u"计划撤销"),
     )
 
 
@@ -128,7 +130,13 @@ class WorkOrder(models.Model):
     post_task = models.CharField(u"后置任务",max_length=200,null=True, blank=True)
    
     audit_enable = models.BooleanField(u"是否开启审核")
-    audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.PROTECT, null=True, blank=True)
+    audit_flow = models.ForeignKey(AuditFlow, verbose_name=u"审核流程", on_delete=models.PROTECT, null=True,blank=True)
+    
+    
+    schedule_enable = models.BooleanField(u"是否开启定时任务",default=False)
+    back_exe_enable = models.BooleanField(u"是否开启后台执行选择按钮",default=False)
+    auto_exe_enable = models.BooleanField(u"是否开启批准后自动执行选择按钮",default=False)
+    
     
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
     updated_at = models.DateTimeField(u'修改时间', auto_now_add=True,null=True)
@@ -155,6 +163,10 @@ class WorkOrderFlow(models.Model):
     user_l3 = models.CharField(u"第3级审核用户",max_length=50,null=True,blank=True)
     updated_at_l3 = models.DateTimeField(u'l3审核时间', null=True)
     finished_at = models.DateTimeField(u'完成时间',null=True)
+    celery_task_id = models.CharField(u"后台任务id",max_length=50,null=True,blank=True)
+    celery_schedule_time = models.DateTimeField(u'计划执行时间',null=True,blank=True)
+    back_exe_enable = models.BooleanField(u"是否开启后台执行",default=False)
+    auto_exe_enable = models.BooleanField(u"是否开启批准后自动执行",default=False)
     def __unicode__(self):
         return self.title
     

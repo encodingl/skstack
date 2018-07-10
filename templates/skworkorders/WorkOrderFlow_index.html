@@ -60,7 +60,7 @@
                                    
                               
                                     <th>提单时间</th> 
-                                    <th>完成时间</th> 
+                                    <th>计划时间</th> 
                                     <th>当前状态</th>       
                                     <th class="text-center">功能</th>                            
                                 </tr>
@@ -81,7 +81,7 @@
                                         <td>{{ x.user_commit }}</td>
                                        
                                         <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
-                                        <td>{{ x.finished_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ x.celery_schedule_time|date:"Y-m-d H:i:s" }}</td>
                                         <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
                                         	  {% if x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
@@ -89,6 +89,8 @@
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
                                             {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "PENDING" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
                                             {% else %}
                                                 <span class="label label-primary">{{ x|displayName:'status' }}</span>
                                             {% endif %}
@@ -99,7 +101,7 @@
                                         <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
                                         <a value="{% url 'WorkOrderFlow_revoke' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del" id="revoke">撤销</a>
-                                        <a href="{% url 'WorkOrderFlow_release' x.id %}" class="btn btn-sm btn-primary" id="online">上线</a>    
+                                        <a href="{% url 'WorkOrderFlow_release' x.id %}" class="btn btn-sm btn-primary" id="online">执行</a>    
                                        
                                    
                                         
@@ -191,7 +193,7 @@ function checkSubmit() {
 function tanchu_detail(n){
     layer.open({
     type: 2,
-    title: '修改信息',
+    title: '详细信息',
     closeBtn: 1,
     area: ['700px', '550px'],
     shadeClose: true, //点击遮罩关闭

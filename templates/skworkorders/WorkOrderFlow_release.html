@@ -87,7 +87,7 @@ $(function () {
         socket.onmessage = function (e) {
             console.log('message: ' + e.data);//打印出服务端返回过来的数据
             
-            var colorConfig = { "green": ["ok", "SUCCESS","执行成功"],"yellow": ["changed","WARNING" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
+            var colorConfig = { "green": ["ok", "SUCCESS","执行成功","success"],"orange": ["changed","WARNING","warning" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
            
                 var text = e.data;  
                 jQuery.each(colorConfig, function (color, values) {  

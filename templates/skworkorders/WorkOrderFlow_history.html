@@ -117,6 +117,8 @@
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
                                             {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "10" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
                                             {% else %}
                                                 <span class="label label-primary">{{ x|displayName:'status' }}</span>
                                             {% endif %}

@@ -3,6 +3,7 @@
 
 from django import forms
 from .models import *
+from django_celery_results.models import TaskResult 
 
  
         
@@ -49,6 +50,10 @@ class WorkOrder_form(forms.ModelForm):
             
             'audit_enable': forms.CheckboxInput(), 
             'audit_flow': forms.Select(attrs={'class': 'form-control'}),
+            
+            'schedule_enable': forms.CheckboxInput(), 
+#   
+            
             'template_enable': forms.CheckboxInput(), 
     
                  
@@ -57,7 +62,7 @@ class WorkOrder_form(forms.ModelForm):
 class WorkOrderCommit_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("title","workorder","workorder_id","workorder_group","env","user_commit","desc","status","audit_level")
+        fields = ("title","workorder","workorder_id","workorder_group","env","user_commit","desc","status","audit_level","celery_schedule_time")
         
         widgets = {    
             'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
@@ -69,6 +74,8 @@ class WorkOrderCommit_form(forms.ModelForm):
         
             
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
+            
+            'celery_schedule_time': forms.DateTimeInput(attrs={'class': 'form-control'}),
       
             'status': forms.HiddenInput(attrs={'class': 'form-control'}),
             'audit_level': forms.HiddenInput(attrs={'class': 'form-control'}),
@@ -98,8 +105,13 @@ class WorkOrderFlow_release_form(forms.ModelForm):
 class WorkOrderFlow_detail_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("workorder","env","desc","user_vars","audit_level","user_l1","updated_at_l1","user_l2","updated_at_l2","user_l3","updated_at_l3","finished_at",)
+        exclude = ("id",)
         widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'user_commit': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'workorder_group': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'workorder_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'status': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'workorder': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
@@ -112,10 +124,36 @@ class WorkOrderFlow_detail_form(forms.ModelForm):
             'user_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
-            
-  
+            'celery_task_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'celery_schedule_time': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+
         }    
- 
+        
+class WorkOrderFlow_schedule_detail_form(forms.ModelForm):
+    class Meta:
+        model = TaskResult
+        exclude = ("id",)
+        widgets = {
+            'task_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'status': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'content_type': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'content_encoding': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'result': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+#             'date_done': forms.DateTimeField(),
+            'traceback': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+     
+        }  
+        
+class WorkOrderFlow_schedule_detail_form2(forms.Form):
+    task_id = forms.CharField(label=u'task_id', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    status = forms.CharField(label=u'status', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    result = forms.CharField(label=u'result', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
+    date_done = forms.CharField(label=u'date_done', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    traceback = forms.CharField(label=u'traceback', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
+    
+    
+    
  
 class WorkOrderFlow_rollback_form(forms.ModelForm):
     class Meta:
