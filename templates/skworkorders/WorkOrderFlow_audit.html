@@ -37,7 +37,7 @@
                 	 </div>
                 	 
              <div class="tab-content">
-             <p  class="text-aqua">the data for the last month</p>
+             <p  class="text-aqua">the data for the last 7 days</p>
 		      	{% if tpl_dic_obj %}
                 {% for k,v in tpl_dic_obj.items %}   
                    <div class="tab-pane fade" id="{{ k }}">
@@ -56,7 +56,7 @@
                                    
                                     
                                     <th>提单时间</th> 
-                                    <th>完成时间</th> 
+                                    <th>计划时间</th> 
                                     <th>当前状态</th>       
                                     <th class="text-center">功能</th>                            
                                 </tr>
@@ -77,14 +77,16 @@
                                        
                                         
                                         <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
-                                        <td>{{ x.finished_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ x.celery_schedule_time|date:"Y-m-d H:i:s" }}</td>
                                         <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
                                         	  {% if x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
                                             {% elif x.status == "9" %}
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
-                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
+                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8" %}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "PENDING" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
                                             {% else %}
                                                 <span class="label label-primary">{{ x|displayName:'status' }}</span>
                                             {% endif %}
@@ -191,7 +193,7 @@ function tanchu_detail(n){
     area: ['700px', '550px'],
     shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
-    content: ['/skworkorders/WorkOrderFlow/detail/' + n,],
+    content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
@@ -259,7 +261,12 @@ function tanchu_detail(n){
     $("[xstatus=4]").each(function(){	
               $(this).siblings("#features").children("#permit,#deny").remove();	
     });
-
+    
+// 后台任务审核通过关闭审核按键
+    $("[xstatus='PENDING']").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
+    });
+ 
  // 新建提单关闭上线按钮
     $("[xstatus=0][xlevel!=0]").each(function(){
           $(this).siblings("#features").children("#online").remove();	

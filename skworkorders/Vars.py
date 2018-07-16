@@ -9,7 +9,7 @@ from .forms import Vars_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 import time
-from lib_skworkorders import get_Vars_form
+from skworkorders.lib_skworkorders import get_Vars_form
 
 
 

@@ -2,14 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from lib.lib_config import get_redis_config
-import redis
-from skdeploy.models import TaskStatus
-import django
-django.setup()
 
 if __name__ == "__main__":
-    obj = TaskStatus.objects.filter(id = 42)
-    obj_hosts = obj.hosts_cus
-    print obj_hosts
-    print type(obj_hosts)
+    s1 = "{u'main_task': ('inner_var:\u6211\u662fzw\nmultiple_vars:a1\nmultiple_vars:a2\nsingle_var:6\n', None), u'post_task': ('inner_var:\u6211\u662fzw\nmultiple_vars:a1\nmultiple_vars:a2\nsingle_var:6\n', None)}"
+    print s1.decode("unicode_escape")

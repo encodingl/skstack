@@ -7,15 +7,15 @@ from django import forms
 
 from skworkorders.models import VarsGroup,WorkOrder
 from skworkorders.forms import Custom_form
-from lib.lib_format import list_to_formlist
+
 from skcmdb.api import get_object
+from lib.lib_format import list_to_formlist
 
 import subprocess
 from skaccounts.models import UserInfo
 
 import commands
 import json
-
 
 import logging
 log = logging.getLogger('skworkorders')
@@ -194,10 +194,12 @@ def permission_audit_pass(obj_audit_level,obj_status):
         return True
     
 
+
+            
 if __name__ == "__main__":
     d = {"a":"avalue","b":"bvalue","c":1}
-    s = "{a} whata {b} fk {c}"
-    print var_change2(s,**d)
+#     s = "{a} whata {b} fk {c}"
+#     print var_change2(s,**d)
 #      get_VarsGroup_form("vg1_stg")
 #     cmd1 = "ansible gtest -m shell -a 'du -sh /focus'"
 #     cmd2 = "du -sh /focus"
