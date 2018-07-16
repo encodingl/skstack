@@ -31,7 +31,7 @@
 						
 								
 								<div class="col-md-4">
-								 	<form action="{% url 'WorkOrderFlow_history' %}" method="POST">
+								 	<form action="{% url 'WorkOrderFlow_foreground_history' %}" method="POST">
                				 			{% csrf_token %}
                				 			<input id="from_date" type="text" name="from_date"  hidden/>
 												<input id="to_date"type="text" name="to_date"  hidden/>
@@ -233,7 +233,7 @@ function tanchu_detail(n){
     area: ['700px', '550px'],
     shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
-    content: ['/skworkorders/WorkOrderFlow/detail/' + n,],
+    content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();

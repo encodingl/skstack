@@ -236,6 +236,7 @@ AUTH_USER_MODEL = 'skaccounts.UserInfo'
 LOGIN_URL = '/skaccounts/login/'
 
 #celery config
+
 CELERY_BROKER_URL = 'redis://:redis0619@localhost:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TIMEZONE = 'Asia/Shanghai'

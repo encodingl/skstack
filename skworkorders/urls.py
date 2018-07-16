@@ -37,26 +37,28 @@ urlpatterns = [
      url(r'^Vars/edit/(?P<ids>\d+)/$', Vars.Vars_edit, name='Vars_edit'),
      url(r'^Vars/check/(?P<ids>\d+)/$', Vars.Vars_check, name='Vars_check'),
      url(r'^Vars/copy/$', Vars.Vars_copy, name='Vars_copy'),
-         
      
-     url(r'^WorkOrderFlow/revoke/$', WorkOrderFlow.WorkOrderFlow_revoke, name='WorkOrderFlow_revoke'),
-     url(r'^WorkOrderFlow/release/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_release, name='WorkOrderFlow_release'),
-     url(r'^WorkOrderFlow/release/run/$', WorkOrderFlow.WorkOrderFlow_release_run, name='WorkOrderFlow_release_run'),
-    
      
-     url(r'^WorkOrderFlow/detail/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_detail, name='WorkOrderFlow_detail'),
-     url(r'^WorkOrderFlow/$', WorkOrderFlow.WorkOrderFlow_index, name='WorkOrderFlow_index'),
-     url(r'^WorkOrderFlow/history/$', WorkOrderFlow.WorkOrderFlow_history, name='WorkOrderFlow_history'),
-     url(r'^WorkOrderFlow/schedule/$', WorkOrderFlow.WorkOrderFlow_schedule, name='WorkOrderFlow_schedule'),
-     url(r'^WorkOrderFlow/schedule/detail/', WorkOrderFlow.WorkOrderFlow_schedule_detail, name='WorkOrderFlow_schedule_detail'),
-     url(r'^WorkOrderFlow/audit/$', WorkOrderFlow.WorkOrderFlow_audit, name='WorkOrderFlow_audit'),
-     url(r'^WorkOrderFlow/audit/permit/$', WorkOrderFlow.WorkOrderFlow_permit, name='WorkOrderFlow_permit'),
-     url(r'^WorkOrderFlow/audit/deny/$', WorkOrderFlow.WorkOrderFlow_deny, name='WorkOrderFlow_deny'),  
-    
      url(r'^WorkOrderCommit/$', WorkOrderCommit.WorkOrderCommit_index, name='WorkOrderCommit_index'),
      url(r'^WorkOrderCommit/undo/$', WorkOrderCommit.WorkOrderCommit_undo, name='WorkOrderCommit_undo'),
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
      url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
+         
+     url(r'^WorkOrderFlow/audit/$', WorkOrderFlow.WorkOrderFlow_audit, name='WorkOrderFlow_audit'),
+     url(r'^WorkOrderFlow/audit/permit/$', WorkOrderFlow.WorkOrderFlow_permit, name='WorkOrderFlow_permit'),
+     url(r'^WorkOrderFlow/audit/deny/$', WorkOrderFlow.WorkOrderFlow_deny, name='WorkOrderFlow_deny'),  
+     
+     url(r'^WorkOrderFlow/release/foreground/$', WorkOrderFlow.WorkOrderFlow_foreground_release, name='WorkOrderFlow_foreground_release'),
+     url(r'^WorkOrderFlow/release/backgroud/$', WorkOrderFlow.WorkOrderFlow_background_release, name='WorkOrderFlow_background_release'),
+     url(r'^WorkOrderFlow/release/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_release, name='WorkOrderFlow_release'),
+     url(r'^WorkOrderFlow/release/run/$', WorkOrderFlow.WorkOrderFlow_release_run, name='WorkOrderFlow_release_run'),
+     url(r'^WorkOrderFlow/release/revoke/$', WorkOrderFlow.WorkOrderFlow_revoke, name='WorkOrderFlow_revoke'),
+     
+     url(r'^WorkOrderFlow/history/foreground/$', WorkOrderFlow.WorkOrderFlow_foreground_history, name='WorkOrderFlow_foreground_history'),
+     url(r'^WorkOrderFlow/history/background/$', WorkOrderFlow.WorkOrderFlow_background_history, name='WorkOrderFlow_background_history'),
+     url(r'^WorkOrderFlow/history/detail/background/$', WorkOrderFlow.WorkOrderFlow_background_detail, name='WorkOrderFlow_background_detail'),
+     url(r'^WorkOrderFlow/history/detail/foreground/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_foreground_detail, name='WorkOrderFlow_foreground_detail'),
+     
      
      url(r'^websocket/$', sk_websocket.websocket_index, name='websocket_index'),
      url(r'^echo/$', sk_websocket.echo, name='websocket_echo'),

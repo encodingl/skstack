@@ -15,3 +15,4 @@ ignoreupdate.sh
 *.swp
 00*.py
 ski*_dev.conf
+celerybeat*

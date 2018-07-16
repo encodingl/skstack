@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from skworkorders.lib_skworkorders import var_change2
 import subprocess
+import json
 import logging
 log = logging.getLogger('skworkorders')
 
@@ -22,6 +23,9 @@ def add(x, y):
 def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic):
     retcode = 0
     msg_result_dic={}
+    taskname_dic = json.loads(taskname_dic)
+    var_built_in_dic = json.loads(var_built_in_dic)
+    user_vars_dic = json.loads(user_vars_dic)
     for taskname,taskvalue in taskname_dic.items():
         if taskvalue:
             task = var_change2(taskvalue,**user_vars_dic) 

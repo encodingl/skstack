@@ -22,10 +22,19 @@
                 <li style="font-size: medium;display: none" id="project_audit"><a
                         href="{% url 'WorkOrderFlow_audit' %}"><b>审核</b></a></li>
                 <li class="divider"></li>
-                <li style="font-size: medium;display: none" id="project_deploy"><a
-                        href="{% url 'WorkOrderFlow_index' %}"><b>执行</b></a></li>
-                <li class="divider"></li>
-
+            
+    				 <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>执行</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="WorkOrderFlow_foreground_release"><a
+                                href="{% url 'WorkOrderFlow_foreground_release' %}"><b>前台任务</b></a></li>
+                        <li style="font-size: medium;display: none" id="WorkOrderFlow_background_release"><a
+                                href="{% url 'WorkOrderFlow_background_release' %}"><b>后台任务</b></a></li>
+                       
+                    </ul>
+                </li>
      
                 
                  <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
@@ -34,9 +43,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li style="font-size: medium;display: none" id="project_history"><a
-                                href="{% url 'WorkOrderFlow_history' %}"><b>普通任务</b></a></li>
+                                href="{% url 'WorkOrderFlow_foreground_history' %}"><b>前台任务</b></a></li>
                         <li style="font-size: medium;display: none" id="project_schedule"><a
-                                href="{% url 'WorkOrderFlow_schedule' %}"><b>计划任务</b></a></li>
+                                href="{% url 'WorkOrderFlow_background_history' %}"><b>后台任务</b></a></li>
                        
                     </ul>
                 </li>

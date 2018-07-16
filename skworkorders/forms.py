@@ -62,7 +62,7 @@ class WorkOrder_form(forms.ModelForm):
 class WorkOrderCommit_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("title","workorder","workorder_id","workorder_group","env","user_commit","desc","status","audit_level","celery_schedule_time")
+        fields = ("title","workorder","workorder_id","workorder_group","env","user_commit","desc","status","audit_level","celery_schedule_time","back_exe_enable","auto_exe_enable")
         
         widgets = {    
             'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
@@ -79,6 +79,8 @@ class WorkOrderCommit_form(forms.ModelForm):
       
             'status': forms.HiddenInput(attrs={'class': 'form-control'}),
             'audit_level': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'back_exe_enable': forms.CheckboxInput(), 
+            'auto_exe_enable': forms.CheckboxInput(), 
            
       
  
@@ -127,8 +129,11 @@ class WorkOrderFlow_detail_form(forms.ModelForm):
             'celery_task_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'celery_schedule_time': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'back_exe_enable': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'auto_exe_enable': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
 
         }    
+
         
 class WorkOrderFlow_schedule_detail_form(forms.ModelForm):
     class Meta:
@@ -145,7 +150,7 @@ class WorkOrderFlow_schedule_detail_form(forms.ModelForm):
      
         }  
         
-class WorkOrderFlow_schedule_detail_form2(forms.Form):
+class CeleryTaskResult_form(forms.Form):
     task_id = forms.CharField(label=u'task_id', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
     status = forms.CharField(label=u'status', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
     result = forms.CharField(label=u'result', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))

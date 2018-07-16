@@ -8,4 +8,6 @@ GitPython==2.1.5
 dwebsocket==0.4.2
 pillow==5.1.0
 django-ckeditor==5.4.0
-APScheduler==3.5.1
+celery==4.2.0
+flower==1.0.0
+django-celery-results==1.0.1
