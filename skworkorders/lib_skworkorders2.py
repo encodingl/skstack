@@ -258,6 +258,7 @@ class PreTask():
     def manual_task_add(self):
         self.message_dic_format["status"] = 0
         self.message_dic_format.pop("celery_schedule_time")
+
         WorkOrderFlow.objects.create(**self.message_dic_format)
         content_str = "finished:successful工单提交成功"
         self.request.websocket.send(content_str)

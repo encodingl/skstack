@@ -111,8 +111,7 @@ def var_change2(arg,**kwargs):
     return arg
 
 #该 函数用于将用户选择的变量格式化到一个字典存放到WorkOrderFlow数据库表的user_vars字段中
-def format_to_user_vars(**message_dic):
-    
+def format_to_user_vars(**message_dic):    
     WorkOrder_id = int(message_dic['id'])       
     obj = get_object(WorkOrder, id=WorkOrder_id)
     obj_VarsGroup=VarsGroup.objects.get(name=obj.var_opional)
@@ -126,8 +125,15 @@ def format_to_user_vars(**message_dic):
             message_dic.pop(obj_var_name)
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
-
     message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
+    if message_dic["back_exe_enable"] == "on":
+        message_dic["back_exe_enable"] = 1
+    if message_dic["back_exe_enable"] == "False":
+        message_dic["back_exe_enable"] = 0  
+    if message_dic["auto_exe_enable"] == "on":
+        message_dic["auto_exe_enable"] = 1
+    if message_dic["auto_exe_enable"] == "False":
+        message_dic["auto_exe_enable"] = 0
     return message_dic,user_vars_dic
             
 def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):

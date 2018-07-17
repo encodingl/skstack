@@ -106,32 +106,39 @@ def WorkOrderFlow_foreground_history(request):
 def WorkOrderFlow_background_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
+    from_date = current_date + timedelta(days=-30)
     tpl_env = Environment.objects.all()
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
-        print from_date
-        print type(from_date)
         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
-       
         to_date = request.POST.get('to_date', '')
         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-        tpl_all = WorkOrderFlow.objects.filter(created_at__range=(from_date,to_date),celery_task_id__isnull=False)
-
-        print "fix01:%s" % tpl_all
         
+        tpl_all = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
+                                            LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
+                                            where a.created_at between %s and %s and a.user_commit=%s and \
+                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
+                                            params=[from_date,to_date,request.user])
         for e in tpl_env:
             obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=False)
             tpl_dic_obj[e.name_english]=obj
     else:
         tpl_all = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
                                             LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
-                                            where a.celery_schedule_time is not Null")
+                                            where a.created_at between %s and %s and a.user_commit=%s and \
+                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
+                                            params=[from_date,current_date,request.user])
+        
+        
      
     
-#         tpl_all = WorkOrderFlow.objects.filter(created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=False)
         for e in tpl_env:
-            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=False)
+            obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
+                                            LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
+                                            where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
+                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
+                                            params=[from_date,current_date,request.user,e.name_english])
             tpl_dic_obj[e.name_english]=obj
     
     tpl_dic_obj["ALL"]=tpl_all
