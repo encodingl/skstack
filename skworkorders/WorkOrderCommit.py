@@ -135,7 +135,11 @@ def pretask(request):
                         if  pt01.obj.schedule_enable == True:
                             pt01.celery_task_add()
                         elif pt01.obj.back_exe_enable == True:
-                            pt01.celery_bgtask_add()
+                            if pt01.message_dic_format.has_key("back_exe_enable"):
+                                pt01.celery_bgtask_add()
+                            else:
+                                pt01.all_task_do()
+                                
                         else:
                             pt01.all_task_do()
 

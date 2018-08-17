@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup,sk_websocket
+from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup,sk_websocket,ConfigCenter
 
 urlpatterns = [
       
@@ -24,6 +24,14 @@ urlpatterns = [
      url(r'^Environment/del/$', Environment.Environment_del, name='Environment_del'),
      url(r'^Environment/add/$', Environment.Environment_add, name='Environment_add'),
      url(r'^Environment/edit/(?P<ids>\d+)/$', Environment.Environment_edit, name='Environment_edit'),
+     
+     url(r'^ConfigCenter/$', ConfigCenter.ConfigCenter_index, name='ConfigCenter_index'),
+     url(r'^ConfigCenter/del/$', ConfigCenter.ConfigCenter_del, name='ConfigCenter_del'),
+     url(r'^ConfigCenter/add/$', ConfigCenter.ConfigCenter_add, name='ConfigCenter_add'),
+     url(r'^ConfigCenter/edit/(?P<ids>\d+)/$', ConfigCenter.ConfigCenter_edit, name='ConfigCenter_edit'),
+     url(r'^ConfigCenter/check/(?P<ids>\d+)/$', ConfigCenter.ConfigCenter_check, name='ConfigCenter_check'),
+     
+
      
      url(r'^VarsGroup/$', VarsGroup.VarsGroup_index, name='VarsGroup_index'),
      url(r'^VarsGroup/del/$', VarsGroup.VarsGroup_del, name='VarsGroup_del'),

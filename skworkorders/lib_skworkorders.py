@@ -1,22 +1,22 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import django
+from _mysql import NULL
 django.setup()
 
 from django import forms
 
-from skworkorders.models import VarsGroup,WorkOrder
+from skworkorders.models import VarsGroup,WorkOrder,ConfigCenter
 from skworkorders.forms import Custom_form
-
 from skcmdb.api import get_object
 from lib.lib_format import list_to_formlist
-
+from lib.lib_paramiko import ssh_cmd
 import subprocess
 from skaccounts.models import UserInfo
 
 import commands
 import json
-
+import datetime
 import logging
 log = logging.getLogger('skworkorders')
 
@@ -103,7 +103,6 @@ def get_VarsGroup_form(args):
      
 
 def var_change2(arg,**kwargs):
-    print "var_change2_kwargs:%s" % kwargs
     for key,value in kwargs.items():       
         key = "{%s}" % key
         value = str(value)
@@ -126,10 +125,11 @@ def format_to_user_vars(**message_dic):
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
     message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
-    if message_dic["back_exe_enable"] == "on":
-        message_dic["back_exe_enable"] = 1
-    if message_dic["back_exe_enable"] == "False":
-        message_dic["back_exe_enable"] = 0  
+    if message_dic.has_key("back_exe_enable"):
+        if message_dic["back_exe_enable"] == "on":
+            message_dic["back_exe_enable"] = 1
+        if message_dic["back_exe_enable"] == "False":
+            message_dic["back_exe_enable"] = 0  
     if message_dic["auto_exe_enable"] == "on":
         message_dic["auto_exe_enable"] = 1
     if message_dic["auto_exe_enable"] == "False":
@@ -137,48 +137,57 @@ def format_to_user_vars(**message_dic):
     return message_dic,user_vars_dic
             
 def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
-    obj = obj_WorkOrder
-    
-    
+    obj = obj_WorkOrder 
+    obj2 = get_object(ConfigCenter, id=obj.config_center_id)
     taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
-   
-    if taskname_dic[taskname]:
-        
+    if taskname_dic[taskname]:       
         task = var_change2(taskname_dic[taskname],**user_vars_dic) 
         if obj.var_built_in:
             var_built_in_dic = eval(obj.var_built_in) 
             task = var_change2(task,**var_built_in_dic)
-   
         task_list = task.encode("utf-8").split("\r") 
         ret_message="%s:开始执行" % taskname
         log.info(ret_message)
-        request.websocket.send(ret_message)           
-        for cmd in task_list:
-            try:
-                log.info("cmd_start:%s"  % cmd )
-                pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
-            except Exception, msg:
-                log.error("cmd_result:%s" % msg)
-            while True: 
-                line = pcmd.stdout.readline().strip()  #获取内容
-                if line:
-                    request.websocket.send(line)
-                    log.info("cmd_result:%s" % line)
-                else:    
+        request.websocket.send("%s %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))  
+       
+        if obj.config_center is NULL or obj.config_center is None:    
+            for cmd in task_list:
+                try:
+                    log.info("cmd_start:%s"  % cmd )
+                    pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+                except Exception, msg:
+                    log.error("cmd_result:%s" % msg)
+                while True: 
+                    line = pcmd.stdout.readline().strip()  #获取内容
+                    if line:
+                        request.websocket.send(line)
+                        log.info("cmd_result:%s" % line)
+                    else:    
+                        break
+                retcode=pcmd.wait()
+                if retcode==0:
+                    pass
+                else:
+                    ret_message="%s:执行失败" % taskname
+                    
+                    log.error(ret_message)
                     break
-            retcode=pcmd.wait()
-            if retcode==0:
-                pass
-            else:
-                ret_message="%s:执行失败" % taskname
-                log.error(ret_message)
-                break
-        if retcode==0:
-            
-            ret_message="%s:执行成功" % taskname
-            log.info(ret_message)
-
-        request.websocket.send(ret_message)
+        else:
+            for cmd in task_list:
+                
+                try:
+                    log.info("ssh_cmd_start:%s config_center_ip:%s"  % (cmd,obj2.ip))
+                    retcode = ssh_cmd(obj2.ip,obj2.port,obj2.username,obj2.password,cmd,obj2.rsa_key,request)
+                    print "retcode1:%s" % retcode
+                except Exception, msg:
+                    log.error("ssh_cmd_result:%s" % msg)
+                    retcode = 1111
+                if retcode == 0:          
+                    ret_message="%s:执行成功" % taskname
+                    log.info(ret_message)
+                else:
+                    ret_message="%s:执行失败" % taskname
+        request.websocket.send("%s %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
     return retcode
          
 def permission_submit_pass(user,WorkOrder_id):

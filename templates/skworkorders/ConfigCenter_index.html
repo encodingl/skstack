@@ -11,7 +11,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="{% url 'Environment_del' %}" method="post">
+        <form action="{% url 'ConfigCenter_del' %}" method="post">
                 {% csrf_token %}
             <div class="box">
                 <div class="box-header">
@@ -32,7 +32,7 @@
  			 
  			 
                   <div class="btn-group">
-						 <a href="{% url 'Environment_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
+						 <a href="{% url 'ConfigCenter_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -43,6 +43,7 @@
                             
                                     
                                     <th>名称</th>
+                                    <th>IP</th>
                                     <th>描述</th>    
                                     <th class="text-center">功能</th>                            
                                 </tr>
@@ -53,11 +54,13 @@
                                     <tr class="even gradeA">
                                         
                                         
-                                        <td>{{ x.name_english }}</td>
+                                        <td>{{ x.name }}</td>
+                                        <td>{{ x.ip }}</td>
                                         <td>{{ x.desc }}</td>
                                         <td class="text-center" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-success" onclick="return tanchu_ConfigCenter_check(this.value)" value="{{ x.id }}">验证</li></a>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
-                                        <a href="{% url 'Environment_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger " onclick="if(confirm('确定删除?')==false)return false;">删除</a>
+                                        <a href="{% url 'ConfigCenter_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger " onclick="if(confirm('确定删除?')==false)return false;">删除</a>
                                     </td>
                                     </tr>
                                 {% endfor %}
@@ -99,6 +102,21 @@
 </script>
 
 <script>
+function tanchu_ConfigCenter_check(n){
+    layer.open({
+    type: 2,
+    title: '配置中心连接校验',
+    closeBtn: 1,
+    area: ['600px', '400px'],
+    shadeClose: true, //点击遮罩关闭
+    content: ['/skworkorders/ConfigCenter/check/' + n,],
+    
+
+  });
+}
+</script>
+
+<script>
 function tanchu(n){
     layer.open({
     type: 2,
@@ -107,7 +125,7 @@ function tanchu(n){
     area: ['600px', '400px'],
     shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
-    content: ['/skworkorders/Environment/edit/' + n,],
+    content: ['/skworkorders/ConfigCenter/edit/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();

@@ -61,7 +61,7 @@ PROJECT_AUDIT_ENABLE = (
     )
 # Create your models here.
 
-    
+
     
 class Environment(models.Model):
     
@@ -70,6 +70,7 @@ class Environment(models.Model):
     
     def __unicode__(self):
         return self.name_english
+    
     
 class ProjectGroup(models.Model):
     name = models.CharField(max_length=100)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
@@ -136,4 +137,4 @@ class TaskStatus(models.Model):
     hosts_cus = models.CharField(u"自定义目标主机(运维使用)",max_length=200,null=True,blank=True)
     def __unicode__(self):
         return self.title
-    
+ 

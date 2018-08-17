@@ -74,7 +74,16 @@ VARS_FORM_TYPE = (
     )
 # Create your models here.
 
-    
+class ConfigCenter(models.Model):
+    name  = models.CharField(u"名称",max_length=50)
+    ip = models.GenericIPAddressField(u"ip",max_length=50)
+    username  = models.CharField(u"用户名",max_length=50, default="root")
+    password  = models.CharField(u"密码",max_length=50, null=True, blank=True)
+    port  = models.PositiveIntegerField(u"ssh port", default=22)
+    rsa_key  = models.CharField(u"rsa key",max_length=50, null=True, blank=True)
+    desc = models.CharField(u"描述", max_length=300, null=True, blank=True)
+    def __unicode__(self):
+        return self.name    
     
 class Environment(models.Model):
     name_english  = models.CharField(u"英文简称",max_length=50,unique=True)
@@ -141,6 +150,7 @@ class WorkOrder(models.Model):
     created_at = models.DateTimeField(u'创建时间', auto_now_add=True,null=True)
     updated_at = models.DateTimeField(u'修改时间', auto_now_add=True,null=True)
     template_enable = models.BooleanField(u"是否转为模板")    
+    config_center = models.ForeignKey(ConfigCenter, verbose_name=u"配置中心", on_delete=models.PROTECT, null=True,blank=True)
     def __unicode__(self):
         return self.name
     

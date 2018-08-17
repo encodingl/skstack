@@ -5,7 +5,7 @@ Created on 2018年7月9日 @author: skipper
 '''
 from lib.lib_celery import format_celery_eta_time
 from skworkorders.tasks import schedule_task
-from skworkorders.models import WorkOrder,WorkOrderFlow
+from skworkorders.models import WorkOrder,WorkOrderFlow,ConfigCenter
 from datetime import datetime
 from skipper import celery_app
 from skaccounts.models import UserInfo
@@ -16,12 +16,21 @@ from datetime import datetime,timedelta
 import pytz
 import logging
 from _mysql import NULL
+from skcmdb.api import get_object
+from django.forms.models import model_to_dict
 log = logging.getLogger('skworkorders')
+
 
 class WorkOrdkerFlowTask():
     def __init__(self,WorkOrderFlow_id,login_user,request):
         self.obj = WorkOrderFlow.objects.get(id=WorkOrderFlow_id) 
         self.obj2 = WorkOrder.objects.get(id = self.obj.workorder_id)
+        self.obj3 = get_object(ConfigCenter, id=self.obj.config_center_id)
+        try:
+            self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
+        except Exception, e:
+            self.config_center_dic = None
+       
         self.user = login_user
         self.request = request
             
@@ -40,7 +49,7 @@ class WorkOrdkerFlowTask():
             eta_time = format_celery_eta_time(str(self.obj.celery_schedule_time))
         else:
             eta_time = format_celery_eta_time(str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=eta_time)
+        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
 
         self.obj.celery_task_id = task01.id
         self.obj.status="PENDING"
@@ -67,7 +76,7 @@ class WorkOrdkerFlowTask():
         self.celery_task_revoke()
         content_str = "celery task revoked"
         self.log_celery_id("info", content_str)
-        self.request.websocket.send(content_str)
+        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
         
 
     def permission_submit_pass(self):
@@ -141,7 +150,7 @@ class WorkOrdkerFlowTask():
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "finished:successful工单执行成功"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("info", content_str)
 
         else:
@@ -149,7 +158,7 @@ class WorkOrdkerFlowTask():
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "finished:failed工单执行失败"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("error", content_str)
             
 
@@ -159,6 +168,11 @@ class PreTask():
         self.user = request.user
         self.request = request
         self.message_dic_format,self.user_vars_dic = format_to_user_vars(**message_dic)
+        self.obj3 = get_object(ConfigCenter, id=self.obj.config_center_id)
+        try:
+            self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
+        except Exception, e:
+            self.config_center_dic = None
         
     def log(self,level,content_str):
         if level == "info":
@@ -181,16 +195,17 @@ class PreTask():
         self.message_dic_format["finished_at"]=obj_finished_at
         if retcode == 0:
             self.message_dic_format["status"] = 3
+            self.message_dic_format.pop("celery_schedule_time")
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:successful工单执行成功"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("info", content_str)
 
         else:
             self.message_dic_format["status"] = 4
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:failed工单执行失败"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("error", content_str)
             
     def celery_task_add(self):
@@ -210,13 +225,13 @@ class PreTask():
                 var_built_in_dic = {}
             var_built_in_dic = json.dumps(var_built_in_dic)
             user_vars_dic = json.dumps(self.user_vars_dic)
-            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=eta_time)
+            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
             self.message_dic_format["celery_task_id"]=task01.id    
             self.message_dic_format["status"] = "PENDING"
             self.message_dic_format["celery_schedule_time"] = time01
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:successful定时任务添加成功"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("info", content_str)
     
     def celery_bgtask_add(self):
@@ -232,13 +247,13 @@ class PreTask():
             var_built_in_dic = {}
         var_built_in_dic = json.dumps(var_built_in_dic)
         user_vars_dic = json.dumps(self.user_vars_dic)
-        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=eta_time)
+        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
         self.message_dic_format["celery_task_id"]=task01.id    
         self.message_dic_format["status"] = "PENDING"
         self.message_dic_format["celery_schedule_time"] = time_now
         WorkOrderFlow.objects.create(**self.message_dic_format)
         content_str = "finished:successful后台任务添加成功"
-        self.request.websocket.send(content_str)
+        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
         self.log("info", content_str)
             
     def celery_task_create(self):
@@ -251,7 +266,7 @@ class PreTask():
             self.message_dic_format["celery_schedule_time"] = time01
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:successful工单提交成功"
-            self.request.websocket.send(content_str)
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("info", content_str)
            
             
@@ -261,7 +276,7 @@ class PreTask():
 
         WorkOrderFlow.objects.create(**self.message_dic_format)
         content_str = "finished:successful工单提交成功"
-        self.request.websocket.send(content_str)
+        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
         self.log("info", content_str)
         
     def permission_submit_pass(self):
@@ -285,7 +300,7 @@ class PreTask():
     
     def pre_task_success(self):
         content_str = "commit starting"
-        self.request.websocket.send(content_str)
+        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
         self.log("info", content_str)
         if self.obj.pre_task:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="pre_task")
@@ -298,27 +313,27 @@ class PreTask():
 #             return False
         
     def pre_task_failed(self):
-        content_str = "finished:successful工单提交失败"
-        self.request.websocket.send(content_str)
-        self.warning("info", content_str)
+        content_str = "finished:failed工单提交失败"
+        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+        self.log("warning", content_str)
        
 
     
-def celery_schedule_task(WorkOrderFlow_id):
-    obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
-    obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id)
-    taskname_dic = {"main_task":obj_WorkOrder.main_task,"post_task":obj_WorkOrder.post_task}
-    if obj_WorkOrder.var_built_in:
-        var_built_in_dic = eval(obj_WorkOrder.var_built_in) 
-    else:
-        var_built_in_dic = {}
-    user_vars_dic=eval(obj_WorkOrderFlow.user_vars)
-    format_eta = format_celery_eta_time(str(obj_WorkOrderFlow.celery_schedule_time))
-     
-    task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic), eta=format_eta)
-    obj_WorkOrderFlow.celery_task_id = task01.id
-    obj_WorkOrderFlow.status="PENDING"
-    obj_WorkOrderFlow.save()
+# def celery_schedule_task(WorkOrderFlow_id):
+#     obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
+#     obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id)
+#     taskname_dic = {"main_task":obj_WorkOrder.main_task,"post_task":obj_WorkOrder.post_task}
+#     if obj_WorkOrder.var_built_in:
+#         var_built_in_dic = eval(obj_WorkOrder.var_built_in) 
+#     else:
+#         var_built_in_dic = {}
+#     user_vars_dic=eval(obj_WorkOrderFlow.user_vars)
+#     format_eta = format_celery_eta_time(str(obj_WorkOrderFlow.celery_schedule_time))
+#      
+#     task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=format_eta)
+#     obj_WorkOrderFlow.celery_task_id = task01.id
+#     obj_WorkOrderFlow.status="PENDING"
+#     obj_WorkOrderFlow.save()
 
 
 if __name__ == '__main__':

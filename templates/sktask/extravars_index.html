@@ -80,19 +80,7 @@ function checkAll(sender, checkClass) {
 </script>
 <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script>
-  $(function () {
-{#    $("#example1").DataTable();#}
-    $('#dataform').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true
-    });
-  });
-</script>
+
 <script>
 function checkSubmit() {
     if (!confirm("确定删除？")) {
@@ -149,4 +137,42 @@ function tanchu(n){
         });
     });
 </script>
+
+
+<script>
+  $(document).ready(function() {
+	    $('.table').DataTable( {
+	    	  "paging": true,
+	        "lengthChange": true,
+	        "searching": true,
+	        "info": true,
+	        "autoWidth": false,
+	        "aaSorting": [[1,'asc']],
+	      
+	        initComplete: function () {
+	            var api = this.api();
+	            api.columns().indexes().flatten().each( function ( i ) {
+	                var column = api.column( i );
+	            	if (i == 3 || i == 4){
+	                var select = $('<select><option value="">All</option></select>')
+	                    .appendTo( $(column.header()) )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	                
+	            	} //end if
+	            } );
+	        }
+	    } );
+	} );
+</script>
+
 {% endblock %}

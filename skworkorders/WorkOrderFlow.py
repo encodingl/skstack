@@ -22,7 +22,7 @@ from django.db.models import Q
 from dwebsocket.decorators import accept_websocket
 from skworkorders.lib_skworkorders import custom_task,permission_submit_pass,permission_audit_pass
 
-from skworkorders.lib_skworkorders2 import celery_schedule_task,WorkOrdkerFlowTask
+from skworkorders.lib_skworkorders2 import WorkOrdkerFlowTask
 
 import logging
 

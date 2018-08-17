@@ -2,11 +2,27 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import *
+from .models import Environment,WorkOrder,WorkOrderFlow,WorkOrderGroup,Vars,VarsGroup,ConfigCenter
+
+
 from django_celery_results.models import TaskResult 
 
- 
-        
+class ConfigCenter_form(forms.ModelForm):
+    class Meta:
+        model = ConfigCenter
+        exclude = ("id",)
+        widgets = {
+             
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'ip': forms.TextInput(attrs={'class': 'form-control'}),
+            'port': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'rsa_key': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.Textarea(attrs={'class': 'form-control'}),
+            
+        }
+          
 class Environment_form(forms.ModelForm):
     class Meta:
         model = Environment
@@ -55,6 +71,7 @@ class WorkOrder_form(forms.ModelForm):
 #   
             
             'template_enable': forms.CheckboxInput(), 
+             'config_center': forms.Select(attrs={'class': 'form-control'}),
     
                  
         }
