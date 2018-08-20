@@ -39,7 +39,7 @@ class Devops(models.Model):
     #job  = models.ForeignKey(UserInfo,related_name='types',on_delete=models.SET_NULL, null=True, blank=True)
     job = models.IntegerField(choices=JOB,verbose_name='运维角色',null=True)
     iphone = models.CharField(u'联系方式',max_length=20)
-    jobclass = models.CharField(u'运维系统分工',max_length=20)
+    jobclass = models.CharField(u'运维系统分工',max_length=100)
     businessline = models.ManyToManyField(YwGroup)
     secondaryname = models.ForeignKey(UserInfo,related_name='nickname_backup',on_delete=models.SET_NULL, null=True, blank=True)
     jobuse = models.CharField(u'运维工具',max_length=15)
