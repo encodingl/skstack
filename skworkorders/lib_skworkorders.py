@@ -113,15 +113,19 @@ def var_change2(arg,**kwargs):
 def format_to_user_vars(**message_dic):    
     WorkOrder_id = int(message_dic['id'])       
     obj = get_object(WorkOrder, id=WorkOrder_id)
-    obj_VarsGroup=VarsGroup.objects.get(name=obj.var_opional)
-    user_vars_dic={}
+    if obj.var_opional_switch == True and obj.var_opional is not None:
+        user_vars_dic={}
+        obj_VarsGroup=VarsGroup.objects.get(name=obj.var_opional)
+        for obj_var in obj_VarsGroup.vars.all():  
+            obj_var_name = str(obj_var.name)
+            if message_dic.has_key(obj_var_name):
+                
+                user_vars_dic[obj_var_name]=message_dic[obj_var_name]
+                message_dic.pop(obj_var_name)
+    else: 
+        user_vars_dic={}
 
-    for obj_var in obj_VarsGroup.vars.all():  
-        obj_var_name = str(obj_var.name)
-        if message_dic.has_key(obj_var_name):
-            
-            user_vars_dic[obj_var_name]=message_dic[obj_var_name]
-            message_dic.pop(obj_var_name)
+    
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
     message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
@@ -157,13 +161,15 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
                 except Exception, msg:
                     log.error("cmd_result:%s" % msg)
-                while True: 
-                    line = pcmd.stdout.readline().strip()  #获取内容
-                    if line:
+                    
+                while True:
+                    for line in iter(pcmd.stdout.readline,b''):
+                        print line
                         request.websocket.send(line)
                         log.info("cmd_result:%s" % line)
-                    else:    
-                        break
+                    if pcmd.poll() is not None:
+                        break  
+
                 retcode=pcmd.wait()
                 if retcode==0:
                     pass

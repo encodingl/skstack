@@ -167,7 +167,10 @@ class PreTask():
         self.obj = WorkOrder.objects.get(id=WorkOrder_id) 
         self.user = request.user
         self.request = request
+        
         self.message_dic_format,self.user_vars_dic = format_to_user_vars(**message_dic)
+      
+            
         self.obj3 = get_object(ConfigCenter, id=self.obj.config_center_id)
         try:
             self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
