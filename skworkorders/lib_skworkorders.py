@@ -77,7 +77,9 @@ def get_Vars_form(obj_var):
         obj_value_optional = eval(obj.value_optional)       
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
-        obj_value_optional = eval(commands.getoutput(obj.value_script))
+        l1 = commands.getoutput(obj.value_script)
+        obj_value_optional = eval(l1)
+        print obj_value_optional
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 
     elif obj.value_method == "manual":
         pass
@@ -159,20 +161,21 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 try:
                     log.info("cmd_start:%s"  % cmd )
                     pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+                    while True:
+                        for line in iter(pcmd.stdout.readline,b''):
+                            print line
+                            request.websocket.send(line)
+                            log.info("cmd_result:%s" % line)
+                        if pcmd.poll() is not None:
+                            break  
                 except Exception, msg:
                     log.error("cmd_result:%s" % msg)
-                    
-                while True:
-                    for line in iter(pcmd.stdout.readline,b''):
-                        print line
-                        request.websocket.send(line)
-                        log.info("cmd_result:%s" % line)
-                    if pcmd.poll() is not None:
-                        break  
 
                 retcode=pcmd.wait()
+               
                 if retcode==0:
-                    pass
+                    ret_message="%s:执行成功" % taskname
+                    
                 else:
                     ret_message="%s:执行失败" % taskname
                     

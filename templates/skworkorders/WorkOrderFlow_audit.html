@@ -96,8 +96,12 @@
                                         </td>
                                         <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
-                                        <a value="{% url 'WorkOrderFlow_permit' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_audit" id="permit">同意</a>
-                                        <a value="{% url 'WorkOrderFlow_deny' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_audit" id="deny">拒绝</a>
+                                      <li class="btn btn-sm btn-primary" onclick="return tanchu_permit(this.value)"value="{{ x.id }}">同意</li>
+                                      <li class="btn btn-sm btn-danger" onclick="return tanchu_deny(this.value)"value="{{ x.id }}">拒绝</li>
+                                      
+                                       <!--  <a value="{% url 'WorkOrderFlow_permit' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_audit" id="permit">同意</a> -->
+                                        
+                                       <!--  <a value="{% url 'WorkOrderFlow_deny' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_audit" id="deny">拒绝</a> -->
                                          
                                         
                                    
@@ -184,6 +188,75 @@ function checkSubmit() {
     }
 }
 </script>
+
+<script>
+function tanchu_permit(n){
+    layer.open({
+    type: 2,
+    title: '信息',
+    closeBtn: 1,
+    area: ['700px', '550px'],
+    shadeClose: true, //点击遮罩关闭
+/*     content: ['/skworkorders/project_edit?id=' + n,], */
+    content: ['/skworkorders/WorkOrderFlow/audit/permit/?id=' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
+<script>
+function tanchu_deny(n){
+    layer.open({
+    type: 2,
+    title: '信息',
+    closeBtn: 1,
+    area: ['700px', '550px'],
+    shadeClose: true, //点击遮罩关闭
+/*     content: ['/skworkorders/project_edit?id=' + n,], */
+    content: ['/skworkorders/WorkOrderFlow/audit/deny/?id=' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
 <script>
 function tanchu_detail(n){
     layer.open({

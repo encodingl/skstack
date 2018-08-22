@@ -137,10 +137,13 @@ class WorkOrderFlow_detail_form(forms.ModelForm):
             'user_vars': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
             'audit_level': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'comment_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'comment_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l2': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'comment_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'updated_at_l3': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'celery_task_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
@@ -227,3 +230,6 @@ class Vars_form(forms.ModelForm):
     
 class Custom_form(forms.Form):
     pass
+
+class Comment_form(forms.Form):
+    comment_content = forms.CharField(label=u'意见',max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))

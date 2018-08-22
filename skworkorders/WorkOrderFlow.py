@@ -7,7 +7,7 @@ from models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 
-from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,CeleryTaskResult_form
+from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,CeleryTaskResult_form,Comment_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 from django_celery_results.models import TaskResult
@@ -282,55 +282,70 @@ def WorkOrderFlow_audit(request):
 @login_required()
 @permission_verify()
 def WorkOrderFlow_permit(request):
-#     temp_name = "skworkorders/skworkorders-header.html"
-    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
-    WorkOrderFlow_id = request.GET.get('id', '')
-    login_user = request.user  
-    login_user = str(login_user) 
-    obj_user = UserInfo.objects.get(username=request.user)    
-    obj_group = obj_user.usergroup_set.all()   
-    obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
-    obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id)
-    obj_AuditFlow = AuditFlow.objects.get(name = obj_WorkOrder.audit_flow)   
-    obj_level = obj_AuditFlow.level
-    obj_status = obj_WorkOrderFlow.status
-    t01 = WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
-    
-    if obj_level == "1":
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        if obj_l1 in obj_group:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
-            if t01.obj.celery_schedule_time:
-                t01.celery_task_add()
-            elif t01.obj.auto_exe_enable:
-                t01.celery_task_add()
-          
-    elif obj_level == "2":
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)  
-        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group :     
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="5",user_l2=login_user,updated_at_l2=time_now)
-            if t01.obj.celery_schedule_time:
-                t01.celery_task_add()
-            elif t01.obj.auto_exe_enable:
-                t01.celery_task_add()
 
-    elif obj_level == "3" and (obj_status == "0" or obj_status == "2" or obj_status == "6" or obj_status == "8"): 
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
-        obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
-        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "6"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="5",user_l2=login_user,updated_at_l2=time_now)
-        if obj_l3 in obj_group :
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="7",user_l3=login_user,updated_at_l3=time_now)
-            if t01.obj.celery_schedule_time:
-                t01.celery_task_add()
-            elif t01.obj.auto_exe_enable:
-                t01.celery_task_add()
+    if request.method == "POST":
+        tpl_Comment_form = Comment_form(request.POST)
+        if tpl_Comment_form.is_valid():
+            comment_content = request.POST["comment_content"]
+            WorkOrderFlow_id = request.POST["id"]
+            
+
+            login_user = request.user  
+            login_user = str(login_user) 
+            obj_user = UserInfo.objects.get(username=request.user)    
+            obj_group = obj_user.usergroup_set.all()   
+            obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
+            obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id)
+            obj_AuditFlow = AuditFlow.objects.get(name = obj_WorkOrder.audit_flow)   
+            obj_level = obj_AuditFlow.level
+            obj_status = obj_WorkOrderFlow.status
+            t01 = WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
+            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            if obj_level == "1":
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                if obj_l1 in obj_group:
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",user_l1=login_user,comment_l1=comment_content,updated_at_l1=time_now)
+                    if t01.obj.celery_schedule_time:
+                        t01.celery_task_add()
+                    elif t01.obj.auto_exe_enable:
+                        t01.celery_task_add()
+                  
+            elif obj_level == "2":
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)  
+                if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",user_l1=login_user,comment_l1=comment_content,updated_at_l1=time_now)
+                if obj_l2 in obj_group :     
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="5",user_l2=login_user,comment_l2=comment_content,updated_at_l2=time_now)
+                    if t01.obj.celery_schedule_time:
+                        t01.celery_task_add()
+                    elif t01.obj.auto_exe_enable:
+                        t01.celery_task_add()
+        
+            elif obj_level == "3" and (obj_status == "0" or obj_status == "2" or obj_status == "6" or obj_status == "8"): 
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
+                obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
+                if obj_l1 in obj_group and (obj_status == "0" or obj_status == "2"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="1",comment_l1=comment_content,user_l1=login_user,updated_at_l1=time_now)
+                if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "6"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="5",user_l2=login_user,comment_l2=comment_content,updated_at_l2=time_now)
+                if obj_l3 in obj_group :
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="7",user_l3=login_user,comment_l3=comment_content,updated_at_l3=time_now)
+                    if t01.obj.celery_schedule_time:
+                        t01.celery_task_add()
+                    elif t01.obj.auto_exe_enable:
+                        t01.celery_task_add()
+            status = 1
+        else:
+            status = 2
+    else:
+        tpl_Comment_form = Comment_form()
+        tpl_id = request.GET.get('id', '')
+    return render_to_response('skworkorders/WorkOrderFlow_permit.html', locals(), RequestContext(request))
+
+    
+    
      
  
     return HttpResponse(u'ok')
@@ -338,40 +353,50 @@ def WorkOrderFlow_permit(request):
 @login_required()
 @permission_verify()
 def WorkOrderFlow_deny(request):
-#     temp_name = "skworkorders/skworkorders-header.html"
-    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
-    WorkOrderFlow_id = request.GET.get('id', '') 
-    login_user = str(request.user) 
-    obj_user = UserInfo.objects.get(username=request.user)    
-    obj_group = obj_user.usergroup_set.all()  
-    obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
-    obj_status = obj_WorkOrderFlow.status
-    obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id) 
-    obj_AuditFlow = AuditFlow.objects.get(name = obj_WorkOrder.audit_flow)  
-    obj_level = obj_AuditFlow.level
+    if request.method == "POST":
+        tpl_Comment_form = Comment_form(request.POST)
+        if tpl_Comment_form.is_valid():
+            comment_content = request.POST["comment_content"]
+            WorkOrderFlow_id = request.POST["id"]
+            
+            
+            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
+            login_user = str(request.user) 
+            obj_user = UserInfo.objects.get(username=request.user)    
+            obj_group = obj_user.usergroup_set.all()  
+            obj_WorkOrderFlow = WorkOrderFlow.objects.get(id=WorkOrderFlow_id)
+            obj_status = obj_WorkOrderFlow.status
+            obj_WorkOrder = WorkOrder.objects.get(id=obj_WorkOrderFlow.workorder_id) 
+            obj_AuditFlow = AuditFlow.objects.get(name = obj_WorkOrder.audit_flow)  
+            obj_level = obj_AuditFlow.level 
+            if obj_level == "1":
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                if obj_l1 in obj_group:
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,comment_l1=comment_content,updated_at_l1=time_now)
+                     
+            elif obj_level == "2":
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)   
+                if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,comment_l1=comment_content,updated_at_l1=time_now)
+                if obj_l2 in obj_group:
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="6",user_l2=login_user,comment_l2=comment_content,updated_at_l2=time_now)
+                     
+            elif obj_level == "3": 
+                obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
+                obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
+                obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
+                if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,comment_l1=comment_content,updated_at_l1=time_now)
+                if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "5"):
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="6",user_l2=login_user,comment_l2=comment_content,updated_at_l2=time_now)
+                if obj_l3 in obj_group:
+                    WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="8",user_l3=login_user,comment_l3=comment_content,updated_at_l3=time_now)
+            status = 1
+        else:
+            status = 2
+    else:
+        tpl_Comment_form = Comment_form()
+        tpl_id = request.GET.get('id', '')
+    return render_to_response('skworkorders/WorkOrderFlow_deny.html', locals(), RequestContext(request))
     
-    if obj_level == "1":
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        if obj_l1 in obj_group:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,updated_at_l1=time_now)
-             
-    elif obj_level == "2":
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)   
-        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="6",user_l2=login_user,updated_at_l2=time_now)
-             
-    elif obj_level == "3": 
-        obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
-        obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
-        obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
-        if obj_l1 in obj_group and (obj_status == "0" or obj_status == "1"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="2",user_l1=login_user,updated_at_l1=time_now)
-        if obj_l2 in obj_group and (obj_status == "0" or obj_status == "2" or obj_status == "1" or obj_status == "5"):
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="6",user_l2=login_user,updated_at_l2=time_now)
-        if obj_l3 in obj_group:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="8",user_l3=login_user,updated_at_l3=time_now)
-
-    return HttpResponse(u'成功')   
