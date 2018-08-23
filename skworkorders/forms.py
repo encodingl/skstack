@@ -103,7 +103,16 @@ class WorkOrderCommit_form(forms.ModelForm):
  
         }    
 
+class WorkOrderCommit_help_form(forms.ModelForm):
+    class Meta:
+        model = WorkOrder
+        fields = ("name","desc")
+        
+        widgets = {    
+            'name': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
+            'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
 
+        }  
  
  
 class WorkOrderFlow_release_form(forms.ModelForm):

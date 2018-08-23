@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-from .forms import WorkOrderCommit_form
+from .forms import WorkOrderCommit_form,WorkOrderCommit_help_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
 from datetime import datetime
@@ -104,6 +104,23 @@ def WorkOrderCommit_add(request, ids):
         response_data['result'] = 'failed'  
         response_data['message'] = 'You donot have permisson' 
         return HttpResponse(json.dumps(response_data), content_type="application/json")  
+
+@login_required()
+@permission_verify()
+def WorkOrderCommit_help(request, ids):
+    temp_name = "skworkorders/skworkorders-header.html"
+    obj = get_object(WorkOrder, id=ids)
+
+    dic_init={'name':obj.name,
+              'desc':obj.desc,
+             }
+ 
+    
+    tpl_WorkOrderCommit_help_form = WorkOrderCommit_help_form(initial=dic_init)  
+   
+            
+    return render_to_response("skworkorders/WorkOrderCommit_help.html", locals(), RequestContext(request))
+
 
 
 @login_required()

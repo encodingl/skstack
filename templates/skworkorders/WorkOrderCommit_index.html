@@ -68,6 +68,7 @@
                                         <td class="text-center" data-editable='false'>
                                         
                                         <a href="{% url 'WorkOrderCommit_add' x.id %}" class="btn btn-sm btn-primary" id="提单">提单</a>  
+                                        <a href="#"><li style="list-style-type:none" class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">帮助</li></a>
                                        
                                     </td>
                                     </tr>
@@ -158,12 +159,12 @@ function checkSubmit() {
 function tanchu(n){
     layer.open({
     type: 2,
-    title: '修改信息',
+    title: '帮助信息',
     closeBtn: 1,
     area: ['600px', '400px'],
     shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
-    content: ['/skworkorders/WorkOrderCommit/add/' + n,],
+    content: ['/skworkorders/WorkOrderCommit/help/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
