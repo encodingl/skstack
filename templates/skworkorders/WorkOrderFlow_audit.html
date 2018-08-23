@@ -193,11 +193,9 @@ function checkSubmit() {
 function tanchu_permit(n){
     layer.open({
     type: 2,
-    title: '信息',
     closeBtn: 1,
-    area: ['700px', '550px'],
+    area: ['700px', '200px'],
     shadeClose: true, //点击遮罩关闭
-/*     content: ['/skworkorders/project_edit?id=' + n,], */
     content: ['/skworkorders/WorkOrderFlow/audit/permit/?id=' + n,],
     
     end:function(){
@@ -227,11 +225,9 @@ function tanchu_permit(n){
 function tanchu_deny(n){
     layer.open({
     type: 2,
-    title: '信息',
     closeBtn: 1,
-    area: ['700px', '550px'],
+    area: ['700px', '200px'],
     shadeClose: true, //点击遮罩关闭
-/*     content: ['/skworkorders/project_edit?id=' + n,], */
     content: ['/skworkorders/WorkOrderFlow/audit/deny/?id=' + n,],
     
     end:function(){
@@ -261,11 +257,10 @@ function tanchu_deny(n){
 function tanchu_detail(n){
     layer.open({
     type: 2,
-    title: '修改信息',
+    title: '信息',
     closeBtn: 1,
     area: ['700px', '550px'],
     shadeClose: true, //点击遮罩关闭
-/*     content: ['/skworkorders/project_edit?id=' + n,], */
     content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
     
     end:function(){

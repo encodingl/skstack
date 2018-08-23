@@ -241,4 +241,4 @@ class Custom_form(forms.Form):
     pass
 
 class Comment_form(forms.Form):
-    comment_content = forms.CharField(label=u'意见',max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    comment_content = forms.CharField(label=u'意见',max_length=100,required=False,widget=forms.Textarea(attrs={'class': 'form-control','style': 'height: 60px;'}))
