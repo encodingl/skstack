@@ -44,11 +44,10 @@
                         <tr>
                         
                                     <th>名称</th>
-                                    <th>描述</th> 
-                                    <th>环境</th>
+                                   
                                     <th>分类</th>
-                                    <th>审核开启</th> 
-                                    <th>激活</th>      
+                                 
+                                      
                                     <th class="text-center">功能</th>                            
                                 </tr>
                             </thead>
@@ -60,11 +59,10 @@
                                        
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
                                         <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
-                                        <td>{{ x.desc }}</td>
-                                        <td>{{ x.env }}</td>
+                                      
                                         <td>{{ x.group }}</td>
-                                        <td>{{ x.audit_enable }}</td>
-                                        <td>{{ x.status }}</td>
+                                     
+                                      
                                         <td class="text-center" data-editable='false'>
                                         
                                         <a href="{% url 'WorkOrderCommit_add' x.id %}" class="btn btn-sm btn-primary" id="提单">提单</a>  
@@ -125,7 +123,7 @@ function checkAll(sender, checkClass) {
 	            	
 	                var column = api.column( i );
 	                
-	            	if (i == 3){
+	            	if (i == 1){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
 	                    .on( 'change', function () {

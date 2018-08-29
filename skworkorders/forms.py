@@ -106,11 +106,13 @@ class WorkOrderCommit_form(forms.ModelForm):
 class WorkOrderCommit_help_form(forms.ModelForm):
     class Meta:
         model = WorkOrder
-        fields = ("name","desc")
+        fields = ("name","desc","env","audit_enable")
         
         widgets = {    
             'name': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
+            'audit_enable': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
 
         }  
  

@@ -110,9 +110,12 @@ def WorkOrderCommit_add(request, ids):
 def WorkOrderCommit_help(request, ids):
     temp_name = "skworkorders/skworkorders-header.html"
     obj = get_object(WorkOrder, id=ids)
+    obj2 = Environment.objects.get(name_english = obj.env)
 
     dic_init={'name':obj.name,
               'desc':obj.desc,
+              'env':obj2.name_english,
+              'audit_enable':obj.audit_enable,
              }
  
     

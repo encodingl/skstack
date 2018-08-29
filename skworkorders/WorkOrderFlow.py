@@ -171,12 +171,8 @@ def WorkOrderFlow_revoke(request):
 @login_required()
 @permission_verify()
 def WorkOrderFlow_foreground_detail(request,ids):
-     
     obj = get_object(WorkOrderFlow, id=ids)
-    
- 
     tpl_WorkOrderFlow_form = WorkOrderFlow_detail_form(instance=obj) 
-    
     return render_to_response("skworkorders/WorkOrderFlow_foreground_detail.html", locals(), RequestContext(request))
  
 @login_required()
