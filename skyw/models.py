@@ -23,7 +23,7 @@ class event(models.Model):
     responsetime = models.CharField(u"响应时间",max_length=15)
     processingpersonnel = models.CharField(u"跟进人员",max_length=15)
     event = models.CharField(u"处理问题和升级流程",max_length=200)
-    participant = models.CharField(u"参与人员",max_length=15)
+    participant = models.CharField(u"参与人员",max_length=200)
     def __unicode__(self):
       return self.platform_level
 
