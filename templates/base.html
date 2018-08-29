@@ -22,29 +22,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <body class="hold-transition skin-blue sidebar-mini" data-spy="scroll" data-target="#scrollspy">
 <div class="loading"></div> 
 <div class="wrapper">
+ <!-- Main Header -->
 
-  <!-- Main Header -->
-
-  {% include temp_name %}
+ {% include 'main-header.html' %}
 <script type="text/javascript">
-    $('.loading').animate({'width':'10%'},50);  //第一个进度节点
+    $('.loading').animate({'width':'10%'},20);  //第一个进度节点
 </script>
   <!-- Left side column. contains the logo and sidebar -->
   {% include 'main-sidebar.html' %}
 
 <script type="text/javascript">
-    $('.loading').animate({'width':'25%'},50);  //第一个进度节点
+    $('.loading').animate({'width':'25%'},20);  //第一个进度节点
 </script>
   <!-- Content Wrapper. Contains page content -->
     {% block content %} {% endblock %}
   <!-- /.content-wrapper -->
 <script type="text/javascript">
-    $('.loading').animate({'width':'60%'},50);  //第一个进度节点
+    $('.loading').animate({'width':'60%'},20);  //第一个进度节点
 </script>
   <!-- Main Footer -->
   {% include 'footer.html' %}
 <script type="text/javascript">
-    $('.loading').animate({'width':'100%'},50);  //第一个进度节点
+    $('.loading').animate({'width':'100%'},20);  //第一个进度节点
 </script>
   <!-- Control Sidebar -->
   <!-- Control Sidebar2 -->

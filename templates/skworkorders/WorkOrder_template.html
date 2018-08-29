@@ -26,7 +26,7 @@
                         <tr>
                           
                                     <th>名称</th>
-                                     <th>描述</th> 
+                                   
                                     <th>环境</th>
                                     <th>分类</th>
                                     
@@ -40,7 +40,7 @@
                                     <tr class="even gradeA">
                                         
                                         <td>{{ x.name }}</td>
-                                       <td>{{ x.desc }}</td>
+                                    
                                         <td>{{ x.env }}</td>
                                         <td>{{ x.group }}</td>
                                         
@@ -155,7 +155,7 @@ function tanchu(n){
 	            api.columns().indexes().flatten().each( function ( i ) {
 	                var column = api.column( i );
 	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
-	            	if (i == 2 || i == 3){
+	            	if (i == 1 || i == 2){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
 	                    .on( 'change', function () {

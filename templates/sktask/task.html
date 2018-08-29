@@ -32,26 +32,10 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <!-- /.标题排版 -->
-                        <div class="row">
-                            <div class="col-md-3">
-                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">1.选择项目</button>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">2.选择任务</button>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">3.选择参数</button>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" class="btn btn-sm btn-info btn-arrow-right">4.输入hosts</button>
-                            </div>
-                        </div>
-
-
                         <div class="row box-body">
                             <div class="col-md-3">
-
+                            <button type="button" class="btn btn-sm btn-info btn-arrow-right">1.选择项目</button>
+										<br /><br />
                                 <ul class="list" id="project_ul">
                                     {% if all_projects %}
 
@@ -69,15 +53,18 @@
                                 </ul>
                             </div>
                             <div class="col-md-3" class="js-radio js-job-box">
-
+                             <button type="button" class="btn btn-sm btn-info btn-arrow-right">2.选择任务</button>
+                             <br /><br />
                                 <ul class="js-job-change" id="job_ul">Please choose project first</ul>
                             </div>
                             <div class="col-md-3">
+                             <button type="button" class="btn btn-sm btn-info btn-arrow-right">3.选择参数</button>
+                             <br /><br />
                                 <ul class="js-extravars-box" id="vars_ul">Please choose job first</ul>
                             </div>
                             <div class="col-md-3">
-                            
-                            
+                             <button type="button" class="btn btn-sm btn-info btn-arrow-right">4.输入hosts</button>
+                            <br /><br />
 		                            <ul class="list" id="HostsFile_ul">
 		                                    {% if all_HostsFile %}
 		
