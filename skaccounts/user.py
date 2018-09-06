@@ -81,10 +81,20 @@ def user_add(request):
 
 @login_required
 @permission_verify()
-def user_del(request, ids):
+def user_del(request):
+    ids = request.GET.get('id', '')
     if ids:
         get_user_model().objects.filter(id=ids).delete()
-    return HttpResponseRedirect(reverse('user_list'), RequestContext(request))
+        
+    if request.method == 'POST':
+        check_box_items = request.POST.getlist('check_box', [])
+        if check_box_items:
+            for n in check_box_items:
+                print n
+                get_user_model().objects.filter(id=n).delete()
+    all_user = get_user_model().objects.all()
+    return render_to_response("skaccounts/user_list.html", locals(), RequestContext(request))
+    
 
 
 @login_required

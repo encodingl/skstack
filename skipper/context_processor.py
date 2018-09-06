@@ -23,7 +23,7 @@ def url_permission(request):
 def skworkorder_todo_statistics(request):
     if request.user:
         
-        obj_audit_count = WorkOrderFlow.objects.filter(status__in=[1,2,5,6,7,8]).aggregate(num=Count(id))
+        obj_audit_count = WorkOrderFlow.objects.filter(status__in=[0,1,5,7]).aggregate(num=Count(id))
         tpl_unfinished_workorders=obj_audit_count["num"]
     
     return {'tpl_unfinished_workorders': tpl_unfinished_workorders}

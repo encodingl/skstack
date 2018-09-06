@@ -442,9 +442,15 @@ $(document).ready(function () {
 //主菜单点击加背景色
     $(document).ready(function () {
         var url = window.location.pathname;
+        var url_list = url.split("/")
        
+        url2 = "/" + url_list[1] + "/" + url_list[2] + "/"
+        
+     
         $("[href='" + url + "']").parents("li").addClass("active");
         $("[href='" + url + "']").parent("li").addClass("bg-primary");
+        $("[href='" + url2 + "']").parents("li").addClass("active");
+        $("[href='" + url2 + "']").parent("li").addClass("bg-primary");
 
     });
 </script>

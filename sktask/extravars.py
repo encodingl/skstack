@@ -60,7 +60,7 @@ def extravars_del(request):
     if extravars_id:
         extravars.objects.filter(id=extravars_id).delete()
     if request.method == 'POST':
-        extravars_items = request.POST.getlist('extravars_check', [])
+        extravars_items = request.POST.getlist('check_box', [])
         if extravars_items:
             for n in extravars_items:
                 extravars.objects.filter(id=n).delete()

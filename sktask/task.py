@@ -86,7 +86,7 @@ def job_search(request):
      
     else:
         project_id = request.POST.get('pid')
-        obj = job.objects.filter(project=project_id).values('id','name','playbook')
+        obj = job.objects.filter(project=project_id,online_status='1').values('id','name','playbook')
         
    
     obj_list = list(obj)    
