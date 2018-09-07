@@ -246,14 +246,21 @@ class PreTask():
                 var_built_in_dic = {}
             var_built_in_dic = json.dumps(var_built_in_dic)
             user_vars_dic = json.dumps(self.user_vars_dic)
-            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
-            self.message_dic_format["celery_task_id"]=task01.id    
-            self.message_dic_format["status"] = "PENDING"
-            self.message_dic_format["celery_schedule_time"] = time01
-            WorkOrderFlow.objects.create(**self.message_dic_format)
-            content_str = "finished:定时任务添加成功"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
-            self.log("info", content_str)
+            try:
+                task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
+                self.message_dic_format["celery_task_id"]=task01.id    
+                self.message_dic_format["status"] = "PENDING"
+                self.message_dic_format["celery_schedule_time"] = time01
+                WorkOrderFlow.objects.create(**self.message_dic_format)
+                content_str = "finished:定时任务添加成功"
+                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+                self.log("info", content_str)
+            except Exception, e:
+                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
+                self.log("info", e)
+                content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
+                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+                self.log("info", content_str)
     
     def celery_bgtask_add(self):
         self.request.websocket.send("开始提交后台任务")
@@ -268,14 +275,22 @@ class PreTask():
             var_built_in_dic = {}
         var_built_in_dic = json.dumps(var_built_in_dic)
         user_vars_dic = json.dumps(self.user_vars_dic)
-        task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
-        self.message_dic_format["celery_task_id"]=task01.id    
-        self.message_dic_format["status"] = "PENDING"
-        self.message_dic_format["celery_schedule_time"] = time_now
-        WorkOrderFlow.objects.create(**self.message_dic_format)
-        content_str = "finished:后台任务添加成功"
-        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
-        self.log("info", content_str)
+        try:
+            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
+            self.message_dic_format["celery_task_id"]=task01.id    
+            self.message_dic_format["status"] = "PENDING"
+            self.message_dic_format["celery_schedule_time"] = time_now
+            WorkOrderFlow.objects.create(**self.message_dic_format)
+            content_str = "finished:后台任务添加成功"
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            self.log("info", content_str)
+        except Exception, e:
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
+            self.log("info", e)
+            content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            self.log("info", content_str)
+        
             
     def celery_task_create(self):
         time01 = self.message_dic_format["celery_schedule_time"] 
