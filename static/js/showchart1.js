@@ -1,5 +1,5 @@
 $(function(){
-            var flow =  num_list_prod ;
+            var flow =  num_list_stg ;
              var labels2 =  date_list;
              var labels = new Array()
              var temp = new Array()
@@ -16,19 +16,19 @@ $(function(){
 			         		name : '运维工单数量统计表',
 			         		value:flow,
 			         		<!--color:'#ec4646',-->
-						    color:'#ff1d34',
-			         		line_width:4
+						    color:'#ff1c39',
+			         		line_width:3
 			         	}
 			         ];
 
 
 
 			var chart = new iChart.LineBasic2D({
-				render : 'canvasDivProd',
+				render : 'canvasDivStg',
 				data: data,
 				align:'center',
 				title : {
-					text:'运维任务数量统计表',
+					text:'STG数量统计表',
 					font : '微软雅黑', //字体
 					fontsize:00, //字体大小设置
 					color:'#000'
@@ -71,12 +71,12 @@ $(function(){
 					// grid_color:'#ffffff',
 					axis:{
 						color:'#fff',
-						width:[-5,0,0,0]
+						width:[0,0,0,-5]
 					},
 					scale:[{
 						 position:'left',
 						 start_scale:0,
-						 end_scale:20,
+						 end_scale:24,
 						 scale_space:4,
 						 scale_size:1000,
 						 scale_enable : true,

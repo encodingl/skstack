@@ -8,6 +8,7 @@ from .models import Rpt
 from forms import Rpt_form
 from skaccounts.models import UserInfo
 from skcmdb.models import Host, App
+from skworkorders.models import WorkOrder,WorkOrderFlow
 from sktask.models import history
 import  datetime
 import time
@@ -21,15 +22,17 @@ def index(request):
     usernum = UserInfo.objects.all().count()
     phynum = Host.objects.filter(group_id__in=[1]).count()
     vmnum = Host.objects.filter(group_id__in=[2]).count()
-    appnum = user = App.objects.all().count()
+    appnum =  App.objects.all().count()
+    worklistnum = WorkOrder.objects.filter(status="yes").count()
 
-      
+    print(worklistnum)
      #-----------------chart start--------------------------
     date_list = []  
-    num_list = []   
+    num_list_prod = []
+    num_list_stg = []
 
     endDate = datetime.date.today() 
-    startDate = endDate - datetime.timedelta(days=21) 
+    startDate = endDate - datetime.timedelta(days=14)
     datediff = (endDate - startDate).days
     
     startDate = str(startDate)
@@ -47,10 +50,15 @@ def index(request):
 
     while d <= end:  
         m = d.strftime("%Y-%m-%d")
-        daynum = history.objects.filter(time_task_finished__contains=m).count()
+        # daynum = history.objects.filter(time_task_finished__contains=m).count()
+        daynumprod = WorkOrderFlow.objects.filter(finished_at__contains=m, env='prod').count()
+        daynumstg = WorkOrderFlow.objects.filter(finished_at__contains=m, env='stg').count()
         date_list.append(m)
-        num_list.append(daynum)
+        num_list_prod.append(daynumprod)
+        num_list_stg.append(daynumstg)
         d += delta
+    # print(num_list_prod)
+    # print(num_list_stg)
    #--------------------------chart end---------------------------------------
 
 

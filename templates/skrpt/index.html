@@ -1,116 +1,137 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+.clearFix:before,
+.clearFix:after {
+  content: "";
+  display: table;
+}
 
+.clearFix:after {
+  clear: both;
+  overflow: hidden;
+}
+</style>
 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+            <section class="content-header">    </section>
+            <script  type="text/javascript" src="/static/js/ichart.1.2.min.js"></script>
+            <!-- Main content -->
+            <section class="content">
+              <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-server"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">物理机数</span>
 
-    </section>
-    <script  type="text/javascript" src="/static/js/ichart.1.2.min.js"></script>
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-server"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">物理机数</span>
+                        <span class="info-box-number">{{ phynum }}</span>
 
-                <span class="info-box-number">{{ phynum }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-outdent"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">虚拟机数量</span>
+
+                        <span class="info-box-number">{{ vmnum }}</span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">用户数</span>
+        {#                {% for test in test01 %}#}
+                        <span class="info-box-number">{{ usernum }}</span>
+        {#                {% endfor %}#}
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-yellow"><i class="fa fa-building"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">工单数</span>
+        {#                {% for test in test01 %}#}
+                        <span class="info-box-number">{{ worklistnum }}</span>
+        {#                {% endfor %}#}
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+
+
+             <!--运维任务图表-->
+                <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+         <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <style>
+                #font_bk{border:2px solid #000;}
+            </style>
+
+      <div class="clearFix">
+          <div class="pull-left">
+              <i class="fa fa-inbox"></i><span style="font-size:20px"> 运维任务总览</span>
+          </div>
+
+          <ul id="myTab" class="nav nav-pills  pull-right" >
+                        <li class="active "><a href="#prod" data-toggle="pill">PROD</a></li>
+                      <li class=""><a href="#stg" data-toggle="pill">STG</a></li>
+
+{#                        <li class="pull-left header"><i class="fa fa-inbox"></i><span style="font-size:20px"> 运维任务总览</span></li>#}
+          </ul>
+          <br />
+      </div>
+
+{#             <br/>#}
+            <!-- </div>-->
+
+                <script type="text/javascript">
+                    num_list_prod = {{ num_list_prod }}
+                    num_list_stg = {{ num_list_stg }}
+                    date_list = {{ date_list|safe }}
+                </script>
+            <div id="myTabContent" class="tab-content">
+
+               <div class="tab-pane fade in active" id="prod">
+                   <div id="canvasDivProd"></div>
+               </div>
+{#            <script type="text/javascript" src="/static/js/showchart.js"></script></div>#}
+
+                <div class="tab-pane fade" id="stg">
+                    <div id="canvasDivStg"></div>
+                </div>
+{#            <script type="text/javascript" src="/static/js/showchart1.js"></script></div>#}
 
             </div>
+
+         </form>
+          </div>
         </div>
+        <!--运维任务数量END-->
+            </section>
     </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-outdent"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">虚拟机数量</span>
-
-                <span class="info-box-number">{{ vmnum }}</span>
-
-            </div>
-            <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">用户数</span>
-{#                {% for test in test01 %}#}
-                <span class="info-box-number">{{ usernum }}</span>
-{#                {% endfor %}#}
-            </div>
-            <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-building"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">APP数</span>
-{#                {% for test in test01 %}#}
-                <span class="info-box-number">{{ appnum }}</span>
-{#                {% endfor %}#}
-            </div>
-            <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-</div>
-<!--</section>-->
-
-     <!--运维任务图表-->
 
 
-
-<!-- <section class="content" id="chartid">-->
-
-<div class="row">
-  <div class="col-md-12 col-sm-6 col-xs-12">
- <form action="{% url 'index' %}" method="post">
-        {% csrf_token %}
-        <style>
-		#font_bk{border:2px solid #000;}
-	</style>
-
-            <ul class="nav nav-tabs pull-left">
-                <li class="pull-left header"><i class="fa fa-inbox"></i><span style="font-size:20px"> 运维任务总览</span></li>
-            </ul>
-    <!-- </div>-->
-           <div id="canvasDiv"></div>
-        <script type="text/javascript">
-            num_list = {{ num_list }}
-            date_list = {{ date_list|safe }}
-        </script>
-	<script type="text/javascript" src="/static/js/showchart.js">
-	</script>
-    	</form>
-  </div>
-</div>
-<!--运维任务数量END-->
-
-
-
-    </section>
-      <!-- /.content -->
-          <!---->
-
-
-
-
-  </div>
-
-
-
+    <script type="text/javascript" src="/static/js/showchart.js"></script>
+    <script type="text/javascript" src="/static/js/showchart1.js"></script>
 {% endblock %}
