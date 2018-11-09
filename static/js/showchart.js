@@ -16,7 +16,7 @@ $(function(){
 			         		name : '运维工单数量统计表',
 			         		value:flow,
 			         		<!--color:'#ec4646',-->
-						    color:'#ff1d34',
+						    color:'#4b94c0',
 			         		line_width:4
 			         	}
 			         ];
