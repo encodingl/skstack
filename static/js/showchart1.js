@@ -73,6 +73,9 @@ $(function(){
 						color:'#fff',
 						width:[0,0,0,0]
 					},
+					gridVStyle:{
+						color:'#fff',
+					},
 					scale:[{
 						 position:'left',
 						 start_scale:0,
