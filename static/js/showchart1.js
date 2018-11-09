@@ -17,7 +17,7 @@ $(function(){
 			         		value:flow,
 			         		<!--color:'#ec4646',-->
 						    color:'#ff1c39',
-			         		line_width:3
+			         		line_width:4
 			         	}
 			         ];
 
@@ -76,7 +76,7 @@ $(function(){
 					scale:[{
 						 position:'left',
 						 start_scale:0,
-						 end_scale:24,
+						 end_scale:20,
 						 scale_space:4,
 						 scale_size:1000,
 						 scale_enable : true,
