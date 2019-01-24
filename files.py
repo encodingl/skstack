@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
+
 import os
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response,redirect,RequestContext

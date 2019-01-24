@@ -43,10 +43,8 @@ SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 DEBUG = True if config.get('setup', 'debug') == 'True' else False
 ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
 
-ADMINS = (
-    ('yehaiquan', 'haiquan.ye@mljr.com'),
-)
-MANAGERS = ADMINS
+
+
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -382,7 +380,7 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER #设置发件人
 
 ADMINS = (
 
-('zhe.li','zhe.li@mljr.com'),
+('encodingl','encodingl@sina.com'),
 
 )
 MANAGERS = ADMINS

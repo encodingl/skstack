@@ -24,7 +24,7 @@ log = logging.getLogger('api')
 
 class SendMail:
     def __init__(self):
-        self._from = 'Monitor<monitor.sz@mljr.com>'
+        self._from = 'Monitor<encodingl@sina.com>'
 
     def send(self, subject, receiverlist, message):
         cfg = config()
