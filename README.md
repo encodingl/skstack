@@ -19,8 +19,7 @@ virtualenv venv-skipper --python=/usr/local/bin/python
 
 #### step1:准备
 请将服务器端安装在centosi6 or 7上
-git clone http://gitlab.szyy.com/opergroup/skipper.git<br>
-若上调命令不行请使用如下命令克隆代码 git clone git@gitlab.szyy.com:/var/opt/gitlab/git-data/repositories/opergroup/skipper.git<br>
+git clone git@github.com:encodingl/skipper.git<br>
 yum install ansible -y<br>
 yum install smartmontools -y<br>
 yum install python python-devel -y<br>
@@ -84,7 +83,7 @@ level级别为:info,warn,error,fatal.
 接口使用说明:
 
 1.组接口:(通过组管里前面5种接口)
-请求方url: http://10.8.105.195:8000/skapi/monitor/api/sendbygroup?token=xxxxxxxx (token由运维分配)
+请求方url: http://ip:port/skapi/monitor/api/sendbygroup?token=xxxxxxxx (token由运维分配)
 请求方法: POST
 返回数据: json字符串,通过查看Coke结果判断是否调条用成功.
 请求数据格式:
@@ -108,7 +107,7 @@ level级别为:info,warn,error,fatal.
 
 
 2.zabbix接口:
-请求方url: http://10.8.105.195:8000/skapi/monitor/zabbixalart?token=xxxxxxxx
+请求方url: http://ip:port/skapi/monitor/zabbixalart?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
@@ -118,7 +117,7 @@ level级别为:info,warn,error,fatal.
 }
 
 3.grafana接口:
-请求方url: http://10.8.105.195:8000/skapi/grafana/?token=xxxxxxxx
+请求方url: http://ip:port/skapi/grafana/?token=xxxxxxxx
 请求方法: POST
 请求数据格式:
 {
