@@ -216,37 +216,7 @@
 	          </ul>
  			 </li>
  			 
- 		  	 <li class="treeview"  id = "skdeploy" style="display: none">
-	          <a href="#">
-	            <i class="fa fa-file-code-o"></i> <span>版本迭代</span>
-	            <span class="pull-right-container">
-	              <i class="fa fa-angle-left pull-right"></i>
-	            </span>
-	          </a>
-			  
-	          <ul class="treeview-menu" >
-	             <li style="display: none"><a href="{% url 'TaskCommit_index' %}">  <i class="fa fa-circle-o"></i> 提单</a></li>
-	             <li style="display: none"><a href="{% url 'TaskStatus_audit' %}">  <i class="fa fa-circle-o"></i> 审核</a></li>
-				 <li style="display: none"><a href="{% url 'TaskStatus_index' %}">  <i class="fa fa-circle-o"></i> 发布</a></li>
-	             <li style="display: none"><a href="{% url 'TaskStatus_history' %}">  <i class="fa fa-circle-o"></i> 历史</a></li>
- 		    	 <li class="treeview" style="display: none">
-                   <a href="#">
-			            <i class="fa   fa-flag-o"></i> <span>配置</span>
-			            <span class="pull-right-container">
-			              <i class="fa fa-angle-left pull-right"></i>
-			            </span>
-			          </a>
-                    <ul class="treeview-menu">
-					    <li style="display: none"><a  href="{% url 'Project_index' %}"><i class="fa fa-circle-o"></i> 项目配置</a></li>		
-                        <li style="display: none"><a href="{% url 'Project_template' %}"><i class="fa fa-circle-o"></i> 模板管理</a></li>	
-						<li style="display: none"><a  href="{% url 'ProjectGroup_index' %}"><i class="fa fa-circle-o"></i> 项目分组</a></li>		
-                        <li style="display: none"><a href="{% url 'Environment_index' %}"><i class="fa fa-circle-o"></i> 环境分类</a></li>						
-                    </ul>
-                </li>
-                    
-				
-	          </ul>
- 			 </li>
+ 		  	 
  			 
  		     <li class="treeview"  id = "skrecord" style="display: none">
 	          <a href="#">
@@ -288,49 +258,7 @@
 	          </ul>
  			 </li>
  			 	 
- 			  <li class="treeview"  id = "skapi" style="display: none">
-	          <a href="#"><i class="fa  fa-area-chart"></i> <span>监控管理</span>
-	            <span class="pull-right-container">
-	              <i class="fa fa-angle-left pull-right"></i>
-	            </span>
-	          </a>
-			  
-	          <ul class="treeview-menu" >
-	            
- 		    	 <li class="treeview" style="display: none">
-                   <a href="#"><i class="fa   fa-flag-o"></i> <span>监控管理</span>
-			            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-			          </a>
-                    <ul class="treeview-menu">
-					  	<li style="display: none"><a href="{% url 'monitor_policy' %}"><i class="fa fa-circle-o"></i> 日志策略</a></li>		
-						<li style="display: none"><a href="{% url 'monitor_grouplist' %}"><i class="fa fa-circle-o"></i> 告警分组</a></li>	
-						<li style="display: none"><a href="{% url 'monitor_policy' %}"><i class="fa fa-circle-o"></i> 告警开关</a></li>
-                        <li style="display: none"><a href="{% url 'monitor_index' %}"><i class="fa fa-circle-o"></i> 告警组策略</a></li>
-                    </ul>
-                </li>
-                    
-				<li class="treeview" style="display: none">
-                   <a href="#"><i class="fa   fa-flag-o"></i> <span>日志查询</span>
-			            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-			          </a>
-                    <ul class="treeview-menu">
-					    <li style="display: none"><a href="{% url 'monitor_alarmapirecord' %}"><i class="fa fa-circle-o"></i> API调用</a></li>		
-                        <li style="display: none"><a href="{% url 'monitor_alarmlogrecord' %}"><i class="fa fa-circle-o"></i> ERROR日志</a></li>									
-                    </ul>
-                </li>
-				
-				<li class="treeview" style="display: none">
-                      <a href="#"><i class="fa   fa-flag-o"></i> <span>配置授权</span>
-			            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-			          </a>
-                    <ul class="treeview-menu">
-					    <li style="display: none"><a href="{% url 'monitor_tokenlist' %}"><i class="fa fa-circle-o"></i> Token授权</a></li>		
-                        <li style="display: none"><a href="{% url 'monitor_setuplist' %}"><i class="fa fa-circle-o"></i> 全局配置</a></li>											
-                    </ul>
-                </li>
-				
-	          </ul>
- </li>
+ 			 
     
          	<li class="treeview"  id = "skaccounts" style="display: none">
 	          <a href="#">
