@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if os.path.exists(BASE_DIR+'/skipper_dev.conf'):
     CONFIGFILE = os.path.join(BASE_DIR, 'skipper_dev.conf')
 else:
-    CONFIGFILE = os.path.join(BASE_DIR, 'skipper.conf')
+    CONFIGFILE = os.path.join(BASE_DIR, 'skipper_prod.conf')
 
 config = ConfigParser.ConfigParser()
 config.read(CONFIGFILE)

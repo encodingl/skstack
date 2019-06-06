@@ -8,9 +8,9 @@ GitPython==2.1.5
 dwebsocket==0.4.2
 pillow==5.1.0
 django-ckeditor==5.4.0
-celery==4.2.0
+celery==4.3.0
 flower==0.9.2
-django-celery-results==1.0.1
+django-celery-results==1.1.1
 requests==2.19.1
 paramiko == 2.4.1
 fabric == 2.2.1

@@ -11,7 +11,7 @@ from skworkorders.forms import Custom_form
 from skcmdb.api import get_object
 from lib.lib_format import list_to_formlist
 from lib.lib_paramiko import ssh_cmd
-import subprocess
+from subprocess import Popen, PIPE, STDOUT
 from skaccounts.models import UserInfo
 
 import commands
@@ -154,18 +154,18 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
         task_list = task.encode("utf-8").split("\r") 
         ret_message="%s:开始执行" % taskname
         log.info(ret_message)
-        request.websocket.send("%s %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))  
+        request.websocket.send("%s INFO %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
        
         if obj.config_center is NULL or obj.config_center is None:    
             for cmd in task_list:
                 try:
                     log.info("cmd_start:%s"  % cmd )
-                    pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+                    pcmd = Popen(cmd,stdout=PIPE,stderr=STDOUT,shell=True)
                     while True:
                         for line in iter(pcmd.stdout.readline,b''):
-                            print line
+
                             request.websocket.send(line)
-                            log.info("cmd_result:%s" % line)
+                            # log.info("cmd_result:%s" % line)
                         if pcmd.poll() is not None:
                             break  
                 except Exception, msg:
@@ -174,10 +174,10 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 retcode=pcmd.wait()
                
                 if retcode==0:
-                    ret_message="%s:执行成功" % taskname
+                    ret_message="INFO %s:执行成功" % taskname
                     
                 else:
-                    ret_message="%s:执行失败" % taskname
+                    ret_message="ERROR %s:执行失败" % taskname
                     
                     log.error(ret_message)
                     break
@@ -192,10 +192,10 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     log.error("ssh_cmd_result:%s" % msg)
                     retcode = 1111
                 if retcode == 0:          
-                    ret_message="%s:执行成功" % taskname
+                    ret_message="INFO %s:执行成功" % taskname
                     log.info(ret_message)
                 else:
-                    ret_message="%s:执行失败" % taskname
+                    ret_message="ERROR %s:执行失败" % taskname
         request.websocket.send("%s %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
     return retcode
          
@@ -221,30 +221,8 @@ def permission_audit_pass(obj_audit_level,obj_status):
 
             
 if __name__ == "__main__":
-    d = {"a":"avalue","b":"bvalue","c":1}
-#     s = "{a} whata {b} fk {c}"
-#     print var_change2(s,**d)
-#      get_VarsGroup_form("vg1_stg")
-#     cmd1 = "ansible gtest -m shell -a 'du -sh /focus'"
-#     cmd2 = "du -sh /focus"
-#     cmd3 = "ansible localhost -m shell -a 'du -sh /focus'"
-#     list_cmd = [cmd1,cmd2,cmd3]
-#     for cmd1 in list_cmd:
-#         pcmd1 = Popen(cmd1, stdout=PIPE, stderr=PIPE, shell=True)    
-#         retcode1=pcmd1.wait()  
-#         retcode_message1=pcmd1.communicate()
-#         print retcode1
-#         print retcode_message1
-#         print retcode_message1[0]
-#         print retcode_message1[1]
-#        
-     
-    
-   
-    
-#     result_pre_deploy = adv_task_step(hosts="localhost", env="prod", project="yyappgw", task_file="post_deploy.sh") 
-#     print result_pre_deploy
-#     print os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/script/skworkorders/release_project.yml"
+    pass
+
 
          
         

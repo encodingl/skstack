@@ -43,7 +43,8 @@
 			        <h3 class="panel-title">执行结果</h3>
 			    </div>
 			    
-			    <div class="panel-body" style="border: 1px solid ;height:200px;overflow:scroll">
+			    <div class="panel-body" style="border: 1px solid ;height:350px;overflow:scroll">
+
 			    		<div id="messagecontainer" ></div>
 			    </div>
 			    
@@ -136,7 +137,7 @@ $(function () {
         socket.onmessage = function (e) {
 //            console.log('message: ' + e.data);//打印出服务端返回过来的数据
             
-            var colorConfig = { "green": ["ok", "SUCCESS","成功"],"orange": ["changed","WARNING","warning"],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };  
+            var colorConfig = { "green": ["ok", "SUCCESS","成功"],"orange": ["changed","WARNING","warning"],  "red": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
            
                 var text = e.data;  
                 jQuery.each(colorConfig, function (color, values) {  
