@@ -36,10 +36,10 @@ def WorkOrderCommit_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     obj_user = UserInfo.objects.get(username=request.user)
     obj_group = obj_user.usergroup_set.all()
-    tpl_all = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False).distinct()
+
     tpl_env = Environment.objects.all()
     tpl_dic_obj={}
-    tpl_dic_obj["ALL"]=tpl_all
+
     for e in tpl_env:
         obj = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False,env=e.id).distinct()
 
