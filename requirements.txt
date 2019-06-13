@@ -2,7 +2,6 @@ django==1.9.8
 sh==1.12.9
 mysql-python==1.2.5
 pytest==3.0.7
-gittle==0.5.0
 redis==2.10.5
 GitPython==2.1.5
 dwebsocket==0.4.2
