@@ -18,18 +18,17 @@ smartmontools<br>
 1 安装python 2.7.16  略
 
 2 安装对应python版本的pip
-wget https://bootstrap.pypa.io/get-pip.py
-/python2.7.16_path/bin/python get-pip.py  
+wget https://bootstrap.pypa.io/get-pip.py<br>
+/python2.7.16_path/bin/python get-pip.py<br>
 
 3 在python2.7.16的pip下安装如下包  该步骤非常重要，请不要用系统自带的pip安装，否则提示找不到virtualenvwrapper
-pip install virtualenv
-pip install virtualenvwrapper
-source /path/virtualenvwrapper.sh
+pip install virtualenv<br>
+pip install virtualenvwrapper<br>
+source /path/virtualenvwrapper.sh<br>
 
 4 创建python虚拟环境
-mkvirtualenv skipper
-workon skipper
-
+mkvirtualenv skipper<br>
+workon skipper<br>
 
 
 #### step1:准备
