@@ -15,7 +15,19 @@ smartmontools<br>
 
 ## 服务端说明
 #### step0:前置配置 安装python虚拟机.为了不影响其他python应用环境强烈建议安装python虚拟机
-virtualenv venv-skipper --python=/usr/local/bin/python
+安装python 2.7.16  略
+安装对应python版本的pip
+wget https://bootstrap.pypa.io/get-pip.py
+/python2.7.16_path/bin/python get-pip.py  
+在python2.7.16的pip下安装如下包  该步骤非常重要，请不要用系统自带的pip安装，否则提示找不到virtualenvwrapper
+pip install virtualenv
+pip install virtualenvwrapper
+source /path/virtualenvwrapper.sh
+创建python虚拟环境
+mkvirtualenv skipper
+workon skipper
+
+
 
 #### step1:准备
 请将服务器端安装在centosi6 or 7上
@@ -68,69 +80,13 @@ http://your_server_ip:8000/cmdb/get/host/?token=your_token&name=host_name <br>
 #### 获取组信息
 http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=group_name <br>
 http://your_server_ip:8000/cmdb/get/group/?token=your_token&name=all <br>
-# dashboard
-<img src="https://github.com/guohongze/skipper/blob/master/static/dist/img/demo.png"></img>
+
 # 安全
 建议不要将程序启动在有公网可以直接访问的设备上，如果需要请使用VPN。<br>
 建议生产环境中使用https配置服务器<br>
 
 
-监控告警使用说明:
---------------------
 
-<api接口文档,共8个接口,包含邮件接口,微信接口,电话接口,短信接口,钉钉接口,组接口(只包含前面5种接口),zabbix调用接口,grafana接口>
-level级别为:info,warn,error,fatal.
-接口使用说明:
-
-1.组接口:(通过组管里前面5种接口)
-请求方url: http://ip:port/skapi/monitor/api/sendbygroup?token=xxxxxxxx (token由运维分配)
-请求方法: POST
-返回数据: json字符串,通过查看Coke结果判断是否调条用成功.
-请求数据格式:
-{
-   "level" : "",    #指定事件级别,如:info,warn,error,fatal. 最多只能选一个.
-   "subject" : "",  #指定告警标题，.
-   "content" : "",  #指定告警内容.
-   "policy" : "",   #指定告警渠道, 如:mobile,dingding,email,weixin,sms 可以同时指定多个,逗号分隔
-   "groupid" : "",  #指定分组id,由运维来分配.
-}
-
-
-组接口上线步骤:
-1. 开发向运维申请接口告警
-2. 运维创建接收告警用户信息,
-3. 新建分组, 授权token,授权默认日志策略,授权用户.
-4. 在告警开关中进行开关控制.
---------------------------------
-
-单接口 暂时未上线,省略.
-
-
-2.zabbix接口:
-请求方url: http://ip:port/skapi/monitor/zabbixalart?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'subject':'xxx',    #标题
-    'content','xxxxx',  #内容
-    'type','xxxxx',  #可选,特殊了分组使用
-}
-
-3.grafana接口:
-请求方url: http://ip:port/skapi/grafana/?token=xxxxxxxx
-请求方法: POST
-请求数据格式:
-{
-    'content','xxxxx',  #json格式数据
-}
-
-
----------------------------------
-#### 加入django-crontab模块
-pip install django-crontab
-#####加入django-ckeditor模块和pillow模块
-pip install django-ckeditor
-pip install pillow
 
 
 
