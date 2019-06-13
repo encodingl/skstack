@@ -293,24 +293,7 @@ LOGGING = {
             'backupCount': 5,  # 备份份数
             'formatter': 'standard',  # 使用哪种formatters日志格式
         },
-        'zabbix_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skipper-zabbix.log'),
-            'formatter': 'standard'
-        },
-        'api_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skipper-api.log'),
-            'formatter': 'standard'
-        },
-        'nginx_info': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'nginx_req_info.log'),
-            'formatter': 'standard'
-        },
+
         'console': {
             'level': 'DEBUG',
             'filters': ['require_debug_false'],
@@ -343,21 +326,6 @@ LOGGING = {
         'skipper': {
             'handlers': ['console', 'info_file'],
             'level': 'DEBUG',
-            'propagate': False,
-        },
-        'zabbix': {
-            'handlers': ['zabbix_file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'api': {
-            'handlers': ['api_file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'nginx_info': {
-            'handlers': ['nginx_info'],
-            'level': 'INFO',
             'propagate': False,
         },
          'skworkorders': {
