@@ -15,18 +15,18 @@ smartmontools<br>
 
 ## 服务端说明
 #### step_pre:前置配置 安装python虚拟机.为了不影响其他python应用环境强烈建议安装python虚拟机
-1 安装python 2.7.16  略
+1 安装python 2.7.16  略<br>
 
-2 安装对应python版本的pip
+2 安装对应python版本的pip<br>
 wget https://bootstrap.pypa.io/get-pip.py<br>
 /python2.7.16_path/bin/python get-pip.py<br>
 
-3 在python2.7.16的pip下安装如下包  该步骤非常重要，请不要用系统自带的pip安装，否则提示找不到virtualenvwrapper
+3 在python2.7.16的pip下安装如下包  该步骤非常重要，请不要用系统自带的pip安装，否则提示找不到virtualenvwrapper<br>
 pip install virtualenv<br>
 pip install virtualenvwrapper<br>
 source /path/virtualenvwrapper.sh<br>
 
-4 创建python虚拟环境
+4 创建python虚拟环境<br>
 mkvirtualenv skipper<br>
 workon skipper<br>
 
