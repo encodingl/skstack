@@ -106,7 +106,7 @@ class Vars(models.Model):
     value_method = models.CharField(u"变量取值方法", choices=VARS_METHOD, max_length=50)
     value_form_type = models.CharField(u"变量表单类型", choices=VARS_FORM_TYPE, max_length=50)
     value_optional  = models.CharField(u"变量值",max_length=300,blank=True)  
-    value_script  = models.CharField(u"变量获取脚本",max_length=100,null=True,blank=True) 
+    value_script  = models.CharField(u"变量获取脚本",max_length=200,null=True,blank=True)
     env = models.ForeignKey(Environment, verbose_name=u"所属环境", on_delete=models.PROTECT, null=True, blank=True) 
     group = models.ForeignKey(WorkOrderGroup, verbose_name=u"所属分类", on_delete=models.PROTECT, null=True, blank=True)
     def __unicode__(self):

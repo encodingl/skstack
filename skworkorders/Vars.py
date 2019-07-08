@@ -89,7 +89,7 @@ def Vars_edit(request, ids):
             pass
     else:
         tpl_Vars_form = Vars_form(instance=obj)      
-    return render_to_response("skworkorders/Vars_edit.html", locals(), RequestContext(request))
+    return render_to_response("skworkorders/Vars_edit2.html", locals(), RequestContext(request))
 
 @login_required()
 @permission_verify()

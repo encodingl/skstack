@@ -78,6 +78,7 @@ def get_Vars_form(obj_var):
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
         l1 = commands.getoutput(obj.value_script)
+        print l1
         obj_value_optional = eval(l1)
         print obj_value_optional
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 

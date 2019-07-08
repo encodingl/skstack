@@ -271,6 +271,7 @@ def WorkOrderFlow_permit(request):
         if tpl_Comment_form.is_valid():
             comment_content = request.POST["comment_content"]
             WorkOrderFlow_id = request.POST["id"]
+
             
 
             login_user = request.user  

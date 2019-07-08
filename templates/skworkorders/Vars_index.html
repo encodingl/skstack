@@ -45,8 +45,8 @@
                                         <td>{{ x.env }}</td>
                                         <td>{{ x.group }}</td>
                                         <td class="text-center" data-editable='false'>
-                                       
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
+
+                                        <a href="{% url 'Vars_edit' x.id %}" class="btn btn-sm btn-info">编辑</a>
                                         <a value="{% url 'Vars_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del">删除</a>
                                         <a href="#"><li class="btn btn-sm btn-success" onclick="return tanchu_var_check(this.value)" value="{{ x.id }}">校验</li></a>
                                         <a value="{% url 'Vars_copy' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_check" >复制</a>

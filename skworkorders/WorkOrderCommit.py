@@ -18,6 +18,8 @@ from dwebsocket.decorators import accept_websocket
 from skworkorders.lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
 from skworkorders.lib_skworkorders2 import PreTask
 from lib.lib_json import my_obj_pairs_hook
+import urllib
+
 
 from datetime import datetime,timedelta
 import pytz
@@ -141,7 +143,7 @@ def pretask(request):
         for message in request.websocket:    
             request.websocket.send("开始提交任务,请耐心等待·······")
             message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
-            print message_dic
+
             WorkOrder_id = int(message_dic['id'])
             pt01 = PreTask(WorkOrder_id,request,message_dic)
             if pt01.permission_submit_pass():

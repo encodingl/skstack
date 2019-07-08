@@ -123,8 +123,9 @@ $(function () {
             var form1 = document.getElementById("WorkOrderCommit_add_form");
            
             
-            var formData=$("#WorkOrderCommit_add_form").serialize();
+            var formData=$("#WorkOrderCommit_add_form").serialize().replace(/\+/g," ");
             console.log(formData);
+
             var formData = decodeURIComponent(formData,true);//防止中文乱码
             var formData = DataDeal.formToJson(formData);//转化为json
             console.log(formData);
