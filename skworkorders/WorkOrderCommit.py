@@ -9,6 +9,7 @@ from skaccounts.permission import permission_verify
 from .forms import WorkOrderCommit_form,WorkOrderCommit_help_form
 from django.shortcuts import render_to_response, RequestContext
 from skcmdb.api import get_object
+
 from datetime import datetime
 import json
 from skaccounts.models import UserInfo
@@ -18,7 +19,7 @@ from dwebsocket.decorators import accept_websocket
 from skworkorders.lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
 from skworkorders.lib_skworkorders2 import PreTask
 from lib.lib_json import my_obj_pairs_hook
-import urllib
+
 
 
 from datetime import datetime,timedelta
