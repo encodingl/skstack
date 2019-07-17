@@ -85,9 +85,13 @@ def Vars_edit(request, ids):
         if tpl_Vars_form.is_valid():
             tpl_Vars_form.save()
             status = 1
+            tips = "successful！"
+            display_control = ""
         else:
-            pass
+            tips = "failed！"
+            display_control = ""
     else:
+        display_control = "none"
         tpl_Vars_form = Vars_form(instance=obj)      
     return render_to_response("skworkorders/Vars_edit2.html", locals(), RequestContext(request))
 

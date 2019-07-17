@@ -156,8 +156,8 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
         ret_message="%s:开始执行" % taskname
         log.info(ret_message)
         request.websocket.send("%s INFO %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
-       
-        if obj.config_center is NULL or obj.config_center is None:    
+
+        if obj.config_center in [NULL,None]:
             for cmd in task_list:
                 try:
                     log.info("cmd_start:%s"  % cmd )
