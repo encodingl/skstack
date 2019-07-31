@@ -116,7 +116,18 @@ $(function () {
             window.s.close()
         }
         /*创建socket连接*/
-        var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+         var ishttps = 'https:' == document.location.protocol ? true: false;
+
+        if(ishttps){
+
+         var socket = new WebSocket("wss://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+
+        }else{
+
+         var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+
+        }
+
         window.s = socket;
         socket.onopen = function () {
             console.log('WebSocket open');//成功连接上Websocket
