@@ -6,15 +6,15 @@ stages:
 job 1:
   stage: build
   script:
-    - echo "git guild" >> /tmp/gitci.log
+    - echo "`date` git guild" >> /tmp/gitci.log
 
 
 job 2:
   stage: test
   script:
-    - echo "git test" >> /tmp/gitci.log
+    - echo "`date` git test" >> /tmp/gitci.log
 
 job 3:
   stage: deploy
   script:
-    - echo "git deploy" >> /tmp/gitci.log
+    - echo "`date` git deploy" >> /tmp/gitci.log
