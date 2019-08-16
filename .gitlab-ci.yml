@@ -14,10 +14,16 @@ migrate:
     - cd /root/eclipse-workspace/skipper
     - /root/.virtualenvs/skipper/bin/python manage.py migrate
 
-restart:
+stop:
   stage: deploy
   script:
     - cd /root/eclipse-workspace/skipper 
     - pkill -f runserver
+  allow_failure: true
+
+start:
+  stage: deploy
+  script:
+    - cd /root/eclipse-workspace/skipper 
     - workon skipper
     - ./start_web.sh
