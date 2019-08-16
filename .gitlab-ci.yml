@@ -10,8 +10,8 @@ git pull :
 migrate :
   stage: build
   script:
-    - workon skipper
     - pwd
+    - workon skipper
     - python manage.py migrate
 
 restart service:
