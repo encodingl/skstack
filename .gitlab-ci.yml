@@ -2,21 +2,22 @@ stages:
   - build
   - deploy
 
-git pull :
+git pull:
   stage: build
   script:
     - cd /root/eclipse-workspace/skipper
     - git pull
 
-migrate :
+migrate:
   stage: build
   script:
     - cd /root/eclipse-workspace/skipper
     - /root/.virtualenvs/skipper/bin/python manage.py migrate
 
-restart service:
+restart:
   stage: deploy
   script:
     - cd /root/eclipse-workspace/skipper 
-    - ./stop_web.sh
-    - workon skipper && ./start_web.sh
+    - pkill -f runserver
+    - workon skipper
+    - ./start_web.sh
