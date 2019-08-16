@@ -17,7 +17,6 @@ migrate:
 stop:
   stage: deploy
   script:
-    - cd /root/eclipse-workspace/skipper 
     - pkill -f runserver
   allow_failure: true
 
@@ -25,6 +24,7 @@ start:
   stage: deploy
   script:
     - cd /root/eclipse-workspace/skipper 
+    - pwd
     - source /root/.virtualenvs/skipper/bin/activate
     - which python
-    - ./start_web.sh
+    - bash start_web.sh
