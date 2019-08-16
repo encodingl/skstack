@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-rsync :
+git pull :
   stage: build
   script:
     - cd /root/eclipse-workspace/skipper && git pull
@@ -10,7 +10,9 @@ rsync :
 migrate :
   stage: build
   script:
-    - workon skipper && python manage.py migrate
+    - workon skipper
+    - pwd
+    - python manage.py migrate
 
 restart service:
   stage: deploy
