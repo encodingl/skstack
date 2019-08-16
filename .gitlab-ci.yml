@@ -1,20 +1,18 @@
 stages:
   - build
-  - test
   - deploy
 
-job 1:
+rsync :
   stage: build
   script:
-    - echo "`date` git guild" >> /tmp/gitci.log
+    - cd /root/eclipse-workspace/skipper && git pull
 
-
-job 2:
-  stage: test
+migrate :
+  stage: build
   script:
-    - echo "`date` git test" >> /tmp/gitci.log
+    - workon skipper && python manage.py migrate
 
-job 3:
+restart service:
   stage: deploy
   script:
-    - echo "`date` git deploy" >> /tmp/gitci.log
+    - ./stop_web.sh && ./start_web.sh
