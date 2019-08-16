@@ -5,11 +5,13 @@ stages:
 git pull :
   stage: build
   script:
-    - cd /root/eclipse-workspace/skipper && git pull
+    - cd /root/eclipse-workspace/skipper
+    - git pull
 
 migrate :
   stage: build
   script:
+    - cd /root/eclipse-workspace/skipper
     - pwd
     - workon skipper
     - python manage.py migrate
@@ -17,4 +19,7 @@ migrate :
 restart service:
   stage: deploy
   script:
+    - cd /root/eclipse-workspace/skipper
+    - pwd
+    - workon skipper
     - ./stop_web.sh && ./start_web.sh
