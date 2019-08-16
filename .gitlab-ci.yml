@@ -13,7 +13,7 @@ migrate :
   script:
     - cd /root/eclipse-workspace/skipper
     - pwd
-    - workon skipper
+    - workon skipper 2> /tmp/gitci.log
     - python manage.py migrate
 
 restart service:
