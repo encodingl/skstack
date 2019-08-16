@@ -25,4 +25,4 @@ start:
   script:
     - cd /root/eclipse-workspace/skipper 
     - source /root/.virtualenvs/skipper/bin/activate
-    - bash start_web.sh
+    - setsid start_web.sh
