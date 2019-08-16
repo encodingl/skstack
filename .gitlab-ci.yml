@@ -27,4 +27,4 @@ start:
     - pwd
     - source /root/.virtualenvs/skipper/bin/activate
     - which python
-    - bash start1_web.sh
+    - ./start_test.sh
