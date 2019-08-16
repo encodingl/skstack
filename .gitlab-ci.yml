@@ -25,5 +25,5 @@ start:
   stage: deploy
   script:
     - cd /root/eclipse-workspace/skipper 
-    - workon skipper
+    - source /root/.virtualenvs/skipper/bin/activate
     - ./start_web.sh
