@@ -12,14 +12,11 @@ migrate :
   stage: build
   script:
     - cd /root/eclipse-workspace/skipper
-    - pwd
-    - workon skipper 2> /tmp/gitci.log
-    - python manage.py migrate
+    - /root/.virtualenvs/skipper/bin/python manage.py migrate
 
 restart service:
   stage: deploy
   script:
-    - cd /root/eclipse-workspace/skipper
-    - pwd
-    - workon skipper
-    - ./stop_web.sh && ./start_web.sh
+    - cd /root/eclipse-workspace/skipper 
+    - ./stop_web.sh
+    - workon skipper && ./start_web.sh
