@@ -25,4 +25,4 @@ start:
   script:
     - cd /root/eclipse-workspace/skipper 
     - source /root/.virtualenvs/skipper/bin/activate
-    - python manage.py runserver 0.0.0.0:8000 > /opt/sklogs/skipper/skipper.log 2>&1 &
+    - bash start_web.sh
