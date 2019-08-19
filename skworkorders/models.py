@@ -134,7 +134,7 @@ class WorkOrder(models.Model):
     var_opional_switch = models.BooleanField(u"是否开启用户可选参数")
     var_opional = models.ForeignKey(VarsGroup, verbose_name=u"可选参数组", on_delete=models.PROTECT, null=True, blank=True)
     
-    pre_task = models.CharField(u"前置任务",max_length=200,null=True, blank=True)
+    pre_task = models.CharField(u"前置任务",max_length=500,null=True, blank=True)
     main_task = models.CharField(u"主任务",max_length=200,null=True, blank=True)
     post_task = models.CharField(u"后置任务",max_length=200,null=True, blank=True)
    
