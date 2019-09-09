@@ -102,7 +102,7 @@ def WorkOrderFlow_background_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
     from_date = current_date + timedelta(days=-30)
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
