@@ -40,7 +40,7 @@ def WorkOrderCommit_index(request):
     obj_user = UserInfo.objects.get(username=request.user)
     obj_group = obj_user.usergroup_set.all()
 
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
 
     for e in tpl_env:

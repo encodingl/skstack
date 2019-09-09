@@ -34,7 +34,7 @@ def WorkOrderFlow_foreground_release(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     current_date=timezone.now()
 
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
 
     for e in tpl_env:
@@ -52,7 +52,7 @@ def WorkOrderFlow_background_release(request):
     from_date = current_date + timedelta(days=-7)
     print current_date
 
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
 
     for e in tpl_env:
@@ -71,7 +71,7 @@ def WorkOrderFlow_background_release(request):
 def WorkOrderFlow_foreground_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
@@ -253,7 +253,7 @@ def WorkOrderFlow_audit(request):
    
 
     
-    tpl_env = Environment.objects.all()
+    tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
 
     for e in tpl_env:
