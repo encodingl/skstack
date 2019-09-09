@@ -80,18 +80,18 @@
                         <tr>
                        				   <th>id</th>
                          
-                                    <th>鏍囬</th>
+                                    <th>标题</th>
                                           
                                    
-                                    <th>鍒嗙被</th>
+                                    <th>分类</th>
                                 
-                                    <th>鐢宠浜�</th> 
+                                    <th>申请人</th> 
                                    
                                  
                                  
-                                    <th>瀹屾垚鏃堕棿</th> 
-                                    <th>褰撳墠鐘舵��</th>       
-                                    <th class="text-center">鍔熻兘</th>                            
+                                    <th>完成时间</th> 
+                                    <th>当前状态</th>       
+                                    <th class="text-center">功能</th>                            
                                 </tr>
                             </thead>
                             <tbody>
@@ -127,7 +127,7 @@
                                         
                                         </td>
                                         <td class="text-center" id="features" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">璇︽儏</li></a>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
                     
                                    
                                         
@@ -195,7 +195,7 @@ function checkAll(sender, checkClass) {
 	            var api = this.api();
 	            api.columns().indexes().flatten().each( function ( i ) {
 	                var column = api.column( i );
-	             /*    var $span = $('<span class="addselect">鈻�</span>').appendTo($(column.header())) */
+	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
 	            	if (i == 2){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
@@ -219,7 +219,7 @@ function checkAll(sender, checkClass) {
 </script>
 <script>
 function checkSubmit() {
-    if (!confirm("纭畾鍒犻櫎锛�")) {
+    if (!confirm("确定删除？")) {
         window.event.returnValue = false;
     }
 }
@@ -228,27 +228,27 @@ function checkSubmit() {
 function tanchu_detail(n){
     layer.open({
     type: 2,
-    title: '淇敼淇℃伅',
+    title: '修改信息',
     closeBtn: 1,
     area: ['700px', '550px'],
-    shadeClose: true, //鐐瑰嚮閬僵鍏抽棴
+    shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
     content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
             if ( handle_status == '1' ) {
-                layer.msg('鍙戝竷鎴愬姛锛�',{
+                layer.msg('发布成功！',{
                     icon: 1,
-                    time: 2000 //2绉掑叧闂紙濡傛灉涓嶉厤缃紝榛樿鏄�3绉掞級
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 },function(){
                     location.reload();
                     
                 });
             } else if ( handle_status == '2' ) {
-                layer.msg('鍙戝竷澶辫触锛�',{
+                layer.msg('发布失败！',{
                     icon: 2,
-                    time: 2000 //2绉掑叧闂紙濡傛灉涓嶉厤缃紝榛樿鏄�3绉掞級
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 },function(){
                     history.go(0);
                 });
@@ -265,27 +265,27 @@ function tanchu_detail(n){
 function tanchu_release(n){
     layer.open({
     type: 2,
-    title: '鍙戝竷纭',
+    title: '发布确认',
     closeBtn: 1,
     area: ['700px', '550px'],
-    shadeClose: true, //鐐瑰嚮閬僵鍏抽棴
+    shadeClose: true, //点击遮罩关闭
 /*     content: ['/skworkorders/project_edit?id=' + n,], */
     content: ['/skworkorders/TaskStatus/release/' + n,],
     
     end:function(){
             var handle_status = $("#handle_status").val();
             if ( handle_status == '1' ) {
-                layer.msg('淇濆瓨鎴愬姛锛�',{
+                layer.msg('保存成功！',{
                     icon: 1,
-                    time: 2000 //2绉掑叧闂紙濡傛灉涓嶉厤缃紝榛樿鏄�3绉掞級
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 },function(){
                     location.reload();
                     
                 });
             } else if ( handle_status == '2' ) {
-                layer.msg('淇敼澶辫触锛�',{
+                layer.msg('修改失败！',{
                     icon: 2,
-                    time: 2000 //2绉掑叧闂紙濡傛灉涓嶉厤缃紝榛樿鏄�3绉掞級
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 },function(){
                     history.go(0);
                 });
