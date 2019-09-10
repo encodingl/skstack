@@ -23,7 +23,7 @@ def token_verify():
                     return view_func(request, *args, **kwargs)
                 else:
                     message = "forbidden your token error!!"
-                    print message
+                 
                     return HttpResponse(status=403)
             if request.GET:
                 pToken = request.GET['token']
@@ -31,7 +31,7 @@ def token_verify():
                     return view_func(request, *args, **kwargs)
                 else:
                     message = "forbidden your token error!!"
-                    print message
+            
                     return HttpResponse(status=403)
             return HttpResponse(status=403)
 
