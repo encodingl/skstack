@@ -3,7 +3,6 @@ sh==1.12.9
 mysql-python==1.2.5
 pytest==3.0.7
 redis==2.10.5
-GitPython==2.1.5
 dwebsocket==0.4.2
 pillow==5.1.0
 django-ckeditor==5.4.0
