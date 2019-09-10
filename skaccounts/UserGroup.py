@@ -32,10 +32,10 @@ def UserGroup_add(request):
         tpl_UserGroup_form = UserGroup_form(request.POST)
         if tpl_UserGroup_form.is_valid():
             tpl_UserGroup_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skaccounts/UserGroup_add.html", locals(), RequestContext(request))
     else:
@@ -53,7 +53,7 @@ def UserGroup_del(request):
     if obj_id:
         try:
             UserGroup.objects.filter(id=obj_id).delete()
-        except Exception, tpl_error_msg:
+        except Exception as tpl_error_msg:
             log.warning(tpl_error_msg)
         tpl_all = UserGroup.objects.all()
         return render_to_response("skaccounts/UserGroup_index.html", locals(), RequestContext(request))

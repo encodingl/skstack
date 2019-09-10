@@ -50,7 +50,7 @@ def WorkOrderFlow_background_release(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     current_date=timezone.now()
     from_date = current_date + timedelta(days=-7)
-    print current_date
+    print(current_date)
 
     tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
@@ -75,8 +75,8 @@ def WorkOrderFlow_foreground_history(request):
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
-        print from_date
-        print type(from_date)
+        print(from_date)
+        print(type(from_date))
         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
        
         to_date = request.POST.get('to_date', '')
@@ -145,9 +145,9 @@ def WorkOrderFlow_revoke(request):
         if t01.obj.celery_task_id:
             t01.celery_task_revoke()
        
-        return HttpResponse(u'successful')
+        return HttpResponse('successful')
     else:
-        return HttpResponse(u'the WorkOrderFlow_id didnot exist')
+        return HttpResponse('the WorkOrderFlow_id didnot exist')
         
   
 
@@ -332,7 +332,7 @@ def WorkOrderFlow_permit(request):
     
      
  
-    return HttpResponse(u'ok')
+    return HttpResponse('ok')
  
 @login_required()
 @permission_verify()

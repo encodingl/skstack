@@ -52,6 +52,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 INSTALLED_APPS = [
     'skcmdb',
+    'skyw',
     'skrpt',
     'sktask',
     'skconfig',

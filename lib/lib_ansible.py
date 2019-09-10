@@ -5,7 +5,7 @@ Created on 2017-09-13 17:46:59;  @author: LZ
 '''
 
 
-import ConfigParser
+import configparser
 import os
 import re
 from lib.com import  configfile
@@ -37,7 +37,7 @@ def get_AnsibleHostsList(hostsfile,group):
     return list_tumple_hosts
 
 def get_ansible_config_var(args):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
@@ -55,6 +55,6 @@ def get_ansible_config_var(args):
 
 if __name__ == "__main__":
     yycs_list = get_AnsibleHostsList('/etc/ansible/hosts-prd', "yycs")
-    print get_ansible_config_var("inventory")
+    print(get_ansible_config_var("inventory"))
   
     

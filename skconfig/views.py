@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, HttpResponse, redirect, RequestContext
-import ConfigParser
+import configparser
 import os
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
@@ -51,7 +51,7 @@ def index(request):
         fp = open(configfile, 'w')
         cfg.write(fp)
         fp.close()
-        tips = u"保存成功！"
+        tips = "保存成功！"
         display_control = ""
     else:
         a_path = cfg.get('config', 'ansible_path')
@@ -70,7 +70,7 @@ def index(request):
 
 
 def get_dir(args):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
@@ -107,7 +107,7 @@ def get_token(request):
 
 
 def get_ansible_config(args):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     dirs = get_dir("a_path")
     with open(dirs + '/ansible.cfg', 'r') as cfgfile:
         config.readfp(cfgfile)

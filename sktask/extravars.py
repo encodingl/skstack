@@ -37,10 +37,10 @@ def extravars_add(request):
         extravars_form = Extravars_form(request.POST)
         if extravars_form.is_valid():
             extravars_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("sktask/extravars_add.html", locals(), RequestContext(request))
     else:

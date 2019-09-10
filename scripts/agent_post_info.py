@@ -5,8 +5,8 @@ import os
 from subprocess import Popen, PIPE
 import re
 import json
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import platform
 import socket
 
@@ -86,7 +86,7 @@ def getDiskInfo():
 
 def parserDiskInfo(diskdata):
     pd = {}
-    disknum = diskdata.keys()
+    disknum = list(diskdata.keys())
     device_model = re.compile(r'(Device Model):(\s+.*)')
     serial_number = re.compile(r'(Serial Number):(\s+[\d\w]{1,30})')
     firmware_version = re.compile(r'(Firmware Version):(\s+[\w]{1,20})')
@@ -104,8 +104,8 @@ def parserDiskInfo(diskdata):
 
 
 def postData(data):
-    postdata = urllib.urlencode(data)
-    req = urllib2.urlopen(server_url, postdata)
+    postdata = urllib.parse.urlencode(data)
+    req = urllib.request.urlopen(server_url, postdata)
     req.read()
     return True
 
@@ -140,10 +140,10 @@ if __name__ == "__main__":
     os.environ["LANG"] = "us_EN.UTF8"
     result = main()
     os.environ["LANG"] = osenv
-    print 'Get the hardwave and softwave infos from host:'
-    print result
-    print '----------------------------------------------------------'
+    print('Get the hardwave and softwave infos from host:')
+    print(result)
+    print('----------------------------------------------------------')
     postData(result)
-    print 'Post the hardwave and softwave infos to CMDB successfully!'
+    print('Post the hardwave and softwave infos to CMDB successfully!')
 
 

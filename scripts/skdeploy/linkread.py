@@ -8,7 +8,7 @@ def parseOption(argv):
     def _optionsError(errorMsg, callFunc):
         logError("**Error: parserOption Error. %s" % emsg)
         if DEBUG and callFunc: callFunc()
-        print json.dumps({"Status": False, "Command": 'parserOption', 'CommandException': emsg})
+        print(json.dumps({"Status": False, "Command": 'parserOption', 'CommandException': emsg}))
         sys.exit(1)
     parser = OptionParser(version="%prog 1.0.0")
     parser.add_option("-r", "--release-to", dest="releaseto", default=False,
@@ -19,5 +19,5 @@ def parseOption(argv):
 
 if __name__ == "__main__":
     options = parseOption(sys.argv[1:])
-    print os.readlink(options.releaseto)
+    print(os.readlink(options.releaseto))
 

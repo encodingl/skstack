@@ -15,9 +15,9 @@ from skaccounts.permission import permission_verify
 from skaccounts.models import UserInfo
 from django.views.decorators.csrf import csrf_exempt
 import sys
+import importlib
 
-reload(sys)
-sys.setdefaultencoding('utf8')
+importlib.reload(sys)
 
 
 @login_required()
@@ -170,10 +170,10 @@ def asset_add(request):
         a_form = AssetForm(request.POST)
         if a_form.is_valid():
             a_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skcmdb/asset_add.html", locals(), RequestContext(request))
     else:
@@ -198,7 +198,7 @@ def asset_del(request):
                 asset = get_object(Host, id=asset_id)
                 asset.delete()
 
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 
 @login_required
@@ -275,7 +275,7 @@ def asset_import(request):
                     host.group=hostgroup
                     host.middletype=middletype
                     host.save()
-            return HttpResponse(u'恭喜你,主机信息导入成功过 .')
+            return HttpResponse('恭喜你,主机信息导入成功过 .')
         else:
-            return HttpResponse(u'类型选择错误!!!')
+            return HttpResponse('类型选择错误!!!')
     return render_to_response('skcmdb/asset_import.html', locals(), RequestContext(request))

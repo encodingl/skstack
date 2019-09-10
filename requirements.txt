@@ -1,5 +1,4 @@
 django==1.9.8
-sh==1.12.9
 pytest==3.0.7
 redis==2.10.5
 dwebsocket==0.4.2

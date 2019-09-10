@@ -20,7 +20,7 @@ def index(request):
     temp_name = "sktask/setup-header.html"
     allhistory = history.objects.all()
 #     allhistory = model_to_dict(allhistory) 
-    print allhistory
+    print(allhistory)
     return render_to_response("sktask/history.html", locals(), RequestContext(request))
 
 @login_required

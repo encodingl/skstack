@@ -14,7 +14,7 @@ from lib.lib_paramiko import ssh_cmd
 from subprocess import Popen, PIPE, STDOUT
 from skaccounts.models import UserInfo
 
-import commands
+import subprocess
 import json
 import datetime
 import logging
@@ -41,31 +41,31 @@ def get_Vars_form(obj_var):
 
     if obj.value_form_type == "Select":
         new_fields = {
-            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Select(attrs={'class': 'form-control'}))
+            var_name: forms.ChoiceField(label='变量名', error_messages={'required': '不能为空'},widget=forms.Select(attrs={'class': 'form-control'}))
             }
            
     elif obj.value_form_type == "RadioSelect":
         new_fields = {
-            var_name: forms.ChoiceField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.RadioSelect(attrs={'class': 'form-control'}))
+            var_name: forms.ChoiceField(label='变量名', error_messages={'required': '不能为空'},widget=forms.RadioSelect(attrs={'class': 'form-control'}))
             }       
 
     elif obj.value_form_type == "SelectMultiple":
         new_fields = {
-            var_name: forms.MultipleChoiceField(label=u'变量名',error_messages={'required': u'不能为空'},widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
+            var_name: forms.MultipleChoiceField(label='变量名',error_messages={'required': '不能为空'},widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
             }
         
     elif obj.value_form_type == "CheckboxSelectMultiple":
         new_fields = {
-            var_name: forms.MultipleChoiceField(label=u'变量名',error_messages={'required': u'不能为空'},widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
+            var_name: forms.MultipleChoiceField(label='变量名',error_messages={'required': '不能为空'},widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
             }
         
     elif obj.value_form_type == "TextInput":
         new_fields = {
-            var_name: forms.CharField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.TextInput(attrs={'class': 'form-control'}))
+            var_name: forms.CharField(label='变量名', error_messages={'required': '不能为空'},widget=forms.TextInput(attrs={'class': 'form-control'}))
             }
     elif obj.value_form_type == "Textarea":
         new_fields = {
-            var_name: forms.CharField(label=u'变量名', error_messages={'required': u'不能为空'},widget=forms.Textarea(attrs={'class': 'form-control'}))
+            var_name: forms.CharField(label='变量名', error_messages={'required': '不能为空'},widget=forms.Textarea(attrs={'class': 'form-control'}))
             }
     else:
         pass
@@ -77,10 +77,10 @@ def get_Vars_form(obj_var):
         obj_value_optional = eval(obj.value_optional)       
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
-        l1 = commands.getoutput(obj.value_script)
-        print l1
+        l1 = subprocess.getoutput(obj.value_script)
+        print(l1)
         obj_value_optional = eval(l1)
-        print obj_value_optional
+        print(obj_value_optional)
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 
     elif obj.value_method == "manual":
         pass
@@ -106,7 +106,7 @@ def get_VarsGroup_form(args):
      
 
 def var_change2(arg,**kwargs):
-    for key,value in kwargs.items():       
+    for key,value in list(kwargs.items()):       
         key = "{%s}" % key
         value = str(value)
         arg=arg.replace(key,value)
@@ -121,7 +121,7 @@ def format_to_user_vars(**message_dic):
         obj_VarsGroup=VarsGroup.objects.get(name=obj.var_opional)
         for obj_var in obj_VarsGroup.vars.all():  
             obj_var_name = str(obj_var.name)
-            if message_dic.has_key(obj_var_name):
+            if obj_var_name in message_dic:
                 
                 user_vars_dic[obj_var_name]=message_dic[obj_var_name]
                 message_dic.pop(obj_var_name)
@@ -132,7 +132,7 @@ def format_to_user_vars(**message_dic):
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
     message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
-    if message_dic.has_key("back_exe_enable"):
+    if "back_exe_enable" in message_dic:
         if message_dic["back_exe_enable"] == "on":
             message_dic["back_exe_enable"] = 1
         if message_dic["back_exe_enable"] == "False":
@@ -169,7 +169,7 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                             # log.info("cmd_result:%s" % line)
                         if pcmd.poll() is not None:
                             break  
-                except Exception, msg:
+                except Exception as msg:
                     log.error("cmd_result:%s" % msg)
 
                 retcode=pcmd.wait()
@@ -188,8 +188,8 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 try:
                     log.info("ssh_cmd_start:%s config_center_ip:%s"  % (cmd,obj2.ip))
                     retcode = ssh_cmd(obj2.ip,obj2.port,obj2.username,obj2.password,cmd,obj2.rsa_key,request)
-                    print "retcode1:%s" % retcode
-                except Exception, msg:
+                    print("retcode1:%s" % retcode)
+                except Exception as msg:
                     log.error("ssh_cmd_result:%s" % msg)
                     retcode = 1111
                 if retcode == 0:          

@@ -50,10 +50,10 @@ def platformclass_add(request):
        if platformclasss.is_valid():
 
            platformclasss.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control=" "
        else:
-           tips = u"增加失败"
+           tips = "增加失败"
            display_control = ""
     else:
         display_control = "none"
@@ -74,10 +74,10 @@ def platformclass_edit(request,ids):
         platformclassforms = platformclassform(request.POST,instance=platformclassedit)
         if platformclassforms.is_valid():
             platformclassforms.save()
-            tips=u"编辑成功"
+            tips="编辑成功"
             display_control=" "
         else:
-            tips=u"编辑失败"
+            tips="编辑失败"
             display_control=" "
     else:
         display_control = "none"
@@ -91,10 +91,10 @@ def platform_add(request):
        platform = platformform(request.POST)
        if platform.is_valid() :
            platform.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control=" "
        else:
-           tips = u"增加失败"
+           tips = "增加失败"
            display_control = ""
     else:
         display_control = "none"
@@ -117,7 +117,7 @@ def platform_edit(request,ids):
         nform = platformform(request.POST,instance=platformedit)
         if nform.is_valid():
             nform.save()
-            tips = u"编辑成功"
+            tips = "编辑成功"
             display_control=" "
         else:
             tips="编辑失败"

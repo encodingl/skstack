@@ -14,9 +14,9 @@ def get_ex_link(hosts,dir):
     pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)     
     retcode_message=pcmd.communicate()
     r1 = retcode_message[0]
-    print r1
+    print(r1)
     r2 = r1.split(" => ")[1]
-    print r2
+    print(r2)
     true = "true"
     dic = eval(r2)
     ex_link = dic["stdout_lines"][0]
@@ -25,4 +25,4 @@ def get_ex_link(hosts,dir):
 
 if __name__ == "__main__":
 #     print get_ex_link(hosts="yyappgw", dir="/opt/soft/tomcat/yyappgw/webapps/ROOT")
-    print "haha"
+    print("haha")

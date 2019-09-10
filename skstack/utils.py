@@ -41,14 +41,14 @@ class DatabaseAppsRouter(object):
 
     def allow_syncdb(self, db, model):
         """Make sure that apps only appear in the related database."""
-        if db in DATABASE_MAPPING.values():
+        if db in list(DATABASE_MAPPING.values()):
             return DATABASE_MAPPING.get(model._meta.app_label) == db
         elif model._meta.app_label in DATABASE_MAPPING:
             return False
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        if db in DATABASE_MAPPING.values():
+        if db in list(DATABASE_MAPPING.values()):
             return DATABASE_MAPPING.get(app_label) == db
         elif app_label in DATABASE_MAPPING:
             return False

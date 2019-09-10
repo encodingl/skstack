@@ -14,7 +14,7 @@ from skcmdb.forms import IdcForm, EnvForm, YwGroupForm, MiddleTypeForm, AssetFor
 from skcmdb.models import Env, YwGroup, MiddleType, ASSET_STATUS, App, HostGroup, DbSource, KafkaTopic, Url, MAP_TYPE, \
     WhileIp
 from skaccounts.models import UserInfo
-import commands
+import subprocess
 
 
 @login_required()
@@ -41,10 +41,10 @@ def env_add(request):
         obj_form = EnvForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"
@@ -98,10 +98,10 @@ def ywgroup_add(request):
         obj_form = YwGroupForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"
@@ -166,10 +166,10 @@ def hostgroup_add(request):
         obj_form = HostGroupForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skcmdb/hostgroup_add.html", locals(), RequestContext(request))
     else:
@@ -232,10 +232,10 @@ def middletype_add(request):
         obj_form = MiddleTypeForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skcmdb/middletype_add.html", locals(), RequestContext(request))
     else:
@@ -335,10 +335,10 @@ def app_add(request):
         a_form = AppForm(request.POST)
         if a_form.is_valid():
             a_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skcmdb/app_add.html", locals(), RequestContext(request))
     else:
@@ -362,7 +362,7 @@ def app_del(request):
             for app_id in app_id_all.split(','):
                 app = get_object(App, id=app_id)
                 app.delete()
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 
 @login_required
@@ -423,10 +423,10 @@ def url_add(request):
         a_form = UrlForm(request.POST)
         if a_form.is_valid():
             a_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"
@@ -447,7 +447,7 @@ def url_del(request):
             for url_id in url_id_all.split(','):
                 url = get_object(Url, id=url_id)
                 url.delete()
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 
 @login_required
@@ -480,7 +480,7 @@ def kafka_list(request):
 def kafka_update(request):
     temp_name = "skcmdb/cmdb-header.html"
     cmd = "ssh 10.8.45.103 /opt/soft/kafka/bin/kafka-topics.sh --zookeeper 10.8.45.103:2181 --list"
-    code, result = commands.getstatusoutput(cmd)
+    code, result = subprocess.getstatusoutput(cmd)
     if code == 0:
         data = result.split('\n')
         l = list(KafkaTopic.objects.values_list('name'))
@@ -493,8 +493,8 @@ def kafka_update(request):
         for d in l_data:
             if d not in data:
                 KafkaTopic.objects.get(name=d).delete()
-        return HttpResponse(u'更新成功 .')
-    return HttpResponse(u'更新 Error!')
+        return HttpResponse('更新成功 .')
+    return HttpResponse('更新 Error!')
 
 
 @login_required()
@@ -508,16 +508,16 @@ def dbsource_list(request):
 @login_required()
 @permission_verify()
 def dbsource_add(request):
-    print "data=", request.method
+    print("data=", request.method)
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == "POST":
         obj_form = DbSourceForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"
@@ -531,7 +531,7 @@ def dbsource_del(request):
     id = request.GET.get('id', '')
     if id:
         DbSource.objects.filter(id=id).delete()
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 
 @login_required()
@@ -570,10 +570,10 @@ def whileip_add(request):
         obj_form = WhileIpForm(request.POST)
         if obj_form.is_valid():
             obj_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"
@@ -587,7 +587,7 @@ def whileip_del(request):
     temp_name = "skcmdb/cmdb-header.html"
     if request.method == 'POST':
         obj_items = request.POST.getlist('idc_check', [])
-        print obj_items
+        print(obj_items)
         if obj_items:
             for n in obj_items:
                 WhileIp.objects.filter(id=n).delete()

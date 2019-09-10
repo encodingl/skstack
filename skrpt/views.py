@@ -38,9 +38,9 @@ def index(request):
     startDate = str(startDate)
     endDate = str(endDate)
     startDateArr = startDate.split("-")
-    startDateArr = map(int, startDateArr)
+    startDateArr = list(map(int, startDateArr))
     endDateArr = endDate.split("-")
-    endDateArr = map(int, endDateArr)
+    endDateArr = list(map(int, endDateArr))
     begin = datetime.date(startDateArr[0], startDateArr[1], startDateArr[2])
     end = datetime.date(endDateArr[0], endDateArr[1], endDateArr[2])
 

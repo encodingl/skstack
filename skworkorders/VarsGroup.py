@@ -23,7 +23,7 @@ log = logging.getLogger('skstack')
 def VarsGroup_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = VarsGroup.objects.all()
-    print tpl_all
+    print(tpl_all)
     return render_to_response('skworkorders/VarsGroup_index.html', locals(), RequestContext(request))
 
 @login_required()
@@ -34,10 +34,10 @@ def VarsGroup_add(request):
         tpl_VarsGroup_form = VarsGroup_form(request.POST)
         if tpl_VarsGroup_form.is_valid():
             tpl_VarsGroup_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skworkorders/VarsGroup_add.html", locals(), RequestContext(request))
     else:
@@ -57,7 +57,7 @@ def VarsGroup_del(request):
     if obj_id:
         try:
             VarsGroup.objects.filter(id=obj_id).delete()
-        except Exception, tpl_error_msg:
+        except Exception as tpl_error_msg:
             log.warning(tpl_error_msg)
         tpl_all = VarsGroup.objects.all()
         return render_to_response("skworkorders/VarsGroup_index.html", locals(), RequestContext(request))
@@ -88,10 +88,10 @@ def VarsGroup_edit(request, ids):
         tpl_VarsGroup_form = VarsGroup_form(request.POST, instance=obj)
         if tpl_VarsGroup_form.is_valid():
             tpl_VarsGroup_form.save()
-            tips = u"保存成功！"
+            tips = "保存成功！"
             display_control = ""
         else:
-            tips = u"保存失败！"
+            tips = "保存失败！"
             display_control = ""
     else:
         display_control = "none"

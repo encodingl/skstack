@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+
 
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
@@ -86,7 +86,7 @@ class UserInfo(AbstractBaseUser):
 
 class UserGroup(models.Model):
     name = models.CharField(max_length=64)  # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
-    desc = models.CharField(u"描述", max_length=100, null=True, blank=True)
+    desc = models.CharField("描述", max_length=100, null=True, blank=True)
     members = models.ManyToManyField(UserInfo, blank=True)
 
     def __unicode__(self):
@@ -94,13 +94,13 @@ class UserGroup(models.Model):
 
 
 class AuditFlow(models.Model):
-    name = models.CharField(u"流程名字", max_length=50)
-    level = models.CharField(u"审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
-    l1 = models.ForeignKey(UserGroup, verbose_name=u"第1级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
+    name = models.CharField("流程名字", max_length=50)
+    level = models.CharField("审核层级", choices=AuditFlow_LEVEL, max_length=10, null=True, blank=True)
+    l1 = models.ForeignKey(UserGroup, verbose_name="第1级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l1')
-    l2 = models.ForeignKey(UserGroup, verbose_name=u"第2级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
+    l2 = models.ForeignKey(UserGroup, verbose_name="第2级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l2')
-    l3 = models.ForeignKey(UserGroup, verbose_name=u"第3级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
+    l3 = models.ForeignKey(UserGroup, verbose_name="第3级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l3')
 
     def __unicode__(self):

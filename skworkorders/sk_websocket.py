@@ -55,13 +55,13 @@ def echo(request):
     else:
         for message in request.websocket:
             cmd = message
-            print cmd
+            print(cmd)
        
 #             request.websocket.send(exec_command(cmd))
             pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
             while True: 
                  line = pcmd.stdout.readline().strip()  #获取内容
-                 print line
+                 print(line)
                  if line:
                       request.websocket.send(line)
                  else:

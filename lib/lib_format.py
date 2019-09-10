@@ -22,4 +22,4 @@ def list_to_formlist(args):
 if __name__ == '__main__':
     lt1=[2,1,3]
     fl=list_to_formlist(lt1)
-    print fl
+    print(fl)

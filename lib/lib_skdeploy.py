@@ -160,8 +160,8 @@ if __name__ == "__main__":
    
     
     result_pre_deploy = adv_task_step(hosts="localhost", env="prod", project="yyappgw", task_file="post_deploy.sh") 
-    print result_pre_deploy
-    print os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/script/skdeploy/release_project.yml"
+    print(result_pre_deploy)
+    print(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/script/skdeploy/release_project.yml")
 
          
         

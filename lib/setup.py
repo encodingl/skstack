@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from __builtin__ import list
+from builtins import list
 
 
 def get_roles(args):
@@ -75,8 +75,8 @@ def get_AnsibleHostsDic(args):
                         pass
                     
     list_key = []
-    dic_list = dic.items()
-    list_group_key = dic.keys()
+    dic_list = list(dic.items())
+    list_group_key = list(dic.keys())
     for key in list_group_key:
         list_key.append(key[0])
     list_key_set=list(set(list_key))

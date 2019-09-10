@@ -59,24 +59,24 @@ def daohang(request):
             if i.iphone_rota == 0:
                 telarrdba[i.rota_number] = [str(i.name.nickname), i.iphone.iphone]
         elif i.emergency_contact ==0:
-            print 'emery'
+            print('emery')
         else:
-            print "error"
+            print("error")
 
     yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False)
     dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False)
     dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False)
-    print yw_spell_list
-    print dba_list
-    print dba_spell_list
+    print(yw_spell_list)
+    print(dba_list)
+    print(dba_spell_list)
     # print ('spell_list:',dba_spell_list)
     #telarrdba=json.dumps(telarrdba, encoding="UTF-8", ensure_ascii=False)
 
     # print ('telarrdba:',telarrdba)
-    telarr=OrderedDict(telarrdba.items()+telarryw.items())
+    telarr=OrderedDict(list(telarrdba.items())+list(telarryw.items()))
 
     telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
-    print telarr
+    print(telarr)
 
 
     type = PlatFormclass.objects.all()
@@ -123,12 +123,12 @@ def add(request):
        devops=devopsform(request.POST)
        if devops.is_valid(): 
            devops.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control=""
            # return HttpResponseRedirect(reverse('dutyuser'))
 
        else:
-           tips = u"增加失败"
+           tips = "增加失败"
            display_control = ""
            # return redirect('/skyw/dutyuser/')
     else:
@@ -153,10 +153,10 @@ def yw_edit(request,ids):
         nform = devopsform(request.POST,instance=devops_edit)
         if nform.is_valid():
             nform.save()
-            tips = u"编辑成功！"
+            tips = "编辑成功！"
             display_control = ""
         else:
-            tips = u"编辑失败！"
+            tips = "编辑失败！"
             display_control = ""
     else:
         display_control = "none"

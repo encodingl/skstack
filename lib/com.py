@@ -1,11 +1,11 @@
 #coding:utf8
-import ConfigParser, os
+import configparser, os
 from django.conf import settings
 
 configfile = settings.CONFIGFILE
 
 def config(path=configfile):
-    obj = ConfigParser.ConfigParser()
+    obj = configparser.ConfigParser()
     obj.read(path)
     return obj
 
@@ -17,7 +17,7 @@ def get_object(model, **kwargs):
     use this function for query
     使用改封装函数查询数据库
     """
-    for value in kwargs.values():
+    for value in list(kwargs.values()):
         if not value:
             return None
 

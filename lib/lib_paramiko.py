@@ -29,7 +29,7 @@ def ssh_cmd(host,port,username,password,cmd,rsa_key,request):
         channel = stdout.channel
         retcode = channel.recv_exit_status()  
         log.info("ssh_cmd_result2:%s" % stdout) 
-    except Exception, e:
+    except Exception as e:
         log.error("ssh_cmd_result2:%s" % e)
         request.websocket.send(e)
        

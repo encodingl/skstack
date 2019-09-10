@@ -16,7 +16,7 @@ def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
 
-    if request.method == 'GET' and request.GET.has_key('next'):
+    if request.method == 'GET' and 'next' in request.GET:
         next = request.GET['next']
     else:
         next = '/'
@@ -90,7 +90,7 @@ def user_del(request):
         check_box_items = request.POST.getlist('check_box', [])
         if check_box_items:
             for n in check_box_items:
-                print n
+                print(n)
                 get_user_model().objects.filter(id=n).delete()
     all_user = get_user_model().objects.all()
     return render_to_response("skaccounts/user_list.html", locals(), RequestContext(request))
@@ -126,7 +126,7 @@ def user_edit(request, ids):
 def reset_password(request, ids):
     user = get_user_model().objects.get(id=ids)
     newpassword = get_user_model().objects.make_random_password(length=10, allowed_chars='abcdefghjklmnpqrstuvwxyABCDEFGHJKLMNPQRSTUVWXY3456789')
-    print '====>ResetPassword:%s-->%s' % (user.username, newpassword)
+    print('====>ResetPassword:%s-->%s' % (user.username, newpassword))
     user.set_password(newpassword)
     user.save()
 

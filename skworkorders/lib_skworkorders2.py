@@ -9,7 +9,7 @@ from skworkorders.models import WorkOrder,WorkOrderFlow,ConfigCenter
 from datetime import datetime
 from skstack import celery_app
 from skaccounts.models import UserInfo
-from lib_skworkorders import custom_task
+from .lib_skworkorders import custom_task
 import json
 from skworkorders.lib_skworkorders import format_to_user_vars
 from datetime import datetime,timedelta
@@ -29,7 +29,7 @@ class WorkOrdkerFlowTask():
         try:
             self.obj3 = get_object(ConfigCenter, id=self.obj.config_center_id)
             self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
-        except Exception, e:
+        except Exception as e:
             self.config_center_dic = None
        
         self.user = login_user
@@ -182,7 +182,7 @@ class PreTask():
         try:
             self.obj3 = get_object(ConfigCenter, id=self.obj.config_center_id)
             self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
-        except Exception, e:
+        except Exception as e:
             self.config_center_dic = None
         
     def log(self,level,content_str):
@@ -255,7 +255,7 @@ class PreTask():
                 content_str = "finished:定时任务添加成功"
                 self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
                 self.log("info", content_str)
-            except Exception, e:
+            except Exception as e:
                 self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
                 self.log("info", e)
                 content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
@@ -284,7 +284,7 @@ class PreTask():
             content_str = "finished:后台任务添加成功"
             self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
             self.log("info", content_str)
-        except Exception, e:
+        except Exception as e:
             self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
             self.log("info", e)
             content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
@@ -376,5 +376,5 @@ class PreTask():
 
 if __name__ == '__main__':
     eta_time = format_celery_eta_time(str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-    print eta_time
+    print(eta_time)
     

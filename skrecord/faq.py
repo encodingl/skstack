@@ -42,10 +42,10 @@ def add(request):
             describe = faq_form.cleaned_data['describe']
             solution = faq_form.cleaned_data['solution']
             user = Faq.objects.create(user=Faq.user, title=title, problemclass=problemclass, describe=describe, solution=solution)
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skrecord/faq_add.html", locals(), RequestContext(request))
     else:
@@ -69,12 +69,12 @@ def message(request):
 
     event_status = EVENT_STATUS
     P_type = request.GET.get('P_type', '')
-    print "p_type value:%s" % P_type
+    print("p_type value:%s" % P_type)
     if P_type:
         allnavi = Faq.objects.filter(P_status=P_type)
     else:
         allnavi = Faq.objects.all()
-    print "the allnavi is %s" % allnavi;
+    print("the allnavi is %s" % allnavi);
     return render_to_response("skrecord/faq.html", locals(), RequestContext(request))
 
 

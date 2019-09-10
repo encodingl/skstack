@@ -32,10 +32,10 @@ def AuditFlow_add(request):
         tpl_AuditFlow_form = AuditFlow_form(request.POST)
         if tpl_AuditFlow_form.is_valid():
             tpl_AuditFlow_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skaccounts/AuditFlow_add.html", locals(), RequestContext(request))
     else:
@@ -53,7 +53,7 @@ def AuditFlow_del(request):
     if obj_id:
         try:
             AuditFlow.objects.filter(id=obj_id).delete()
-        except Exception, tpl_error_msg:
+        except Exception as tpl_error_msg:
             log.warning(tpl_error_msg)
         tpl_all = AuditFlow.objects.all()
         return render_to_response("skaccounts/AuditFlow_index.html", locals(), RequestContext(request))

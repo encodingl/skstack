@@ -34,7 +34,7 @@ class rotaform(forms.ModelForm):
 
 class noticeform(forms.ModelForm):
     widgets = {
-        'notice': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),}
+        'notice': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),}
     class Meta:
         model=Notice
         exclude = ("id",)

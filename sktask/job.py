@@ -38,10 +38,10 @@ def job_add(request):
         job_form = Job_form(request.POST)
         if job_form.is_valid():
             job_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("sktask/job_add.html", locals(), RequestContext(request))
     else:
@@ -103,7 +103,7 @@ def job_detail(request, ids):
     obj_project = get_object(project, name=obj_job.project)
     obj_pro_path=obj_project.path
     pkfile = proj_base_dir +  obj_pro_path + "/" + obj_playbook
-    print pkfile
+    print(pkfile)
     
     obj["name"] = obj_playbook
     with open(pkfile, 'r') as f:

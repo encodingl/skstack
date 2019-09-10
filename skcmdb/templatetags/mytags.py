@@ -29,7 +29,7 @@ def res_splict(value):
                 data = v.replace('\n', '<br>')
                 res.append(data)
         return res
-    elif isinstance(value, basestring): 
+    elif isinstance(value, str): 
         data = value.replace('\n', '<br>')
         
         return data
@@ -62,7 +62,7 @@ def get_disk_info(disk_info):
         disk_size = 0
         if disk_info:
             disk_dic = ast.literal_eval(disk_info)
-            for disk, size in disk_dic.items():
+            for disk, size in list(disk_dic.items()):
                 disk_size += size
             disk_size = int(disk_size)
         else:
@@ -74,7 +74,7 @@ def get_disk_info(disk_info):
 
 @register.filter(name='displayName')
 def displayName(value, arg):
-    return apply(eval('value.get_'+arg+'_display'), ())
+    return eval('value.get_'+arg+'_display')(*())
 
 @register.filter(name='get_nickname')
 def get_nickname(get_nickname):

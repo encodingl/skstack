@@ -182,11 +182,11 @@ class WorkOrderFlow_schedule_detail_form(forms.ModelForm):
         }  
         
 class CeleryTaskResult_form(forms.Form):
-    task_id = forms.CharField(label=u'task_id', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
-    status = forms.CharField(label=u'status', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
-    result = forms.CharField(label=u'result', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
-    date_done = forms.CharField(label=u'date_done', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
-    traceback = forms.CharField(label=u'traceback', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
+    task_id = forms.CharField(label='task_id', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    status = forms.CharField(label='status', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    result = forms.CharField(label='result', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
+    date_done = forms.CharField(label='date_done', widget=forms.TextInput(attrs={'class': 'form-control','readonly':True}))
+    traceback = forms.CharField(label='traceback', widget=forms.Textarea(attrs={'class': 'form-control','readonly':True}))
     
     
     
@@ -243,4 +243,4 @@ class Custom_form(forms.Form):
     pass
 
 class Comment_form(forms.Form):
-    comment_content = forms.CharField(label=u'意见',max_length=100,required=False,widget=forms.Textarea(attrs={'class': 'form-control','style': 'height: 60px;'}))
+    comment_content = forms.CharField(label='意见',max_length=100,required=False,widget=forms.Textarea(attrs={'class': 'form-control','style': 'height: 60px;'}))

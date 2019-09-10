@@ -36,18 +36,18 @@ def rota_add(request):
            #print(rota.cleaned_data)
            print('success')
            rota.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control = ""
        else:
            #rota.save()
            print('test')
-           print(rota.cleaned_data['iphone'])
-           print(rota.cleaned_data['name'])
-           print(rota.cleaned_data['spell'])
+           print((rota.cleaned_data['iphone']))
+           print((rota.cleaned_data['name']))
+           print((rota.cleaned_data['spell']))
            # print(rota.cleaned_data['rota_number'])
-           print(rota.cleaned_data['emergency_contact'])
-           print(rota.cleaned_data['iphone_rota'])
-           tips = u"增加失败"
+           print((rota.cleaned_data['emergency_contact']))
+           print((rota.cleaned_data['iphone_rota']))
+           tips = "增加失败"
            displ_control = ""
     else:
         display_control = "none"
@@ -71,10 +71,10 @@ def rota_edit(request,ids):
         rota_form = rotaform(request.POST,instance=rota_edit)
         if rota_form.is_valid():
             rota_form.save()
-            tips = u"编辑成功！"
+            tips = "编辑成功！"
             display_control = ""
         else:
-            tips = u"编辑失败！"
+            tips = "编辑失败！"
             display_control = ""
     else:
         display_control = "none"

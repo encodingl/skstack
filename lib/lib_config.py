@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import ConfigParser
+import configparser
 import os
 import re
 from lib.com import  configfile
 
 
 def get_redis_config():
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
@@ -26,7 +26,7 @@ def get_redis_config():
     return host,port,db,password
 
 def get_config_var(args):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
@@ -76,4 +76,4 @@ def get_AnsibleHostsDic_only(args):
     return dic
 if __name__ == "__main__":
     x = get_redis_config()
-    print x
+    print(x)

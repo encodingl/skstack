@@ -5,7 +5,7 @@ Created on 2018年7月2日 @author: encodingl
 '''
 
 # Create your tasks here
-from __future__ import absolute_import, unicode_literals
+
 from celery import shared_task
 from skworkorders.lib_skworkorders import var_change2
 import subprocess
@@ -32,7 +32,7 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
     else:
         cc_dic = json.loads(cc_dic)
     
-    for taskname,taskvalue in taskname_dic.items():
+    for taskname,taskvalue in list(taskname_dic.items()):
         if taskvalue:
             task = var_change2(taskvalue,**user_vars_dic) 
             task = var_change2(task,**var_built_in_dic)
@@ -47,7 +47,7 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                         retcode=pcmd.wait()  
                         retcode_message=pcmd.communicate()
                         msg_result_dic[taskname]=retcode_message
-                    except Exception, msg:
+                    except Exception as msg:
                         log.error("cmd_result:%s" % msg)
                         raise RuntimeError(str(retcode_message).decode("string_escape"))
             else:
@@ -58,7 +58,7 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                         log.info("ssh_cmd_start:%s config_center_ip:%s"  % (cmd,cc_dic["ip"]))
                         retcode_message,retcode = ssh_cmd_back(cc_dic["ip"],cc_dic["port"],cc_dic["username"],cc_dic["password"],cmd,cc_dic["rsa_key"])
                         msg_result_dic[taskname]=retcode_message
-                    except Exception, msg:
+                    except Exception as msg:
                         log.error("ssh_cmd_result2:%s" % msg)
                     
             if retcode==0:
@@ -68,6 +68,6 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                 ret_message="%s:执行失败" % taskname
 #     msg_result_dic = json.dumps(msg_result_dic,ensure_ascii=False)
 #     print "jsonstrL:%s" % msg_result_dic
-    print "msg_result_dic:%s" % msg_result_dic
+    print("msg_result_dic:%s" % msg_result_dic)
     return msg_result_dic
         

@@ -13,14 +13,14 @@ class Record_form(forms.ModelForm):
         model = Record
         exclude = ("id",)
         widgets = {
-            'eventitle': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventstarttime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventendtime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventpeople': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventproduct': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'eventdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'eventitle': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventstarttime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventendtime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventpeople': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventproduct': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'eventdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -30,8 +30,8 @@ class Record_list_form(forms.ModelForm):
         model = Record_list
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -41,13 +41,13 @@ class Track_form(forms.ModelForm):
         model = Track
         exclude = ("id",)
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'trackclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'trackdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'trackdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'status': Select(choices=((u'已解决'), (u'跟进中'), (u'未解决')), attrs={'class': 'form-control', 'style': 'width:500px;'}),
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'trackclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'trackdescribe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'trackdispose': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'status': Select(choices=(('已解决'), ('跟进中'), ('未解决')), attrs={'class': 'form-control', 'style': 'width:500px;'}),
             #'tracktime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'remarks': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'remarks': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -57,8 +57,8 @@ class Track_list_form(forms.ModelForm):
         model = Track_list
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -79,11 +79,11 @@ class Faq_form(forms.ModelForm):
         model = Faq
         exclude = ("id",)
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
             #'problemclass': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'problemclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'solution': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'problemclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'solution': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
         }
 
 class Faq_list_form(forms.ModelForm):
@@ -92,8 +92,8 @@ class Faq_list_form(forms.ModelForm):
         model = Faq_list
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -103,14 +103,14 @@ class Assessment_form(forms.ModelForm):
         model = Assessment
         exclude = ("id",)
         widgets = {
-            'assessmentname': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'assessmentname': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
             #'assessmentclass': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'assessmentclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'assessmentnum': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'assessmentcontent': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'assessmenttime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'recordpersonnel': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'remarks': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'assessmentclass': Select(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'assessmentnum': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'assessmentcontent': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'assessmenttime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'recordpersonnel': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'remarks': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -120,8 +120,8 @@ class Assessment_list_form(forms.ModelForm):
         model = Assessment_list
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'describe': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -131,14 +131,14 @@ class Change_form(forms.ModelForm):
         model = Change
         exclude = ("id",)
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'changetime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'operator': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'business': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'content': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'influence': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'rollback': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'recordtime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'changetime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'operator': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'business': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'content': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'influence': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'rollback': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'recordtime': DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
 
         }
 
@@ -148,9 +148,9 @@ class Memo_form(forms.ModelForm):
         model = Memo
         exclude = ("id",)
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'content': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'noticetime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'expirationtime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'mail': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'title': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'content': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'noticetime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'expirationtime': DateTimeInput(attrs={'type': 'date', 'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'mail': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
         }

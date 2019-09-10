@@ -34,11 +34,11 @@ def event_add(request):
        events = eventform(request.POST)
        if events.is_valid(): 
            events.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control = ""
           # return HttpResponseRedirect(reverse('yw'))
        else:
-           tips = u"增加失败"
+           tips = "增加失败"
            display_control = ""
     else:
         display_control = "none"
@@ -61,10 +61,10 @@ def event_edit(request,ids):
         event_form = eventform(request.POST,instance=events_edit)
         if event_form.is_valid():
             event_form.save()
-            tips = u"编辑成功"
+            tips = "编辑成功"
             display_control=""
         else:
-            tips=u"编辑成功"
+            tips="编辑成功"
             display_control=""
     else:
         display_control = "none"

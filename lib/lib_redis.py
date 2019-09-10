@@ -9,7 +9,7 @@ def redis_subscribe():
     ps.subscribe(['c1', 'c2'])
     for item in ps.listen():
         if item['type'] == 'message':
-            print item['data']
+            print(item['data'])
             
 class RedisLock():
     def __init__(self,channel_name):
@@ -28,15 +28,15 @@ class RedisLock():
 if __name__ == "__main__":
     r1=RedisLock(channel_name="chn001")
     cv = r1.get_channel_value()
-    print cv
+    print(cv)
     r1.lock()
     cv = r1.get_channel_value()
-    print cv
+    print(cv)
     r1.unlock()
     cv = r1.get_channel_value()
-    print cv
+    print(cv)
     tv = r1.test(tchn="chn001")
-    print tv
+    print(tv)
 
 
 

@@ -29,6 +29,6 @@ if __name__ == "__main__":
     c1 = Connection('172.28.28.127', port=22, user='root', connect_kwargs={'password':'rft420e',})
     c2 = Connection('172.28.28.127', port=22, user='root', connect_kwargs={'key_filename':'/root/.ssh/id_rsa',})
     r = c2.run("ansible gtest -f 1 -a 'date'")
-    print r.exited
+    print(r.exited)
     
 #     print r.stdout

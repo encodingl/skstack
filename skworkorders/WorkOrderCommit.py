@@ -62,7 +62,7 @@ def WorkOrderCommit_undo(request):
         if WorkOrderCommit_items:
             for n in WorkOrderCommit_items:
                 WorkOrderFlow.objects.filter(id=n).delete()
-    return HttpResponse(u'撤销成功')
+    return HttpResponse('撤销成功')
 
 @login_required()
 @permission_verify()
@@ -158,7 +158,7 @@ def pretask(request):
                         if  pt01.obj.schedule_enable == True:
                             pt01.celery_task_add()
                         elif pt01.obj.back_exe_enable == True:
-                            if pt01.message_dic_format.has_key("back_exe_enable"):
+                            if "back_exe_enable" in pt01.message_dic_format:
                                 pt01.celery_bgtask_add()
                             else:
                                 pt01.all_task_do()

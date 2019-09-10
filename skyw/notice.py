@@ -35,10 +35,10 @@ def notice_add(request):
        notice=noticeform(request.POST)
        if notice.is_valid():
            notice.save()
-           tips = u'增加成功'
+           tips = '增加成功'
            display_control = ""
        else:
-           tips = u"增加失败"
+           tips = "增加失败"
            display_control = ""
     else:
         display_control = "none"
@@ -62,9 +62,9 @@ def notice_edit(request,ids):
         notice_form = noticeform(request.POST,instance=obj)
         if notice_form.is_valid():
             notice_form.save()
-            tips=u"编辑成功"
+            tips="编辑成功"
         else:
-            tips = u"编辑失败"
+            tips = "编辑失败"
             display_control = ""
       #      return HttpResponseRedirect(reverse('notice_edit'))
     else:

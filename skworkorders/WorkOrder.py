@@ -23,7 +23,7 @@ import sys
 from datetime import datetime
 
 from lib.lib_config import get_config_var
-from git import Repo
+
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
@@ -52,10 +52,10 @@ def WorkOrder_add(request):
           
                 
             tpl_WorkOrder_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
     else:
@@ -80,7 +80,7 @@ def WorkOrder_del(request):
         if WorkOrder_items:
             for n in WorkOrder_items:
                 WorkOrder.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 @login_required()
 @permission_verify()
@@ -112,8 +112,8 @@ def WorkOrder_edit(request):
     temp_name = "skworkorders/skworkorders-header.html"
     ids = request.GET.get('id', '')
     obj = get_object(WorkOrder, id=ids)
-    print obj.var_built_in
-    print type(obj.var_built_in)
+    print(obj.var_built_in)
+    print(type(obj.var_built_in))
     
     
     if request.method == 'POST':
@@ -130,11 +130,11 @@ def WorkOrder_edit(request):
             ret = []
             message = "SUCCESS\n保存成功" 
             ret.append(message)
-            tips = u"保存成功！"
+            tips = "保存成功！"
             display_control = ""
             return render_to_response("skworkorders/WorkOrder_edit.html", locals(), RequestContext(request))
         else:
-            tips = u"保存失败！"
+            tips = "保存失败！"
             display_control = ""
             return render_to_response("skworkorders/WorkOrder_edit.html", locals(), RequestContext(request))
     else:
@@ -162,16 +162,16 @@ def WorkOrder_add_from_template(request,ids):
         tpl_WorkOrder_form = WorkOrder_form(request.POST)
         if tpl_WorkOrder_form.is_valid():         
             tpl_WorkOrder_form.save()
-            tips = u"提交成功！"
+            tips = "提交成功！"
             display_control = ""
         else:
-            tips = u"提交失败！"
+            tips = "提交失败！"
             display_control = ""
         return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
     else:
         display_control = "none"
         obj = get_object(WorkOrder, id=ids)
-        print obj.user_dep,
+        print(obj.user_dep, end=' ')
         dic_init={
             'desc':obj.desc,
             'user_dep':obj.user_dep.all(),

@@ -68,7 +68,7 @@ def playbook(request):
                 cmd = "ansible-playbook"+" " + ansible_dir+'/gexec.yml'
                 p = Popen(cmd, stderr=PIPE, stdout=PIPE, shell=True)
                 data = p.communicate()
-                print "data:%s" % data
+                print("data:%s" % data)
                 ret.append(data)
                 for d in data:
                     logging.info(d)
@@ -86,8 +86,8 @@ def playbook(request):
                     pcmd = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
                     data = pcmd.communicate()
                     ret.append(data)
-                    print data
-                    print ret
+                    print(data)
+                    print(ret)
                     logging.info("==========ansible tasks start==========")
                     logging.info("User:"+request.user.username)
                     logging.info("host:"+h)
@@ -150,11 +150,11 @@ def ansible_command(request):
     temp_name = "sktask/setup-header.html"
     if request.method == 'POST':
         mcommand = request.POST.get('mcommand')
-        print 'mcm_request %s'% mcommand
+        print('mcm_request %s'% mcommand)
         command_list = mcommand.split('\n')
-        print 'cm_list %s'% command_list
+        print('cm_list %s'% command_list)
         user=request.user
-        if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
             ip = request.META['REMOTE_ADDR']
@@ -180,7 +180,7 @@ def ansible_command(request):
                 logging.info(d)
             logging.info("==========ansible tasks end============")
         # return render_to_response('sktask/result.html', locals(), RequestContext(request))
-        print 'ret value: %s' % ret
+        print('ret value: %s' % ret)
         cmd_hosts =  ret[0][0].split('|')[0]
         task_name="ansible"
         if retcode==0:

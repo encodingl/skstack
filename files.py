@@ -15,7 +15,7 @@ def files(request):
      dirList=[] #所有目录
      fileList=[] #所有目录下返回的文件列表
      for dir in path:
-        print dir
+        print(dir)
         files = os.listdir(dir)
         for f in files:
           if(os.path.isdir(f)):
@@ -25,5 +25,5 @@ def files(request):
                         dirList.append(f)
           if(os.path.isfile(f)):
            fileList.append(f)
-     print dirList,fileList  
+     print(dirList,fileList)  
      return render_to_response("skfile/index.html", locals(), RequestContext(request))

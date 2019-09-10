@@ -5,9 +5,10 @@ from django import forms
 from django.forms.widgets import *
 from .models import Host, Idc, HostGroup, Env, YwGroup, MiddleType, App, DbSource, Url, WhileIp
 import sys
+import importlib
 
-reload(sys)
-sys.setdefaultencoding('utf8')
+importlib.reload(sys)
+
 
 
 class AssetForm(forms.ModelForm):
@@ -15,8 +16,8 @@ class AssetForm(forms.ModelForm):
         model = Host
         exclude = ("id",)
         widgets = {
-            'hostname': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
-            'ip': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'必填项'}),
+            'hostname': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
+            'ip': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '必填项'}),
             'other_ip': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'sa': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'env': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
@@ -35,7 +36,7 @@ class AssetForm(forms.ModelForm):
             'sn': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'idc': Select(attrs={'class': 'form-control', 'style': 'width:530px;'}),
             'position': TextInput(
-                attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'物理机写位置，虚机写宿主'}),
+                attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '物理机写位置，虚机写宿主'}),
             'memo': Textarea(attrs={'class': 'form-control', 'style': 'width:530px;'}),
         }
 
@@ -142,7 +143,7 @@ class AppForm(forms.ModelForm):
         model = App
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': '必填项'}),
             'ywgroup': Select(attrs={'class': 'form-control'}),
             'sa': Select(attrs={'class': 'form-control'}),
             'env': Select(attrs={'class': 'form-control'}),
@@ -160,7 +161,7 @@ class UrlForm(forms.ModelForm):
         model = Url
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': '必填项'}),
             'nickname': TextInput(attrs={'class': 'form-control'}),
             'whitelist': SelectMultiple(attrs={'class': 'form-control'}),
             'mapip': TextInput(attrs={'class': 'form-control'}),
@@ -179,7 +180,7 @@ class WhileIpForm(forms.ModelForm):
         model = WhileIp
         exclude = ("id",)
         widgets = {
-            'ip': TextInput(attrs={'class': 'form-control', 'placeholder': u'必填项'}),
+            'ip': TextInput(attrs={'class': 'form-control', 'placeholder': '必填项'}),
             'name': TextInput(attrs={'class': 'form-control'}),
             'descrition': Textarea(attrs={'class': 'form-control', 'style': 'height:150px'}),
         }
@@ -200,10 +201,10 @@ class DbSourceForm(forms.ModelForm):
         model = DbSource
         exclude = ("id",)
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机名称'}),
-            'host': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'主机ip'}),
-            'user': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'用户名'}),
-            'password': PasswordInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'密码'}),
-            'port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'默认3306'}),
-            'db': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': u'数据库名'}),
+            'name': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '主机名称'}),
+            'host': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '主机ip'}),
+            'user': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '用户名'}),
+            'password': PasswordInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '密码'}),
+            'port': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '默认3306'}),
+            'db': TextInput(attrs={'class': 'form-control', 'style': 'width:530px;', 'placeholder': '数据库名'}),
         }

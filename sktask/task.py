@@ -100,7 +100,7 @@ def extravars_search(request):
     obj = extravars.objects.filter(job=job_id,online_status='1').values('id','name','vars')
   
     obj_list = list(obj)
-    print obj_list
+    print(obj_list)
 
     obj_json = json.dumps(obj_list)
 
@@ -117,7 +117,7 @@ def playbook(request):
     extra_vars=""
     if request.method == 'POST':
         user=request.user
-        if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
             ip = request.META['REMOTE_ADDR']
@@ -132,7 +132,7 @@ def playbook(request):
             
         if request.POST.get('iCheck_HostsFile'):
             f_obj = request.POST.get('iCheck_HostsFile')   
-            print f_obj
+            print(f_obj)
             f_obj = ansible_dir+f_obj
         
         p_obj = request.POST.get('iCheck_project')
@@ -195,7 +195,7 @@ def playbook_back(request):
     h_obj=""
     if request.method == 'POST':
         user=request.user
-        if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
             ip = request.META['REMOTE_ADDR']

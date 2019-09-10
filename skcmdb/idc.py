@@ -24,10 +24,10 @@ def idc_add(request):
         idc_form = IdcForm(request.POST)
         if idc_form.is_valid():
             idc_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
     else:
         display_control = "none"

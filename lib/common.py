@@ -17,7 +17,7 @@ def test(x,**y):
         x="suc"
     else:
         x="fai"
-    print x,y
+    print(x,y)
     
 if __name__ == '__main__':
     

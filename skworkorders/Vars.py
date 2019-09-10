@@ -30,10 +30,10 @@ def Vars_add(request):
         tpl_Vars_form = Vars_form(request.POST)
         if tpl_Vars_form.is_valid():
             tpl_Vars_form.save()
-            tips = u"增加成功！"
+            tips = "增加成功！"
             display_control = ""
         else:
-            tips = u"增加失败！"
+            tips = "增加失败！"
             display_control = ""
         return render_to_response("skworkorders/Vars_add.html", locals(), RequestContext(request))
     else:
@@ -58,7 +58,7 @@ def Vars_del(request):
         if Vars_items:
             for n in Vars_items:
                 Vars.objects.filter(id=n).delete()
-    return HttpResponse(u'删除成功')
+    return HttpResponse('删除成功')
 
 @login_required()
 @permission_verify()

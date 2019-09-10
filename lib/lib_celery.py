@@ -21,4 +21,4 @@ def format_celery_eta_time(time_str):
 
 if __name__ == "__main__":
     time_str = "2017-07-11 12:11:23"
-    print format_celery_eta_time(time_str)
+    print(format_celery_eta_time(time_str))

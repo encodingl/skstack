@@ -10,13 +10,13 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
  
 def job1(f):
-    print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), f
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), f)
  
 def job2(args1, args2, f):
-    print f, args1, args2
+    print(f, args1, args2)
  
 def job3(**args):
-    print args
+    print(args)
  
 '''
 APScheduler支持以下三种定时任务：
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # scheduler.add_job(job2, 'interval', seconds=5, args=['a','b'], id='test_job7')
     # scheduler.add_job(job2, 'interval', seconds=5, args=('a','b',), id='test_job8')
     # scheduler.add_job(job3, 'interval', seconds=5, kwargs={'a':1,'b':2}, id='test_job9')
-    print scheduler.get_jobs()
+    print(scheduler.get_jobs())
     scheduler.start()
 
 

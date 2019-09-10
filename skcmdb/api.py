@@ -53,7 +53,7 @@ def get_object(model, **kwargs):
     use this function for query
     使用改封装函数查询数据库
     """
-    for value in kwargs.values():
+    for value in list(kwargs.values()):
         if not value:
             return None
 
@@ -73,7 +73,7 @@ def page_list_return(total, current=1):
     min_page = current - 2 if current - 4 > 0 else 1
     max_page = min_page + 4 if min_page + 4 < total else total
 
-    return range(min_page, max_page + 1)
+    return list(range(min_page, max_page + 1))
 
 
 def pages(post_objects, request):
