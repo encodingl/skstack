@@ -5,9 +5,9 @@ from django.shortcuts import render_to_response, redirect, HttpResponse, HttpRes
 from django.contrib.auth.decorators import login_required
 from hashlib import sha1
 from django.contrib import auth
-from forms import LoginUserForm, EditUserForm, ChangePasswordForm
+from .forms import LoginUserForm, EditUserForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
-from forms import AddUserForm
+from .forms import AddUserForm
 from django.core.urlresolvers import reverse
 from skaccounts.permission import permission_verify
 

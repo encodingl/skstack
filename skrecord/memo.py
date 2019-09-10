@@ -4,19 +4,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
-from forms import Record_form
-from forms import Faq_form
-from forms import Change_form
-from forms import Memo_form
+from .forms import Record_form
+from .forms import Faq_form
+from .forms import Change_form
+from .forms import Memo_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from lib.com import config, cfg
-from models import Record
-from models import Faq
-from models import Change
-from models import Memo
+from .models import Record
+from .models import Faq
+from .models import Change
+from .models import Memo
 import datetime
 import time
 

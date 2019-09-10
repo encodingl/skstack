@@ -4,7 +4,7 @@ from django.shortcuts import render
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response,redirect,RequestContext
-from forms import devopsform,rotaform,noticeform
+from .forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

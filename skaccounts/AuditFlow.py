@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from models import AuditFlow
+from .models import AuditFlow
 
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

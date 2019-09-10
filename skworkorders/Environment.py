@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from models import Environment
+from .models import Environment
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Environment_form

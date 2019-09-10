@@ -3,7 +3,7 @@
 
 
 
-from models import WorkOrderGroup
+from .models import WorkOrderGroup
 
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

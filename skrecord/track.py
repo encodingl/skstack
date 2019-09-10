@@ -4,13 +4,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, RequestContext
-from forms import Record_form
-from forms import Track_form
+from .forms import Record_form
+from .forms import Track_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
-from models import Record
-from models import Track
+from .models import Record
+from .models import Track
 
 
 @login_required()

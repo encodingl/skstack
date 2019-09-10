@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.http import HttpResponseRedirect
-from models import UserGroup
+from .models import UserGroup
 
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

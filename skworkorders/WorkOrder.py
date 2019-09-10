@@ -4,7 +4,7 @@
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
+from .models import AuditFlow,Environment,WorkOrderGroup,WorkOrder,WorkOrderFlow
 import os,shutil
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required

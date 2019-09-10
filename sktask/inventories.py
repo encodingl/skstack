@@ -4,7 +4,7 @@
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import job,job,extravars
+from .models import job,job,extravars
 import os
 from skconfig.views import get_dir
 from django.contrib.auth.decorators import login_required

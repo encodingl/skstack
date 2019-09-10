@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response, RequestContext
-from forms import IdcForm
+from .forms import IdcForm
 from .models import Idc
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

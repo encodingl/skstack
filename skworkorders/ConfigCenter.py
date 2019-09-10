@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from models import ConfigCenter
+from .models import ConfigCenter
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import ConfigCenter_form

@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response,RequestContext
 from django.contrib.auth.decorators import login_required
-from forms import RoleListForm,RoleJobForm
-from models import RoleList,RoleJob
+from .forms import RoleListForm,RoleJobForm
+from .models import RoleList,RoleJob
 from skaccounts.permission import permission_verify
 
 

@@ -3,7 +3,7 @@
 
 
 from django.http import HttpResponse
-from models import VarsGroup
+from .models import VarsGroup
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 

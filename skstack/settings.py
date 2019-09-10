@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-import ConfigParser
+import  configparser as ConfigParser
 import skworkorders
 
 
@@ -51,9 +51,12 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Application definition
 
 INSTALLED_APPS = [
-    'skworkorders',
+    'skcmdb',
+    'skrpt',
+    'sktask',
     'skconfig',
     'skaccounts',
+    'skworkorders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

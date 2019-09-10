@@ -3,7 +3,7 @@
 from subprocess import Popen, PIPE, STDOUT, call
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import project,job,extravars
+from .models import project,job,extravars
 import os
 import re
 from skconfig.views import get_dir,get_ansible_config

@@ -3,7 +3,7 @@
 # update by guohongze@126.com
 from django import forms
 from django.contrib import auth
-from models import UserInfo, RoleList, PermissionList, RoleJob, AuditFlow, UserGroup
+from .models import UserInfo, RoleList, PermissionList, RoleJob, AuditFlow, UserGroup
 from lib.type import User_TYPE
 
 

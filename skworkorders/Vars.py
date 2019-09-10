@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from models import Vars 
+from .models import Vars 
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

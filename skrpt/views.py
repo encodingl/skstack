@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.core.urlresolvers import reverse
 from .models import Rpt
-from forms import Rpt_form
+from .forms import Rpt_form
 from skaccounts.models import UserInfo
 from skcmdb.models import Host, App
 from skworkorders.models import WorkOrder,WorkOrderFlow

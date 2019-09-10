@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response,RequestContext
 from django.contrib.auth.decorators import login_required
-from forms import PermissionListForm
-from models import UserInfo, RoleList, PermissionList
+from .forms import PermissionListForm
+from .models import UserInfo, RoleList, PermissionList
 
 
 def permission_verify():
