@@ -20,10 +20,10 @@ import skworkorders
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-if os.path.exists(BASE_DIR+'/skipper_dev.conf'):
-    CONFIGFILE = os.path.join(BASE_DIR, 'skipper_dev.conf')
+if os.path.exists(BASE_DIR+'/skstack_dev.conf'):
+    CONFIGFILE = os.path.join(BASE_DIR, 'skstack_dev.conf')
 else:
-    CONFIGFILE = os.path.join(BASE_DIR, 'skipper_prod.conf')
+    CONFIGFILE = os.path.join(BASE_DIR, 'skstack_prod.conf')
 
 config = ConfigParser.ConfigParser()
 config.read(CONFIGFILE)
@@ -51,17 +51,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Application definition
 
 INSTALLED_APPS = [
-    'sktask',
     'skworkorders',
-    'skdomain',
-    'skcmdb',
     'skconfig',
     'skaccounts',
-    'skrpt',
-    'skyw',
-    'skrecord',
-    'ckeditor',
-    'ckeditor_uploader',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

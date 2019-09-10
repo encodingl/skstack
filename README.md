@@ -45,8 +45,8 @@ mysql<br>
 CREATE DATABASE skstack DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 #### step3:配置
 cd skstack<br>
-编辑skipper_prod.conf文件填写mysql数据库信息<br>
-如果有skipper_dev.conf文件，会先读取，主要用于开发模式<br>
+编辑skstack_prod.conf文件填写mysql数据库信息<br>
+如果有skstack_dev.conf文件，会先读取，主要用于开发模式<br>
 #### step4:配置免密钥登陆客机
 ssh-keygen (可选)<br>
 ssh-copy-id -i /root/.ssh/id_rsa.pub {客户机IP}<br>

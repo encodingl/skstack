@@ -16,7 +16,7 @@ sql1='''select * from skrecord_memo;'''
 
 config = {
 	'host':'127.0.0.1',
-	'user':'ser_skipper',
+	'user':'ser_skstack',
 	'passwd':'9FNdRf1',
 	'port':3306,
 	'db':'skstack',
