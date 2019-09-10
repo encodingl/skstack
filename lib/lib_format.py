@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年4月10日 @author: skipper
+Created on 2018年4月10日 @author: encodingl
 '''
 
 def list_to_formlist(args):

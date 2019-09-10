@@ -25,7 +25,7 @@ from lib.lib_json import my_obj_pairs_hook
 from datetime import datetime,timedelta
 import pytz
 from skworkorders import tasks
-from skipper.celery import app as celery_app
+from skstack.celery import app as celery_app
 
 
 

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年7月9日 @author: skipper
+Created on 2018年7月9日 @author: encodingl
 '''
-from skipper.celery import app as celery_app
+from skstack.celery import app as celery_app
 from datetime import datetime,timedelta
 import pytz
 import sys

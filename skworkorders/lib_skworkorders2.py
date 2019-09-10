@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年7月9日 @author: skipper
+Created on 2018年7月9日 @author: encodingl
 '''
 from lib.lib_celery import format_celery_eta_time
 from skworkorders.tasks import schedule_task
 from skworkorders.models import WorkOrder,WorkOrderFlow,ConfigCenter
 from datetime import datetime
-from skipper import celery_app
+from skstack import celery_app
 from skaccounts.models import UserInfo
 from lib_skworkorders import custom_task
 import json

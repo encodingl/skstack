@@ -5,14 +5,14 @@ stages:
 git pull:
   stage: build
   script:
-    - cd /root/eclipse-workspace/skipper
+    - cd /root/eclipse-workspace/skstack
     - git pull
 
 migrate:
   stage: build
   script:
-    - cd /root/eclipse-workspace/skipper
-    - /root/.virtualenvs/skipper/bin/python manage.py migrate
+    - cd /root/eclipse-workspace/skstack
+    - /root/.virtualenvs/skstack/bin/python manage.py migrate
 
 stop:
   stage: deploy
@@ -23,6 +23,6 @@ stop:
 start:
   stage: deploy
   script:
-    - cd /root/eclipse-workspace/skipper 
-    - source /root/.virtualenvs/skipper/bin/activate
+    - cd /root/eclipse-workspace/skstack 
+    - source /root/.virtualenvs/skstack/bin/activate
     - setsid ./start_web.sh

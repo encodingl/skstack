@@ -19,7 +19,7 @@ config = {
 	'user':'ser_skipper',
 	'passwd':'9FNdRf1',
 	'port':3306,
-	'db':'skipper',
+	'db':'skstack',
 	'charset':'utf8'
 }
 

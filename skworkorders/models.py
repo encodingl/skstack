@@ -20,7 +20,7 @@ WorkOrder_STATUS = (
     )
 
 WorkOrder_SOURCE = (
-    (str("skipper"), u"skipper"),
+    (str("skstack"), u"skstack"),
     (str("local"), u"local"),
     )
 

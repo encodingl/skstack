@@ -46,8 +46,8 @@ def get_git_commitid(repo_path):
     return list_tumple_commitid
     
 if __name__ == "__main__":
-    repo_url="git@gitlab.szyy.com:opergroup/skipper.git"
-    repo_path="/opt/data/gitsource/prod/skipper"
+    repo_url="git@gitlab.szyy.com:opergroup/skstack.git"
+    repo_path="/opt/data/gitsource/prod/skstack"
     
     
     print get_git_taglist(repo_path=repo_path)

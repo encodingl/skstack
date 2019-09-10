@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年6月19日 @author: skipper
+Created on 2018年6月19日 @author: encodingl
 '''
 
 import time

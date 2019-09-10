@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-from skipper.settings import BASE_DIR
+from skstack.settings import BASE_DIR
 
 dic = {"debug": logging.DEBUG,
        "warning": logging.WARNING,

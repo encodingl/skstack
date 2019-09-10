@@ -13,7 +13,7 @@ from skcmdb.api import get_object
 
 from django.core.urlresolvers import reverse
 import logging
-log = logging.getLogger('skipper')
+log = logging.getLogger('skstack')
 
 
 

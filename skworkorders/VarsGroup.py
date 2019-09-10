@@ -14,7 +14,7 @@ from skcmdb.api import get_object
 
 import time
 import logging
-log = logging.getLogger('skipper')
+log = logging.getLogger('skstack')
 
 
 

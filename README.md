@@ -1,4 +1,4 @@
-# skipper
+# skstack
 The open source operation platform : CMDB, project deploy, DevOps  . <br>
 开源DevOps平台：资产管理、项目部署、自动运维、系统监控
 # Requirements
@@ -27,13 +27,13 @@ pip install virtualenvwrapper<br>
 source /path/virtualenvwrapper.sh<br>
 
 4 创建python虚拟环境<br>
-mkvirtualenv skipper<br>
-workon skipper<br>
+mkvirtualenv skstack<br>
+workon skstack<br>
 
 
 #### step1:准备
 请将服务器端安装在centosi6 or 7上
-git clone git@github.com:encodingl/skipper.git<br>
+git clone git@github.com:encodingl/skstack.git<br>
 yum install ansible -y<br>
 yum install smartmontools -y<br>
 yum install python python-devel -y<br>
@@ -42,9 +42,9 @@ yum install -y mariadb-server mariadb-devel<br>
 service mariadb start<br>
 chkconfig mariadb on<br>
 mysql<br>
-CREATE DATABASE skipper DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE skstack DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 #### step3:配置
-cd skipper<br>
+cd skstack<br>
 编辑skipper_prod.conf文件填写mysql数据库信息<br>
 如果有skipper_dev.conf文件，会先读取，主要用于开发模式<br>
 #### step4:配置免密钥登陆客机
@@ -54,7 +54,7 @@ ansible和shell管理客户机需要此配置
 
 #### step5:运行
 切换到python虚拟机环境<br>
-source /home/pythonenv/venv-skipper/bin/activate<br>
+source /home/pythonenv/venv-skstack/bin/activate<br>
 再执行如下命令<br>
 easy_install pip <br>
 pip install -r requirements.txt<br>

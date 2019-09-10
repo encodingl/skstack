@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年6月14日 @author: skipper
+Created on 2018年6月14日 @author: encodingl
 '''
 
 def my_obj_pairs_hook(lst):

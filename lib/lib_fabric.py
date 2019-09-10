@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Created on 2018年8月17日 @author: skipper
+Created on 2018年8月17日 @author: encodingl
 '''
 
 from fabric import Connection
