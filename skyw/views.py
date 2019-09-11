@@ -4,7 +4,8 @@ from django.shortcuts import render
 import sys
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,redirect,RequestContext
+from django.shortcuts import render_to_response,redirect
+from django.template import RequestContext
 from .forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
 import json

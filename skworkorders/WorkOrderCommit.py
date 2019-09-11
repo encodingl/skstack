@@ -7,7 +7,8 @@ from .models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import WorkOrderCommit_form,WorkOrderCommit_help_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 
 from datetime import datetime

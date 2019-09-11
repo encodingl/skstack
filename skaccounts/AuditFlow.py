@@ -9,7 +9,8 @@ from skaccounts.permission import permission_verify
 
 
 from .forms import AuditFlow_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 
 import logging

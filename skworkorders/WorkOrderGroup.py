@@ -10,7 +10,8 @@ from skaccounts.permission import permission_verify
 
 
 from .forms import WorkOrderGroup_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 
 import logging

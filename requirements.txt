@@ -1,4 +1,4 @@
-django==1.9.8
+django==1.11.24
 pytest==3.0.7
 redis==2.10.5
 dwebsocket==0.4.2

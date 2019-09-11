@@ -5,7 +5,8 @@ from .models import Environment
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Environment_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 import logging
 log = logging.getLogger('skworkorders')

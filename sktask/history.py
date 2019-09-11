@@ -4,7 +4,8 @@
 from django.shortcuts import render
 from .models import history
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect, RequestContext
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from .forms import history_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

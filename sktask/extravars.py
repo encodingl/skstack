@@ -13,7 +13,8 @@ import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles
 from .forms import Extravars_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 
 # var info

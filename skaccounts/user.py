@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # update by guohongze@126.com
-from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect, RequestContext
+from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect
+from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from hashlib import sha1
 from django.contrib import auth

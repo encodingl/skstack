@@ -14,7 +14,8 @@ from lib.log import log
 from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic
 from .models import history
 from .forms import Project_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 import json
 import logging

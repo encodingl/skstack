@@ -14,7 +14,8 @@ from lib.log import log
 from lib.file import new_file
 
 from .forms import WorkOrder_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 import json
 import logging

@@ -6,7 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Vars_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 import time
 from skworkorders.lib_skworkorders import get_Vars_form

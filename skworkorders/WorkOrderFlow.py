@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 
 from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,CeleryTaskResult_form,Comment_form
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from skcmdb.api import get_object
 from django_celery_results.models import TaskResult
 from datetime import datetime

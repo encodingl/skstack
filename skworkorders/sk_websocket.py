@@ -17,7 +17,8 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import subprocess
 
-from django.shortcuts import render_to_response, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 
 @login_required()

@@ -5,7 +5,8 @@ from .forms import AssetForm
 from lib.utils import mysql_execute
 from lib.type import ASSET_TYPE
 from .models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType, DbSource
-from django.shortcuts import render_to_response, redirect, RequestContext, HttpResponse
+from django.shortcuts import render_to_response, redirect, HttpResponse
+from django.template import RequestContext
 from django.db.models import Q
 from skcmdb.api import get_object
 from skcmdb.api import pages, str2gb
