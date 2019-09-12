@@ -7,7 +7,7 @@ from .models import AuditFlow,Environment,WorkOrder,WorkOrderFlow
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import WorkOrderCommit_form,WorkOrderCommit_help_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 
@@ -48,7 +48,7 @@ def WorkOrderCommit_index(request):
         obj = WorkOrder.objects.filter(user_dep__in=obj_group,status="yes",template_enable = False,env=e.id).distinct()
 
         tpl_dic_obj[e.name_english]=obj
-    return render_to_response('skworkorders/WorkOrderCommit_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderCommit_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -102,7 +102,7 @@ def WorkOrderCommit_add(request, ids):
         if obj.auto_exe_enable == False:
             tpl_WorkOrderCommit_form.fields["auto_exe_enable"].widget=forms.HiddenInput()
             
-        return render_to_response("skworkorders/WorkOrderCommit_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrderCommit_add.html", locals())
     else:
         response_data = {}  
         response_data['result'] = 'failed'  
@@ -126,7 +126,7 @@ def WorkOrderCommit_help(request, ids):
     tpl_WorkOrderCommit_help_form = WorkOrderCommit_help_form(initial=dic_init)  
    
             
-    return render_to_response("skworkorders/WorkOrderCommit_help.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/WorkOrderCommit_help.html", locals())
 
 
 
@@ -140,7 +140,7 @@ def pretask(request):
             message = request.GET['message']
             return HttpResponse(message)
         except:
-            return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
+            return render(request,'skworkorders/websocket.html', locals())
     else:
         for message in request.websocket:    
             request.websocket.send("开始提交任务,请耐心等待·······")

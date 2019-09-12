@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 import subprocess
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 
 
@@ -27,7 +27,7 @@ def websocket_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
  
 
-    return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/websocket.html', locals())
 
 def exec_command(comm):
     hostname = '172.28.28.127'
@@ -52,7 +52,7 @@ def echo(request):
             message = request.GET['message']
             return HttpResponse(message)
         except:
-            return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
+            return render(request,'skworkorders/websocket.html', locals())
     else:
         for message in request.websocket:
             cmd = message

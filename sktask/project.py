@@ -14,7 +14,7 @@ from lib.log import log
 from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic
 from .models import history
 from .forms import Project_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import json
@@ -38,7 +38,7 @@ ansible_dir = get_dir("a_path")
 def project_manage(request):
     temp_name = "sktask/setup-header.html"
     allproject = project.objects.all()
-    return render_to_response('sktask/project_manage.html', locals(), RequestContext(request))
+    return render(request,'sktask/project_manage.html', locals())
 
 @login_required()
 @permission_verify()
@@ -53,11 +53,11 @@ def project_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("sktask/project_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/project_add.html", locals())
     else:
         display_control = "none"
         project_form = Project_form()
-        return render_to_response("sktask/project_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/project_add.html", locals())
 
 
 
@@ -79,7 +79,7 @@ def project_del(request):
     return HttpResponse('删除成功')
  #   allproject = project.objects.all()
     
- #   return render_to_response("sktask/project.html", locals(), RequestContext(request))
+ #   return render(request,"sktask/project.html", locals())
 
 
 @login_required()
@@ -87,7 +87,7 @@ def project_del(request):
 # def project_edit(request, ids):
 #     obj = project.objects.get(id=ids)
 #     allproject = project.objects.all()
-#     return render_to_response("sktask/project_edit.html", locals(), RequestContext(request))
+#     return render(request,"sktask/project_edit.html", locals())
 
 def project_edit(request, ids):
     status = 0
@@ -103,7 +103,7 @@ def project_edit(request, ids):
             status = 2
     else:
         obj_f = Project_form(instance=obj)      
-    return render_to_response("sktask/project_edit.html", locals(), RequestContext(request))
+    return render(request,"sktask/project_edit.html", locals())
 
 
 

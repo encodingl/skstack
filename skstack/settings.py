@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'skcmdb',
     'skyw',
     'skrpt',
+    'skrecord',
     'sktask',
     'skconfig',
     'skaccounts',
@@ -175,12 +176,17 @@ USE_L10N = True
 USE_TZ = False
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + '/static'
-STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static').replace('\\', '/'),
-    os.path.join(BASE_DIR, 'static'),
-)
-print("this STATICFILES_DIRS: %s" % STATICFILES_DIRS)
+# STATIC_ROOT = BASE_DIR + '\\static\\'
+#for windows
+STATIC_ROOT = ''
+STATICFILES_DIRS = ( os.path.join('static'), )
+#print("STATIC_ROOT: %s" % STATIC_ROOT)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, './static/').replace('\\', '/'),
+# #     os.path.join(BASE_DIR, '/static/'),
+#   
+# )
+# print("this STATICFILES_DIRS: %s" % STATICFILES_DIRS)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -14,7 +14,7 @@ from lib.log import log
 from lib.setup import get_playbook, get_roles,get_AnsibleHostsDic,get_hostsFile
 from .models import history
 from .forms import Job_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import json
@@ -41,7 +41,7 @@ def index(request):
         dic_list_key[h]=list_key
         
         
-    return render_to_response('sktask/inventories_index.html', locals(), RequestContext(request))
+    return render(request,'sktask/inventories_index.html', locals())
 
 
 

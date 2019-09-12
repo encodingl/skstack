@@ -14,7 +14,7 @@ from lib.log import log
 from lib.setup import get_playbook, get_roles
 from .models import history
 from .forms import Job_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import json
@@ -29,7 +29,7 @@ proj_base_dir = get_dir("pro_path")
 def job_index(request):
     temp_name = "sktask/setup-header.html"
     alljob = job.objects.all()
-    return render_to_response('sktask/job_index.html', locals(), RequestContext(request))
+    return render(request,'sktask/job_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -44,11 +44,11 @@ def job_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("sktask/job_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/job_add.html", locals())
     else:
         display_control = "none"
         job_form = Job_form()
-        return render_to_response("sktask/job_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/job_add.html", locals())
 
 
 
@@ -68,7 +68,7 @@ def job_del(request):
                 job.objects.filter(id=n).delete()
     
     alljob = job.objects.all()
-    return render_to_response("sktask/job_index.html", locals(), RequestContext(request))
+    return render(request,"sktask/job_index.html", locals())
 
 
 @login_required()
@@ -76,7 +76,7 @@ def job_del(request):
 # def job_edit(request, ids):
 #     obj = job.objects.get(id=ids)
 #     alljob = job.objects.all()
-#     return render_to_response("sktask/job_edit.html", locals(), RequestContext(request))
+#     return render(request,"sktask/job_edit.html", locals())
 
 def job_edit(request, ids):
     status = 0
@@ -92,7 +92,7 @@ def job_edit(request, ids):
             status = 2
     else:
         obj_f = Job_form(instance=obj)      
-    return render_to_response("sktask/job_edit.html", locals(), RequestContext(request))
+    return render(request,"sktask/job_edit.html", locals())
 
 @login_required
 @permission_verify()
@@ -112,5 +112,5 @@ def job_detail(request, ids):
    
 
  
-    return render_to_response('sktask/job_detail.html', locals(), RequestContext(request))
+    return render(request,'sktask/job_detail.html', locals())
 

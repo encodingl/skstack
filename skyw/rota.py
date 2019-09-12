@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import devopsform,rotaform
 from django.core.urlresolvers import reverse
@@ -24,7 +24,7 @@ def dutyinfo(request):
     # for yw in person:
     #    name = yw.name
     #    iphone = yw.iphone
-    return render_to_response("skyw/dutyinfo.html", locals(), RequestContext(request))
+    return render(request,"skyw/dutyinfo.html", locals())
 
 @login_required()
 @permission_verify()
@@ -53,7 +53,7 @@ def rota_add(request):
     else:
         display_control = "none"
         rota = rotaform()
-    return render_to_response("skyw/rota_add.html",locals(),RequestContext(request))
+    return render(request,"skyw/rota_add.html",locals(),RequestContext(request))
 
 @login_required()
 @permission_verify()
@@ -80,4 +80,4 @@ def rota_edit(request,ids):
     else:
         display_control = "none"
         rota_form= rotaform(instance=rota_edit)
-    return render_to_response('skyw/rota_edit.html',locals(),RequestContext(request))
+    return render(request,'skyw/rota_edit.html',locals(),RequestContext(request))

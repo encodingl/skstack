@@ -13,7 +13,7 @@ import logging
 from lib.log import log
 from lib.setup import get_playbook, get_roles
 from .forms import Extravars_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 
@@ -28,7 +28,7 @@ proj_base_dir = get_dir("pro_path")
 def extravars_index(request):
     temp_name = "sktask/setup-header.html"
     allextravars = extravars.objects.all()
-    return render_to_response('sktask/extravars_index.html', locals(), RequestContext(request))
+    return render(request,'sktask/extravars_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -43,11 +43,11 @@ def extravars_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("sktask/extravars_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/extravars_add.html", locals())
     else:
         display_control = "none"
         extravars_form = Extravars_form()
-        return render_to_response("sktask/extravars_add.html", locals(), RequestContext(request))
+        return render(request,"sktask/extravars_add.html", locals())
 
 
 
@@ -66,7 +66,7 @@ def extravars_del(request):
             for n in extravars_items:
                 extravars.objects.filter(id=n).delete()
     allextravars = extravars.objects.all()
-    return render_to_response("sktask/extravars_index.html", locals(), RequestContext(request))
+    return render(request,"sktask/extravars_index.html", locals())
 
 
 @login_required()
@@ -74,7 +74,7 @@ def extravars_del(request):
 # def extravars_edit(request, ids):
 #     obj = extravars.objects.get(id=ids)
 #     allextravars = extravars.objects.all()
-#     return render_to_response("sktask/extravars_edit.html", locals(), RequestContext(request))
+#     return render(request,"sktask/extravars_edit.html", locals())
 
 def extravars_edit(request, ids):
     status = 0
@@ -90,5 +90,5 @@ def extravars_edit(request, ids):
             status = 2
     else:
         obj_f = Extravars_form(instance=obj)      
-    return render_to_response("sktask/extravars_edit.html", locals(), RequestContext(request))
+    return render(request,"sktask/extravars_edit.html", locals())
 

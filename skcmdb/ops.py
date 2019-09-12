@@ -3,7 +3,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import render_to_response, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
@@ -22,7 +22,7 @@ import subprocess
 def opssa_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     opssa_info = UserInfo.objects.filter(type__gte=1).filter(type__lte=5)
-    return render_to_response('skcmdb/opssa_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/opssa_list.html', locals())
 
 
 @login_required()
@@ -30,7 +30,7 @@ def opssa_list(request):
 def env_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = Env.objects.all()
-    return render_to_response('skcmdb/env_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/env_list.html', locals())
 
 
 @login_required()
@@ -49,7 +49,7 @@ def env_add(request):
     else:
         display_control = "none"
         obj_form = EnvForm()
-    return render_to_response("skcmdb/env_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/env_add.html", locals())
 
 
 @login_required()
@@ -62,7 +62,7 @@ def env_del(request):
             for n in obj_items:
                 Env.objects.filter(id=n).delete()
     obj_info = Env.objects.all()
-    return render_to_response("skcmdb/env_list.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/env_list.html", locals())
 
 
 @login_required
@@ -79,7 +79,7 @@ def env_edit(request, ids):
             status = 2
     else:
         af = EnvForm(instance=obj)
-    return render_to_response('skcmdb/env_edit.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/env_edit.html', locals())
 
 
 @login_required()
@@ -87,7 +87,7 @@ def env_edit(request, ids):
 def ywgroup_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = YwGroup.objects.all()
-    return render_to_response('skcmdb/ywgroup_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/ywgroup_list.html', locals())
 
 
 @login_required()
@@ -106,7 +106,7 @@ def ywgroup_add(request):
     else:
         display_control = "none"
         obj_form = YwGroupForm()
-    return render_to_response("skcmdb/ywgroup_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/ywgroup_add.html", locals())
 
 
 @login_required()
@@ -119,7 +119,7 @@ def ywgroup_del(request):
             for n in obj_items:
                 YwGroup.objects.filter(id=n).delete()
     obj_info = YwGroup.objects.all()
-    return render_to_response("skcmdb/ywgroup_list.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/ywgroup_list.html", locals())
 
 
 @login_required()
@@ -127,7 +127,7 @@ def ywgroup_del(request):
 def ywgroup_edit(request, ids):
     obj = YwGroup.objects.get(id=ids)
     allidc = YwGroup.objects.all()
-    return render_to_response("skcmdb/ywgroup_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/ywgroup_edit.html", locals())
 
 
 @login_required()
@@ -147,7 +147,7 @@ def ywgroup_save(request):
         status = 1
     else:
         status = 2
-    return render_to_response("skcmdb/ywgroup_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/ywgroup_edit.html", locals())
 
 
 @login_required()
@@ -155,7 +155,7 @@ def ywgroup_save(request):
 def hostgroup_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = HostGroup.objects.all()
-    return render_to_response('skcmdb/hostgroup_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/hostgroup_list.html', locals())
 
 
 @login_required()
@@ -171,11 +171,11 @@ def hostgroup_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/hostgroup_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/hostgroup_add.html", locals())
     else:
         display_control = "none"
         obj_form = HostGroupForm()
-        return render_to_response("skcmdb/hostgroup_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/hostgroup_add.html", locals())
 
 
 @login_required()
@@ -188,14 +188,14 @@ def hostgroup_del(request):
             for n in obj_items:
                 HostGroup.objects.filter(id=n).delete()
     obj_info = HostGroup.objects.all()
-    return render_to_response("skcmdb/hostgroup_list.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/hostgroup_list.html", locals())
 
 
 @login_required()
 @permission_verify()
 def hostgroup_edit(request, ids):
     obj = HostGroup.objects.get(id=ids)
-    return render_to_response("skcmdb/hostgroup_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/hostgroup_edit.html", locals())
 
 
 @login_required()
@@ -213,7 +213,7 @@ def hostgroup_save(request):
         status = 1
     else:
         status = 2
-    return render_to_response("skcmdb/hostgroup_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/hostgroup_edit.html", locals())
 
 
 @login_required()
@@ -221,7 +221,7 @@ def hostgroup_save(request):
 def middletype_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = MiddleType.objects.all()
-    return render_to_response('skcmdb/middletype_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/middletype_list.html', locals())
 
 
 @login_required()
@@ -237,11 +237,11 @@ def middletype_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/middletype_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/middletype_add.html", locals())
     else:
         display_control = "none"
         obj_form = MiddleTypeForm()
-        return render_to_response("skcmdb/middletype_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/middletype_add.html", locals())
 
 
 @login_required()
@@ -254,7 +254,7 @@ def middletype_del(request):
             for n in obj_items:
                 MiddleType.objects.filter(id=n).delete()
     obj_info = MiddleType.objects.all()
-    return render_to_response("skcmdb/middletype_list.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/middletype_list.html", locals())
 
 
 @login_required()
@@ -262,7 +262,7 @@ def middletype_del(request):
 def middletype_edit(request, ids):
     obj = MiddleType.objects.get(id=ids)
     allidc = MiddleType.objects.all()
-    return render_to_response("skcmdb/middletype_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/middletype_edit.html", locals())
 
 
 @login_required()
@@ -280,7 +280,7 @@ def middletype_save(request):
         status = 1
     else:
         status = 2
-    return render_to_response("skcmdb/middletype_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/middletype_edit.html", locals())
 
 
 @login_required()
@@ -324,7 +324,7 @@ def app_list(request):
         )
 
     app_list, p, apps, page_range, current_page, show_first, show_end = pages(app_find, request)
-    return render_to_response('skcmdb/app_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/app_list.html', locals())
 
 
 @login_required()
@@ -340,11 +340,11 @@ def app_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/app_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/app_add.html", locals())
     else:
         display_control = "none"
         a_form = AppForm()
-        return render_to_response("skcmdb/app_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/app_add.html", locals())
 
 
 @login_required()
@@ -380,7 +380,7 @@ def app_edit(request, ids):
     else:
         af = AppForm(instance=obj)
 
-    return render_to_response('skcmdb/app_edit.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/app_edit.html', locals())
 
 
 @login_required
@@ -412,7 +412,7 @@ def url_list(request):
         obj_info = obj_info.filter(type=type)
     if status:
         obj_info = obj_info.filter(status=status)
-    return render_to_response('skcmdb/url_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/url_list.html', locals())
 
 
 @login_required()
@@ -431,7 +431,7 @@ def url_add(request):
     else:
         display_control = "none"
         a_form = UrlForm()
-    return render_to_response("skcmdb/url_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/url_add.html", locals())
 
 
 @login_required()
@@ -464,7 +464,7 @@ def url_edit(request, ids):
             status = 2
     else:
         af = UrlForm(instance=obj)
-    return render_to_response('skcmdb/url_edit.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/url_edit.html', locals())
 
 
 @login_required
@@ -472,7 +472,7 @@ def url_edit(request, ids):
 def kafka_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     kafka_info = KafkaTopic.objects.all()
-    return render_to_response('skcmdb/kafka_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/kafka_list.html', locals())
 
 
 @login_required
@@ -502,7 +502,7 @@ def kafka_update(request):
 def dbsource_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = DbSource.objects.all()
-    return render_to_response('skcmdb/dbsource_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/dbsource_list.html', locals())
 
 
 @login_required()
@@ -522,7 +522,7 @@ def dbsource_add(request):
     else:
         display_control = "none"
         obj_form = DbSourceForm()
-    return render_to_response("skcmdb/dbsource_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/dbsource_add.html", locals())
 
 
 @login_required()
@@ -551,7 +551,7 @@ def dbsource_edit(request, ids):
             #     status = 2
     else:
         form = DbSourceForm(instance=obj)
-    return render_to_response("skcmdb/dbsource_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/dbsource_edit.html", locals())
 
 
 @login_required()
@@ -559,7 +559,7 @@ def dbsource_edit(request, ids):
 def whileip_list(request):
     temp_name = "skcmdb/cmdb-header.html"
     obj_info = WhileIp.objects.all()
-    return render_to_response('skcmdb/whileip_list.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/whileip_list.html', locals())
 
 
 @login_required()
@@ -578,7 +578,7 @@ def whileip_add(request):
     else:
         display_control = "none"
         obj_form = WhileIpForm()
-    return render_to_response("skcmdb/whileip_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/whileip_add.html", locals())
 
 
 @login_required()
@@ -591,7 +591,7 @@ def whileip_del(request):
         if obj_items:
             for n in obj_items:
                 WhileIp.objects.filter(id=n).delete()
-    return HttpResponseRedirect(reverse('whileip_list'), RequestContext(request))
+    return HttpResponseRedirect(reverse('whileip_list'))
 
 
 @login_required
@@ -608,5 +608,5 @@ def whileip_edit(request, ids):
             status = 2
     else:
         af = WhileIpForm(instance=obj)
-    return render_to_response('skcmdb/whileip_edit.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/whileip_edit.html', locals())
 

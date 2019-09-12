@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
@@ -24,7 +24,7 @@ def notify(request):
     # for yw in person:
     #    name = yw.name
     #    iphone = yw.iphone
-    return render_to_response("skyw/ywnotify.html", locals(), RequestContext(request))
+    return render(request,"skyw/ywnotify.html", locals())
 
 
 
@@ -44,7 +44,7 @@ def notice_add(request):
     else:
         display_control = "none"
         notice = noticeform()
-    return render_to_response("skyw/notice_add.html",locals(),RequestContext(request))
+    return render(request,"skyw/notice_add.html",locals(),RequestContext(request))
 
 @login_required()
 @permission_verify()
@@ -71,4 +71,4 @@ def notice_edit(request,ids):
     else:
         display_control = "none"
         notice_form= noticeform(instance=obj)
-    return render_to_response('skyw/notice_edit.html',locals(),RequestContext(request))
+    return render(request,'skyw/notice_edit.html',locals(),RequestContext(request))

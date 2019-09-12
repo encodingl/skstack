@@ -15,7 +15,7 @@ from lib.log import log
 from lib.setup import get_playbook, get_roles, get_AnsibleHostsDic,get_IpList,get_hostsFile
 from .models import history
 from .forms import Project_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import json
@@ -49,7 +49,7 @@ def index(request):
     all_ansible_hosts_ip = get_IpList(inventory)
     all_ansible_hosts = all_group_key + all_ansible_hosts_ip   
     all_projects = project.objects.filter(online_status=1)    
-    return render_to_response('sktask/task.html', locals(), RequestContext(request))
+    return render(request,'sktask/task.html', locals())
 
 @login_required()
 @permission_verify()

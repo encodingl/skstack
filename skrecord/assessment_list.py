@@ -3,7 +3,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import Record_form
 from .forms import Faq_form
@@ -24,7 +24,7 @@ def assessment_list(request):
     temp_name = "skrecord/navi-header.html"
     assessment_list_info = Assessment_list.objects.all()
 #    allnavi = navi.objects.all()
-    return render_to_response("skrecord/assessment_list.html", locals(), RequestContext(request))
+    return render(request,"skrecord/assessment_list.html", locals())
 
 @login_required()
 @permission_verify()
@@ -40,12 +40,12 @@ def add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skrecord/assessment_list_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/assessment_list_add.html", locals())
     else:
         display_control = "none"
         assessment_list_form = Assessment_list_form()
 
-        return render_to_response("skrecord/assessment_list_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/assessment_list_add.html", locals())
 
 
 
@@ -68,7 +68,7 @@ def message(request):
     else:
         allnavi = Assessment_list.objects.all()
     print("the allnavi is %s" % allnavi);
-    return render_to_response("skrecord/assessment_list.html", locals(), RequestContext(request))
+    return render(request,"skrecord/assessment_list.html", locals())
 
 
 
@@ -94,7 +94,7 @@ def edit(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/assessment_list_edit.html', locals(), RequestContext(request))
+    return render(request,'skrecord/assessment_list_edit.html', locals())
 
 @login_required()
 @permission_verify()
@@ -117,7 +117,7 @@ def detail(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/assessment_list_detail.html', locals(), RequestContext(request))
+    return render(request,'skrecord/assessment_list_detail.html', locals())
 
 
 

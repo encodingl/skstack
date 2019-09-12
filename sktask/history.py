@@ -4,7 +4,7 @@
 from django.shortcuts import render
 from .models import history
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import history_form
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,7 @@ def index(request):
     allhistory = history.objects.all()
 #     allhistory = model_to_dict(allhistory) 
     print(allhistory)
-    return render_to_response("sktask/history.html", locals(), RequestContext(request))
+    return render(request,"sktask/history.html", locals())
 
 @login_required
 @permission_verify()
@@ -31,4 +31,4 @@ def detail(request, ids):
     obj_cmd = obj.cmd
     ret=obj.cmd_detail
     ret=ret.encode('utf-8')
-    return render_to_response('sktask/history_detail.html', locals(), RequestContext(request))
+    return render(request,'sktask/history_detail.html', locals())

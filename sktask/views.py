@@ -3,7 +3,7 @@
 #
 # from subprocess import Popen, PIPE, STDOUT, call
 # from cmdb.models import Host, HostGroup
-# from django.shortcuts import render_to_response, redirect
+# from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 # import os
 #
@@ -19,7 +19,7 @@
 #     all_dir = get_roles(roles_dir)
 #     all_pbook = get_pbook(pbook_dir)
 #     all_group = HostGroup.objects.all()
-#     return render_to_response('ansible/index.html', locals())
+#     return render(request,'ansible/index.html', locals())
 #
 #
 # def get_roles(args):
@@ -90,7 +90,7 @@
 #                     data = p.communicate()[0]
 #                     print data
 #                     ret.append(data)
-#         return render_to_response('ansible/result.html', locals())
+#         return render(request,'ansible/result.html', locals())
 #
 #
 # def ansible_command(request):
@@ -110,7 +110,7 @@
 #                 data = "your command " + str(count) + "  is invalid!"
 #                 ret.append(data)
 #             count += 1
-#         return render_to_response('ansible/result.html', locals())
+#         return render(request,'ansible/result.html', locals())
 #
 #
 # # def host_sync(request):

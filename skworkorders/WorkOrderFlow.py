@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 
 from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,CeleryTaskResult_form,Comment_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 from django_celery_results.models import TaskResult
@@ -42,7 +42,7 @@ def WorkOrderFlow_foreground_release(request):
         obj = WorkOrderFlow.objects.filter(auto_exe_enable=False,user_commit=request.user,env=e.name_english,created_at__range=(current_date + timedelta(days=-7),current_date),celery_task_id__isnull=True)
         tpl_dic_obj[e.name_english]=obj
 
-    return render_to_response('skworkorders/WorkOrderFlow_foreground_release.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_foreground_release.html', locals())
 
 
 @login_required()
@@ -65,7 +65,7 @@ def WorkOrderFlow_background_release(request):
                                             params=[from_date,current_date,request.user,e.name_english]) 
         tpl_dic_obj[e.name_english]=obj
 
-    return render_to_response('skworkorders/WorkOrderFlow_background_release.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_background_release.html', locals())
 
 @login_required()
 @permission_verify()
@@ -95,7 +95,7 @@ def WorkOrderFlow_foreground_history(request):
     
 
     
-    return render_to_response('skworkorders/WorkOrderFlow_foreground_history.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_foreground_history.html', locals())
  
 @login_required()
 @permission_verify()
@@ -131,7 +131,7 @@ def WorkOrderFlow_background_history(request):
     
 
     
-    return render_to_response('skworkorders/WorkOrderFlow_background_history.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_background_history.html', locals())
  
 @login_required()
 @permission_verify()
@@ -162,7 +162,7 @@ def WorkOrderFlow_revoke(request):
 def WorkOrderFlow_foreground_detail(request,ids):
     obj = get_object(WorkOrderFlow, id=ids)
     tpl_WorkOrderFlow_form = WorkOrderFlow_detail_form(instance=obj) 
-    return render_to_response("skworkorders/WorkOrderFlow_foreground_detail.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/WorkOrderFlow_foreground_detail.html", locals())
  
 @login_required()
 @permission_verify()
@@ -186,7 +186,7 @@ def WorkOrderFlow_background_detail(request):
         obj["result"] = obj["result"].decode("unicode_escape")
         tpl_CeleryTaskResult_form = CeleryTaskResult_form(initial=obj)
         
-    return render_to_response("skworkorders/WorkOrderFlow_background_detail.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/WorkOrderFlow_background_detail.html", locals())
  
 @login_required()
 @permission_verify()
@@ -200,7 +200,7 @@ def WorkOrderFlow_release(request, ids):
                  'user_vars':obj.user_vars,            
                  }
     tpl_WorkOrderFlow_release_form = WorkOrderFlow_release_form(initial=dic_init)  
-    return render_to_response("skworkorders/WorkOrderFlow_release.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/WorkOrderFlow_release.html", locals())
  
  
  
@@ -218,7 +218,7 @@ def WorkOrderFlow_release_run(request):
             message = request.GET['message']
             return HttpResponse(message)
         except:
-            return render_to_response('skworkorders/websocket.html', locals(), RequestContext(request))
+            return render(request,'skworkorders/websocket.html', locals())
     else:
         for message in request.websocket:
             WorkOrderFlow_id = int(message)   
@@ -261,7 +261,7 @@ def WorkOrderFlow_audit(request):
         obj = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
         tpl_dic_obj[e.name_english]=obj
 
-    return render_to_response('skworkorders/WorkOrderFlow_audit.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_audit.html', locals())
  
 @login_required()
 @permission_verify()
@@ -327,7 +327,7 @@ def WorkOrderFlow_permit(request):
     else:
         tpl_Comment_form = Comment_form()
         tpl_id = request.GET.get('id', '')
-    return render_to_response('skworkorders/WorkOrderFlow_permit.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_permit.html', locals())
 
     
     
@@ -383,5 +383,5 @@ def WorkOrderFlow_deny(request):
     else:
         tpl_Comment_form = Comment_form()
         tpl_id = request.GET.get('id', '')
-    return render_to_response('skworkorders/WorkOrderFlow_deny.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrderFlow_deny.html', locals())
     

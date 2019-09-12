@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from .forms import RoleListForm,RoleJobForm
@@ -28,7 +28,7 @@ def role_add(request):
         'request': request,
     }
 
-    return render_to_response('skaccounts/role_add.html',locals(),RequestContext(request))
+    return render(request,'skaccounts/role_add.html',locals(),RequestContext(request))
 
 
 @login_required()
@@ -36,7 +36,7 @@ def role_add(request):
 def role_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleList.objects.all()
-    return render_to_response('skaccounts/role_list.html', locals(),RequestContext(request))
+    return render(request,'skaccounts/role_list.html', locals(),RequestContext(request))
 
 
 @login_required()
@@ -60,7 +60,7 @@ def role_edit(request, ids):
         'request': request,
     }
 
-    return render_to_response('skaccounts/role_edit.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/role_edit.html', locals())
 
 
 @login_required()
@@ -89,7 +89,7 @@ def role_job_add(request):
         'request': request,
     }
 
-    return render_to_response('skaccounts/role_job_add.html',locals(),RequestContext(request))
+    return render(request,'skaccounts/role_job_add.html',locals(),RequestContext(request))
 
 
 @login_required
@@ -97,7 +97,7 @@ def role_job_add(request):
 def role_job_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_role = RoleJob.objects.all()
-    return render_to_response('skaccounts/role_job_list.html', locals(),RequestContext(request))
+    return render(request,'skaccounts/role_job_list.html', locals(),RequestContext(request))
 
 
 @login_required
@@ -121,7 +121,7 @@ def role_job_edit(request, ids):
         'request': request,
     }
 
-    return render_to_response('skaccounts/role_job_edit.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/role_job_edit.html', locals())
 
 
 @login_required

@@ -14,7 +14,7 @@ from lib.log import log
 from lib.file import new_file
 
 from .forms import WorkOrder_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import json
@@ -39,7 +39,7 @@ def WorkOrder_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = WorkOrder.objects.filter(template_enable = False)
     
-    return render_to_response('skworkorders/WorkOrder_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrder_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -58,11 +58,11 @@ def WorkOrder_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrder_add.html", locals())
     else:
         display_control = "none"
         tpl_WorkOrder_form = WorkOrder_form()
-        return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrder_add.html", locals())
 
 
 
@@ -93,7 +93,7 @@ def WorkOrder_off(request):
         obj.status = "no"
         obj.save()  
     tpl_all = WorkOrder.objects.all()
-    return render_to_response('skworkorders/WorkOrder_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrder_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -105,7 +105,7 @@ def WorkOrder_on(request):
         obj.status = "yes"
         obj.save()  
     tpl_all = WorkOrder.objects.all()
-    return render_to_response('skworkorders/WorkOrder_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrder_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -133,17 +133,17 @@ def WorkOrder_edit(request):
             ret.append(message)
             tips = "保存成功！"
             display_control = ""
-            return render_to_response("skworkorders/WorkOrder_edit.html", locals(), RequestContext(request))
+            return render(request,"skworkorders/WorkOrder_edit.html", locals())
         else:
             tips = "保存失败！"
             display_control = ""
-            return render_to_response("skworkorders/WorkOrder_edit.html", locals(), RequestContext(request))
+            return render(request,"skworkorders/WorkOrder_edit.html", locals())
     else:
      
         tpl_WorkOrder_form = WorkOrder_form(instance=obj)      
         display_control = "none"
       
-        return render_to_response("skworkorders/WorkOrder_edit.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrder_edit.html", locals())
 
 
 
@@ -153,7 +153,7 @@ def WorkOrder_template(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = WorkOrder.objects.filter(template_enable = True)
     
-    return render_to_response('skworkorders/WorkOrder_template.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/WorkOrder_template.html', locals())
 
 @login_required()
 @permission_verify()
@@ -168,7 +168,7 @@ def WorkOrder_add_from_template(request,ids):
         else:
             tips = "提交失败！"
             display_control = ""
-        return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrder_add.html", locals())
     else:
         display_control = "none"
         obj = get_object(WorkOrder, id=ids)
@@ -193,5 +193,5 @@ def WorkOrder_add_from_template(request,ids):
              }
       
         tpl_WorkOrder_form = WorkOrder_form(initial=dic_init) 
-        return render_to_response("skworkorders/WorkOrder_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/WorkOrder_add.html", locals())
 

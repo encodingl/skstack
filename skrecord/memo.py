@@ -3,7 +3,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import Record_form
 from .forms import Faq_form
@@ -28,7 +28,7 @@ def memo(request):
     temp_name = "skrecord/navi-header.html"
     memo_info = Memo.objects.all()
 #    allnavi = navi.objects.all()
-    return render_to_response("skrecord/memo.html", locals(), RequestContext(request))
+    return render(request,"skrecord/memo.html", locals())
 
 @login_required()
 @permission_verify()
@@ -50,12 +50,12 @@ def add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skrecord/memo_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/memo_add.html", locals())
     else:
         display_control = "none"
         memo_form = Memo_form()
 
-        return render_to_response("skrecord/memo_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/memo_add.html", locals())
 
 
 
@@ -78,7 +78,7 @@ def message(request):
     else:
         allnavi = Memo.objects.all()
     print("the allnavi is %s" % allnavi);
-    return render_to_response("skrecord/memo.html", locals(), RequestContext(request))
+    return render(request,"skrecord/memo.html", locals())
 
 
 
@@ -97,7 +97,7 @@ def edit(request,ids):
     else:
         memo_form = Memo_form(instance=obj)
 
-    return render_to_response('skrecord/memo_edit.html', locals(), RequestContext(request))
+    return render(request,'skrecord/memo_edit.html', locals())
 
 
 @login_required()
@@ -114,4 +114,4 @@ def detail(request,ids):
     else:
         memo_form = Memo_form(instance=obj)
 
-    return render_to_response('skrecord/memo_detail.html', locals(), RequestContext(request))
+    return render(request,'skrecord/memo_detail.html', locals())

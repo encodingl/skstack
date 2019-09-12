@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 #import views
 from skrpt import views
 
@@ -15,6 +16,8 @@ urlpatterns = [
     url(r'^skyw/', include('skyw.urls')),
     url(r'^skrpt/', include('skrpt.urls')),
     url(r'^skworkorders/', include('skworkorders.urls')),
+    url(r'^skrecord/', include('skrecord.urls')),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     
 ]
 

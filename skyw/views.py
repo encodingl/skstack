@@ -4,7 +4,7 @@ from django.shortcuts import render
 import sys
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import devopsform,rotaform,noticeform
 from django.core.urlresolvers import reverse
@@ -96,7 +96,7 @@ def daohang(request):
     #print dicts
     #print d1
 
-    return render_to_response("skyw/index.html", locals(), RequestContext(request))
+    return render(request,"skyw/index.html", locals())
 
 
 @login_required()
@@ -112,7 +112,7 @@ def dutyuser(request):
     # for yw in person:
     #    name = yw.name
     #    iphone = yw.iphone
-    return render_to_response("skyw/dutyuser.html", locals(), RequestContext(request))
+    return render(request,"skyw/dutyuser.html", locals())
 
 
 
@@ -136,7 +136,7 @@ def add(request):
         display_control = "none"
         devops = devopsform()
     # return HttpResponseRedirect(reverse('dutyuser'))
-    return render_to_response("skyw/add.html", locals(), RequestContext(request))
+    return render(request,"skyw/add.html", locals())
 @login_required()
 @permission_verify()
 def delete(request,ids):
@@ -162,7 +162,7 @@ def yw_edit(request,ids):
     else:
         display_control = "none"
         nform = devopsform(instance=devops_edit)
-    return render_to_response('skyw/edit.html',locals(),RequestContext(request))
+    return render(request,'skyw/edit.html',locals(),RequestContext(request))
 
 
 

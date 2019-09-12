@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from .forms import IdcForm
 from .models import Idc
@@ -14,7 +14,7 @@ from skaccounts.permission import permission_verify
 def idc(request):
     temp_name = "skcmdb/cmdb-header.html"
     idc_info = Idc.objects.all()
-    return render_to_response('skcmdb/idc.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/idc.html', locals())
 
 
 @login_required()
@@ -33,7 +33,7 @@ def idc_add(request):
     else:
         display_control = "none"
         idc_form = IdcForm()
-    return render_to_response("skcmdb/idc_add.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/idc_add.html", locals())
 
 
 @login_required()
@@ -46,7 +46,7 @@ def idc_del(request):
             for n in idc_items:
                 Idc.objects.filter(id=n).delete()
     idc_info = Idc.objects.all()
-    return render_to_response("skcmdb/idc.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/idc.html", locals())
 
 
 @login_required()
@@ -54,7 +54,7 @@ def idc_del(request):
 def idc_edit(request, ids):
     obj = Idc.objects.get(id=ids)
     allidc = Idc.objects.all()
-    return render_to_response("skcmdb/idc_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/idc_edit.html", locals())
 
 
 @login_required()
@@ -86,4 +86,4 @@ def idc_save(request):
         status = 1
     else:
         status = 2
-    return render_to_response("skcmdb/idc_edit.html", locals(), RequestContext(request))
+    return render(request,"skcmdb/idc_edit.html", locals())

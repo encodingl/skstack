@@ -3,7 +3,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import Record_form
 from .forms import Track_form
@@ -20,7 +20,7 @@ def track(request):
     temp_name = "skrecord/navi-header.html"
     track_info = Track.objects.all()
 #    allnavi = navi.objects.all()
-    return render_to_response("skrecord/track.html", locals(), RequestContext(request))
+    return render(request,"skrecord/track.html", locals())
 
 @login_required()
 @permission_verify()
@@ -45,12 +45,12 @@ def add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skrecord/track_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/track_add.html", locals())
     else:
         display_control = "none"
         track_form = Track_form()
 
-        return render_to_response("skrecord/track_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/track_add.html", locals())
 
 
 
@@ -73,7 +73,7 @@ def message(request, EVENT_STATUS=None):
     else:
         allnavi = Track.objects.all()
     print("the allnavi is %s" % allnavi);
-    return render_to_response("skrecord/track.html", locals(), RequestContext(request))
+    return render(request,"skrecord/track.html", locals())
 
 
 
@@ -99,7 +99,7 @@ def edit(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/track_edit.html', locals(), RequestContext(request))
+    return render(request,'skrecord/track_edit.html', locals())
 
 
 @login_required()
@@ -123,7 +123,7 @@ def detail(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/track_detail.html', locals(), RequestContext(request))
+    return render(request,'skrecord/track_detail.html', locals())
 
 
 

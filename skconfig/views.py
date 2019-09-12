@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect
 from django.template import RequestContext
 import configparser
 import os
@@ -67,7 +67,7 @@ def index(request):
         token = cfg.get('token', 'token')
         log_path = cfg.get('log', 'log_path')
         log_level = cfg.get('log', 'log_level')
-    return render_to_response('skconfig/index.html', locals(), RequestContext(request))
+    return render(request,'skconfig/index.html', locals())
 
 
 def get_dir(args):

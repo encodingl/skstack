@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # update by guohongze@126.com
-from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect,render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from hashlib import sha1
@@ -16,15 +16,15 @@ from skaccounts.permission import permission_verify
 def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
-
+ 
     if request.method == 'GET' and 'next' in request.GET:
         next = request.GET['next']
     else:
         next = '/'
-
+ 
     if next == "/skaccounts/logout/":
         next = '/'
-
+ 
     if request.method == "POST":
         form = LoginUserForm(request, data=request.POST)
         if form.is_valid():
@@ -32,14 +32,16 @@ def login(request):
             return HttpResponseRedirect(request.POST['next'])
     else:
         form = LoginUserForm(request)
-
+ 
     kwvars = {
         'request': request,
         'form':  form,
         'next': next,
     }
+ 
+#     return render(request,'skaccounts/login.html', locals())
+    return render(request,'skaccounts/login.html', locals())
 
-    return render_to_response('skaccounts/login.html', locals(), RequestContext(request))
 
 
 @login_required
@@ -53,7 +55,7 @@ def logout(request):
 def user_list(request):
     temp_name = "skaccounts/accounts-header.html"
     all_user = get_user_model().objects.all()
-    return render_to_response('skaccounts/user_list.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/user_list.html', locals())
 
 
 @login_required
@@ -67,7 +69,7 @@ def user_add(request):
             user.set_password(form.cleaned_data['password'])
 
             form.save()
-            return HttpResponseRedirect(reverse('user_list'), RequestContext(request))
+            return HttpResponseRedirect(reverse('user_list'))
     else:
         form = AddUserForm()
 
@@ -77,7 +79,7 @@ def user_add(request):
         'temp_name': temp_name,
     }
 
-    return render_to_response('skaccounts/user_add.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/user_add.html', locals())
 
 
 @login_required
@@ -94,7 +96,7 @@ def user_del(request):
                 print(n)
                 get_user_model().objects.filter(id=n).delete()
     all_user = get_user_model().objects.all()
-    return render_to_response("skaccounts/user_list.html", locals(), RequestContext(request))
+    return render(request,"skaccounts/user_list.html", locals())
     
 
 
@@ -119,7 +121,7 @@ def user_edit(request, ids):
     #     'request': request,
     # }
 
-    return render_to_response('skaccounts/user_edit.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/user_edit.html', locals())
 
 
 @login_required
@@ -137,7 +139,7 @@ def reset_password(request, ids):
         'request': request,
     }
 
-    return render_to_response('skaccounts/reset_password.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/reset_password.html', locals())
 
 
 @login_required
@@ -157,4 +159,4 @@ def change_password(request):
         'temp_name': temp_name,
     }
 
-    return render_to_response('skaccounts/change_password.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/change_password.html', locals())

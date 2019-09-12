@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Vars_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 import time
@@ -21,7 +21,7 @@ def Vars_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = Vars.objects.all()
     
-    return render_to_response('skworkorders/Vars_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/Vars_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -36,11 +36,11 @@ def Vars_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skworkorders/Vars_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/Vars_add.html", locals())
     else:
         display_control = "none"
         tpl_Vars_form = Vars_form()
-        return render_to_response("skworkorders/Vars_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/Vars_add.html", locals())
 
 
 
@@ -72,7 +72,7 @@ def Vars_copy(request):
         obj.name = obj.name + "_copy_" + time.strftime("%H%M%S", time.localtime()) 
         obj.save()  
     tpl_all = Vars.objects.all()
-    return render_to_response('skworkorders/Vars_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/Vars_index.html', locals())
 
 
 @login_required()
@@ -94,7 +94,7 @@ def Vars_edit(request, ids):
     else:
         display_control = "none"
         tpl_Vars_form = Vars_form(instance=obj)      
-    return render_to_response("skworkorders/Vars_edit2.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/Vars_edit2.html", locals())
 
 @login_required()
 @permission_verify()
@@ -102,4 +102,4 @@ def Vars_check(request,ids):
     temp_name = "skworkorders/skworkorders-header.html"
     obj = get_object(Vars, id=ids)
     tpl_var_check_form = get_Vars_form(obj)
-    return render_to_response("skworkorders/Vars_check.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/Vars_check.html", locals())

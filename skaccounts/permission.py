@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from .forms import PermissionListForm
@@ -57,7 +57,7 @@ def permission_deny(request):
         'temp_name': temp_name,
         'request': request,
     }
-    return render_to_response('skaccounts/permission_deny.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/permission_deny.html', locals())
 
 
 @login_required
@@ -78,7 +78,7 @@ def permission_add(request):
         'request': request,
     }
 
-    return render_to_response('skaccounts/permission_add.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/permission_add.html', locals())
 
 
 @login_required
@@ -86,7 +86,7 @@ def permission_add(request):
 def permission_list(request):
     all_permission = PermissionList.objects.all()
     temp_name = "skaccounts/accounts-header.html"
-    return render_to_response('skaccounts/permission_list.html', locals(),RequestContext(request))
+    return render(request,'skaccounts/permission_list.html', locals(),RequestContext(request))
 
 
 @login_required
@@ -110,7 +110,7 @@ def permission_edit(request, ids):
         'request': request,
     }
 
-    return render_to_response('skaccounts/permission_edit.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/permission_edit.html', locals())
 
 
 @login_required

@@ -3,7 +3,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import Record_form
 from .forms import Faq_form
@@ -21,7 +21,7 @@ def faq_list(request):
     temp_name = "skrecord/navi-header.html"
     faq_list_info = Faq_list.objects.all()
 #    allnavi = navi.objects.all()
-    return render_to_response("skrecord/faq_list.html", locals(), RequestContext(request))
+    return render(request,"skrecord/faq_list.html", locals())
 
 @login_required()
 @permission_verify()
@@ -37,12 +37,12 @@ def add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skrecord/faq_list_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/faq_list_add.html", locals())
     else:
         display_control = "none"
         faq_list_form = Faq_list_form()
 
-        return render_to_response("skrecord/faq_list_add.html", locals(), RequestContext(request))
+        return render(request,"skrecord/faq_list_add.html", locals())
 
 
 
@@ -65,7 +65,7 @@ def message(request):
     else:
         allnavi = Faq_list.objects.all()
     print("the allnavi is %s" % allnavi);
-    return render_to_response("skrecord/faq_list.html", locals(), RequestContext(request))
+    return render(request,"skrecord/faq_list.html", locals())
 
 
 
@@ -91,7 +91,7 @@ def edit(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/faq_list_edit.html', locals(), RequestContext(request))
+    return render(request,'skrecord/faq_list_edit.html', locals())
 
 
 @login_required()
@@ -115,7 +115,7 @@ def detail(request,ids):
 #         'request': request,
 #     }
 
-    return render_to_response('skrecord/faq_list_detail.html', locals(), RequestContext(request))
+    return render(request,'skrecord/faq_list_detail.html', locals())
 
 
 

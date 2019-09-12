@@ -5,7 +5,7 @@ from .forms import AssetForm
 from lib.utils import mysql_execute
 from lib.type import ASSET_TYPE
 from .models import Host, Idc, HostGroup, ASSET_STATUS, Env, YwGroup, MiddleType, DbSource
-from django.shortcuts import render_to_response, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse
 from django.template import RequestContext
 from django.db.models import Q
 from skcmdb.api import get_object
@@ -160,7 +160,7 @@ def asset(request):
         return response
 
     assets_list, p, assets, page_range, current_page, show_first, show_end = pages(asset_find, request)
-    return render_to_response('skcmdb/index.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/index.html', locals())
 
 
 @login_required()
@@ -176,11 +176,11 @@ def asset_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skcmdb/asset_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/asset_add.html", locals())
     else:
         display_control = "none"
         a_form = AssetForm()
-        return render_to_response("skcmdb/asset_add.html", locals(), RequestContext(request))
+        return render(request,"skcmdb/asset_add.html", locals())
 
 
 @login_required()
@@ -216,7 +216,7 @@ def asset_edit(request, ids):
             status = 2
     else:
         af = AssetForm(instance=obj)
-    return render_to_response('skcmdb/asset_edit.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/asset_edit.html', locals())
 
 
 @login_required
@@ -279,4 +279,4 @@ def asset_import(request):
             return HttpResponse('恭喜你,主机信息导入成功过 .')
         else:
             return HttpResponse('类型选择错误!!!')
-    return render_to_response('skcmdb/asset_import.html', locals(), RequestContext(request))
+    return render(request,'skcmdb/asset_import.html', locals())

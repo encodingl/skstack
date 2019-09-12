@@ -179,7 +179,7 @@ def ansible_command(request):
             for d in data:
                 logging.info(d)
             logging.info("==========ansible tasks end============")
-        # return render_to_response('sktask/result.html', locals(), RequestContext(request))
+        # return render(request,'sktask/result.html', locals())
         print('ret value: %s' % ret)
         cmd_hosts =  ret[0][0].split('|')[0]
         task_name="ansible"

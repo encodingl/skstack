@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from skyw.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import devopsform,rotaform,noticeform,eventform
 from django.core.urlresolvers import reverse
@@ -24,7 +24,7 @@ def ywevent(request):
     # for yw in person:
     #    name = yw.name
     #    iphone = yw.iphone
-    return render_to_response("skyw/ywevent.html", locals(), RequestContext(request))
+    return render(request,"skyw/ywevent.html", locals())
 
 
 @login_required()
@@ -44,7 +44,7 @@ def event_add(request):
     else:
         display_control = "none"
         events = eventform()
-    return render_to_response("skyw/event_add.html", locals(), RequestContext(request))
+    return render(request,"skyw/event_add.html", locals())
 @login_required()
 @permission_verify()
 def event_delete(request,ids):
@@ -70,7 +70,7 @@ def event_edit(request,ids):
     else:
         display_control = "none"
         event_form= eventform(instance=events_edit)
-    return render_to_response('skyw/event_edit.html',locals(),RequestContext(request))
+    return render(request,'skyw/event_edit.html',locals(),RequestContext(request))
 
 
 

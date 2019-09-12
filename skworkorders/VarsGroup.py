@@ -9,7 +9,7 @@ from skaccounts.permission import permission_verify
 
 
 from .forms import VarsGroup_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 
@@ -25,7 +25,7 @@ def VarsGroup_index(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     tpl_all = VarsGroup.objects.all()
     print(tpl_all)
-    return render_to_response('skworkorders/VarsGroup_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/VarsGroup_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -40,11 +40,11 @@ def VarsGroup_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skworkorders/VarsGroup_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/VarsGroup_add.html", locals())
     else:
         display_control = "none"
         tpl_VarsGroup_form = VarsGroup_form()
-        return render_to_response("skworkorders/VarsGroup_add.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/VarsGroup_add.html", locals())
 
 
 
@@ -61,7 +61,7 @@ def VarsGroup_del(request):
         except Exception as tpl_error_msg:
             log.warning(tpl_error_msg)
         tpl_all = VarsGroup.objects.all()
-        return render_to_response("skworkorders/VarsGroup_index.html", locals(), RequestContext(request))
+        return render(request,"skworkorders/VarsGroup_index.html", locals())
 
 @login_required()
 @permission_verify()
@@ -74,7 +74,7 @@ def VarsGroup_copy(request):
         obj.name = obj.name + "_copy_" + time.strftime("%H%M%S", time.localtime()) 
         obj.save()  
     tpl_all = VarsGroup.objects.all()
-    return render_to_response('skworkorders/VarsGroup_index.html', locals(), RequestContext(request))
+    return render(request,'skworkorders/VarsGroup_index.html', locals())
 
 
 
@@ -97,4 +97,4 @@ def VarsGroup_edit(request, ids):
     else:
         display_control = "none"
         tpl_VarsGroup_form = VarsGroup_form(instance=obj)      
-    return render_to_response("skworkorders/VarsGroup_edit.html", locals(), RequestContext(request))
+    return render(request,"skworkorders/VarsGroup_edit.html", locals())

@@ -9,7 +9,7 @@ from skaccounts.permission import permission_verify
 
 
 from .forms import AuditFlow_form
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 
@@ -23,7 +23,7 @@ def AuditFlow_index(request):
     temp_name = "skaccounts/accounts-header.html"    
     tpl_all = AuditFlow.objects.all()
     
-    return render_to_response('skaccounts/AuditFlow_index.html', locals(), RequestContext(request))
+    return render(request,'skaccounts/AuditFlow_index.html', locals())
 
 @login_required()
 @permission_verify()
@@ -38,11 +38,11 @@ def AuditFlow_add(request):
         else:
             tips = "增加失败！"
             display_control = ""
-        return render_to_response("skaccounts/AuditFlow_add.html", locals(), RequestContext(request))
+        return render(request,"skaccounts/AuditFlow_add.html", locals())
     else:
         display_control = "none"
         tpl_AuditFlow_form = AuditFlow_form()
-        return render_to_response("skaccounts/AuditFlow_add.html", locals(), RequestContext(request))
+        return render(request,"skaccounts/AuditFlow_add.html", locals())
 
 
 
@@ -57,7 +57,7 @@ def AuditFlow_del(request):
         except Exception as tpl_error_msg:
             log.warning(tpl_error_msg)
         tpl_all = AuditFlow.objects.all()
-        return render_to_response("skaccounts/AuditFlow_index.html", locals(), RequestContext(request))
+        return render(request,"skaccounts/AuditFlow_index.html", locals())
 
 
 @login_required()
@@ -75,4 +75,4 @@ def AuditFlow_edit(request, ids):
             status = 2
     else:
         tpl_AuditFlow_form = AuditFlow_form(instance=obj)      
-    return render_to_response("skaccounts/AuditFlow_edit.html", locals(), RequestContext(request))
+    return render(request,"skaccounts/AuditFlow_edit.html", locals())
