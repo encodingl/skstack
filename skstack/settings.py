@@ -19,6 +19,7 @@ import skworkorders
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("this isbasedir %s" % BASE_DIR)
 
 if os.path.exists(BASE_DIR+'/skstack_dev.conf'):
     CONFIGFILE = os.path.join(BASE_DIR, 'skstack_dev.conf')
@@ -38,9 +39,9 @@ config.read(CONFIGFILE)
 SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = config.get('setup', 'debug')
+DEBUG = True
 
-DEBUG = True if config.get('setup', 'debug') == 'True' else False
+# DEBUG = True if config.get('setup', 'debug') == 'True' else False
 ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
 
 
@@ -173,11 +174,14 @@ USE_L10N = True
 
 USE_TZ = False
 
-STATIC_ROOT = BASE_DIR + '/static'
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR + '/static'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static').replace('\\', '/'),
+#     os.path.join(BASE_DIR, 'static').replace('\\', '/'),
+    os.path.join(BASE_DIR, 'static'),
 )
+print("this STATICFILES_DIRS: %s" % STATICFILES_DIRS)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -235,118 +239,118 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERY_TASK_RESULT_EXPIRES = 99999
 
 
-log_path = config.get('log', 'log_path')
+# log_path = config.get('log', 'log_path')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-    },
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s|%(levelname)s|%(process)d|%(funcName)s|%(lineno)d|msg:%(message)s'
-        },
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false'],  # 仅当 DEBUG = False 时才发送邮件
-            'include_html':True,
-            'formatter': 'standard',
-        },
-        'default': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack.log'),  # 日志输出文件
-            'maxBytes': 1024 * 1024 * 5,  # 文件大小
-            'backupCount': 5,  # 备份份数
-            'formatter': 'standard',  # 使用哪种formatters日志格式
-        },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-error.log'),
-            'formatter': 'standard'
-        },
-        'info_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-info.log'),
-            'formatter': 'standard'
-        },
-        'debug': {  # 记录到日志文件(需要创建对应的目录，否则会出错)
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-debug.log'),
-            'maxBytes': 1024 * 1024 * 5,  # 文件大小
-            'backupCount': 5,  # 备份份数
-            'formatter': 'standard',  # 使用哪种formatters日志格式
-        },
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse',
+#         },
+#     },
+#     'formatters': {
+#         'standard': {
+#             'format': '%(asctime)s|%(levelname)s|%(process)d|%(funcName)s|%(lineno)d|msg:%(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'filters': ['require_debug_false'],  # 仅当 DEBUG = False 时才发送邮件
+#             'include_html':True,
+#             'formatter': 'standard',
+#         },
+#         'default': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(log_path,'skstack.log'),  # 日志输出文件
+#             'maxBytes': 1024 * 1024 * 5,  # 文件大小
+#             'backupCount': 5,  # 备份份数
+#             'formatter': 'standard',  # 使用哪种formatters日志格式
+#         },
+#         'error_file': {
+#             'level': 'ERROR',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(log_path,'skstack-error.log'),
+#             'formatter': 'standard'
+#         },
+#         'info_file': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(log_path,'skstack-info.log'),
+#             'formatter': 'standard'
+#         },
+#         'debug': {  # 记录到日志文件(需要创建对应的目录，否则会出错)
+#             'level': 'DEBUG',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(log_path,'skstack-debug.log'),
+#             'maxBytes': 1024 * 1024 * 5,  # 文件大小
+#             'backupCount': 5,  # 备份份数
+#             'formatter': 'standard',  # 使用哪种formatters日志格式
+#         },
+# 
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['require_debug_false'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'standard'
+#         },
+#          'skworkorders_log': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(log_path,'skworkorders.log'),
+#             'formatter': 'standard'
+#         },
+#         # 对于不在 ALLOWED_HOSTS 中的请求不发送报错邮件
+#         # 'django.security.DisallowedHost': {
+#         #     'handlers': ['null'],
+#         #     'propagate': False,
+#         # },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'info_file'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#         'django.request': {
+#             'handlers': ['console', 'info_file'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'skstack': {
+#             'handlers': ['console', 'info_file'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#          'skworkorders': {
+#             'handlers': ['skworkorders_log','mail_admins','console'],
+#             'level': 'INFO',
+#             'propagate': False,
+#         },
+#     }
+# }
 
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_false'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard'
-        },
-         'skworkorders_log': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skworkorders.log'),
-            'formatter': 'standard'
-        },
-        # 对于不在 ALLOWED_HOSTS 中的请求不发送报错邮件
-        # 'django.security.DisallowedHost': {
-        #     'handlers': ['null'],
-        #     'propagate': False,
-        # },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'info_file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['console', 'info_file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'skstack': {
-            'handlers': ['console', 'info_file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-         'skworkorders': {
-            'handlers': ['skworkorders_log','mail_admins','console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    }
-}
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config.get('email', 'email_host')
-EMAIL_PORT = config.get('email', 'email_port')
-EMAIL_HOST_USER = config.get('email', 'email_user')
-EMAIL_HOST_PASSWORD = config.get('email', 'email_password')
-EMAIL_SUBJECT_PREFIX = 'skstack' #为邮件标题的前缀,默认是'[django]'
-DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER #设置发件人
-
-ADMINS = (
-
-('encodingl','encodingl@sina.com'),
-
-)
-MANAGERS = ADMINS
-SEND_BROKEN_LINK_EMAILS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = config.get('email', 'email_host')
+# EMAIL_PORT = config.get('email', 'email_port')
+# EMAIL_HOST_USER = config.get('email', 'email_user')
+# EMAIL_HOST_PASSWORD = config.get('email', 'email_password')
+# EMAIL_SUBJECT_PREFIX = 'skstack' #为邮件标题的前缀,默认是'[django]'
+# DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER #设置发件人
+# 
+# ADMINS = (
+# 
+# ('encodingl','encodingl@sina.com'),
+# 
+# )
+# MANAGERS = ADMINS
+# SEND_BROKEN_LINK_EMAILS = True
 
 CRONJOBS = [
     ('*/10 * * * *', 'skrecord.cron','>>/var/log/skrecord_cron.log')
