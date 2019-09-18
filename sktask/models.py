@@ -22,7 +22,7 @@ class history(models.Model):
     cmd_result = models.CharField("命令结果",max_length=10)
     cmd_detail = models.CharField("结果详情",max_length=5000,null=True, blank=True)
         
-    def __unicode__(self):
+    def __str__(self):
         return self.cmd_result
     class Meta:
         ordering=['-id']
@@ -32,7 +32,7 @@ class project(models.Model):
     name = models.CharField("项目名",max_length=50)
     path = models.CharField("项目路径",max_length=50)
     online_status = models.CharField("激活状态", choices=ONLINE_STATUS, max_length=30, null=True, blank=True)  
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 
@@ -41,7 +41,7 @@ class job(models.Model):
     playbook = models.CharField("playbook", max_length=100, null=True, blank=True)
     project = models.ForeignKey(project, verbose_name="所属项目", on_delete=models.SET_NULL, null=True, blank=True)
     online_status = models.CharField("激活状态", choices=ONLINE_STATUS, max_length=30, null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class extravars(models.Model):
@@ -49,7 +49,7 @@ class extravars(models.Model):
     vars= models.CharField("配置参数", max_length=150, null=True, blank=True)
     job = models.ForeignKey(job, verbose_name="所属作业", on_delete=models.SET_NULL, null=True, blank=True)
     online_status = models.CharField("激活状态", choices=ONLINE_STATUS, max_length=30, null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     

@@ -13,7 +13,7 @@ class PermissionList(models.Model):
     name = models.CharField(max_length=64)
     url = models.CharField(max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s(%s)' % (self.name, self.url)
 
 
@@ -22,7 +22,7 @@ class RoleList(models.Model):
     # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
     permission = models.ManyToManyField(PermissionList, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -31,7 +31,7 @@ class RoleJob(models.Model):
     # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
     permission = models.ManyToManyField(job, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -80,7 +80,7 @@ class UserInfo(AbstractBaseUser):
         if self.is_active and self.is_superuser:
             return True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.username
 
 
@@ -89,7 +89,7 @@ class UserGroup(models.Model):
     desc = models.CharField("描述", max_length=100, null=True, blank=True)
     members = models.ManyToManyField(UserInfo, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -103,5 +103,5 @@ class AuditFlow(models.Model):
     l3 = models.ForeignKey(UserGroup, verbose_name="第3级审核用户组", on_delete=models.PROTECT, null=True, blank=True,
                            related_name='l3')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name

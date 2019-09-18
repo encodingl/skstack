@@ -8,14 +8,14 @@ from skaccounts.models import UserInfo,UserGroup
 
 class PlatFormclass(models.Model):
     platform_class = models.CharField("平台分类", max_length=15,null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
       return self.platform_class
 
 class Platform(models.Model):
     platform_class = models.ManyToManyField(PlatFormclass,blank=True)
     platform_name = models.CharField("平台名称",max_length=15)
     platform_url = models.URLField("平台url",max_length=60)
-    def __unicode__(self):
+    def __str__(self):
       return self.platform_name
 
 class event(models.Model):
@@ -24,7 +24,7 @@ class event(models.Model):
     processingpersonnel = models.CharField("跟进人员",max_length=15)
     event = models.CharField("处理问题和升级流程",max_length=200)
     participant = models.CharField("参与人员",max_length=200)
-    def __unicode__(self):
+    def __str__(self):
       return self.platform_level
 
 class Devops(models.Model):
@@ -44,7 +44,7 @@ class Devops(models.Model):
     secondaryname = models.ForeignKey(UserInfo,related_name='nickname_backup',on_delete=models.SET_NULL, null=True, blank=True)
     jobuse = models.CharField('运维工具',max_length=15)
 
-    def __unicode__(self):
+    def __str__(self):
       return self.iphone
 
 
@@ -60,10 +60,10 @@ class Rota(models.Model):
     rota_number=models.CharField('值班顺序',max_length=15,null=True, blank=False)
     # iphone_rota = models.IntegerField(choices=IPHONE_ROTA,verbose_name='是否电话值班',null=False, blank=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Notice(models.Model):
     notice= models.TextField('公告内容',max_length=200)
-    def __unicode__(self):
+    def __str__(self):
         return self.notice

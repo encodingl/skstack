@@ -18,7 +18,7 @@ class Record_list(models.Model):
     name = models.CharField("故障等级", max_length=30, null=True)
     describe = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Record(models.Model):
@@ -31,14 +31,14 @@ class Record(models.Model):
     eventdescribe = models.TextField("故障描述", max_length=1000, null=True)
     eventdispose= models.TextField("故障改进", max_length=1000, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Track_list(models.Model):
     name = models.CharField("名称", max_length=30, null=True)
     describe = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Track(models.Model):
@@ -53,7 +53,7 @@ class Track(models.Model):
     tracktime = models.DateTimeField("记录时间", auto_now=True)
     remarks = models.CharField("备注", max_length=50, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -61,7 +61,7 @@ class Faq_list(models.Model):
     name = models.CharField("问题分类", max_length=30, null=True)
     describe = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Faq(models.Model):
@@ -74,14 +74,14 @@ class Faq(models.Model):
     solution = RichTextUploadingField(verbose_name="解决方案", max_length=2000, null=True)
     user =  models.CharField(editable=False, max_length=100, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Assessment_list(models.Model):
     name = models.CharField("类型", max_length=30, null=True)
     describe = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Assessment(models.Model):
@@ -93,7 +93,7 @@ class Assessment(models.Model):
     recordpersonnel = models.CharField("记录人员", max_length=30, null=True)
     remarks= models.CharField("备注", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Change(models.Model):
@@ -106,7 +106,7 @@ class Change(models.Model):
     rollback= models.TextField("回滚步骤", max_length=2000, null=True, blank=True)
     recordtime= models.CharField("记录时间", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Memo(models.Model):
@@ -118,5 +118,5 @@ class Memo(models.Model):
     recordtime = models.DateTimeField("记录时间", auto_now=True)
     user = models.CharField(editable=False, max_length=100, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name

@@ -17,7 +17,7 @@ class Idc(models.Model):
     ip_range = models.CharField("IP范围", max_length=30, null=True, blank=True)
     bandwidth = models.CharField("接入带宽", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -30,7 +30,7 @@ class Env(models.Model):
     address = models.ForeignKey(Idc, verbose_name="所在机房", on_delete=models.SET_NULL, null=True, blank=True)
     descrition = models.CharField("描述", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -39,7 +39,7 @@ class YwGroup(models.Model):
     sa = models.CharField("负责人", max_length=30, null=True, blank=True)
     descrition = models.CharField("描述", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -47,7 +47,7 @@ class MiddleType(models.Model):
     name = models.CharField("* 主机组名称", max_length=30, unique=True)
     descrition = models.CharField("描述", max_length=30, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -55,7 +55,7 @@ class HostGroup(models.Model):
     name = models.CharField("* 组名", max_length=30, unique=True)
     desc = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -81,7 +81,7 @@ class Host(models.Model):
     position = models.CharField("所在位置", max_length=100, null=True, blank=True)
     memo = models.TextField("备注信息", max_length=200, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.hostname
 
 
@@ -89,7 +89,7 @@ class KafkaTopic(models.Model):
     name = models.CharField(max_length=50, verbose_name="* App名称")
     descrition = models.TextField("备注信息", max_length=200, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -105,7 +105,7 @@ class App(models.Model):
     status = models.CharField("设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     descrition = models.TextField("备注信息", max_length=200, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -114,7 +114,7 @@ class IpSource(models.Model):
     subnet = models.CharField(max_length=30, null=True)
     describe = models.CharField(max_length=30, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.net
 
 
@@ -128,7 +128,7 @@ class InterFace(models.Model):
     enddate = models.DateField()
     price = models.IntegerField(verbose_name='价格')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -140,7 +140,7 @@ class DbSource(models.Model):
     port = models.IntegerField(default=3306, verbose_name="端口号", null=True, blank=True)
     db = models.CharField(max_length=30, verbose_name="数据库名", null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user
 
 
@@ -149,7 +149,7 @@ class WhileIp(models.Model):
     name = models.CharField(max_length=50, verbose_name="名称", null=True, blank=True)
     descrition = models.TextField("用途", max_length=1000, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.ip
 
 
@@ -166,5 +166,5 @@ class Url(models.Model):
     status = models.CharField("设备状态", choices=ASSET_STATUS, max_length=30, null=True, blank=True)
     descrition = models.TextField("用途", max_length=1000, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name

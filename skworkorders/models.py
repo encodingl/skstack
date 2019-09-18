@@ -82,21 +82,21 @@ class ConfigCenter(models.Model):
     port  = models.PositiveIntegerField("ssh port", default=22)
     rsa_key  = models.CharField("rsa key",max_length=50, null=True, blank=True)
     desc = models.CharField("描述", max_length=300, null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name    
     
 class Environment(models.Model):
     name_english  = models.CharField("英文简称",max_length=50,unique=True)
     desc = models.CharField("描述", max_length=300, null=True, blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name_english
     
 class WorkOrderGroup(models.Model):
     name = models.CharField(max_length=100,unique=True)    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
     desc = models.CharField("描述", max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class Vars(models.Model): 
@@ -109,7 +109,7 @@ class Vars(models.Model):
     value_script  = models.CharField("变量获取脚本",max_length=200,null=True,blank=True)
     env = models.ForeignKey(Environment, verbose_name="所属环境", on_delete=models.PROTECT, null=True, blank=True) 
     group = models.ForeignKey(WorkOrderGroup, verbose_name="所属分类", on_delete=models.PROTECT, null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class VarsGroup(models.Model): 
@@ -118,7 +118,7 @@ class VarsGroup(models.Model):
     vars = models.ManyToManyField(Vars, verbose_name="变量",blank=True)
     env = models.ForeignKey(Environment, verbose_name="所属环境", on_delete=models.PROTECT, null=True, blank=True)
     group = models.ForeignKey(WorkOrderGroup, verbose_name="所属分类", on_delete=models.PROTECT, null=True, blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     
@@ -151,7 +151,7 @@ class WorkOrder(models.Model):
     updated_at = models.DateTimeField('修改时间', auto_now_add=True,null=True)
     template_enable = models.BooleanField("是否转为模板")    
     config_center = models.ForeignKey(ConfigCenter, verbose_name="配置中心", on_delete=models.PROTECT, null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class WorkOrderFlow(models.Model):
@@ -180,6 +180,6 @@ class WorkOrderFlow(models.Model):
     celery_schedule_time = models.DateTimeField('计划执行时间',null=True,blank=True)
     back_exe_enable = models.BooleanField("是否开启后台执行",default=False)
     auto_exe_enable = models.BooleanField("是否开启批准后自动执行",default=False)
-    def __unicode__(self):
+    def __str__(self):
         return self.title
     

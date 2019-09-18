@@ -9,5 +9,5 @@ class Rpt(models.Model):
     user  = models.IntegerField()
     app = models.IntegerField()
     
-   #def __unicode__(self):
+   #def __str__(self):
     #    return self.pnum

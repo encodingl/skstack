@@ -143,7 +143,7 @@ def pretask(request):
             return render(request,'skworkorders/websocket.html', locals())
     else:
         for message in request.websocket:    
-            request.websocket.send("开始提交任务,请耐心等待·······")
+            request.websocket.send(b"The task has been submitted, please wait patiently·······")
             message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
 
             WorkOrder_id = int(message_dic['id'])
