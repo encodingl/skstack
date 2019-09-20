@@ -52,7 +52,7 @@ class Rota(models.Model):
     SPELL_TYPE=((0,'是'),(1,'否'))
     EMERGENCY_type=((0,'是'),(1,'否'))
     IPHONE_ROTA=((0,'是'),(1,'否'))
-    name = models.ForeignKey(UserInfo,related_name='rota_name',null=True, blank=False)
+    name = models.ForeignKey(UserInfo,related_name='rota_name',null=True, blank=False,on_delete=models.SET_NULL)
     iphone = models.ForeignKey(Devops,related_name='rota_iphone',on_delete=models.SET_NULL, null=True, blank=False)
     spell = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否轮值',null=False)
     emergency_contact = models.IntegerField(choices=SPELL_TYPE,verbose_name='是否为重要联系人',null=False)

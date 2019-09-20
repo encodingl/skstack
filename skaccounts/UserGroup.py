@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from skcmdb.api import get_object
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import logging
 log = logging.getLogger('skstack')
 

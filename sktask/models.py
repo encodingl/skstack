@@ -4,7 +4,8 @@
 
 from django.db import models
 import datetime
-from _mysql import NULL
+# from _mysql import NULL
+
 
 ONLINE_STATUS = (
     (str(0), "停用"),

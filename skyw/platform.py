@@ -6,7 +6,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import *
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import json
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify

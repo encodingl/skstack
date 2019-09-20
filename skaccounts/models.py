@@ -70,8 +70,8 @@ class UserInfo(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     nickname = models.CharField(max_length=64, null=True)
     type = models.IntegerField(null=True)
-    role = models.ForeignKey(RoleList, null=True, blank=True)
-    role_job = models.ForeignKey(RoleJob, null=True, blank=True)
+    role = models.ForeignKey(RoleList, null=True, blank=True,on_delete=models.SET_NULL)
+    role_job = models.ForeignKey(RoleJob, null=True, blank=True,on_delete=models.SET_NULL)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

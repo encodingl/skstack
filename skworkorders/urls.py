@@ -51,7 +51,7 @@ urlpatterns = [
      url(r'^WorkOrderCommit/undo/$', WorkOrderCommit.WorkOrderCommit_undo, name='WorkOrderCommit_undo'),
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
      url(r'^WorkOrderCommit/help/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_help, name='WorkOrderCommit_help'),
-     url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
+#      url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
          
      url(r'^WorkOrderFlow/audit/$', WorkOrderFlow.WorkOrderFlow_audit, name='WorkOrderFlow_audit'),
      url(r'^WorkOrderFlow/audit/permit/$', WorkOrderFlow.WorkOrderFlow_permit, name='WorkOrderFlow_permit'),

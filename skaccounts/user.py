@@ -9,12 +9,12 @@ from django.contrib import auth
 from .forms import LoginUserForm, EditUserForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
 from .forms import AddUserForm
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from skaccounts.permission import permission_verify
 
 
 def login(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect('/')
  
     if request.method == 'GET' and 'next' in request.GET:

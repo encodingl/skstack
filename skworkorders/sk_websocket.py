@@ -6,7 +6,7 @@ Created on 2018年4月17日 @author: encodingl
 
 from django.shortcuts import render
 
-from dwebsocket.decorators import accept_websocket, require_websocket
+#from dwebsocket.decorators import accept_websocket, require_websocket
 
 from django.http import HttpResponse
 import paramiko
@@ -43,7 +43,7 @@ def exec_command(comm):
     return result
 
 
-@accept_websocket
+#@accept_websocket
 def echo(request):
     temp_name = "skworkorders/skworkorders-header.html" 
     if not request.is_websocket():#判断是不是websocket连接

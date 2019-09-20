@@ -8,7 +8,7 @@ from django.template import RequestContext
 from .forms import Record_form
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from .models import Record
 
 

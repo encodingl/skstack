@@ -20,7 +20,7 @@ from datetime import timedelta
 from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
 
-from dwebsocket.decorators import accept_websocket
+# #from dwebsocket.decorators import accept_websocket
 
 from skworkorders.lib_skworkorders2 import WorkOrdkerFlowTask
 
@@ -208,9 +208,9 @@ def WorkOrderFlow_release(request, ids):
      
      
  
+#@accept_websocket
 @login_required()
 @permission_verify()
-@accept_websocket
 def WorkOrderFlow_release_run(request):
     temp_name = "skworkorders/skworkorders-header.html" 
     if not request.is_websocket():#判断是不是websocket连接

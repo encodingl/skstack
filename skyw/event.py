@@ -6,7 +6,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.template import RequestContext
 from .forms import devopsform,rotaform,noticeform,eventform
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 # Create your views here.

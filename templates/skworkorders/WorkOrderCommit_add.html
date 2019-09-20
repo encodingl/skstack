@@ -120,11 +120,11 @@ $(function () {
 
         if(ishttps){
 
-         var socket = new WebSocket("wss://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+         var socket = new WebSocket("wss://" + window.location.host + "/ws/skworkorders/WorkOrderCommit/pretask/");
 
         }else{
 
-         var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
+         var socket = new WebSocket("ws://" + window.location.host + "/ws/skworkorders/WorkOrderCommit/pretask/");
 
         }
 

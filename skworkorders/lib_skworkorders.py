@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import django
-from _mysql import NULL
+# from _mysql import NULL
 django.setup()
 
 from django import forms
