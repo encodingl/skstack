@@ -23,5 +23,5 @@ def log(log_name, level="info", path=None):
                 format='%(asctime)s|%(levelname)s|%(pathname)s|%(funcName)s|%(lineno)d|[msg:%(message)s]',
                 datefmt='%Y%m%d %H:%M:%S',
                 filename=log_path+log_name,
-                filemode='ab+')
+                filemode='a+')
     return logging.basicConfig

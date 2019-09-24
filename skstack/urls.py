@@ -7,8 +7,7 @@ from django.views.static import serve
 from skrpt import views
 
 urlpatterns = [
-    url(r'^$',views.index,name="index"),
-    url(r'^skcmdb/', include('skcmdb.urls')),
+    
     url(r'^admin/', admin.site.urls),
     url(r'^sktask/', include('sktask.urls')),
     url(r'^skconfig/', include('skconfig.urls')),
@@ -17,7 +16,9 @@ urlpatterns = [
     url(r'^skrpt/', include('skrpt.urls')),
     url(r'^skworkorders/', include('skworkorders.urls')),
     url(r'^skrecord/', include('skrecord.urls')),
-    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
+    url(r'^$',views.index,name="index"),
+    url(r'^skcmdb/', include('skcmdb.urls')),
+#     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     
 ]
 

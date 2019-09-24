@@ -39,7 +39,7 @@ config.read(CONFIGFILE)
 SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # DEBUG = True if config.get('setup', 'debug') == 'True' else False
 ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
@@ -183,11 +183,11 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = ''
 # STATICFILES_DIRS = ( os.path.join('static'), )
 
-#for windows py37_64
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+#for windows py37_64 debug mode
+# STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 #print("STATIC_ROOT: %s" % STATIC_ROOT)
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, './static/').replace('\\', '/'),
@@ -319,7 +319,7 @@ LOGGING = {
             'backupCount': 5,  
             'formatter': 'standard',  
         },
-    
+     
         'console': {
             'level': 'DEBUG',
             'filters': ['require_debug_false'],
@@ -332,8 +332,8 @@ LOGGING = {
             'filename': os.path.join(log_path,'skworkorders.log'),
             'formatter': 'standard'
         },
-           
-         
+            
+          
     },
     'loggers': {
         'django': {
