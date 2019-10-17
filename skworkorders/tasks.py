@@ -66,7 +66,7 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                 log.info(ret_message)
             else:
                 ret_message="%s:执行失败" % taskname
-#     msg_result_dic = json.dumps(msg_result_dic,ensure_ascii=False)
+#     msg_result_dic = json.dumps(msg_result_dic,ensure_ascii=False).encode('utf-8')
 #     print "jsonstrL:%s" % msg_result_dic
     print("msg_result_dic:%s" % msg_result_dic)
     return msg_result_dic

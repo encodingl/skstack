@@ -64,19 +64,19 @@ def daohang(request):
         else:
             print("error")
 
-    yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False)
-    dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False)
-    dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False)
+    yw_spell_list = json.dumps(yw_spell_list, encoding="UTF-8", ensure_ascii=False).encode('utf-8')
+    dba_list = json.dumps(dba_list, encoding="UTF-8", ensure_ascii=False).encode('utf-8')
+    dba_spell_list = json.dumps(dba_spell_list, encoding="UTF-8", ensure_ascii=False).encode('utf-8')
     print(yw_spell_list)
     print(dba_list)
     print(dba_spell_list)
     # print ('spell_list:',dba_spell_list)
-    #telarrdba=json.dumps(telarrdba, encoding="UTF-8", ensure_ascii=False)
+    #telarrdba=json.dumps(telarrdba, encoding="UTF-8", ensure_ascii=False).encode('utf-8')
 
     # print ('telarrdba:',telarrdba)
     telarr=OrderedDict(list(telarrdba.items())+list(telarryw.items()))
 
-    telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False)
+    telarr = json.dumps(telarr, encoding="UTF-8", ensure_ascii=False).encode('utf-8')
     print(telarr)
 
 
@@ -92,7 +92,7 @@ def daohang(request):
           platformurl= admin_line.platform_url
           d1.setdefault(str(name),[]).append([platformname,platformurl])
         #print d1
-    dicts =json.dumps(d1,encoding="UTF-8",ensure_ascii=False)
+    dicts =json.dumps(d1,encoding="UTF-8",ensure_ascii=False).encode('utf-8')
     #print dicts
     #print d1
 

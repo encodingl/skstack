@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup,sk_websocket,ConfigCenter
+from skworkorders import WorkOrderFlow, Environment, WorkOrder, WorkOrderGroup,WorkOrderCommit,Vars,VarsGroup,test_websocket,ConfigCenter
 
 urlpatterns = [
       
@@ -51,7 +51,7 @@ urlpatterns = [
      url(r'^WorkOrderCommit/undo/$', WorkOrderCommit.WorkOrderCommit_undo, name='WorkOrderCommit_undo'),
      url(r'^WorkOrderCommit/add/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_add, name='WorkOrderCommit_add'),
      url(r'^WorkOrderCommit/help/(?P<ids>\d+)/$', WorkOrderCommit.WorkOrderCommit_help, name='WorkOrderCommit_help'),
-#      url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
+     url(r'^WorkOrderCommit/pretask/$', WorkOrderCommit.pretask, name='WorkOrderCommit_pretask'),
          
      url(r'^WorkOrderFlow/audit/$', WorkOrderFlow.WorkOrderFlow_audit, name='WorkOrderFlow_audit'),
      url(r'^WorkOrderFlow/audit/permit/$', WorkOrderFlow.WorkOrderFlow_permit, name='WorkOrderFlow_permit'),
@@ -69,8 +69,8 @@ urlpatterns = [
      url(r'^WorkOrderFlow/history/detail/foreground/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_foreground_detail, name='WorkOrderFlow_foreground_detail'),
      
      
-     url(r'^websocket/$', sk_websocket.websocket_index, name='websocket_index'),
-     url(r'^echo/$', sk_websocket.echo, name='websocket_echo'),
+#      url(r'^websocket/$', test_websocket.websocket_index, name='websocket_index'),
+#      url(r'^echo/$', test_websocket.echo, name='websocket_echo'),
  
     
 ]

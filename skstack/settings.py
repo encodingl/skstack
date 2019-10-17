@@ -39,7 +39,7 @@ config.read(CONFIGFILE)
 SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # DEBUG = True if config.get('setup', 'debug') == 'True' else False
 ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
-    'channels',
+#     'channels',
 ]
 
 MIDDLEWARE = [
@@ -180,8 +180,8 @@ USE_TZ = False
 STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR + '\\static\\'
 #for windows py37
-# STATIC_ROOT = ''
-# STATICFILES_DIRS = ( os.path.join('static'), )
+STATIC_ROOT = ''
+STATICFILES_DIRS = ( os.path.join('static'), )
 
 #for windows py37_64 debug mode
 # STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
@@ -322,7 +322,7 @@ LOGGING = {
      
         'console': {
             'level': 'DEBUG',
-            'filters': ['require_debug_false'],
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
@@ -380,15 +380,16 @@ LOGGING = {
 # ]
 
 #for channels websockets
-ASGI_APPLICATION = 'skstack.routing.application'
-RedisHost = config.get('redis', 'host')
-RedisPort = config.get('redis', 'port')
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(RedisHost, RedisPort)],
-        },
-    },
-}
+# ASGI_APPLICATION = 'skstack.routing.application'
+# RedisHost = config.get('redis', 'host')
+# RedisPort = config.get('redis', 'port')
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [(RedisHost, RedisPort)],
+#         },
+#  
+#     },
+# }
 

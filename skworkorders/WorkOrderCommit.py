@@ -15,7 +15,7 @@ from datetime import datetime
 import json
 from skaccounts.models import UserInfo
 from django import forms
-#from dwebsocket.decorators import accept_websocket
+from dwebsocket.decorators import accept_websocket
 
 from skworkorders.lib_skworkorders import get_VarsGroup_form,format_to_user_vars,custom_task,permission_submit_pass
 from skworkorders.lib_skworkorders2 import PreTask
@@ -129,44 +129,46 @@ def WorkOrderCommit_help(request, ids):
     return render(request,"skworkorders/WorkOrderCommit_help.html", locals())
 
 
-# @accept_websocket
-# @login_required()
-# @permission_verify()
-# def pretask(request):
-#     temp_name = "skworkorders/skworkorders-header.html" 
-#     if not request.is_websocket():#判断是不是websocket连接
-#         try:#如果是普通的http方法
-#             message = request.GET['message']
-#             return HttpResponse(message)
-#         except:
-#             return render(request,'skworkorders/websocket.html', locals())
-#     else:
-#         for message in request.websocket:    
-#             request.websocket.send("The task has been submitted, please wait patiently·······")
-#             message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
-# 
-#             WorkOrder_id = int(message_dic['id'])
-#             pt01 = PreTask(WorkOrder_id,request,message_dic)
-#             if pt01.permission_submit_pass():
-#                 if pt01.pre_task_success():
-#                     if pt01.obj.audit_enable == True:
-#                         if pt01.obj.schedule_enable == True: 
-#                             pt01.celery_task_create()
-#                         else:
-#                             pt01.manual_task_add()
-#                     else:
-#                         if  pt01.obj.schedule_enable == True:
-#                             pt01.celery_task_add()
-#                         elif pt01.obj.back_exe_enable == True:
-#                             if "back_exe_enable" in pt01.message_dic_format:
-#                                 pt01.celery_bgtask_add()
-#                             else:
-#                                 pt01.all_task_do()
-#                                 
-#                         else:
-#                             pt01.all_task_do()
-# 
-#                 else:
-#                     pt01.pre_task_failed()
-#             else:
-#                 pt01.permission_submit_deny()
+@accept_websocket
+@login_required()
+@permission_verify()
+def pretask(request):
+    temp_name = "skworkorders/skworkorders-header.html" 
+    if not request.is_websocket():#判断是不是websocket连接
+        try:#如果是普通的http方法
+            message = request.GET['message']
+            return HttpResponse(message)
+        except:
+            return render(request,'skworkorders/websocket.html', locals())
+    else:
+        for message in request.websocket:    
+            content_str= "The task has been submitted, please wait patiently"
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            request.websocket.send(msg)
+            message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
+ 
+            WorkOrder_id = int(message_dic['id'])
+            pt01 = PreTask(WorkOrder_id,request,message_dic)
+            if pt01.permission_submit_pass():
+                if pt01.pre_task_success():
+                    if pt01.obj.audit_enable == True:
+                        if pt01.obj.schedule_enable == True: 
+                            pt01.celery_task_create()
+                        else:
+                            pt01.manual_task_add()
+                    else:
+                        if  pt01.obj.schedule_enable == True:
+                            pt01.celery_task_add()
+                        elif pt01.obj.back_exe_enable == True:
+                            if "back_exe_enable" in pt01.message_dic_format:
+                                pt01.celery_bgtask_add()
+                            else:
+                                pt01.all_task_do()
+                                 
+                        else:
+                            pt01.all_task_do()
+ 
+                else:
+                    pt01.pre_task_failed()
+            else:
+                pt01.permission_submit_deny()

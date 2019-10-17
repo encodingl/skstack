@@ -6,6 +6,7 @@ Created on 2018年8月9日 @author: encodingl
 
 import paramiko
 import logging
+import json
 log = logging.getLogger('skworkorders')
 
 
@@ -19,19 +20,24 @@ def ssh_cmd(host,port,username,password,cmd,rsa_key,request):
         elif  password:
             client.connect(host, port, username=username, password=password, timeout=20)
         else:
-            request.websocket.send("没有配置密码或者秘钥")
+            msg = json.dumps("没有配置密码或者秘钥",ensure_ascii=False).encode('utf-8')
+            print(msg)
+            request.websocket.send(msg)
         stdin, stdout,stderr = client.exec_command(cmd,get_pty=True)
         while 1:
-            result = stdout.readline().encode('utf-8')
+            result = stdout.readline()
+            print(result)
+           
             if len(result) == 0:
+               
                 break
-            request.websocket.send(result)
+            request.websocket.send(json.dumps(result,ensure_ascii=False).encode('utf-8'))
         channel = stdout.channel
         retcode = channel.recv_exit_status()  
         log.info("ssh_cmd_result2:%s" % stdout) 
     except Exception as e:
         log.error("ssh_cmd_result2:%s" % e)
-        request.websocket.send(e)
+        request.websocket.send(json.dumps(e,ensure_ascii=False).encode('utf-8'))
        
     finally:
         client.close()

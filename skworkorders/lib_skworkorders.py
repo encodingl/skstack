@@ -16,7 +16,7 @@ from skaccounts.models import UserInfo
 
 import subprocess
 import json
-import datetime
+from datetime import datetime
 import logging
 log = logging.getLogger('skworkorders')
 
@@ -131,7 +131,7 @@ def format_to_user_vars(**message_dic):
     
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
-    message_dic["user_vars"] = str(json.dumps(user_vars_dic)).decode("unicode-escape")
+    message_dic["user_vars"] = str(json.dumps(user_vars_dic))
     if "back_exe_enable" in message_dic:
         if message_dic["back_exe_enable"] == "on":
             message_dic["back_exe_enable"] = 1
@@ -152,21 +152,23 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
         if obj.var_built_in:
             var_built_in_dic = eval(obj.var_built_in) 
             task = var_change2(task,**var_built_in_dic)
-        task_list = task.encode("utf-8").split("\r") 
+        task_list = task.split("\r") 
+        print(task_list)
         ret_message="%s:开始执行" % taskname
         log.info(ret_message)
-        request.websocket.send("%s INFO %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
+        ret_message = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message),ensure_ascii=False).encode('utf-8')
+        request.websocket.send(ret_message)
 
-        if obj.config_center in [NULL,None]:
+        if obj.config_center in [None]:
             for cmd in task_list:
+                print(cmd)
                 try:
                     log.info("cmd_start:%s"  % cmd )
                     pcmd = Popen(cmd,stdout=PIPE,stderr=STDOUT,shell=True)
                     while True:
                         for line in iter(pcmd.stdout.readline,b''):
-
-                            request.websocket.send(line)
-                            # log.info("cmd_result:%s" % line)
+                            print(line)
+                            request.websocket.send(json.dumps(line,ensure_ascii=False).encode('utf-8'))
                         if pcmd.poll() is not None:
                             break  
                 except Exception as msg:
@@ -188,7 +190,6 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 try:
                     log.info("ssh_cmd_start:%s config_center_ip:%s"  % (cmd,obj2.ip))
                     retcode = ssh_cmd(obj2.ip,obj2.port,obj2.username,obj2.password,cmd,obj2.rsa_key,request)
-                    print("retcode1:%s" % retcode)
                 except Exception as msg:
                     log.error("ssh_cmd_result:%s" % msg)
                     retcode = 1111
@@ -197,7 +198,8 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     log.info(ret_message)
                 else:
                     ret_message="ERROR %s:执行失败" % taskname
-        request.websocket.send("%s %s" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message))
+        ret_message = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message),ensure_ascii=False).encode('utf-8')
+        request.websocket.send(ret_message)
     return retcode
          
 def permission_submit_pass(user,WorkOrder_id):

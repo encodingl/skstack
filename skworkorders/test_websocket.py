@@ -20,6 +20,38 @@ import subprocess
 from django.shortcuts import render
 from django.template import RequestContext
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+def web_send(group_name,msg):
+    print("4")
+    channel_layer = get_channel_layer()
+    print("5")
+    print(group_name)
+
+    async_to_sync(channel_layer.group_send)(group_name,
+        {
+            'type': 'show_in_windows',
+            'message': msg
+        }
+    )
+    print("6")
+    
+class TestWebSend():
+    def __init__(self,group_name,msg):
+        self.msg = msg
+        print(self.msg)
+        self.group_name = group_name
+        print(self.group_name)
+       
+        
+    
+        
+    def sendmsg(self):
+        print("3")
+        web_send(self.group_name, self.msg)
+        print("8")
+
 
 @login_required()
 @permission_verify()

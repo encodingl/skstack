@@ -12,14 +12,17 @@ from skaccounts.models import UserInfo
 from .lib_skworkorders import custom_task
 import json
 from skworkorders.lib_skworkorders import format_to_user_vars
-from datetime import datetime,timedelta
 import pytz
 import logging
 # from _mysql import NULL
 from skcmdb.api import get_object
 from django.forms.models import model_to_dict
+
 log = logging.getLogger('skworkorders')
 
+
+
+    
 
 class WorkOrdkerFlowTask():
     def __init__(self,WorkOrderFlow_id,login_user,request):
@@ -77,7 +80,8 @@ class WorkOrdkerFlowTask():
         self.celery_task_revoke()
         content_str = "celery task revoked"
         self.log_celery_id("info", content_str)
-        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+        self.request.websocket.send(msg)
         
 
     def permission_submit_pass(self):
@@ -93,7 +97,7 @@ class WorkOrdkerFlowTask():
         response_data = {}  
         response_data['result'] = 'failed'  
         response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
-        self.request.websocket.send(json.dumps(response_data))
+        self.request.websocket.send(json.dumps(response_data),ensure_ascii=False).encode('utf-8')
         log.warning(response_data)
         
     def permission_audit_pass(self):
@@ -113,7 +117,7 @@ class WorkOrdkerFlowTask():
         response_data = {}  
         response_data['result'] = 'failed'  
         response_data['message'] = 'You donot have permisson' 
-        self.request.websocket.send(json.dumps(response_data))
+        self.request.websocket.send(json.dumps(response_data),ensure_ascii=False).encode('utf-8')
         log.warning(response_data)
         
         
@@ -144,13 +148,15 @@ class WorkOrdkerFlowTask():
             retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="main_task")
         else:
             content_str = "INFO without main_task to do"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
    
         if self.obj2.post_task and retcode==0:
             retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="post_task")
         else:
             content_str = "INFO without post_task to do"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if retcode == 0:
@@ -158,7 +164,8 @@ class WorkOrdkerFlowTask():
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "INFO finished:工单执行成功"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             self.log("info", content_str)
 
         else:
@@ -166,7 +173,8 @@ class WorkOrdkerFlowTask():
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "ERROR finished:工单执行失败"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             self.log("error", content_str)
             
 
@@ -184,7 +192,10 @@ class PreTask():
             self.config_center_dic = json.dumps(model_to_dict(self.obj3 ))
         except Exception as e:
             self.config_center_dic = None
-        
+    def sendmsg(self,msg):
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),msg),ensure_ascii=False).encode('utf-8')
+        self.request.websocket.send(msg)
+            
     def log(self,level,content_str):
         if level == "info":
             log.info("User:%s,Env:%s,WorkOrderName:%s,msg:%s" % (self.user,self.obj.env,self.obj.name,content_str))
@@ -201,13 +212,15 @@ class PreTask():
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="main_task")
         else:
             content_str = "INFO without main_task to do"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
 
         if self.obj.post_task and retcode==0:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="post_task")
         else:
             content_str = "INFO without post_task to do"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             
         obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.message_dic_format["finished_at"]=obj_finished_at
@@ -217,7 +230,8 @@ class PreTask():
             self.message_dic_format.pop("celery_schedule_time")
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "INFO finished:工单执行成功"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             self.log("info", content_str)
 
         else:
@@ -226,14 +240,17 @@ class PreTask():
             self.message_dic_format.pop("celery_schedule_time")
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "ERROR finished:工单执行失败"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
             self.log("error", content_str)
             
     def celery_task_add(self):
-        self.request.websocket.send("开始提交定时任务")
+        content_str = "celery tast commit ..."
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+        self.request.websocket.send(msg)
         time01 = self.message_dic_format["celery_schedule_time"]
         if time01 == "":
-            self.request.websocket.send("warning:请输入计划执行时间")
+            self.sendmsg("warning:请输入计划执行时间")
         else:
             time01 = datetime.strptime(time01, "%Y-%m-%d-%H:%M:%S")
             local_tz = pytz.timezone(celery_app.conf['CELERY_TIMEZONE'])
@@ -253,17 +270,17 @@ class PreTask():
                 self.message_dic_format["celery_schedule_time"] = time01
                 WorkOrderFlow.objects.create(**self.message_dic_format)
                 content_str = "finished:定时任务添加成功"
-                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+                self.sendmsg(content_str)
                 self.log("info", content_str)
             except Exception as e:
                 self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
                 self.log("info", e)
                 content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
-                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+                self.sendmsg(content_str)
                 self.log("info", content_str)
     
     def celery_bgtask_add(self):
-        self.request.websocket.send("开始提交后台任务")
+        self.sendmsg("开始提交后台任务")
         time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       
         eta_time = format_celery_eta_time(str(time_now))
@@ -282,27 +299,27 @@ class PreTask():
             self.message_dic_format["celery_schedule_time"] = time_now
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:后台任务添加成功"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            self.sendmsg(content_str)
             self.log("info", content_str)
         except Exception as e:
             self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
             self.log("info", e)
             content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            self.sendmsg(content_str)
             self.log("info", content_str)
         
             
     def celery_task_create(self):
         time01 = self.message_dic_format["celery_schedule_time"] 
         if time01 == "":
-            self.request.websocket.send("warning:请输入计划执行时间")
+            self.request.websocket.send(json.dumps("warning:请输入计划执行时间",ensure_ascii=False).encode('utf-8'))
         else:
             time01 = datetime.strptime(time01, "%Y-%m-%d-%H:%M:%S")                
             self.message_dic_format["status"] = 0
             self.message_dic_format["celery_schedule_time"] = time01
             WorkOrderFlow.objects.create(**self.message_dic_format)
             content_str = "finished:工单提交成功"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            self.sendmsg(content_str)
             self.log("info", content_str)
            
             
@@ -312,7 +329,7 @@ class PreTask():
 
         WorkOrderFlow.objects.create(**self.message_dic_format)
         content_str = "INFO finished:工单提交成功"
-        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+        self.sendmsg(content_str)
         self.log("info", content_str)
         
     def permission_submit_pass(self):
@@ -331,19 +348,17 @@ class PreTask():
         response_data = {}  
         response_data['result'] = 'failed'  
         response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
-        self.request.websocket.send(json.dumps(response_data))
+        self.request.websocket.send(json.dumps(response_data,ensure_ascii=False).encode('utf-8'))
         log.warning(response_data)
     
     def pre_task_success(self):
-        content_str = "commit starting"
-        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
-        self.log("info", content_str)
         if self.obj.pre_task:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="pre_task")
         else:
             retcode = 0
             content_str = "without pre_task to do"
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            self.request.websocket.send(msg)
         return True if retcode == 0 else False
 #         if retcode == 0:
 #             return True
@@ -352,7 +367,7 @@ class PreTask():
         
     def pre_task_failed(self):
         content_str = "WARN finished:工单提交失败"
-        self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str))
+        self.sendmsg(content_str)
         self.log("warning", content_str)
        
 

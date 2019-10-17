@@ -110,8 +110,7 @@ $(function () {
 	};
 
     $('#WorkOrderCommit_add').click(function () {
-//    	$(this).attr("disabled",true);
-     if (confirm("确认?")) {
+      if (confirm("确认?")) {
     	if (window.s) {
             window.s.close()
         }
@@ -120,11 +119,11 @@ $(function () {
 
         if(ishttps){
 
-         var socket = new WebSocket("wss://" + window.location.host + "/ws/skworkorders/WorkOrderCommit/pretask/");
+         var socket = new WebSocket("wss://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
 
         }else{
 
-         var socket = new WebSocket("ws://" + window.location.host + "/ws/skworkorders/WorkOrderCommit/pretask/");
+         var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderCommit/pretask/");
 
         }
 
@@ -144,10 +143,13 @@ $(function () {
         	   window.s.send(formData);//通过websocket发送数据
             
         };
+        socket.onerror = function () {
+        	console.error('Chat socket closed unexpectedly');
+        };
      
        
         socket.onmessage = function (e) {
-//            console.log('message: ' + e.data);//打印出服务端返回过来的数据
+            console.log('message: ' + e.data);//打印出服务端返回过来的数据
             
             var colorConfig = { "green": ["ok", "SUCCESS","成功"],"orange": ["changed","WARNING","warning"],  "red": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
            
