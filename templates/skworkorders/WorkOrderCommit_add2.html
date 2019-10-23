@@ -9,9 +9,6 @@
 
 <script src="/static/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
-<link rel="stylesheet" href="/static/plugins/xterm/xterm.css" />
-<script src="/static/plugins/xterm/xterm.js"></script>
-
     
    
 {% endblock %}
@@ -46,8 +43,9 @@
 			        <h3 class="panel-title">执行结果</h3>
 			    </div>
 			    
-			    <div id="terminal" class="panel-body" style="border: 1px solid ;">
+			    <div class="panel-body" style="border: 1px solid ;height:350px;overflow:scroll">
 
+			    		<div id="messagecontainer" ></div>
 			    </div>
 			    
 			  </div>	
@@ -63,8 +61,6 @@
   </div>
   
   
-
-      
 <script type="text/javascript">
 
 
@@ -98,39 +94,7 @@
   });
 </script>
 
-<script>
-function get_term_size() {
-    var init_width = 9;
-    var init_height = 17;
-
-    var windows_width = $(".panel-body").width();
-    var windows_height = $(window).height();
-
-    return {
-        cols: Math.floor(windows_width / init_width),
-        rows: Math.floor(windows_height / init_height),
-    }
-}
-var cols = get_term_size().cols;
-var rows = get_term_size().rows;
-var term = new Terminal(
-        {
-            cols: cols,
-            rows: rows,
-            useStyle: true,
-            cursorBlink: true
-        }
-        )
-term.open(document.getElementById('terminal'));
-
-$(window).resize(function () {
-    var cols = get_term_size().cols;
-    var rows = get_term_size().rows;
-    term.resize(cols, rows);
-})
-
-
-
+<script type="text/javascript">//<![CDATA[
 $(function () {
 	$.ajaxSetup({
 	    contentType: "application/x-www-form-urlencoded; charset=utf-8"
@@ -147,7 +111,10 @@ $(function () {
 
     $('#WorkOrderCommit_add').click(function () {
       if (confirm("确认?")) {
-
+    	if (window.s) {
+            window.s.close()
+        }
+        /*创建socket连接*/
          var ishttps = 'https:' == document.location.protocol ? true: false;
 
         if(ishttps){
@@ -160,7 +127,7 @@ $(function () {
 
         }
 
-        window.ws = socket;
+        window.s = socket;
         socket.onopen = function () {
             console.log('WebSocket open');//成功连接上Websocket
             var form1 = document.getElementById("WorkOrderCommit_add_form");
@@ -173,48 +140,50 @@ $(function () {
             var formData = DataDeal.formToJson(formData);//转化为json
             console.log(formData);
          
-        	   window.ws.send(formData);//通过websocket发送数据
+        	   window.s.send(formData);//通过websocket发送数据
             
         };
         socket.onerror = function () {
-        	console.error('WebSocket closed unexpectedly');
+        	console.error('Chat socket closed unexpectedly');
         };
      
-        socket.onclose = function () {
-	        console.log("WebSocket closed");
-	    }
-
+       
         socket.onmessage = function (e) {
-            /* console.log('message: ' + e.data);//打印出服务端返回过来的数据 */
-                var text = JSON.parse(e.data);  
-                var colorConfig = { 
-                		"\x1b[32m": ["ok", "SUCCESS","成功","Pass","INFO"],
-                		"\x1b[33m": ["changed","WARNING","warning"],  
-                		"\x1b[31m": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
-                
+            console.log('message: ' + e.data);//打印出服务端返回过来的数据
+            
+            var colorConfig = { "green": ["ok", "SUCCESS","成功"],"orange": ["changed","WARNING","warning"],  "red": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
+           
+                var text = e.data;  
                 jQuery.each(colorConfig, function (color, values) {  
                     jQuery.each(values, function (i, item) { 
                   	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
 
                   	   
                   	   text = text.replace(re,function(result){
-                  		   return color + result + '\x1B[0m'
+                  		   return '<font color="' + color + '">' + result + '</font>'
                   	   });
                   	   
                   	   var re2 = new RegExp(item,"g");
                   	   text = text.replace(re2,function(result){
-                  		 return color + result + '\x1B[0m'
+                  		   return '<font color="' + color + '">' + result + '</font>'
                   	   });
                   	   
                     });  
                 });  
-
-                term.writeln(text)
-
-/*              if (text.indexOf("finished") != -1) {
-                window.ws.close();
-            }   */
-              
+            
+         
+            
+            
+            $('#messagecontainer').append('<p>' + text + '</p>');
+            $('.panel-body').scrollTop( $('.panel-body')[0].scrollHeight );
+            
+            var h = document.documentElement.scrollHeight || document.body.scrollHeight;
+            window.scrollTo(h,h);
+//            if (text.indexOf("finished") != -1) {
+//                window.s.close();//关闭websocket
+//                console.log('websocket已关闭');
+//            }
+            
         };
    
      }else{
@@ -223,13 +192,10 @@ $(function () {
    
     });
    
-window.onbeforeunload = function(event) {
-        window.ws.close();
-    }
 
 
 });
-</script>
+//]]></script>
 
 
 

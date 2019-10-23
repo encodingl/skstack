@@ -141,34 +141,45 @@ def pretask(request):
         except:
             return render(request,'skworkorders/websocket.html', locals())
     else:
+#         try:
         for message in request.websocket:    
             content_str= "The task has been submitted, please wait patiently"
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
             request.websocket.send(msg)
-            message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
+            if message == None:
+                request.websocket.close()
+                
+               
+                
+            else:
+                message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
  
-            WorkOrder_id = int(message_dic['id'])
-            pt01 = PreTask(WorkOrder_id,request,message_dic)
-            if pt01.permission_submit_pass():
-                if pt01.pre_task_success():
-                    if pt01.obj.audit_enable == True:
-                        if pt01.obj.schedule_enable == True: 
-                            pt01.celery_task_create()
+                WorkOrder_id = int(message_dic['id'])
+                pt01 = PreTask(WorkOrder_id,request,message_dic)
+                if pt01.permission_submit_pass():
+                    if pt01.pre_task_success():
+                        if pt01.obj.audit_enable == True:
+                            if pt01.obj.schedule_enable == True: 
+                                pt01.celery_task_create()
+                            else:
+                                pt01.manual_task_add()
                         else:
-                            pt01.manual_task_add()
-                    else:
-                        if  pt01.obj.schedule_enable == True:
-                            pt01.celery_task_add()
-                        elif pt01.obj.back_exe_enable == True:
-                            if "back_exe_enable" in pt01.message_dic_format:
-                                pt01.celery_bgtask_add()
+                            if  pt01.obj.schedule_enable == True:
+                                pt01.celery_task_add()
+                            elif pt01.obj.back_exe_enable == True:
+                                if "back_exe_enable" in pt01.message_dic_format:
+                                    pt01.celery_bgtask_add()
+                                else:
+                                    pt01.all_task_do()
+                                     
                             else:
                                 pt01.all_task_do()
-                                 
-                        else:
-                            pt01.all_task_do()
- 
+     
+                    else:
+                        pt01.pre_task_failed()
                 else:
-                    pt01.pre_task_failed()
-            else:
-                pt01.permission_submit_deny()
+                    pt01.permission_submit_deny()
+                    
+
+            
+ 

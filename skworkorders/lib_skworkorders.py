@@ -167,7 +167,7 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     pcmd = Popen(cmd,stdout=PIPE,stderr=STDOUT,shell=True)
                     while True:
                         for line in iter(pcmd.stdout.readline,b''):
-                            print(line)
+                      
                             request.websocket.send(json.dumps(line,ensure_ascii=False).encode('utf-8'))
                         if pcmd.poll() is not None:
                             break  
