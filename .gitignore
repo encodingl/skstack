@@ -5,7 +5,6 @@
 .pydevproject
 .settings/
 gitpush.sh
-start.sh
 *.pyc
 /tmp/*
 00*.py
@@ -14,6 +13,5 @@ start.sh
 ignoreupdate.sh
 .idea
 *.swp
-00*.py
-ski*_dev.conf
+skstack_prod.conf
 
