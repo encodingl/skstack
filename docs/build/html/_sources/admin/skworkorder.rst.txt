@@ -1,58 +1,48 @@
 工单系统
 ===============
-That has a paragraph about a main subject and is set when the '='
-is at least the same length of the title itself.
+略
 
 
-配置概述
+原理
 ----------------
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略
+
+配置步骤
+----------------
+略
+
 
 基础配置
 ~~~~~~~~~~~~~~~~~~~~~~
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略
 
-
- 
 
 配置中心
 ~~~~~~~~~~~~~~~~~~~~~~
-
-Words can have *emphasis in italics* or be **bold** and you can define
-code samples with back quotes, like when you talk about a command: ``sudo``
+略
 
 
 变量配置
 ~~~~~~~~~~~~~~~~~~~~~~
-
-Words can have *emphasis in italics* or be **bold** and you can define
-code samples with back quotes, like when you talk about a command: ``sudo``
+略
 
 
 工单配置
 ~~~~~~~~~~~~~~~~~~~~~~
-
-Words can have *emphasis in italics* or be **bold** and you can define
-code samples with back quotes, like when you talk about a command: ``sudo``
+略
 
 提单
 ----------------
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略
 
 审核
 ----------------
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略
 
 执行
 ----------------
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略
 
 审计
 ----------------
-Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.
+略

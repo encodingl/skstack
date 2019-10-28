@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+==================
 快速入门
-===================================
+==================
 
 .. toctree::
    :caption: 快速入门
@@ -27,7 +28,7 @@
 
   
 
-
+==================
 用户手册
 ==================
 
@@ -47,7 +48,7 @@
     工单系统.
 
 
-
+==================
 插件使用手册
 ==================
   .. toctree::
@@ -64,6 +65,7 @@
 :doc:`plugins/static_deploy`
     静态文件部署.
    
+==================
 开发者指南
 ==================
 
