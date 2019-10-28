@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. 功能介绍 &mdash; SKSTACK v0.1 文档</title>
+  <title>1. 概述 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -83,10 +83,14 @@
             
               <p class="caption"><span class="caption-text">快速入门</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 功能介绍</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 概述</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 项目演示1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 项目演示2</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 功能介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo">1.2. Demo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">1.2.1. Docker项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gitlab">1.2.2. gitlab项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.2.3. 压缩包项目版本发布</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">2. 安装手册</a></li>
@@ -152,7 +156,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>1. 功能介绍</li>
+      <li>1. 概述</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -172,46 +176,63 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1>1. 功能介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<p>That has a paragraph about a main subject and is set when the ‘=’
-is at least the same length of the title itself.</p>
+<h1>1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;发布&amp;统计、版本发布、应急预案、自动化任务执行相关功能</p>
 <div class="section" id="id2">
-<h2>1.1. 概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>Subtitles are set with ‘-‘ and are required to have the same length
-of the subtitle itself, just like titles.</p>
+<h2>1.1. 功能介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>主要包含功能如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>仪表盘：统计工单、用户、事件、资源相关数据</p></li>
+<li><p>工单系统：版本发布、应急预案管理、标准化运维任务工单执行</p></li>
+<li><p>用户系统：用户和菜单角色管理，工单授权、审核流程管理</p></li>
+<li><p>资源管理：软件和硬件资产管理</p></li>
+<li><p>登记管理：事件登记、FAQ、重要事项通知管理</p></li>
+<li><p>运维导航：运维值班、分工、公告、事件处理流程、相关运维系统超级链接管理</p></li>
+<li><p>ANSIBLE：ansible脚本项目化管理</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="demo">
+<h2>1.2. Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
+<div class="section" id="docker">
+<h3>1.2.1. Docker项目版本发布<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于公有云docker镜像仓库或者私有docker镜像仓库做版本仓库库管理；</p></li>
+<li><p>通过发布插件获取版本号；</p></li>
+<li><p>通过工单系统的docker项目发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<p>索引页面</p>
+<a class="reference internal image-reference" href="../_images/skw_index.png"><img alt="image not found" src="../_images/skw_index.png" style="width: 800px; height: 450px;" /></a>
+<p>发布页面</p>
+<a class="reference internal image-reference" href="../_images/skw_submmit.png"><img alt="image not found" src="../_images/skw_submmit.png" style="width: 800px; height: 450px;" /></a>
+<p>审计页面</p>
+<a class="reference internal image-reference" href="../_images/skw_audit_front.png"><img alt="image not found" src="../_images/skw_audit_front.png" style="width: 800px; height: 450px;" /></a>
+</div>
+<div class="section" id="gitlab">
+<h3>1.2.2. gitlab项目版本发布<a class="headerlink" href="#gitlab" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于gitlab做版本仓库库管理；</p></li>
+<li><p>通过发布插件获取版本号；</p></li>
+<li><p>通过工单系统的gitlab项目发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../_images/skw_git_submmit.png"><img alt="image not found" src="../_images/skw_git_submmit.png" style="width: 800px; height: 450px;" /></a>
 </div>
 <div class="section" id="id3">
-<h2>1.2. 项目演示1<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
-<p>关键字标注</p>
-<p>Words can have <em>emphasis in italics</em> or be <strong>bold</strong> and you can define
-code samples with back quotes, like when you talk about a command: <code class="docutils literal notranslate"><span class="pre">sudo</span></code></p>
-<p>代码段落空行分割且必须缩进”::”两个冒号开始</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
-    <span class="kn">import</span> <span class="nn">scrapy</span>
-
-
-    <span class="k">class</span> <span class="nc">ExampleSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;example&quot;</span>
-        <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;example.com&quot;</span><span class="p">]</span>
-        <span class="n">start_urls</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s1">&#39;http://www.example.com/&#39;</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-            <span class="c1"># use lxml to get decent HTML parsing speed</span>
-            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="p">{</span>
-                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">soup</span><span class="o">.</span><span class="n">h1</span><span class="o">.</span><span class="n">string</span>
-            <span class="p">}</span>
-</pre></div>
+<h3>1.2.3. 压缩包项目版本发布<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于nginx做压缩包版本仓库管理；</p></li>
+<li><p>通过爬虫获取版本号；</p></li>
+<li><p>通过工单系统的压缩包发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../_images/skw_tar_submmit.png"><img alt="image not found" src="../_images/skw_tar_submmit.png" style="width: 800px; height: 450px;" /></a>
 </div>
-</div>
-<div class="section" id="id4">
-<h2>1.3. 项目演示2<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
-<p>图片</p>
-<a class="reference internal image-reference" href="intro\_static/demo.png"><img alt="Scrapy architecture" src="intro\_static/demo.png" style="width: 700px; height: 470px;" /></a>
-<p>提示</p>
 </div>
 </div>
 
