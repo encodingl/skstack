@@ -1,51 +1,57 @@
-插件开发指南1.0
+.. _dev-skplugins2:
+
+插件开发指南2.0
 ==============================
 
-| 本规范仅适用于python2.7开发的已发布项目维护。新的插件开发请参考 :ref:`插件开发指南2.0 <dev-skplugins2>`
-| skstack平台，理论支持所有能在linux服务器命令行界面直接运行的语言。
-| 本文档主要基于python说明，其他语言可以参考相关目录、文件命名和日志规范
+| skstack平台的插件注册不限制开发语言，理论支持所有能在linux服务器命令行界面直接运行的脚本。
+| 本文档主要基于python说明，其他语言请尽量遵循示例相关目录、文件命名和日志规范
+| 优先使用python3.7 开发与skstack版本保持一致。
 
 
-目录规范
+
+目录和命名规范示例
 ------------------------------
+
+如下示例静态文件部署插件
 
 ::
 
-   skPlugins/            #插件主目录
-   |-- conf                 #配置文目录
-   |   |-- ansible_conf_dev.py
-   |   |-- ansible_conf_prod.py
-   |   |-- ansible_conf_stg.py
-   |   |-- redis_conf_dev.py
-   |   |-- redis_conf_prod.py
-   |   |-- redis_conf_stg.py
-   |-- lib  #插件公共库目录
-   |-- scPublic  #公共插件目录
-   |   |-- vars_get_ansibleHostsGroup.py
-   `-- scRedis  #redis插件目录
-       `-- redis_getkeyvalue_main.py
+	pl_static_deploy/                #插件主目录，以"pl_"前缀开头
+	├── conf		#配置文件主目录名称，请统一使用conf命名
+	│   ├── conf_static_demo.py     #参数配置文件demo，用于其他环境配置参考，和说明文档样例使用
+	│   ├── conf_static_dev.py      #dev环境配置文件
+	│   ├── conf_static_prod.py     #prod环境配置文件
+	│   └── conf_static_stg.py      #stg环境配置文件
+	├── lib_git.py	#主脚本需要调用的
+	├── lib_log.py
+	├── logs                        #日志文件主目录
+	│   └── main_static_deploy.log  #日志文件名称
+	├── main_static_deploy.py      #主脚本加"main_"前缀命名
+	├── sc_get_source.py		#主脚本需要调用的python功能脚本加"sc_"前缀命名
+	├── sc_static_sync.yml   	#主脚本需要调用的ansible功能脚本加"sc_"前缀命名
+	├── var_get_git_commit.py       #动态变量获取脚本，用于注册到skstack平台上传递给主脚本使用
+	└── var_get_tar_version.py
 
-.. warning::
-	后续版本配置文件和lib文件将统一存放于所属插件主目录
-..
 
 命名规范
 ------------------------------
 
-#. 插件目录命名：sc前缀加分类名称(分类名首字母大写) 例如scRedis
-#. 配置文件命名：配置文件用途加“\ *conf*\ 环境简称”后缀 ,例如：
-   ansible\ *conf*\ prod.py
-#. 变量获取脚本：vars前缀加用途，例如：vars\ *get*\ ansibleHostsGroup.py
-#. 工单任务脚本：任务名称+任务用途。 任务用途main：表示主任务脚本
-   举例：redis\ *getkeyvalue*\ main.py pre：表示前置任务脚本
-   post：表示后置任务脚本
+#. 插件目录命名：加pl_前缀
+#. 主任务脚本：加main_前缀
+#. 变量获取脚本：加var_前缀
+#. 配置文件命名：加conf_前缀
+#. 脚本文件命名：加sc_前缀；脚本文件主要用于主任务脚本调用
+#. 私有库函数文件命名：加lib_前缀；私有库函数主要用于主任务脚本或者sc_脚本调用
+#. 日志文件命名："主任务模块名称+.log" ;如上示例
+
+
 
 脚本编写规范和配置文件规范
 ------------------------------
 
 #. 对于生产、测试、stg相关环境的配置文件变量不能硬编码到变量获取脚本或者任务脚本文件中
 #. 配置文件应该从conf中相应的配置文件中动态获取，通过 “-e”参数指定环境，去读不同环境下的配置文件；不同环境下的配置文件通过命名后缀区分
-#. 脚步外部参数传递通过OptionParser模块功能方式实现 参考如下文demo实例 
+#. 脚步外部参数传递通过OptionParser（已发布插件）或argparse（新开发插件）模块功能方式实现 参考如下文demo实例 
 #. 前端复选框当只选一个的时候传递值为字符串，超过一个选项传递值为list，需要在脚本中做判断具体参考demo 复选框处理示例
 
 
@@ -56,12 +62,12 @@ ansible shell模块执行插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 | 确认先在命令行模式测试插件是否工作正常，不同的插件详见各插件使用说明文档，demo以ansible cmd插件脚本为例；
-| 确认ansible cmd脚本"ansible_cmd.py"的配置文件配置正确
+| 确认ansible cmd脚本"main_ansible_cmd.py"的配置文件配置正确
 
 .. code-block:: console
 	:emphasize-lines: 4
 	
-	(skplugins) [root@devops scAnsible]# more ../conf/ansible_conf_dev.py
+	(skplugins) [root@devops scAnsible]# more ../conf/conf_ansible_dev.py
 	#! /usr/bin/env python
 	# -*- coding: utf-8 -*-
 	ansible_hosts_file = "/etc/ansible/hosts"
@@ -70,11 +76,11 @@ ansible shell模块执行插件
 
 .. code-block:: console
 
-	(skplugins) [root@devops scAnsible]# python ansible_cmd.py -e dev -g demo1 -c date
+	(skplugins) [root@devops scAnsible]# python main_ansible_cmd.py -e dev -g demo1 -c date
 	svn | CHANGED | rc=0 >>
 	2019年 10月 28日 星期一 15:27:26 CST
-	(skplugins) [root@devops scAnsible]# python ansible_cmd.py -h
-	Usage: ansible_cmd.py [options]
+	(skplugins) [root@devops scAnsible]# python main_ansible_cmd.py -h
+	Usage: main_ansible_cmd.py [options]
 	
 	Options:
 	  --version             show program's version number and exit
@@ -86,13 +92,7 @@ ansible shell模块执行插件
 	                        input the ansible hosts group
 	  -c [ls|cd|...], --command=[ls|cd|...]
 	                        input the command
-	(skplugins) [root@devops scAnsible]# ll
-	总用量 12
-	-rwxr-xr-x. 1 root root 1672 7月   8 12:02 ansible_cmd.py
-	-rwxr-xr-x. 1 root root 1492 6月   5 11:47 ansible_playbook.py
-	-rw-r--r--. 1 root root    0 5月  21 17:19 __init__.py
-	-rwxr-xr-x. 1 root root 1494 5月  21 17:19 vars_get_AnsibleHosts.py
-	(skplugins) [root@devops scAnsible]#
+
 	
 .. note::
 	该处--e为预留参数，该脚本没有使用，后续将用于不同环境的配置文件读取
@@ -123,7 +123,7 @@ ansible shell模块执行插件
 获取redis键值对
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-任务脚本文件：redis\ *getkeyvalue*\ main.py
+任务脚本文件：pl_redis/main_get_redis_kv.py
 
 .. code-block:: python
 
@@ -155,7 +155,7 @@ ansible shell模块执行插件
 
    def main(argv):
        options = parseOption(argv)
-       config_file = "redis_conf_"+options.env
+       config_file = "conf_redis_"+options.env
        exec("from conf."+config_file+ " import redis_vars")
        redis_host = options.instance
        redis_port = redis_vars[options.instance]["port"]
@@ -167,7 +167,7 @@ ansible shell模块执行插件
    if __name__ == "__main__":
        main(sys.argv[1:])
 
-变量配置文件 redis\ *conf*\ stg.py
+变量配置文件 pl_redis/conf/conf_redis_stg.py
 
 
 .. code-block:: python
@@ -265,7 +265,7 @@ ansible shell模块执行插件
 
 .. code-block:: console
 
-   (skipper) [root@localhost scAnsible]# ./ansible_cmd.py -g gtest -c date1
+   (skipper) [root@localhost scAnsible]# ./main_ansible_cmd.py -g gtest -c date1
    yw108 | FAILED | rc=2 >>
 
    [Errno 2] 没有那个文件或目录
@@ -306,10 +306,10 @@ ansible shell模块执行插件
        return options 
 
    def ansible_cmd_func(hosts,forks,cmd):
-       ansible_cmd = "ansible %s -f %s  -a %s" % (hosts,forks,cmd) 
+       main_ansible_cmd = "ansible %s -f %s  -a %s" % (hosts,forks,cmd) 
 
        try:        
-           pcmd = Popen(ansible_cmd, stdout=PIPE, stderr=PIPE, shell=True) 
+           pcmd = Popen(main_ansible_cmd, stdout=PIPE, stderr=PIPE, shell=True) 
            while True: 
                line = pcmd.stdout.readline().strip()  #获取内容
                if line:
@@ -343,17 +343,17 @@ ansible shell模块执行插件
 
 .. code-block:: console
 
-    (venv-adminset) [root@localhost scAnsible]# ./ansible_cmd.py -g gtest -c date1
+    (venv-adminset) [root@localhost scAnsible]# ./main_ansible_cmd.py -g gtest -c date1
        yw108 | FAILED | rc=2 >>
        [Errno 2] 没有那个文件或目录
        yunwei61 | FAILED | rc=2 >>
        [Errno 2] 没有那个文件或目录
        Traceback (most recent call last):
-         File "./ansible_cmd.py", line 56, in <module>
+         File "./main_ansible_cmd.py", line 56, in <module>
            main(sys.argv[1:])
-         File "./ansible_cmd.py", line 51, in main
+         File "./main_ansible_cmd.py", line 51, in main
            ansible_cmd_func(hosts,forks,cmd)
-         File "./ansible_cmd.py", line 45, in ansible_cmd_func
+         File "./main_ansible_cmd.py", line 45, in ansible_cmd_func
            raise Exception("命令执行失败")
        Exception: 命令执行失败
        (venv-adminset) [root@localhost scAnsible]# echo $?

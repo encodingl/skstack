@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import  configparser as ConfigParser
-import skworkorders
+
 
 
 

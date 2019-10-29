@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. WEB平台开发指南 &mdash; SKSTACK v0.1 文档</title>
+  <title>4. WEB平台开发指南 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="prev" title="2. skpper运维工单系统插件书写规范" href="skplugins.html" /> 
+    <link rel="prev" title="3. 插件开发指南2.0" href="skplugins2.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -99,35 +99,40 @@
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="skplugins.html">2. skpper运维工单系统插件书写规范</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. WEB平台开发指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">3.1. 环境说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">3.2. 目录规范</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">3.2.1. 一级子目录说明</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">3.2.2. 二级子目录-模板目录</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">3.2.3. 二级子目录-静态文件目录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skplugins.html">2. 插件开发指南1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. WEB平台开发指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">4.1. 环境说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.2. 目录规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.2.1. 一级子目录说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.2.2. 二级子目录-模板目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.2.3. 二级子目录-静态文件目录</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">3.3. 命名规范</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">3.3.1. 基本原则</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">3.3.2. 代码和文件命名</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#django-app">3.3.2.1. django app命名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#models-class">3.3.2.2. Models  class命名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#forms-class">3.3.2.3. forms class命名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#urls">3.3.2.4. urls命名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#views">3.3.2.5. views命名规范</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#templates">3.3.2.6. templates命名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">3.3.2.7. 变量命名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">4.3. 命名规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.3.1. 基本原则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">4.3.2. 代码和文件命名</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#django-app">4.3.2.1. django app命名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#models-class">4.3.2.2. Models  class命名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forms-class">4.3.2.3. forms class命名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urls">4.3.2.4. urls命名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views">4.3.2.5. views命名规范</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#templates">4.3.2.6. templates命名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">4.3.2.7. 变量命名</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">3.3.3. 示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.3.3. 示例</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">3.4. 共享库使用说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id12">3.5. 配置文件规范命</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id13">3.6. 日志规范</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">3.7. 静态文件和前端</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#resful-api">3.8. Resful api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">4.4. 私有库文件和脚本使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">4.5. 配置文件规范命</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">4.6. 日志规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">4.7. 静态文件和前端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resful-api">4.8. Resful api</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">4.8.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">4.8.2. api说明</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -175,7 +180,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>3. WEB平台开发指南</li>
+      <li>4. WEB平台开发指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -195,9 +200,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="web">
-<h1>3. WEB平台开发指南<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h1>
+<h1>4. WEB平台开发指南<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.1. 环境说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>4.1. 环境说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>系统：centos 7 、windows10、macos</p></li>
 <li><p>python环境：python 3.7最新版本。 强烈建议用virtualenv 进行python虚拟机环境管理</p></li>
@@ -209,9 +214,9 @@
 </ol>
 </div>
 <div class="section" id="id2">
-<h2>3.2. 目录规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>4.2. 目录规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id3">
-<h3>3.2.1. 一级子目录说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<h3>4.2.1. 一级子目录说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>skipper/  #项目主目录
 |-- docs   #文档目录
 |-- lib     #公共库目录
@@ -225,7 +230,7 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h3>3.2.2. 二级子目录-模板目录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<h3>4.2.2. 二级子目录-模板目录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
 <p>用于存放所有app的html文件的目录</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@localhost skipper]# tree -d -L 1 templates/
 templates/
@@ -239,7 +244,7 @@ templates/
 </div>
 </div>
 <div class="section" id="id5">
-<h3>3.2.3. 二级子目录-静态文件目录<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<h3>4.2.3. 二级子目录-静态文件目录<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <p>用于存放所有项目公共静态文件和第三方前端插件的目录</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@localhost skipper]# tree -d -L 1 static/
 static/
@@ -256,9 +261,9 @@ static/
 </div>
 </div>
 <div class="section" id="id6">
-<h2>3.3. 命名规范<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<h2>4.3. 命名规范<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id7">
-<h3>3.3.1. 基本原则<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<h3>4.3.1. 基本原则<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>命名要尽量保证代码的可读性和复用性；</p></li>
@@ -268,14 +273,16 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id8">
-<h3>3.3.2. 代码和文件命名<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<h3>4.3.2. 代码和文件命名<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
 <div class="section" id="django-app">
-<h4>3.3.2.1. django app命名<a class="headerlink" href="#django-app" title="永久链接至标题">¶</a></h4>
-<p>Django app 命名规则为app名称加上“sk”前缀。如资产管理app命名为skcmdb。
-加sk前缀主要用于区分非django app目录</p>
+<h4>4.3.2.1. django app命名<a class="headerlink" href="#django-app" title="永久链接至标题">¶</a></h4>
+<div class="line-block">
+<div class="line">Django app 命名规则为app名称加上“sk”前缀。如资产管理app命名为skcmdb。</div>
+<div class="line">加sk前缀主要用于区分非django app目录</div>
+</div>
 </div>
 <div class="section" id="models-class">
-<h4>3.3.2.2. Models  class命名<a class="headerlink" href="#models-class" title="永久链接至标题">¶</a></h4>
+<h4>4.3.2.2. Models  class命名<a class="headerlink" href="#models-class" title="永久链接至标题">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">第一个字母大写，若class由多个词组组合，每个词第一个字母大写</dt>
 <dd class="field-odd"><p></p></dd>
@@ -288,7 +295,7 @@ static/
 </div>
 </div>
 <div class="section" id="forms-class">
-<h4>3.3.2.3. forms class命名<a class="headerlink" href="#forms-class" title="永久链接至标题">¶</a></h4>
+<h4>4.3.2.3. forms class命名<a class="headerlink" href="#forms-class" title="永久链接至标题">¶</a></h4>
 <dl class="field-list">
 <dt class="field-odd">若表单类继承ModelsFrom 命名规范如下</dt>
 <dd class="field-odd"><p>“Models class名称”+下划线+“form”</p>
@@ -301,14 +308,14 @@ static/
 </dl>
 </div>
 <div class="section" id="urls">
-<h4>3.3.2.4. urls命名<a class="headerlink" href="#urls" title="永久链接至标题">¶</a></h4>
+<h4>4.3.2.4. urls命名<a class="headerlink" href="#urls" title="永久链接至标题">¶</a></h4>
 <p>url规则:models表对象名称/操作方法/自定义;url别名命名与视图函数一致</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^Project/add/$&#39;</span><span class="p">,</span> <span class="n">Project</span><span class="o">.</span><span class="n">Project_add</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Project_add&#39;</span><span class="p">),</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="views">
-<h4>3.3.2.5. views命名规范<a class="headerlink" href="#views" title="永久链接至标题">¶</a></h4>
+<h4>4.3.2.5. views命名规范<a class="headerlink" href="#views" title="永久链接至标题">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">views函数命名规则：对象名称+操作方法</dt>
 <dd class="field-odd"><p></p></dd>
@@ -316,20 +323,26 @@ static/
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^Project/add/$&#39;</span><span class="p">,</span> <span class="n">Project</span><span class="o">.</span><span class="n">Project_add</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Project_add&#39;</span><span class="p">),</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">views文件命名规则：“对象名称.py”</dt>
-<dd class="field-odd"><p>原则上每个数据库表对象的函数集合单独用一个视图处理文件，如所有针对Project表对象的处理视图函数，都可以放到Project.py文件。
-对于视图处理函数数量较少的app可以统一将视图处理函数放到views.py文件</p>
+<dd class="field-odd"><div class="line-block">
+<div class="line">原则上每个数据库表对象的函数集合单独用一个视图处理文件，如所有针对Project表对象的处理视图函数，都可以放到Project.py文件。</div>
+<div class="line">对于视图处理函数数量较少的app可以统一将视图处理函数放到views.py文件</div>
+</div>
 </dd>
 </dl>
 </div>
 <div class="section" id="templates">
-<h4>3.3.2.6. templates命名<a class="headerlink" href="#templates" title="永久链接至标题">¶</a></h4>
-<p>模板html文件命名规范：视图函数名称.html
-详见skworkorders app对应的url 视图 templates文件命名</p>
+<h4>4.3.2.6. templates命名<a class="headerlink" href="#templates" title="永久链接至标题">¶</a></h4>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>模板html文件命名规范：视图函数名称.html</p></li>
+<li><p>详见skworkorders app对应的url 视图 templates文件命名</p></li>
+</ol>
+</div></blockquote>
 </div>
 <div class="section" id="id9">
-<h4>3.3.2.7. 变量命名<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<h4>4.3.2.7. 变量命名<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
 <dl class="simple">
 <dt>变量命名基本原则</dt><dd><ol class="arabic simple">
 <li><p>变量命名要尽量保证代码的可读性和复用性；</p></li>
@@ -347,29 +360,109 @@ static/
 </div>
 </div>
 <div class="section" id="id10">
-<h3>3.3.3. 示例<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<h3>4.3.3. 示例<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <p>参考skworkorders项目命名</p>
 </div>
 </div>
 <div class="section" id="id11">
-<h2>3.4. 共享库使用说明<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.4. 私有库文件和脚本使用说明<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p>私有库文件命名规范：lib_app名称；私有库文件主要是存放一些app的私有函数和类、私有库文件放到app自身的文件夹里面。如下图</p>
+<blockquote>
+<div><img alt="image not found" src="../_images/web_lib.png" />
+<p>其他django app若需复用，请拷贝所属app的自有库文件进行维护</p>
+</div></blockquote>
+</li>
+<li><p>脚本文件命名规范：sc_app名称；存放到所属app主目录，主要用于本app调用的功能脚本。</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="id12">
-<h2>3.5. 配置文件规范命<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.5. 配置文件规范命<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>所有app牵涉到的配置文件，一律放到”skipper_*.conf”；</p></li>
+<li><p>配置文件读取和写入参考现有skconfig模块或django的settings文件；</p></li>
+<li><p>配置文件区分开发配置文件（skstack_dev.conf）和生产配置文件(skstack_prod.conf)，若两个文件同时存在 优先使用skstack_prod.conf；详见settings关于配置文件的引用方式。</p></li>
+</ol>
+</div></blockquote>
 </div>
 <div class="section" id="id13">
-<h2>3.6. 日志规范<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.6. 日志规范<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>日志格式和规范参考在settings里面LOGGING参数的skworkorders app日志定义 。</p></li>
+<li><p>需要记录时间、日志级别、消息内容。</p></li>
+<li><p>请遵循现有的日志记录规范，原则上每个app单独使用一个日志文件。</p></li>
+</ol>
+</div></blockquote>
 </div>
 <div class="section" id="id14">
-<h2>3.7. 静态文件和前端<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.7. 静态文件和前端<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>前端框架使用: <a class="reference external" href="http://adminlte.la998.com/index2.html">AdminLTE</a>; 仪表盘使用: <a class="reference external" href="https://echarts.apache.org/zh/index.html">Echarts</a></p></li>
+<li><p>原则上优先使用AdminLTE框架所带插件开发前端，保持风格一致性</p></li>
+<li><p>静态文件目录规范参考目录规范章节</p></li>
+<li><p>模板html文件命名规范参考现有skworkorders项目命名，详见命名规范部分介绍</p></li>
+<li><p>html模板一律采用模板继承的方式兼容现有的风格，具体参考已有项目。以下是部分功能和页面风格截图。</p></li>
+</ol>
+</div></blockquote>
 </div>
 <div class="section" id="resful-api">
-<h2>3.8. Resful api<a class="headerlink" href="#resful-api" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.8. Resful api<a class="headerlink" href="#resful-api" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id15">
+<h3>4.8.1. 概述<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>Resful api 主要用于外部平台获取skstack里面的资产数据，和接口调用。</p>
+<dl class="field-list">
+<dt class="field-odd">格式</dt>
+<dd class="field-odd"><p>http(s)://hosts：port/AppName/对象名称/方法名/版本号/?token=xxx&amp;（对象属性）</p>
+</dd>
+<dt class="field-even">示例</dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">获取cmdb上某个idc上某个ip的主机信息</div>
+<div class="line"><a class="reference external" href="https://192.168.1.10:8000">https://192.168.1.10:8000</a> /skcmdb/hosts/get/v0/?token=xxxxxx&amp;ip=x.x.x.x&amp;idc=xxx</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="api">
+<h3>4.8.2. api说明<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">api文件命名和目录规范</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>接口视图模块命名：api_模块名称.py，位于所属django app主目录</p>
+<dl class="field-list simple">
+<dt class="field-odd">版本号</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="line-block">
+<div class="line">Api版本号向下兼容，发布新的的接口，需要保留原有版本接口</div>
+<div class="line">版本号只能使用正整数 v0-v9999</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">方法名</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ol class="arabic simple">
+<li><p>GET （SELECT）：从服务器检索特定资源，或资源列表。</p></li>
+<li><p>POST （CREATE）：在服务器上创建一个新的资源。</p></li>
+<li><p>PUT （UPDATE）：更新服务器上的资源，提供整个资源。</p></li>
+<li><p>DELETE （DELETE）：从服务器删除资源。</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">对象名称</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>Api对外接口的提供访问的对象 比如cmdb资产 的主机信息 idc信息等。</p>
+<dl class="field-list simple">
+<dt class="field-odd">对象属性</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>需要查询对象的属性参数</p>
+</div>
 </div>
 </div>
 
@@ -382,7 +475,7 @@ static/
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="skplugins.html" class="btn btn-neutral float-left" title="2. skpper运维工单系统插件书写规范" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="skplugins2.html" class="btn btn-neutral float-left" title="3. 插件开发指南2.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

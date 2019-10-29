@@ -4,6 +4,7 @@
 
 环境说明
 ----------------
+
 * Python3.7.4
 * Django2.2.5 
 * system：windows or linux 
@@ -21,6 +22,7 @@
  * 安装python 3.7和python虚拟机  略（为了不影响其他python应用环境强烈建议安装python虚拟机）；
 
  * 用virtualenvwrapper按照python虚拟环境
+ 
   #. mkvirtualenv skstack
   #. workon skstack
 
@@ -49,6 +51,7 @@
 
 建库和初始化数据
 ~~~~~~~~~~~~~~~~~~~~~~
+
 安装数据库
 
  #. yum install -y mariadb-server mariadb-devel
@@ -72,6 +75,7 @@
 
 运行web平台和登录
 ~~~~~~~~~~~~~~~~~~~~~~
+
 python manage.py runserver 0.0.0.0:8000
 
 登录页面
@@ -83,5 +87,6 @@ python manage.py runserver 0.0.0.0:8000
 
 安装工单系统插件
 ~~~~~~~~~~~~~~~~~~~~~~
+
 详见各插件安装使用说明文档
 

@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^skrecord/', include('skrecord.urls')),
     url(r'^$',views.index,name="index"),
     url(r'^skcmdb/', include('skcmdb.urls')),
+
 #     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     
 ]

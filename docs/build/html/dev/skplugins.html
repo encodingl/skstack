@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. skpper运维工单系统插件书写规范 &mdash; SKSTACK v0.1 文档</title>
+  <title>2. 插件开发指南1.0 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="3. WEB平台开发指南" href="web.html" />
+    <link rel="next" title="3. 插件开发指南2.0" href="skplugins2.html" />
     <link rel="prev" title="1. 文档编写说明和示例" href="demodoc.html" /> 
 </head>
 
@@ -100,20 +100,21 @@
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. skpper运维工单系统插件书写规范</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">2.1. 目录规范</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">2.2. 命名规范</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">2.3. 脚本编写规范和配置文件规范</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 插件开发指南1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.1. 目录规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.2. 命名规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">2.3. 脚本编写规范和配置文件规范</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#demo">2.4. 插件Demo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ansible-shell">2.4.1. ansible shell模块执行插件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#redis">2.4.2. 获取redis键值对</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">2.4.3. 复选框模式传参处理</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">2.4.4. 插件返回子进程异常处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.4.3. 复选框模式传参处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.4.4. 插件返回子进程异常处理</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">4. WEB平台开发指南</a></li>
 </ul>
 
             
@@ -159,7 +160,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>2. skpper运维工单系统插件书写规范</li>
+      <li>2. 插件开发指南1.0</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,10 +179,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="skpper">
-<h1>2. skpper运维工单系统插件书写规范<a class="headerlink" href="#skpper" title="永久链接至标题">¶</a></h1>
-<div class="section" id="id1">
-<h2>2.1. 目录规范<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+  <div class="section" id="id1">
+<h1>2. 插件开发指南1.0<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="line-block">
+<div class="line">本规范仅适用于python2.7开发的已发布项目维护。新的插件开发请参考 <a class="reference internal" href="skplugins2.html#dev-skplugins2"><span class="std std-ref">插件开发指南2.0</span></a></div>
+<div class="line">skstack平台，理论支持所有能在linux服务器命令行界面直接运行的语言。</div>
+<div class="line">本文档主要基于python说明，其他语言可以参考相关目录、文件命名和日志规范</div>
+</div>
+<div class="section" id="id2">
+<h2>2.1. 目录规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>skPlugins/            #插件主目录
 |-- conf                 #配置文目录
 |   |-- ansible_conf_dev.py
@@ -197,9 +203,13 @@
     `-- redis_getkeyvalue_main.py
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>后续版本配置文件和lib文件将统一存放于所属插件主目录</p>
 </div>
-<div class="section" id="id2">
-<h2>2.2. 命名规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="id3">
+<h2>2.2. 命名规范<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>插件目录命名：sc前缀加分类名称(分类名首字母大写) 例如scRedis</p></li>
 <li><p>配置文件命名：配置文件用途加“<em>conf</em>环境简称”后缀 ,例如：
@@ -210,8 +220,8 @@ ansible<em>conf</em>prod.py</p></li>
 post：表示后置任务脚本</p></li>
 </ol>
 </div>
-<div class="section" id="id3">
-<h2>2.3. 脚本编写规范和配置文件规范<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h2>2.3. 脚本编写规范和配置文件规范<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>对于生产、测试、stg相关环境的配置文件变量不能硬编码到变量获取脚本或者任务脚本文件中</p></li>
 <li><p>配置文件应该从conf中相应的配置文件中动态获取，通过 “-e”参数指定环境，去读不同环境下的配置文件；不同环境下的配置文件通过命名后缀区分</p></li>
@@ -223,8 +233,10 @@ post：表示后置任务脚本</p></li>
 <h2>2.4. 插件Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
 <div class="section" id="ansible-shell">
 <h3>2.4.1. ansible shell模块执行插件<a class="headerlink" href="#ansible-shell" title="永久链接至标题">¶</a></h3>
-<p>确认先在命令行模式测试插件是否工作正常，不同的插件详见各插件使用说明文档，demo以ansible cmd插件脚本为例；
-确认ansible cmd脚本”ansible_cmd.py”的配置文件配置正确</p>
+<div class="line-block">
+<div class="line">确认先在命令行模式测试插件是否工作正常，不同的插件详见各插件使用说明文档，demo以ansible cmd插件脚本为例；</div>
+<div class="line">确认ansible cmd脚本”ansible_cmd.py”的配置文件配置正确</div>
+</div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# more ../conf/ansible_conf_dev.py</span>
 <span class="gp">#</span>! /usr/bin/env python
 <span class="gp">#</span> -*- coding: utf-8 -*-
@@ -353,8 +365,8 @@ post：表示后置任务脚本</p></li>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h3>2.4.3. 复选框模式传参处理<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id5">
+<h3>2.4.3. 复选框模式传参处理<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1">#! /usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -402,10 +414,12 @@ post：表示后置任务脚本</p></li>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h3>2.4.4. 插件返回子进程异常处理<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
-<p>如果插件子进程执行异常，且子进程返回给插件父进程的状态吗为非0，但是插件父进程执行完毕返回的状态码为0，这种情况下需要在父进程主动抛出异常，方便sk平台捕获
-获取更准确的执行结果，示例如下：</p>
+<div class="section" id="id6">
+<h3>2.4.4. 插件返回子进程异常处理<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="line-block">
+<div class="line">如果插件子进程执行异常，且子进程返回给插件父进程的状态吗为非0，但是插件父进程执行完毕返回的状态码为0，这种情况下需要在父进程主动抛出异常，方便sk平台捕获</div>
+<div class="line">获取更准确的执行结果，示例如下：</div>
+</div>
 <p>1 子进程异常但是父进程正常：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skipper) [root@localhost scAnsible]# ./ansible_cmd.py -g gtest -c date1</span>
 <span class="go">yw108 | FAILED | rc=2 &gt;&gt;</span>
@@ -510,7 +524,7 @@ post：表示后置任务脚本</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="web.html" class="btn btn-neutral float-right" title="3. WEB平台开发指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="skplugins2.html" class="btn btn-neutral float-right" title="3. 插件开发指南2.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="demodoc.html" class="btn btn-neutral float-left" title="1. 文档编写说明和示例" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
