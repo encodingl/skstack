@@ -227,10 +227,14 @@
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>cd skstack</p></li>
-<li><p>编辑skstack_prod.conf文件填写mysql数据库等信息</p></li>
-<li><p>如果有skstack_dev.conf文件，会先读取，主要用于开发模式</p></li>
+<li><p>生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql数据库等信息</p></li>
+<li><p>开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql数据库等信息</p></li>
 </ol>
 </div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件</p>
+</div>
 </div>
 <div class="section" id="id6">
 <h3>2.2.4. 建库和初始化数据<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>

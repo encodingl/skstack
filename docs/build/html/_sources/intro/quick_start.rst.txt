@@ -271,6 +271,11 @@ ansible cmd插件测试
    :width: 800
    :alt: image not found
 
-
+.. note::
+	#. 每定义一个任务工单，可以传递外部list变量（用户可选）和内部变量（对用户不可见）给工单
+	#. 内部变量此处未用，格式为dict 如{"GitProjName":"app01"} key为变量名，value为值，可以定义多个kv
+	#. 外部和内部变量通过"{变量名}" 传递给任务脚本；如 ansible_cmd.py -e prod -g "{AnsibleHosts}" -c "{AnsibleCMD}"
+	
+..
 
 

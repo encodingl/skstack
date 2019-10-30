@@ -400,6 +400,14 @@
 <a class="reference internal image-reference" href="../_images/skw_conf_wo1.png"><img alt="image not found" src="../_images/skw_conf_wo1.png" style="width: 800px;" /></a>
 <a class="reference internal image-reference" href="../_images/skw_conf_wo2.png"><img alt="image not found" src="../_images/skw_conf_wo2.png" style="width: 800px;" /></a>
 <a class="reference internal image-reference" href="../_images/skw_conf_wo3.png"><img alt="image not found" src="../_images/skw_conf_wo3.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>每定义一个任务工单，可以传递外部list变量（用户可选）和内部变量（对用户不可见）给工单</p></li>
+<li><p>内部变量此处未用，格式为dict 如{“GitProjName”:”app01”} key为变量名，value为值，可以定义多个kv</p></li>
+<li><p>外部和内部变量通过”{变量名}” 传递给任务脚本；如 ansible_cmd.py -e prod -g “{AnsibleHosts}” -c “{AnsibleCMD}”</p></li>
+</ol>
+</div>
 </div>
 </div>
 </div>

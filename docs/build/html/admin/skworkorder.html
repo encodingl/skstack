@@ -95,14 +95,19 @@
 <li class="toctree-l2"><a class="reference internal" href="#id3">2.2. 配置步骤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id4">2.2.1. 基础配置</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">2.2.2. 配置中心</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">2.2.3. 变量配置</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">2.2.4. 工单配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.2.3. 变量配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">2.2.3.1. 外部变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">2.2.3.2. 内部变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">2.2.3.3. 变量传递</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">2.3. 提单</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">2.4. 审核</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">2.5. 执行</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">2.6. 审计</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.2.4. 工单配置</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">2.3. 提单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">2.4. 审核</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">2.5. 执行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">2.6. 审计</a></li>
 </ul>
 </li>
 </ul>
@@ -183,7 +188,7 @@
             
   <div class="section" id="id1">
 <h1>2. 工单系统<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<p>请先参考快速入门手册，后续补充改章节内容</p>
+<p>请先参考快速入门手册，后续补充该章节内容</p>
 <div class="section" id="id2">
 <h2>2.1. 原理<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <p>略</p>
@@ -201,27 +206,56 @@
 </div>
 <div class="section" id="id6">
 <h3>2.2.3. 变量配置<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
-<p>略</p>
-</div>
+<p>每定义一个任务工单，可以传递外部变量（用户可选）和内部变量（对用户不可见）给工单</p>
 <div class="section" id="id7">
-<h3>2.2.4. 工单配置<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
-<p>略</p>
-</div>
+<h4>2.2.3.1. 外部变量<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>通过变量注册的方式获取，通过外部脚本或者管理员定义</p></li>
+<li><p>格式为list 如变量注册是定义变量名称AnsibleHosts 插件外部变量获取脚本获取的值为 [“host1”,”host2”,”host3”]</p></li>
+<li><p>可为空</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="id8">
-<h2>2.3. 提单<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h4>2.2.3.2. 内部变量<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>新增工单时编辑内置变量定义</p></li>
+<li><p>格式为dict 如{“GitProjName”:”app01”} key为变量名，value为值</p></li>
+<li><p>内部变量主要用于静态变量，不会动态更新，默认可为空</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="id9">
-<h2>2.4. 审核<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h4>2.2.3.3. 变量传递<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>内部变量和外部变量都通过”{变量名}” 传递给任务脚本；</p></li>
+<li><p>如 main_deploy_git.py -e prod -g “{GitProjName}” -i “{AnsibleHosts}”</p></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="id10">
-<h2>2.5. 执行<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<h3>2.2.4. 工单配置<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <p>略</p>
 </div>
+</div>
 <div class="section" id="id11">
-<h2>2.6. 审计<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<h2>2.3. 提单<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>略</p>
+</div>
+<div class="section" id="id12">
+<h2>2.4. 审核<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<p>略</p>
+</div>
+<div class="section" id="id13">
+<h2>2.5. 执行<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>略</p>
+</div>
+<div class="section" id="id14">
+<h2>2.6. 审计<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
 <p>略</p>
 </div>
 </div>
