@@ -93,6 +93,7 @@ SKSTACK |version| documentation
  
  plugins/docker_deploy
  plugins/static_deploy
+ plugins/the_third
    
 :doc:`plugins/docker_deploy`
 
@@ -101,6 +102,10 @@ SKSTACK |version| documentation
 :doc:`plugins/static_deploy`
 
     介绍静态文件部署插件的使用方式
+    
+:doc:`plugins/static_deploy`
+
+    第三方插件索引
    
 
 开发者指南
@@ -119,6 +124,7 @@ SKSTACK |version| documentation
  dev/web
  dev/git_guidelines
  dev/author_info
+ dev/join_us
    
 :doc:`dev/demodoc`
 
@@ -143,3 +149,7 @@ SKSTACK |version| documentation
 :doc:`dev/author_info`
 
     平台和插件主要开发人员介绍
+    
+:doc:`dev/join_us`
+
+    暂未开放
