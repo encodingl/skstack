@@ -22,10 +22,23 @@ SKSTACK |version| documentation
    intro/overview
    intro/install
    intro/quick_start
+   intro/release_info
    
 :doc:`intro/overview`
 
-	该系统从py2升级到py3后 以及django1.9升级到django2.2，还在调试当中。请勿投入生产系统使用
+.. note::
+	  该系统从py2升级到py3后 以及django1.9升级到django2.2，还在调试当中。请勿投入生产系统使用
+..
+
+:主要包含功能如下:
+
+ * 仪表盘：统计工单、用户、事件、资源相关数据
+ * 工单系统：版本发布、应急预案管理、标准化运维任务工单执行
+ * 用户系统：用户和菜单角色管理，工单授权、审核流程管理
+ * 资源管理：软件和硬件资产管理
+ * 登记管理：事件登记、FAQ、重要事项通知管理
+ * 运维导航：运维值班、分工、公告、事件处理流程、相关运维系统超级链接管理
+ * ANSIBLE：ansible脚本项目化管理
 
 :doc:`intro/install`
 
@@ -34,6 +47,10 @@ SKSTACK |version| documentation
 :doc:`intro/quick_start`
 
     该章节通过几个场景的配置介绍，使用户能够快速使用skstack平台。
+    
+:doc:`intro/release_info`
+
+    版本更新说明
 
 
   
@@ -100,6 +117,8 @@ SKSTACK |version| documentation
  dev/skplugins
  dev/skplugins2
  dev/web
+ dev/git_guidelines
+ dev/author_info
    
 :doc:`dev/demodoc`
 
@@ -116,3 +135,11 @@ SKSTACK |version| documentation
 :doc:`dev/web`
 
     SKSTACK web平台相关开发规范，如：命名规范 api规范 日志规范等。
+    
+:doc:`dev/git_guidelines`
+
+    SKSTACK web平台git功能分支开发和版本管理指南。
+    
+:doc:`dev/author_info`
+
+    平台和插件主要开发人员介绍
