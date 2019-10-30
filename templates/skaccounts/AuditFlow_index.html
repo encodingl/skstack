@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block self_head_css_js %}
+    <script src="/static/layer/layer.js"></script>
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <form action="{% url 'AuditFlow_del' %}" method="post">
+                {% csrf_token %}
+            <div class="box">
+                <div class="box-header">
+                
+                {% if tpl_error_msg %}
+			 <div class="box  box-solid box-warning">
+					  <div class="box-header with-border ">
+					    <h3 class="box-title">WARNING</h3>
+					    <div class="box-tools pull-right">
+					      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					    </div><!-- /.box-tools -->
+					  </div><!-- /.box-header -->
+					  <div class="box-body">
+					    {{ tpl_error_msg }}
+					  </div><!-- /.box-body -->
+			</div><!-- /.box -->
+ 			 {% endif %}
+ 			 
+                  <div class="btn-group">
+						 <a href="{% url 'AuditFlow_add' %}"><li class="btn btn-success" style="width: 60pt;font-size: medium" ><b>添加</b></li></a>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table class="table table-striped table-bordered" id="dataform">
+                      <thead>
+                        <tr>
+                            
+                                    <th>名称</th>
+                                    <th>审核层级</th>
+                                    <th>第1级审核群组</th>
+                                    <th>第2级审核群组</th> 
+                                    <th>第3级审核群组</th>     
+                                    <th class="text-center">功能</th>                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {% if tpl_all %}
+                                {% for x in tpl_all %}
+                                    <tr class="even gradeA">
+                                       
+                                        <td><a href="#"><li style="list-style-type:none" onclick="return tanchu(this.value)" value="{{ x.id }}">{{ x.name }}</li></a></td>
+                                        <td>{{ x.level }}</td>
+                                        <td>{{ x.l1 }}</td>
+                                        <td>{{ x.l2 }}</td>
+                                        <td>{{ x.l3 }}</td>
+                                        <td class="text-center" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>
+                                        <a href="{% url 'AuditFlow_del' %}?id={{ x.id }}" class="btn btn-sm btn-danger " onclick="if(confirm('确定删除?')==false)return false;">删除</a>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <p>No Item are available.</p>
+                               {% endif %}
+
+                            </tbody>
+                  </table>
+
+                </div>
+                
+          <div class="box-footer">
+ 			 
+ 			
+ 			 </div><!-- box-footer -->
+                
+            </div>
+        </form>
+
+    </section>
+        <!-- /.content -->
+</div>
+<input id="handle_status" value="" hidden="hidden">
+
+
+<script>
+  $(function () {
+    $('#dataform').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true
+    });
+  });
+</script>
+
+<script>
+function tanchu(n){
+    layer.open({
+    type: 2,
+    title: '修改信息',
+    closeBtn: 1,
+    area: ['600px', '400px'],
+    shadeClose: true, //点击遮罩关闭
+/*     content: ['/skdeploy/project_edit?id=' + n,], */
+    content: ['/skaccounts/AuditFlow/edit/' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('保存成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('修改失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
+
+{% endblock %}

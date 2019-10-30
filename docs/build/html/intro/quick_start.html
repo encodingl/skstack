@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. 快速入门 &mdash; SKSTACK v0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1. 用户系统" href="../admin/skaccounts.html" />
+    <link rel="prev" title="2. 安装手册" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SKSTACK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">快速入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. 安装手册</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. 快速入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.1. 步骤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.1.1. 基本使用流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.1.2. 菜单和用户配置流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">3.1.3. 工单配置流程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">3.2. 创建菜单和用户并授权</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">3.2.1. 添加菜单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">3.2.2. 添加菜单角色</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">3.2.3. 添加用户和授权</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">3.2.4. 添加用户组</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ansible">3.3. 创建一个ansible任务工单</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">3.3.1. 效果展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">3.3.2. 插件环境基础配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ansible-cmd">3.3.3. ansible cmd插件测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">3.3.4. 添加配置中心</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">3.3.5. 添加用途分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">3.3.6. 工单变量注册</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">3.3.7. 工单变量分组</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">3.3.8. 工单插件注册</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">用户手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
+</ul>
+<p class="caption"><span class="caption-text">插件使用手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+</ul>
+<p class="caption"><span class="caption-text">开发者指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SKSTACK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>3. 快速入门</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/quick_start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>3. 快速入门<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>3.1. 步骤<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>3.1.1. 基本使用流程<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<a class="reference internal image-reference" href="../_images/skw_steps.png"><img alt="image not found" src="../_images/skw_steps.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>审核流程非必须，若为开启审核功能，用户提单后可以直接执行和返回执行结果</p></li>
+<li><p>快速入门手册没有开启审核流程，假设运维和提单人员为同一人，都用管理员账号配置。</p></li>
+<li><p>关于审核流程配置详见：用户手册》用户系统》审核流程配置</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>3.1.2. 菜单和用户配置流程<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>添加菜单</p></li>
+<li><p>添加菜单角色</p></li>
+<li><p>创建用户并授权</p></li>
+<li><p>创建用户组</p></li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>超级管理员默认具有所有菜单访问权限.</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>3.1.3. 工单配置流程<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>配置中心初始化</p></li>
+<li><p>用途分类配置</p></li>
+<li><p>工单变量注册</p></li>
+<li><p>工单变量分组</p></li>
+<li><p>工单插件注册</p></li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>若ansible或相关插件执行服务器与skstack在同一台服务器 则不需要进行配置中心初始化工作</p>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>3.2. 创建菜单和用户并授权<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id7">
+<h3>3.2.1. 添加菜单<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>用户管理》权限管理》菜单权限》添加权限</p>
+<a class="reference internal image-reference" href="../_images/skw_user_menupri.png"><img alt="image not found" src="../_images/skw_user_menupri.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>菜单权限基于URL方式认证授权，URL后需要以”/”符号结尾，详见上截图.</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>3.2.2. 添加菜单角色<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>用户管理》权限管理》菜单角色》添加角色</p>
+<a class="reference internal image-reference" href="../_images/skw_user_menurole.png"><img alt="image not found" src="../_images/skw_user_menurole.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id9">
+<h3>3.2.3. 添加用户和授权<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>用户管理》用户管理》菜单角色》添加用户并授权菜单角色权限</p>
+<blockquote>
+<div><p>略</p>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>3.2.4. 添加用户组<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>用户管理》群组管理》菜单角色》添加用户组</p>
+<blockquote>
+<div><p>略</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>用户组用于工单授权和审核流程层级授权</p>
+</div>
+</div>
+</div>
+<div class="section" id="ansible">
+<h2>3.3. 创建一个ansible任务工单<a class="headerlink" href="#ansible" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id11">
+<h3>3.3.1. 效果展示<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<a class="reference internal image-reference" href="../_images/skw_submit_ansible.png"><img alt="image not found" src="../_images/skw_submit_ansible.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>AnsibleCMD为用户需要输入的shell命令</p></li>
+<li><p>AnsibleHosts为用户选择需要执行shell命令的目标主机</p></li>
+<li><p>执行结果将基于xterm样式 websocket实时输出</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>3.3.2. 插件环境基础配置<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<ol class="arabic simple">
+<li><p>ansible安装：略</p></li>
+<li><p>插件安装：git clone 《插件git url》，注意：插件安装到ansible服务器</p></li>
+<li><p>安装python2.7的python虚拟环境：略；该插件</p></li>
+<li><p>配置demo1作为ansible 远程执行命令的客户机 作为测试：略</p></li>
+</ol>
+</div>
+<div class="section" id="ansible-cmd">
+<h3>3.3.3. ansible cmd插件测试<a class="headerlink" href="#ansible-cmd" title="永久链接至标题">¶</a></h3>
+<div class="line-block">
+<div class="line">确认先在命令行模式测试插件是否工作正常，不同的插件详见各插件使用说明文档，demo以ansible cmd插件脚本为例；</div>
+<div class="line">确认ansible cmd脚本”ansible_cmd.py”的配置文件配置正确</div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# more ../conf/ansible_conf_dev.py</span>
+<span class="gp">#</span>! /usr/bin/env python
+<span class="gp">#</span> -*- coding: utf-8 -*-
+<span class="hll"><span class="go">ansible_hosts_file = &quot;/etc/ansible/hosts&quot;</span>
+</span></pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# python ansible_cmd.py -e dev -g demo1 -c date</span>
+<span class="go">svn | CHANGED | rc=0 &gt;&gt;</span>
+<span class="go">2019年 10月 28日 星期一 15:27:26 CST</span>
+<span class="go">(skplugins) [root@devops scAnsible]# python ansible_cmd.py -h</span>
+<span class="go">Usage: ansible_cmd.py [options]</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             show program&#39;s version number and exit</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -e [prod|stg|...], --environment=[prod|stg|...]</span>
+<span class="go">                        input the environment in which the script needs to be</span>
+<span class="go">                        executed</span>
+<span class="go">  -g [gp01|ip|...], --group=[gp01|ip|...]</span>
+<span class="go">                        input the ansible hosts group</span>
+<span class="go">  -c [ls|cd|...], --command=[ls|cd|...]</span>
+<span class="go">                        input the command</span>
+<span class="go">(skplugins) [root@devops scAnsible]# ll</span>
+<span class="go">总用量 12</span>
+<span class="go">-rwxr-xr-x. 1 root root 1672 7月   8 12:02 ansible_cmd.py</span>
+<span class="go">-rwxr-xr-x. 1 root root 1492 6月   5 11:47 ansible_playbook.py</span>
+<span class="go">-rw-r--r--. 1 root root    0 5月  21 17:19 __init__.py</span>
+<span class="go">-rwxr-xr-x. 1 root root 1494 5月  21 17:19 vars_get_AnsibleHosts.py</span>
+<span class="go">(skplugins) [root@devops scAnsible]#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>该处–e为预留参数，该脚本没有使用，后续将用于不同环境的配置文件读取</p>
+</div>
+<p>确认ansible hosts变量获取脚本工作正常</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -e dev</span>
+<span class="go">[&#39;appT_h5&#39;, &#39;app_h5&#39;, &#39;demo1&#39;, &#39;dev_nginx&#39;, &#39;mitrade-cloud-config-repo&#39;, &#39;skplugins&#39;, &#39;system-hosts-file&#39;, &#39;web-cms-app&#39;, &#39;webtrader&#39;, &#39;webtrader2&#39;]</span>
+<span class="go">(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -h</span>
+<span class="go">Usage: vars_get_AnsibleHosts.py [options]</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             show program&#39;s version number and exit</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -e [prod|stg|...], --environment=[prod|stg|...]</span>
+<span class="go">                        input the environment in which the script needs to be</span>
+<span class="go">                        executed</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>该处-e参数为获取不同环境的配置文件参数；执行结果返回看到ansible hosts里面定义的group列表即为正常</p>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>3.3.4. 添加配置中心<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>若ansible或相关插件执行服务器与skstack在同一台服务器 则不需要进行配置中心添加工作</p></li>
+<li><p>skstack和ansible和插件工具工作原理，详见快速入门 概述章节内容。</p></li>
+<li><p>skstack支持添加多个配置中心：如不同环境使用不同的ansible作为配置管理服务器。</p></li>
+</ol>
+</div>
+<p>工单系统》配置》配置中心》添加</p>
+<a class="reference internal image-reference" href="../_images/skw_conf_center.png"><img alt="image not found" src="../_images/skw_conf_center.png" style="width: 800px;" /></a>
+<p>添加完毕点击验证按钮能够获取到配置中心时间表示配置成功，如下截图</p>
+<a class="reference internal image-reference" href="../_images/skw_conf_center_ver.png"><img alt="image not found" src="../_images/skw_conf_center_ver.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id14">
+<h3>3.3.5. 添加用途分类<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<a class="reference internal image-reference" href="../_images/skw_conf_category.png"><img alt="image not found" src="../_images/skw_conf_category.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id15">
+<h3>3.3.6. 工单变量注册<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<div class="line-block">
+<div class="line">该处用于注册工单外部变量，通过脚本或者管理员自定义的方式获取变量参数，通过web交互界面由用户传递给工单任务脚本</div>
+<div class="line">注册ansible hosts变量，用于执行asnible cmd时候 选择主机，如web效果展示的AnsibleCMD选项</div>
+</div>
+<a class="reference internal image-reference" href="../_images/skw_conf_var_reg1.png"><img alt="image not found" src="../_images/skw_conf_var_reg1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/skw_conf_var_reg2.png"><img alt="image not found" src="../_images/skw_conf_var_reg2.png" style="width: 800px;" /></a>
+<p>注册自定义文本输入框变量，用于输入shell命令，如web效果展示的AnsibleHosts选项</p>
+<a class="reference internal image-reference" href="../_images/skw_conf_var_reg3.png"><img alt="image not found" src="../_images/skw_conf_var_reg3.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/skw_conf_var_reg4.png"><img alt="image not found" src="../_images/skw_conf_var_reg4.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id16">
+<h3>3.3.7. 工单变量分组<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>每个工单可以关联一组外部变量，只有加入改组的工单变量，才能在web交互界面提单时进行选择。</p>
+<a class="reference internal image-reference" href="../_images/skw_conf_var_group.png"><img alt="image not found" src="../_images/skw_conf_var_group.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id17">
+<h3>3.3.8. 工单插件注册<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<a class="reference internal image-reference" href="../_images/skw_conf_wo1.png"><img alt="image not found" src="../_images/skw_conf_wo1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/skw_conf_wo2.png"><img alt="image not found" src="../_images/skw_conf_wo2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/skw_conf_wo3.png"><img alt="image not found" src="../_images/skw_conf_wo3.png" style="width: 800px;" /></a>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../admin/skaccounts.html" class="btn btn-neutral float-right" title="1. 用户系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral float-left" title="2. 安装手册" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, encodingl@sina.com
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

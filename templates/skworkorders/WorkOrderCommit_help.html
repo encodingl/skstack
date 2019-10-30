@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+</head>
+<body>
+<div class="content-wrapper">
+
+
+    <!-- Main content -->
+
+    <section class="content">
+
+<div id="dialog">
+        <div class="box box-info">
+            <!-- /.box-header -->
+            <!-- form start -->
+          <form action="#" method="post">
+            {% csrf_token %}
+            {{ tpl_WorkOrderCommit_help_form.as_p }}
+
+          </form>
+      </div>
+</div>
+
+    </section>
+
+  </div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,400 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar"  style="height: auto">
+        
+        <div class="user-panel">
+        <div class="pull-left image">
+          <img src="/static/dist/img/logo.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>{{ request.user.username }}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+      </div>
+        
+        <!-- Sidebar Menu -->
+        <ul class="sidebar-menu" id="sidebar-menu">
+       	   <li id="menuheader" class="header">主导航</li>
+          
+            <li  id = "skrpt" style="display: none">
+	          <a href="{% url 'rpt' %}">
+	            <i class="fa fa-dashboard"></i> <span>仪表盘</span>
+	          </a>
+			
+ 			 </li>
+          
+            <li class="treeview"  id = "skyw" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-link"></i> <span>运维导航</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+			  
+	          <ul class="treeview-menu" >
+	            <li style="display: none"><a href="{% url 'yw' %}">  <i class="fa fa-circle-o"></i> 导航</a></li>
+	         	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>配置</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					    <li style="display: none"><a
+                                href="{% url 'dutyuser' %}"><i class="fa fa-circle-o"></i> 运维分工</a></li>		
+                        <li style="display: none"><a
+                                href="{% url 'dutyinfo' %}"><i class="fa fa-circle-o"></i> 值班信息</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'notify' %}"><i class="fa fa-circle-o"></i> 公告内容</a></li>
+						<li style="display: none"><a
+                                href="{% url 'ywevent' %}"><i class="fa fa-circle-o"></i> 事件流程</a></li>		
+                        <li style="display: none"><a
+                                href="{% url 'platclass' %}"><i class="fa fa-circle-o"></i> 平台分类</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'plat' %}"><i class="fa fa-circle-o"></i> 平台信息</a></li>						
+                    </ul>
+                </li>
+                    
+	          </ul>
+ 			 </li>
+          
+
+ 			 
+ 		  	 <li class="treeview"  id = "cmdb" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-database"></i> <span>资产管理</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+			  
+	          <ul class="treeview-menu" >
+	            
+ 		    	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>软件资产</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					  	<li style="display: none"><a href="{% url 'app_list' %}"><i class="fa fa-circle-o"></i> 服务</a></li>		
+                        <li style="display: none"><a href="{% url 'url_list' %}"><i class="fa fa-circle-o"></i> 域名</a></li>	
+						<li style="display: none"><a href="{% url 'kafka_list' %}"><i class="fa fa-circle-o"></i> kafka</a></li>	
+						<li style="display: none"><a href="{% url 'whileip_list' %}"><i class="fa fa-circle-o"></i> 白名单</a></li>						
+                    </ul>
+                </li>
+                    
+				<li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>硬件资产</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					    <li style="display: none"><a href="{% url 'cmdb' %}"><i class="fa fa-circle-o"></i> 主机列表</a></li>		
+                        <li style="display: none"><a href="{% url 'idc' %}"><i class="fa fa-circle-o"></i> 机房列表</a></li>	
+						<li style="display: none"><a href="{% url 'env_list' %}"><i class="fa fa-circle-o"></i> 运行环境</a></li>		
+                        <li style="display: none"><a href="{% url 'ywgroup_list' %}"><i class="fa fa-circle-o"></i> 业务分组</a></li>			
+						<li style="display: none"><a href="{% url 'middletype_list' %}"><i class="fa fa-circle-o"></i> 主机分组</a></li>		
+                        <li style="display: none"><a href="{% url 'hostgroup_list' %}"><i class="fa fa-circle-o"></i> 主机类型</a></li>	
+						<li style="display: none"><a href="{% url 'opssa_list' %}"><i class="fa fa-circle-o"></i> 运维负责人</a></li>
+						<li style="display: none"><a href="{% url 'dbsource_list' %}"><i class="fa fa-circle-o"></i> 外部数据源</a></li>
+										
+                    </ul>
+                </li>
+				
+	          </ul>
+ 			 </li>
+          
+            <li class="treeview"  id = "skworkorders" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-cloud"></i> <span>工单系统</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+	          <ul class="treeview-menu" >
+	            <li style="display: none"><a href="{% url 'WorkOrderCommit_index' %}">  <i class="fa fa-circle-o"></i> 提单</a></li>
+	            <li style="display: none"><a href="{% url 'WorkOrderFlow_audit' %}">  <i class="fa fa-circle-o"></i> 审核</a></li>
+	         	
+	         	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>执行</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrderFlow_foreground_release' %}"><i class="fa fa-circle-o"></i> 前台任务</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrderFlow_background_release' %}"><i class="fa fa-circle-o"></i> 后台任务</a></li>
+                    </ul>
+                </li>
+                
+                <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>审计</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrderFlow_foreground_history' %}"><i class="fa fa-circle-o"></i> 前台任务</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrderFlow_background_history' %}"><i class="fa fa-circle-o"></i> 后台任务</a></li>
+                    </ul>
+                </li>
+                
+             
+                 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>配置</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+                        <li style="display: none"><a
+                                href="{% url 'ConfigCenter_index' %}"><i class="fa fa-circle-o"></i> 配置中心</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrderGroup_index' %}"><i class="fa fa-circle-o"></i> 用途分类</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'Environment_index' %}"><i class="fa fa-circle-o"></i> 环境分类</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'Vars_index' %}"><i class="fa fa-circle-o"></i> 变量注册</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'VarsGroup_index' %}"><i class="fa fa-circle-o"></i> 变量分组</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrder_index' %}"><i class="fa fa-circle-o"></i> 工单配置</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'WorkOrder_template' %}"><i class="fa fa-circle-o"></i> 工单模板</a></li>
+                       
+                    </ul>
+                </li>
+                
+                
+                
+	          </ul>
+ 			 </li>
+ 		
+      		<li class="treeview"  id = "sktask" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-font"></i> <span>ANSIBLE</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+			  
+	          <ul class="treeview-menu" >
+	            <li style="display: none"><a href="{% url 'task' %}">  <i class="fa fa-circle-o"></i> Task</a></li>
+	            <li style="display: none"><a href="{% url 'inventories' %}">  <i class="fa fa-circle-o"></i> Inventories</a></li>
+				<li style="display: none"><a href="{% url 'ansible' %}">  <i class="fa fa-circle-o"></i> CMD</a></li>
+	         	<li style="display: none"><a href="{% url 'history' %}">  <i class="fa fa-circle-o"></i> History</a></li>
+	         	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>Manage</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					<li style="display: none"><a
+                                href="{% url 'project_manage' %}"><i class="fa fa-circle-o"></i> Project</a></li>		
+                        <li style="display: none"><a
+                                href="{% url 'job_index' %}"><i class="fa fa-circle-o"></i> Job</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'extravars_index' %}"><i class="fa fa-circle-o"></i> Extravars</a></li>
+												
+                    </ul>
+                </li>
+                    
+	          </ul>
+ 			 </li>
+ 			 
+ 		  	 
+ 			 
+ 		     <li class="treeview"  id = "skrecord" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-book"></i> <span>登记管理</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+			  
+	          <ul class="treeview-menu" >
+	             <li style="display: none"><a href="{% url 'change' %}">  <i class="fa fa-circle-o"></i> 变更登记</a></li>
+	             <li style="display: none"><a href="{% url 'memo' %}">  <i class="fa fa-circle-o"></i> 备忘录</a></li>
+ 		    	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>FAQ</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					    <li style="display: none"><a  href="{% url 'faq' %}"><i class="fa fa-circle-o"></i> FAQ</a></li>		
+                        <li style="display: none"><a href="{% url 'faq_list' %}"><i class="fa fa-circle-o"></i> 分类</a></li>						
+                    </ul>
+                </li>
+               <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>事件跟踪</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+					    <li style="display: none"><a  href="{% url 'track' %}"><i class="fa fa-circle-o"></i> 事件跟进</a></li>		
+                        <li style="display: none"><a href="{% url 'track_list' %}"><i class="fa fa-circle-o"></i> 事件分类</a></li>						
+                    </ul>
+                </li>     
+
+				
+	          </ul>
+ 			 </li>
+ 			 	 
+ 			 
+    
+         	<li class="treeview"  id = "skaccounts" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-users"></i> <span>用户管理</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+			  
+	          <ul class="treeview-menu" >
+	            <li style="display: none"><a href="{% url 'user_list' %}">  <i class="fa fa-circle-o"></i> 用户管理</a></li>
+	            <li style="display: none"><a href="{% url 'UserGroup_index' %}">  <i class="fa fa-circle-o"></i> 群组管理</a></li>
+	         	<li style="display: none"><a href="{% url 'AuditFlow_index' %}">  <i class="fa fa-circle-o"></i> 审核流程</a></li>
+	         	 <li class="treeview" style="display: none">
+                   <a href="#">
+			            <i class="fa   fa-flag-o"></i> <span>权限管理</span>
+			            <span class="pull-right-container">
+			              <i class="fa fa-angle-left pull-right"></i>
+			            </span>
+			          </a>
+                    <ul class="treeview-menu">
+                        <li style="display: none"><a
+                                href="{% url 'role_list' %}"><i class="fa fa-circle-o"></i> 菜单角色</a></li>
+                        <li style="display: none"><a
+                                href="{% url 'permission_list' %}"><i class="fa fa-circle-o"></i> 菜单权限</a></li>
+						<li style="display: none"><a
+                                href="{% url 'role_job_list' %}"><i class="fa fa-circle-o"></i> 任务角色</a></li>								
+                    </ul>
+                </li>
+                    
+	          </ul>
+ 			 </li>		
+          
+
+ 			
+ 			 
+          
+            <li  id = "config" style="display: none">
+	          <a href="{% url 'config' %}">
+	            <i class="fa fa-cog"></i> <span>系统配置</span>
+	          </a>
+ 			 </li>
+
+        
+
+        </ul>
+    </section>
+    
+ <ul id=permission_sidebar_list hidden="hidden">
+	 {% for i in url_permission_list %}
+	    <li>{{ i }}</li>
+	 {% endfor %}
+</ul>
+    
+</aside>
+
+<<script type="text/javascript">
+//显示已授权菜单
+$(document).ready(function () {
+	Array.prototype.contains = function ( needle ) {
+		  for (i in this) {
+		    if (this[i] == needle) return true;
+		  }
+		  return false;
+		}
+	
+	permission_navbar_list = new Array();
+	
+	//显示已授权一级菜单
+	$("ul#permission_sidebar_list").children("li").each(function(){
+		show_sidebar_id = $(this).text().split("/")[1]
+		if (show_sidebar_id == 'all'){
+			$("ul#sidebar-menu").find("li").show();
+		}
+		else {
+			url_list = $(this).text().split("/")
+			//判断是否授权某一级菜单所有权限,如果是则授权则显示一级菜单和其所有子菜单
+			if (url_list.length == 3){
+		 		$("li#" + show_sidebar_id).show();
+			 	$("li#" + show_sidebar_id).find("li").show();  
+			}
+			
+			//生成已授权菜单列表
+			permission_navbar_list.push($(this).text());
+			
+		}
+		
+	});
+	
+	//显示已授权二级菜单
+	$("#sidebar-menu").find("a").each(function(){
+		//获取子菜单url
+		var navbar_href = $(this).attr("href");
+		//如果子菜单已授权则显示
+	   if (permission_navbar_list.contains(navbar_href)){
+ 		   $(this).parent().show(); 
+			$(this).parents("li.treeview").show(); 
+			
+		}
+	
+	});
+	
+		
+});
+
+</script>
+
+
+<script>
+//主菜单点击加背景色
+    $(document).ready(function () {
+        var url = window.location.pathname;
+        var url_list = url.split("/")
+       
+        url2 = "/" + url_list[1] + "/" + url_list[2] + "/"
+        
+     
+        $("[href='" + url + "']").parents("li").addClass("active");
+        $("[href='" + url + "']").parent("li").addClass("bg-primary");
+        $("[href='" + url2 + "']").parents("li").addClass("active");
+        $("[href='" + url2 + "']").parent("li").addClass("bg-primary");
+
+    });
+</script>
+<script src="/static/layer/layer.js"></script>
+<<script type="text/javascript">
+$("#tpl_unfinished_workorders").mouseover(function() {
+	
+	layer.tips('待完成的工单数', '#tpl_unfinished_workorders',{
+		tips: [1, '#00a65a']
+		
+	});
+	
+	
+})
+
+</script>
+
+

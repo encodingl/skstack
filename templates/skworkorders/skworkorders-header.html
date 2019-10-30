@@ -1,0 +1,85 @@
+<header class="main-header">
+
+    <!-- Logo -->
+    <a href="{% url 'index' %}" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>SK</b></span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>skstack</b></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+            <ul class="nav navbar-nav second-menu">
+                <li style="font-size: medium;display: none" id="project_order"><a
+                        href="{% url 'WorkOrderCommit_index' %}"><b>提单</b></a></li>
+                <li class="divider"></li>
+                <li style="font-size: medium;display: none" id="project_audit"><a
+                        href="{% url 'WorkOrderFlow_audit' %}"><b>审核</b></a></li>
+                <li class="divider"></li>
+            
+    				 <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>执行</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="WorkOrderFlow_foreground_release"><a
+                                href="{% url 'WorkOrderFlow_foreground_release' %}"><b>前台任务</b></a></li>
+                        <li style="font-size: medium;display: none" id="WorkOrderFlow_background_release"><a
+                                href="{% url 'WorkOrderFlow_background_release' %}"><b>后台任务</b></a></li>
+                       
+                    </ul>
+                </li>
+     
+                
+                 <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>审计</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li style="font-size: medium;display: none" id="project_history"><a
+                                href="{% url 'WorkOrderFlow_foreground_history' %}"><b>前台任务</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_schedule"><a
+                                href="{% url 'WorkOrderFlow_background_history' %}"><b>后台任务</b></a></li>
+                       
+                    </ul>
+                </li>
+
+                <li class="dropdown secdrop" style="font-size: medium;display: none" id="project_manage">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <b>配置</b> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                       
+                        <li style="font-size: medium;display: none" id="project_group"><a
+                                href="{% url 'ConfigCenter_index' %}"><b>配置中心</b></a></li>
+                                
+                        <li style="font-size: medium;display: none" id="project_group"><a
+                                href="{% url 'WorkOrderGroup_index' %}"><b>用途分类</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_type"><a
+                                href="{% url 'Environment_index' %}"><b>环境分类</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_type"><a
+                                href="{% url 'Vars_index' %}"><b>变量注册</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_group"><a
+                                href="{% url 'VarsGroup_index' %}"><b>变量分组</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_conf"><a
+                                href="{% url 'WorkOrder_index' %}"><b>工单配置</b></a></li>
+                        <li style="font-size: medium;display: none" id="project_template"><a
+                                href="{% url 'WorkOrder_template' %}"><b>工单模板</b></a></li>
+                       
+                    </ul>
+                </li>
+<!--                 <li style="font-size: medium;display: none" id="project_websocket"><a -->
+<!--                         href="{% url 'websocket_index' %}"><b>测试</b></a></li> -->
+<!--                 <li class="divider"></li> -->
+            </ul>
+        </div>
+        <!-- Navbar Right Menu -->
+        {% include 'navbar-custom-menu.html' %}
+    </nav>
+</header>

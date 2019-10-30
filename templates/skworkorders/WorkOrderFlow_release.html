@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block self_head_css_js %}
+   
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+
+
+    <!-- Main content -->
+
+    <section class="content">
+
+    <div class="box">
+	  <div class="box-header"> </div>
+	  		<div class="box-body  with-border" >
+	          <form action="{% url 'WorkOrderFlow_foreground_release'  %}" method="post" id="WorkOrderFlow_release_form">
+	            {% csrf_token %}
+	            {{ tpl_WorkOrderFlow_release_form.as_p }}
+	            <input type="hidden" id="WorkOrderFlow_id" name="id" value="{{ obj.id }}">
+	            <input type="button" id="release_btn" style="width: 60pt" class="btn btn-info"   value="执行">&nbsp;&nbsp;&nbsp;&nbsp;
+	            <a href="{% url 'WorkOrderFlow_foreground_release' %}"><li style="width: 60pt" class="btn btn-primary" value="">返回</li></a><br>
+	          </form>     
+          </div>
+          <div class="box-footer with-border">
+         
+		          <div class="panel panel-info">
+		          
+						    <div class="panel-heading">
+						        <h3 class="panel-title">执行结果</h3>
+						    </div>
+						    
+						    <div class="panel-body" style="border: 1px solid ;height:200px;overflow:scroll">
+						    		<div id="messagecontainer" ></div>
+						    </div>
+				    
+				  </div>	
+      </div>
+</div>
+
+    </section>
+
+  </div>
+
+
+
+
+<script>
+$(document).ready(function(){  
+    
+    jQuery("textarea#id_user_vars").html(function () {  
+        var text = jQuery(this).html();  
+     	
+        text = text.replace(/(,)/, '$1\r');
+        console.log(text)
+        return text;  
+    });  
+});
+</script>
+
+<script type="text/javascript">//<![CDATA[
+$(function () {
+
+
+    $('#release_btn').click(function () {
+     if (confirm("确认?")) {
+        if (window.s) {
+            window.s.close()
+        }
+        /*创建socket连接*/
+        var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderFlow/release/run/");
+        window.s = socket;
+        socket.onopen = function () {
+            console.log('WebSocket open');//成功连接上Websocket
+
+            var WorkOrderFlow_id = $('#WorkOrderFlow_id').val()
+            console.log(WorkOrderFlow_id)
+        	   window.s.send(WorkOrderFlow_id);//通过websocket发送数据
+            
+        };
+   
+        
+        
+       
+        
+       
+        socket.onmessage = function (e) {
+            console.log('message: ' + e.data);//打印出服务端返回过来的数据
+            
+            var colorConfig = { "green": ["ok", "SUCCESS","执行成功","success"],"orange": ["changed","WARNING","warning" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
+           
+                var text = e.data;  
+                jQuery.each(colorConfig, function (color, values) {  
+                    jQuery.each(values, function (i, item) { 
+                  	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+
+                  	   
+                  	   text = text.replace(re,function(result){
+                  		   return '<font color="' + color + '">' + result + '</font>'
+                  	   });
+                  	   
+                  	   var re2 = new RegExp(item,"g");
+                  	   text = text.replace(re2,function(result){
+                  		   return '<font color="' + color + '">' + result + '</font>'
+                  	   });
+                  	   
+                    });  
+                });  
+            
+         
+            
+            
+            $('#messagecontainer').append('<p>' + text + '</p>');
+            $('.panel-body').scrollTop( $('.panel-body')[0].scrollHeight );
+            var h = document.documentElement.scrollHeight || document.body.scrollHeight;
+            window.scrollTo(h,h);
+        };
+     }else{
+       	 return false };
+        
+    });
+    
+
+
+});
+//]]></script>
+{% endblock %}
+
+
+

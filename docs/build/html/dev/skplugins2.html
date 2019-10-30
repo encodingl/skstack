@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. 插件开发指南2.0 &mdash; SKSTACK v0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="4. WEB平台开发指南" href="web.html" />
+    <link rel="prev" title="2. 插件开发指南1.0" href="skplugins.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SKSTACK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">2. 安装手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick_start.html">3. 快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">用户手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
+</ul>
+<p class="caption"><span class="caption-text">插件使用手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+</ul>
+<p class="caption"><span class="caption-text">开发者指南</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="demodoc.html">1. 文档编写说明和示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skplugins.html">2. 插件开发指南1.0</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. 插件开发指南2.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.1. 目录和命名规范示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">3.2. 命名规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">3.3. 脚本编写规范和配置文件规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo">3.4. 插件Demo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ansible-shell">3.4.1. ansible shell模块执行插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#redis">3.4.2. 获取redis键值对</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">3.4.3. 复选框模式传参处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.4.4. 插件返回子进程异常处理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">4. WEB平台开发指南</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SKSTACK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>3. 插件开发指南2.0</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/dev/skplugins2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dev-skplugins2">
+<span id="id1"></span><h1>3. 插件开发指南2.0<a class="headerlink" href="#dev-skplugins2" title="永久链接至标题">¶</a></h1>
+<div class="line-block">
+<div class="line">skstack平台的插件注册不限制开发语言，理论支持所有能在linux服务器命令行界面直接运行的脚本。</div>
+<div class="line">本文档主要基于python说明，其他语言请尽量遵循示例相关目录、文件命名和日志规范</div>
+<div class="line">优先使用python3.7 开发与skstack版本保持一致。</div>
+</div>
+<div class="section" id="id2">
+<h2>3.1. 目录和命名规范示例<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>如下示例静态文件部署插件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pl_static_deploy/                #插件主目录，以&quot;pl_&quot;前缀开头
+├── conf                #配置文件主目录名称，请统一使用conf命名
+│   ├── conf_static_demo.py     #参数配置文件demo，用于其他环境配置参考，和说明文档样例使用
+│   ├── conf_static_dev.py      #dev环境配置文件
+│   ├── conf_static_prod.py     #prod环境配置文件
+│   └── conf_static_stg.py      #stg环境配置文件
+├── lib_git.py  #主脚本需要调用的
+├── lib_log.py
+├── logs                        #日志文件主目录
+│   └── main_static_deploy.log  #日志文件名称
+├── main_static_deploy.py      #主脚本加&quot;main_&quot;前缀命名
+├── sc_get_source.py            #主脚本需要调用的python功能脚本加&quot;sc_&quot;前缀命名
+├── sc_static_sync.yml          #主脚本需要调用的ansible功能脚本加&quot;sc_&quot;前缀命名
+├── var_get_git_commit.py       #动态变量获取脚本，用于注册到skstack平台上传递给主脚本使用
+└── var_get_tar_version.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>3.2. 命名规范<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>插件目录命名：加pl_前缀</p></li>
+<li><p>主任务脚本：加main_前缀</p></li>
+<li><p>变量获取脚本：加var_前缀</p></li>
+<li><p>配置文件命名：加conf_前缀</p></li>
+<li><p>脚本文件命名：加sc_前缀；脚本文件主要用于主任务脚本调用</p></li>
+<li><p>私有库函数文件命名：加lib_前缀；私有库函数主要用于主任务脚本或者sc_脚本调用</p></li>
+<li><p>日志文件命名：”主任务模块名称+.log” ;如上示例</p></li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h2>3.3. 脚本编写规范和配置文件规范<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>对于生产、测试、stg相关环境的配置文件变量不能硬编码到变量获取脚本或者任务脚本文件中</p></li>
+<li><p>配置文件应该从conf中相应的配置文件中动态获取，通过 “-e”参数指定环境，去读不同环境下的配置文件；不同环境下的配置文件通过命名后缀区分</p></li>
+<li><p>脚步外部参数传递通过OptionParser（已发布插件）或argparse（新开发插件）模块功能方式实现 参考如下文demo实例</p></li>
+<li><p>前端复选框当只选一个的时候传递值为字符串，超过一个选项传递值为list，需要在脚本中做判断具体参考demo 复选框处理示例</p></li>
+</ol>
+</div>
+<div class="section" id="demo">
+<h2>3.4. 插件Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
+<div class="section" id="ansible-shell">
+<h3>3.4.1. ansible shell模块执行插件<a class="headerlink" href="#ansible-shell" title="永久链接至标题">¶</a></h3>
+<div class="line-block">
+<div class="line">确认先在命令行模式测试插件是否工作正常，不同的插件详见各插件使用说明文档，demo以ansible cmd插件脚本为例；</div>
+<div class="line">确认ansible cmd脚本”main_ansible_cmd.py”的配置文件配置正确</div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# more ../conf/conf_ansible_dev.py</span>
+<span class="gp">#</span>! /usr/bin/env python
+<span class="gp">#</span> -*- coding: utf-8 -*-
+<span class="hll"><span class="go">ansible_hosts_file = &quot;/etc/ansible/hosts&quot;</span>
+</span></pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# python main_ansible_cmd.py -e dev -g demo1 -c date</span>
+<span class="go">svn | CHANGED | rc=0 &gt;&gt;</span>
+<span class="go">2019年 10月 28日 星期一 15:27:26 CST</span>
+<span class="go">(skplugins) [root@devops scAnsible]# python main_ansible_cmd.py -h</span>
+<span class="go">Usage: main_ansible_cmd.py [options]</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             show program&#39;s version number and exit</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -e [prod|stg|...], --environment=[prod|stg|...]</span>
+<span class="go">                        input the environment in which the script needs to be</span>
+<span class="go">                        executed</span>
+<span class="go">  -g [gp01|ip|...], --group=[gp01|ip|...]</span>
+<span class="go">                        input the ansible hosts group</span>
+<span class="go">  -c [ls|cd|...], --command=[ls|cd|...]</span>
+<span class="go">                        input the command</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>该处–e为预留参数，该脚本没有使用，后续将用于不同环境的配置文件读取</p>
+</div>
+<p>确认ansible hosts变量获取脚本工作正常</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -e dev</span>
+<span class="go">[&#39;appT_h5&#39;, &#39;app_h5&#39;, &#39;demo1&#39;, &#39;dev_nginx&#39;, &#39;mitrade-cloud-config-repo&#39;, &#39;skplugins&#39;, &#39;system-hosts-file&#39;, &#39;web-cms-app&#39;, &#39;webtrader&#39;, &#39;webtrader2&#39;]</span>
+<span class="go">(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -h</span>
+<span class="go">Usage: vars_get_AnsibleHosts.py [options]</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             show program&#39;s version number and exit</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -e [prod|stg|...], --environment=[prod|stg|...]</span>
+<span class="go">                        input the environment in which the script needs to be</span>
+<span class="go">                        executed</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>该处-e参数为获取不同环境的配置文件参数；执行结果返回看到ansible hosts里面定义的group列表即为正常</p>
+</div>
+</div>
+<div class="section" id="redis">
+<h3>3.4.2. 获取redis键值对<a class="headerlink" href="#redis" title="永久链接至标题">¶</a></h3>
+<p>任务脚本文件：pl_redis/main_get_redis_kv.py</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1">#-*- coding: utf-8 -*-</span>
+
+<span class="c1">#Import the base library for the script</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1">#Import the skplugins modules</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">)</span>
+
+<span class="c1">#Start from here to import the other libraries that the script needs</span>
+<span class="kn">import</span> <span class="nn">redis</span>
+
+<span class="k">def</span> <span class="nf">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;%prog 1.0.0&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--redis-instance&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;instance&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[DomainName|ip]&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the redis instance IP or domain name you want to query&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--redis-key&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the redis key you want to query&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[redis-key]&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--environment&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;env&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the environment in which the script needs to be executed &quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[prod|stg|...]&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">();</span><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">options</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">config_file</span> <span class="o">=</span> <span class="s2">&quot;conf_redis_&quot;</span><span class="o">+</span><span class="n">options</span><span class="o">.</span><span class="n">env</span>
+    <span class="k">exec</span><span class="p">(</span><span class="s2">&quot;from conf.&quot;</span><span class="o">+</span><span class="n">config_file</span><span class="o">+</span> <span class="s2">&quot; import redis_vars&quot;</span><span class="p">)</span>
+    <span class="n">redis_host</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">instance</span>
+    <span class="n">redis_port</span> <span class="o">=</span> <span class="n">redis_vars</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">instance</span><span class="p">][</span><span class="s2">&quot;port&quot;</span><span class="p">]</span>
+    <span class="n">redis_password</span> <span class="o">=</span> <span class="n">redis_vars</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">instance</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+    <span class="n">ins1</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">redis_host</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="n">redis_port</span><span class="p">,</span><span class="n">password</span><span class="o">=</span><span class="n">redis_password</span><span class="p">)</span>
+    <span class="n">key_value</span> <span class="o">=</span> <span class="n">ins1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">key_value</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+</div>
+<p>变量配置文件 pl_redis/conf/conf_redis_stg.py</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="c1">#! /usr/bin/env python</span>
+
+<span class="n">redis_vars</span><span class="o">=</span><span class="p">{</span>
+<span class="s2">&quot;i1.test.com&quot;</span><span class="p">:{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="mi">6379</span><span class="p">,</span><span class="s2">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;12=ddfdfdfd&quot;</span><span class="p">,},</span>
+<span class="s2">&quot;192.168.67.13&quot;</span><span class="p">:{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="mi">6379</span><span class="p">,</span><span class="s2">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;o29OCVEddtA&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>执行效果</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">venv</span><span class="o">-</span><span class="n">skplugins</span><span class="p">)</span> <span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">scRedis</span><span class="p">]</span><span class="c1"># python redis_getkeyvalue_main.py -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">redis_getkeyvalue_main</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">--</span><span class="n">version</span>             <span class="n">show</span> <span class="n">program</span><span class="s1">&#39;s version number and exit</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="nb">exit</span>
+  <span class="o">-</span><span class="n">i</span> <span class="p">[</span><span class="n">DomainName</span><span class="o">|</span><span class="n">ip</span><span class="p">],</span> <span class="o">--</span><span class="n">redis</span><span class="o">-</span><span class="n">instance</span><span class="o">=</span><span class="p">[</span><span class="n">DomainName</span><span class="o">|</span><span class="n">ip</span><span class="p">]</span>
+                        <span class="nb">input</span> <span class="n">the</span> <span class="n">redis</span> <span class="n">instance</span> <span class="n">IP</span> <span class="ow">or</span> <span class="n">domain</span> <span class="n">name</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span>
+                        <span class="n">query</span>
+  <span class="o">-</span><span class="n">k</span> <span class="p">[</span><span class="n">redis</span><span class="o">-</span><span class="n">key</span><span class="p">],</span> <span class="o">--</span><span class="n">redis</span><span class="o">-</span><span class="n">key</span><span class="o">=</span><span class="p">[</span><span class="n">redis</span><span class="o">-</span><span class="n">key</span><span class="p">]</span>
+                        <span class="nb">input</span> <span class="n">the</span> <span class="n">redis</span> <span class="n">key</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">query</span>
+  <span class="o">-</span><span class="n">e</span> <span class="p">[</span><span class="n">prod</span><span class="o">|</span><span class="n">stg</span><span class="o">|...</span><span class="p">],</span> <span class="o">--</span><span class="n">environment</span><span class="o">=</span><span class="p">[</span><span class="n">prod</span><span class="o">|</span><span class="n">stg</span><span class="o">|...</span><span class="p">]</span>
+                        <span class="nb">input</span> <span class="n">the</span> <span class="n">environment</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">the</span> <span class="n">script</span> <span class="n">needs</span> <span class="n">to</span> <span class="n">be</span>
+                        <span class="n">executed</span>
+<span class="p">(</span><span class="n">venv</span><span class="o">-</span><span class="n">skplugins</span><span class="p">)</span> <span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">scRedis</span><span class="p">]</span><span class="c1">#</span>
+<span class="p">(</span><span class="n">venv</span><span class="o">-</span><span class="n">skplugins</span><span class="p">)</span> <span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">scRedis</span><span class="p">]</span><span class="c1"># python redis_getkeyvalue_main.py -i &quot;i1.test.com&quot; -k &quot;ProductInfo&quot; -e stg</span>
+<span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>3.4.3. 复选框模式传参处理<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;%prog 1.0.0&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--multiple-vars&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;mul&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[variable_name]&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;used to print the multiple select form variables&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--single-var&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[variable_name]&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;used to print the sigle select form variable&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--inner-var&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[variable_key]&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;used to print the inner variable key value&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">();</span><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">options</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">inner_var</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">inner</span>
+    <span class="k">print</span> <span class="s2">&quot;inner_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inner_var</span>
+    <span class="n">multiple_vars</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">mul</span>
+    <span class="c1"># options.mul 为复选框当只选一个的时候传递值为字符串，超过一个选项传递值为list，需要在脚本中做判断</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multiple_vars</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">multiple_vars</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">mul</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">multiple_vars</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">multiple_vars</span>
+    <span class="n">single_var</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">single</span>
+    <span class="k">print</span> <span class="s2">&quot;single_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">single_var</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>3.4.4. 插件返回子进程异常处理<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="line-block">
+<div class="line">如果插件子进程执行异常，且子进程返回给插件父进程的状态吗为非0，但是插件父进程执行完毕返回的状态码为0，这种情况下需要在父进程主动抛出异常，方便sk平台捕获</div>
+<div class="line">获取更准确的执行结果，示例如下：</div>
+</div>
+<p>1 子进程异常但是父进程正常：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skipper) [root@localhost scAnsible]# ./main_ansible_cmd.py -g gtest -c date1</span>
+<span class="go">yw108 | FAILED | rc=2 &gt;&gt;</span>
+
+<span class="go">[Errno 2] 没有那个文件或目录</span>
+
+<span class="go">yunwei61 | FAILED | rc=2 &gt;&gt;</span>
+
+<span class="go">[Errno 2] 没有那个文件或目录</span>
+
+<span class="go">(skipper) [root@localhost scAnsible]# echo $?</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>2 改造后脚本如下，子进程异常主动抛出异常</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="c1">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span><span class="p">,</span> <span class="n">call</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;%prog 1.0.0&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--environment&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;env&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the environment in which the script needs to be executed &quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[prod|stg|...]&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--group&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the ansible hosts group&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[gp01|ip|...]&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--command&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input the command&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;[ls|cd|...]&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">();</span><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">options</span>
+
+<span class="k">def</span> <span class="nf">ansible_cmd_func</span><span class="p">(</span><span class="n">hosts</span><span class="p">,</span><span class="n">forks</span><span class="p">,</span><span class="n">cmd</span><span class="p">):</span>
+    <span class="n">main_ansible_cmd</span> <span class="o">=</span> <span class="s2">&quot;ansible </span><span class="si">%s</span><span class="s2"> -f </span><span class="si">%s</span><span class="s2">  -a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hosts</span><span class="p">,</span><span class="n">forks</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pcmd</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">main_ansible_cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">pcmd</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1">#获取内容</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">line</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">exinfo</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="k">print</span> <span class="n">exinfo</span>
+
+    <span class="n">retcode</span> <span class="o">=</span> <span class="n">pcmd</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">retcode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+    <span class="c1">#子进程异常主动抛出异常</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;命令执行失败&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">hosts</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">group</span>
+    <span class="n">forks</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">cmd</span>
+    <span class="n">ansible_cmd_func</span><span class="p">(</span><span class="n">hosts</span><span class="p">,</span><span class="n">forks</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+</div>
+<p>3 主动抛出异常后执行结果如下：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(venv-adminset) [root@localhost scAnsible]# ./main_ansible_cmd.py -g gtest -c date1</span>
+<span class="go">   yw108 | FAILED | rc=2 &gt;&gt;</span>
+<span class="go">   [Errno 2] 没有那个文件或目录</span>
+<span class="go">   yunwei61 | FAILED | rc=2 &gt;&gt;</span>
+<span class="go">   [Errno 2] 没有那个文件或目录</span>
+<span class="go">   Traceback (most recent call last):</span>
+<span class="go">     File &quot;./main_ansible_cmd.py&quot;, line 56, in &lt;module&gt;</span>
+<span class="go">       main(sys.argv[1:])</span>
+<span class="go">     File &quot;./main_ansible_cmd.py&quot;, line 51, in main</span>
+<span class="go">       ansible_cmd_func(hosts,forks,cmd)</span>
+<span class="go">     File &quot;./main_ansible_cmd.py&quot;, line 45, in ansible_cmd_func</span>
+<span class="go">       raise Exception(&quot;命令执行失败&quot;)</span>
+<span class="go">   Exception: 命令执行失败</span>
+<span class="go">   (venv-adminset) [root@localhost scAnsible]# echo $?</span>
+<span class="go">   1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="web.html" class="btn btn-neutral float-right" title="4. WEB平台开发指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="skplugins.html" class="btn btn-neutral float-left" title="2. 插件开发指南1.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, encodingl@sina.com
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

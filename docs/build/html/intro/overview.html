@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. 概述 &mdash; SKSTACK v0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2. 安装手册" href="install.html" />
+    <link rel="prev" title="SKSTACK documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SKSTACK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">快速入门</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 功能介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 工单系统基本原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo">1.3. Demo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">1.3.1. Docker项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gitlab">1.3.2. gitlab项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.3.3. 压缩包项目版本发布</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. 安装手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">3. 快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">用户手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
+</ul>
+<p class="caption"><span class="caption-text">插件使用手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+</ul>
+<p class="caption"><span class="caption-text">开发者指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SKSTACK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>1. 概述</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>该系统从py2升级到py3后 以及django1.9升级到django2.2，还在调试当中。请勿投入生产系统使用
+SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;发布&amp;统计、版本发布、应急预案、自动化任务执行相关功能</p>
+<div class="section" id="id2">
+<h2>1.1. 功能介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>主要包含功能如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>仪表盘：统计工单、用户、事件、资源相关数据</p></li>
+<li><p>工单系统：版本发布、应急预案管理、标准化运维任务工单执行</p></li>
+<li><p>用户系统：用户和菜单角色管理，工单授权、审核流程管理</p></li>
+<li><p>资源管理：软件和硬件资产管理</p></li>
+<li><p>登记管理：事件登记、FAQ、重要事项通知管理</p></li>
+<li><p>运维导航：运维值班、分工、公告、事件处理流程、相关运维系统超级链接管理</p></li>
+<li><p>ANSIBLE：ansible脚本项目化管理</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2>1.2. 工单系统基本原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/skw_framework.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>配置中心一般指的是批量配置管理服务器如Ansible服务器，skstack可以支持多个配置中心注册到平台</p></li>
+<li><p>插件一般安装在配置中心，调用配置配置中心进行远程服务器实例变更或查询操作</p></li>
+<li><p>插件也可以安装在目标服务器实例直接执行，需要将目标服务器以配置中心的方式注册到skstack平台</p></li>
+<li><p>工单注册时，由管理员关联配置中心。</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="demo">
+<h2>1.3. Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
+<div class="section" id="docker">
+<h3>1.3.1. Docker项目版本发布<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于公有云docker镜像仓库或者私有docker镜像仓库做版本仓库库管理；</p></li>
+<li><p>通过发布插件获取版本号；</p></li>
+<li><p>通过工单系统的docker项目发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<p>索引页面</p>
+<a class="reference internal image-reference" href="../_images/skw_index.png"><img alt="image not found" src="../_images/skw_index.png" style="width: 800px;" /></a>
+<p>发布页面</p>
+<a class="reference internal image-reference" href="../_images/skw_submmit.png"><img alt="image not found" src="../_images/skw_submmit.png" style="width: 800px;" /></a>
+<p>审计页面</p>
+<a class="reference internal image-reference" href="../_images/skw_audit_front.png"><img alt="image not found" src="../_images/skw_audit_front.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="gitlab">
+<h3>1.3.2. gitlab项目版本发布<a class="headerlink" href="#gitlab" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于gitlab做版本仓库库管理；</p></li>
+<li><p>通过发布插件获取版本号；</p></li>
+<li><p>通过工单系统的gitlab项目发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../_images/skw_git_submmit.png"><img alt="image not found" src="../_images/skw_git_submmit.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="id4">
+<h3>1.3.3. 压缩包项目版本发布<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>基于nginx做压缩包版本仓库管理；</p></li>
+<li><p>通过爬虫获取版本号；</p></li>
+<li><p>通过工单系统的压缩包发布插件进行版本发布</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../_images/skw_tar_submmit.png"><img alt="image not found" src="../_images/skw_tar_submmit.png" style="width: 800px;" /></a>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="install.html" class="btn btn-neutral float-right" title="2. 安装手册" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="SKSTACK documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, encodingl@sina.com
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

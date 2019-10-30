@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load mytags %}
+{% block self_head_css_js %}
+   
+    
+    
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <form action="{% url 'WorkOrderFlow_revoke' %}" method="post">
+                {% csrf_token %}
+            <div class="box">
+                <div class="box-header">
+                  <div class="btn-group">
+
+						
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                	 
+                	  <div class = "nav-tabs-custom">
+	                	<ul class="nav nav-tabs " role="tablist" id="ul_env">
+							  {% if tpl_env %}
+                      	 {% for k in tpl_env %}
+							  			<li role="presentation"><a href="#{{ k }}" data-toggle="tab">{{ k }}</a></li>
+								  {% endfor %}
+							  {% endif %}
+							</ul>
+                	 </div>
+                	 
+             <div class="tab-content">
+             <p  class="text-aqua">the data for the last 7 days</p>
+		      	{% if tpl_dic_obj %}
+                {% for k,v in tpl_dic_obj.items %}   
+                   <div class="tab-pane fade" id="{{ k }}">
+                   
+                  <table class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                       				   <th>id</th>
+                         
+                                    <th>标题</th>
+                                  
+                                  
+                                    <th>分类</th>
+                                
+                                    <th>申请人</th> 
+                                   
+                                    
+                                    <th>提单时间</th> 
+                                
+                                    <th>当前状态</th>       
+                                    <th class="text-center">功能</th>                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {% if v %}
+                                {% for x in v %}
+                                    <tr class="even gradeA">
+                                       
+                                        <input type="hidden" name="u_name" value="{{ x.name }}">
+                                        <td>{{ x.id}}</td>
+                                        <td id="xtitle">{{ x.title}}</td>
+                                     
+                                      
+                                        <td>{{ x.workorder_group }}</td>
+                                     
+                                        <td>{{ x.user_commit }}</td>
+                                       
+                                        
+                                        <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
+                                   
+                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
+                                        	  {% if x.status == "3" %}
+                                                <span class="label label-success">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "9" %}
+                                                <span class="label label-default">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8" %}
+                                                <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "PENDING" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+                                            {% else %}
+                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+                                            {% endif %}
+                                        
+                                        
+                                        
+                                        </td>
+                                        <td class="text-center" id="features" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
+                                      <li class="btn btn-sm btn-primary" onclick="return tanchu_permit(this.value)"value="{{ x.id }}">同意</li>
+                                      <li class="btn btn-sm btn-danger" onclick="return tanchu_deny(this.value)"value="{{ x.id }}">拒绝</li>
+                                      
+                                       <!--  <a value="{% url 'WorkOrderFlow_permit' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_audit" id="permit">同意</a> -->
+                                        
+                                       <!--  <a value="{% url 'WorkOrderFlow_deny' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_audit" id="deny">拒绝</a> -->
+                                         
+                                        
+                                   
+                                        
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <p>No Item are available.</p>
+                               {% endif %}
+
+                            </tbody>
+                  </table>
+ 					</div>
+                     {% endfor %}
+                	{% endif %}
+                                
+						</div>
+						<!-- /.tab-content -->
+                </div>
+            </div>
+        </form>
+
+    </section>
+        <!-- /.content -->
+</div>
+<input id="handle_status" value="" hidden="hidden">
+
+<script>
+function checkAll(sender, checkClass) {
+    var checkItems = document.getElementsByTagName('input');
+    for (var i = 0; i < checkItems.length; i++) {
+        var checkItem = checkItems[i];
+        if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
+            checkItem.checked = sender.checked;
+        }
+    }
+}
+</script>
+<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+	    $('.table').DataTable( {
+	    	  "paging": true,
+	        "lengthChange": true,
+	        "searching": true,
+	       
+	        "info": true,
+	        "autoWidth": false,
+	        "aaSorting": [[0,'desc']],
+	      
+	        initComplete: function () {
+	            var api = this.api();
+	            api.columns().indexes().flatten().each( function ( i ) {
+	                var column = api.column( i );
+	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
+	            	if (i == 2){
+	                var select = $('<select><option value="">All</option></select>')
+	                    .appendTo( $(column.header()) )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	                
+	            	} //end if
+	            } );
+	        }
+	    } );
+	} );
+</script>
+<script>
+function checkSubmit() {
+    if (!confirm("确定删除？")) {
+        window.event.returnValue = false;
+    }
+}
+</script>
+
+<script>
+function tanchu_permit(n){
+    layer.open({
+    type: 2,
+    closeBtn: 1,
+    area: ['700px', '200px'],
+    shadeClose: true, //点击遮罩关闭
+    content: ['/skworkorders/WorkOrderFlow/audit/permit/?id=' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
+<script>
+function tanchu_deny(n){
+    layer.open({
+    type: 2,
+    closeBtn: 1,
+    area: ['700px', '200px'],
+    shadeClose: true, //点击遮罩关闭
+    content: ['/skworkorders/WorkOrderFlow/audit/deny/?id=' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
+<script>
+function tanchu_detail(n){
+    layer.open({
+    type: 2,
+    title: '信息',
+    closeBtn: 1,
+    area: ['700px', '550px'],
+    shadeClose: true, //点击遮罩关闭
+    content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('发布成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('发布失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+<script>
+    $(document).ready(function(){
+        $('.x_audit').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确定?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                        	location.reload();
+                        }
+                )
+            }
+        });
+    });
+</script>
+
+
+
+<script type="text/javascript"> 
+//回滚提单关闭回滚按钮
+    $("td#xtitle").each(function(){
+    	var str = $(this).text();
+        if(str.indexOf("rollback")!=-1){  //include
+              $(this).siblings("#features").children("#rollback").remove();
+        }else{  
+            ;  
+        }
+    	
+    });  
+    
+// 撤销后关闭审核按键
+    $("[xstatus=9]").each(function(){   	
+              $(this).siblings("#features").children("#permit,#deny").remove();    	
+    }); 
+
+ // 上线成功关闭审核按键
+    $("[xstatus=3]").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
+    });
+ // 上线失败关闭审核按键
+    $("[xstatus=4]").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
+    });
+    
+// 后台任务审核通过关闭审核按键
+    $("[xstatus='PENDING']").each(function(){	
+              $(this).siblings("#features").children("#permit,#deny").remove();	
+    });
+ 
+ // 新建提单关闭上线按钮
+    $("[xstatus=0][xlevel!=0]").each(function(){
+          $(this).siblings("#features").children("#online").remove();	
+   });
+ 
+
+
+
+</script>  
+<script>
+$(document).ready(function(){  
+    
+    $("td#user_vars").each(function () {  
+        var text = $(this).html();  
+        text = text.replace(/(,)/, '$1<br>');
+        console.log(text)
+        $(this).html(text);  
+    });  
+});
+</script>
+<script type='text/javascript'>
+$('#ul_env a:first').tab('show')
+</script>
+
+
+{% endblock %}

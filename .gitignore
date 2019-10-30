@@ -1,0 +1,17 @@
+*/.DS_Store
+*/*.pyc
+.python-version
+.project
+.pydevproject
+.settings/
+gitpush.sh
+*.pyc
+/tmp/*
+00*.py
+*.log
+/log/
+ignoreupdate.sh
+.idea
+*.swp
+skstack_prod.conf
+

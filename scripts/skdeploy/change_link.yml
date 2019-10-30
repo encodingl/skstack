@@ -1,0 +1,7 @@
+---
+- hosts: "{{ h }}"
+  gather_facts: false
+  tasks:
+        - name: change soft link
+          file: src={{ release_dir }} dest={{ release_to }} state=link
+

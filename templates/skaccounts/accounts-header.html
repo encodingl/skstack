@@ -1,0 +1,30 @@
+<header class="main-header">
+
+    <!-- Logo -->
+    <a href="{% url 'index' %}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>SK</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>skstack</b></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <ul class="nav navbar-nav second-menu">
+            <li id="user_list" style="font-size: medium;display: none;"><a href="{% url 'user_list' %}"><b>用户管理</b></a></li>
+            <li id="user_group" style="font-size: medium;display: none;"><a href="{% url 'UserGroup_index' %}"><b>群组管理</b></a></li>
+            <li id="role_name" style="font-size: medium;display: none;"><a href="{% url 'role_list' %}"><b>菜单角色</b></a></li>
+            <li id="permission_list" style="font-size: medium;display: none;"><a href="{% url 'permission_list' %}"><b>菜单权限</b></a></li>
+            <li id="role_name" style="font-size: medium;display: none;"><a href="{% url 'role_job_list' %}"><b>任务角色</b></a></li>
+            <li id="audit_name" style="font-size: medium;display: none;"><a href="{% url 'AuditFlow_index' %}"><b>审核流程</b></a></li>
+          </ul>
+        </div>
+      <!-- Navbar Right Menu -->
+      {% include 'navbar-custom-menu.html' %}
+    </nav>
+  </header>

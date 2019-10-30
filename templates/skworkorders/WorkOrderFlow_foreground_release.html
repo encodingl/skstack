@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+{% load mytags %}
+{% block self_head_css_js %}
+   
+ 
+  	
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <form action="{% url 'WorkOrderFlow_revoke' %}" method="post">
+                {% csrf_token %}
+            <div class="box">
+                <div class="box-header">
+               
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                
+                     <div class = "nav-tabs-custom">
+	                	<ul class="nav nav-tabs " role="tablist" id="ul_env">
+							  {% if tpl_env %}
+                      	 {% for k in tpl_env %}
+							  			<li role="presentation"><a href="#{{ k }}" data-toggle="tab">{{ k }}</a></li>
+							  			
+								  {% endfor %}
+							  {% endif %}
+							</ul>
+                	 </div>
+                	 
+              <div class="tab-content">
+             
+              	<p  class="text-aqua">the data for the 7 days</p>
+            
+               
+       
+		      	{% if tpl_dic_obj %}
+                {% for k,v in tpl_dic_obj.items %}
+                           
+                   <div class="tab-pane fade" id="{{ k }}">
+                   
+                	 
+                  <table class="table table-bordered  dataTable" role="grid" ria-describedby="example2_info"  >
+                      <thead>
+                        <tr>
+                       				   <th>id</th>
+                         
+                                    <th>标题</th>
+                                    
+                               
+                                    <th>分类</th>
+                                
+                                    <th>申请人</th> 
+                                   
+                              
+                                    <th>提单时间</th> 
+                                 
+                                    <th>当前状态</th>       
+                                    <th class="text-center">功能</th>                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                                {% if v %}
+                                {% for x in v %}
+                                    <tr class="even gradeA">
+                                       
+                                        <input type="hidden" name="u_name" value="{{ x.name }}">
+                                        <td>{{ x.id}}</td>
+                                        <td id="xtitle">{{ x.title}}</td>
+                                    
+                                        <td>{{ x.workorder_group }}</td>
+                                     
+                                        <td>{{ x.user_commit }}</td>
+                                       
+                                        <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
+                                    
+                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
+                                        	  {% if x.b_status == "SUCCESS" %}
+                                                <span class="label label-success">{{ x.b_status }}</span>
+                                            {% elif x.b_status == "FAILURE" %}
+                                                <span class="label label-danger">{{ x.b_status }}</span>
+                                            {% elif not x.b_status == "None" and x.status == "PENDING" %}
+                                                <span class="label label-primary">{{ x.status }}</span>
+                                            {% elif not x.b_status == "None" and x.status == "REVOKED" %}
+                                                <span class="label label-default">{{ x.status }}</span>
+                                                
+                                            {% elif x.status == "3" %}
+                                                <span class="label label-success">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "9" %}
+                                                <span class="label label-default">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
+                                                <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "10" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+                                            {% else %}
+                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+                                            {% endif %}
+                                        
+                                        
+                                        </td>
+                                        <td class="text-center" id="features" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
+                                        <a value="{% url 'WorkOrderFlow_revoke' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del" id="revoke">撤销</a>
+                                        <a href="{% url 'WorkOrderFlow_release' x.id %}" class="btn btn-sm btn-primary" id="online">执行</a>    
+                                       
+                                   
+                                        
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <p>No Item are available.</p>
+                               {% endif %}
+
+                            </tbody>
+                  </table>
+                   </div>
+                   {% endfor %}
+                	 	  {% endif %}
+                    </div>
+						<!-- /.tab-content -->
+                </div>
+            </div>
+        </form>
+
+    </section>
+        <!-- /.content -->
+</div>
+<input id="handle_status" value="" hidden="hidden">
+
+<script>
+function checkAll(sender, checkClass) {
+    var checkItems = document.getElementsByTagName('input');
+    for (var i = 0; i < checkItems.length; i++) {
+        var checkItem = checkItems[i];
+        if (checkItem.type === 'checkbox' && checkItem.className === 'item1') {
+            checkItem.checked = sender.checked;
+        }
+    }
+}
+</script>
+
+
+<script>
+  $(document).ready(function() {
+	    $('.table').DataTable( {
+	    	  "paging": true,
+	        "lengthChange": true,
+	        "searching": true,
+	       
+	        "info": true,
+	        "autoWidth": false,
+	        "aaSorting": [[0,'desc']],
+	      
+	        initComplete: function () {
+	            var api = this.api();
+	            api.columns().indexes().flatten().each( function ( i ) {
+	                var column = api.column( i );
+	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
+	            	if (i == 2){
+	                var select = $('<select><option value="">All</option></select>')
+	                    .appendTo( $(column.header()) )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	                
+	            	} //end if
+	            } );
+	        }
+	    } );
+	} );
+</script>
+
+
+
+
+<script>
+function checkSubmit() {
+    if (!confirm("确定删除？")) {
+        window.event.returnValue = false;
+    }
+}
+</script>
+<script>
+function tanchu_detail(n){
+    layer.open({
+    type: 2,
+    title: '详细信息',
+    closeBtn: 1,
+    area: ['700px', '550px'],
+    shadeClose: true, //点击遮罩关闭
+/*     content: ['/skworkorders/project_edit?id=' + n,], */
+    content: ['/skworkorders/WorkOrderFlow/history/detail/foreground/' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('发布成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('发布失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+<script>
+    $(document).ready(function(){
+        $('.x_del').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确定撤销?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                        	location.reload();
+                        }
+                )
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('.x_rol').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确认回滚?")) {
+                $.get(
+                        $(this).attr('value'),
+                        {},
+                        function (data) {
+                        	location.reload() 
+                        }
+                )
+            }
+        });
+    });
+</script>
+
+<script>
+function tanchu_release(n){
+    layer.open({
+    type: 2,
+    title: '发布确认',
+    closeBtn: 1,
+    area: ['700px', '550px'],
+    shadeClose: true, //点击遮罩关闭
+/*     content: ['/skworkorders/project_edit?id=' + n,], */
+    content: ['/skworkorders/WorkOrderFlow/release/' + n,],
+    
+    end:function(){
+            var handle_status = $("#handle_status").val();
+            if ( handle_status == '1' ) {
+                layer.msg('保存成功！',{
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    location.reload();
+                    
+                });
+            } else if ( handle_status == '2' ) {
+                layer.msg('修改失败！',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function(){
+                    history.go(0);
+                });
+            }
+        }
+  });
+}
+</script>
+
+<script type="text/javascript"> 
+
+    
+// 发布完成后关闭上线 撤销按钮
+    $("[xstatus=3]").each(function(){   	
+              $(this).next("#features").children("#online,#revoke").remove();    	
+    }); 
+
+    // 撤销关闭按钮
+    $("[xstatus=9]").each(function(){	
+              $(this).next("#features").children("#revoke,#online").remove();	
+    });
+    
+
+    
+ // 关闭上线按钮
+    $("[xstatus!=1][xlevel=1]").each(function(){	
+              $(this).next("#features").children("#online").remove();	
+    });
+ 
+    $("[xstatus!=5][xlevel=2]").each(function(){	
+        $(this).next("#features").children("#online").remove();	
+	});
+    
+    $("[xstatus!=7][xlevel=3]").each(function(){	
+        $(this).next("#features").children("#online").remove();	
+	});
+ 
+    // 关闭撤销按钮
+    $("[xstatus=2],[xstatus=3],[xstatus=4],[xstatus=6],[xstatus=8]").each(function(){	
+              $(this).next("#features").children("#revoke").remove();	
+    });
+</script>  
+<script>
+$(document).ready(function(){  
+    
+    $("td#user_vars").each(function () {  
+        var text = $(this).html();  
+        text = text.replace(/(,)/, '$1<br>');
+        
+        $(this).html(text);  
+    });  
+});
+</script>
+<script type='text/javascript'>
+$('#ul_env a:first').tab('show')
+</script>
+{% endblock %}
