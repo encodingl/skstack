@@ -143,8 +143,8 @@ def pretask(request):
     else:
 #         try:
         for message in request.websocket:    
-            content_str= "The task has been submitted, please wait patiently"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            content_str= "INFO The Job: has been submitted, please wait patiently \n\r"
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             request.websocket.send(msg)
             if message == None:
                 request.websocket.close()

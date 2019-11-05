@@ -64,7 +64,7 @@ class WorkOrdkerFlowTask():
     def celery_task_revoke(self):
         celery_id = self.obj.celery_task_id
         celery_app.AsyncResult(celery_id).revoke()
-        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         self.obj.status="9"
         self.obj.finished_at = time_now
         self.obj.save()
@@ -80,7 +80,7 @@ class WorkOrdkerFlowTask():
         self.celery_task_revoke()
         content_str = "celery task revoked"
         self.log_celery_id("info", content_str)
-        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
         self.request.websocket.send(msg)
         
 
@@ -148,23 +148,23 @@ class WorkOrdkerFlowTask():
             retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="main_task")
         else:
             content_str = "INFO without main_task to do"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
    
         if self.obj2.post_task and retcode==0:
             retcode = custom_task(self.obj2, user_vars_dic, self.request,taskname="post_task")
         else:
             content_str = "INFO without post_task to do"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             
-        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         if retcode == 0:
             self.obj.status="3"
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "INFO finished:工单执行成功"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("info", content_str)
 
@@ -173,7 +173,7 @@ class WorkOrdkerFlowTask():
             self.obj.finished_at = obj_finished_at
             self.obj.save()
             content_str = "ERROR finished:工单执行失败"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("error", content_str)
             
@@ -193,7 +193,7 @@ class PreTask():
         except Exception as e:
             self.config_center_dic = None
     def sendmsg(self,msg):
-        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),msg),ensure_ascii=False).encode('utf-8')
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),msg),ensure_ascii=False).encode('utf-8')
         self.request.websocket.send(msg)
             
     def log(self,level,content_str):
@@ -211,26 +211,24 @@ class PreTask():
         if self.obj.main_task:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="main_task")
         else:
-            content_str = "INFO without main_task to do"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
-            self.request.websocket.send(msg)
+            content_str = "INFO main_task: nothing to do \n\r"
+            self.log("info", content_str)
 
         if self.obj.post_task and retcode==0:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="post_task")
         else:
-            content_str = "INFO without post_task to do"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
-            self.request.websocket.send(msg)
+            content_str = "INFO post_task: nothing to do \n\r"
+            self.log("info", content_str)
             
-        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         self.message_dic_format["finished_at"]=obj_finished_at
     
         if retcode == 0:
             self.message_dic_format["status"] = 3
             self.message_dic_format.pop("celery_schedule_time")
             WorkOrderFlow.objects.create(**self.message_dic_format)
-            content_str = "INFO finished:工单执行成功"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            content_str = "INFO The Job: finished successful \n\r"
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("info", content_str)
 
@@ -239,14 +237,14 @@ class PreTask():
             self.message_dic_format["status"] = 4
             self.message_dic_format.pop("celery_schedule_time")
             WorkOrderFlow.objects.create(**self.message_dic_format)
-            content_str = "ERROR finished:工单执行失败"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+            content_str = "ERROR The Job: finished failed \n\r"
+            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("error", content_str)
             
     def celery_task_add(self):
         content_str = "celery tast commit ..."
-        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
         self.request.websocket.send(msg)
         time01 = self.message_dic_format["celery_schedule_time"]
         if time01 == "":
@@ -273,7 +271,7 @@ class PreTask():
                 self.sendmsg(content_str)
                 self.log("info", content_str)
             except Exception as e:
-                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
+                self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),e))
                 self.log("info", e)
                 content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
                 self.sendmsg(content_str)
@@ -281,7 +279,7 @@ class PreTask():
     
     def celery_bgtask_add(self):
         self.sendmsg("开始提交后台任务")
-        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
       
         eta_time = format_celery_eta_time(str(time_now))
         taskname_dic = {"main_task":self.obj.main_task,"post_task":self.obj.post_task}
@@ -302,7 +300,7 @@ class PreTask():
             self.sendmsg(content_str)
             self.log("info", content_str)
         except Exception as e:
-            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),e))
+            self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),e))
             self.log("info", e)
             content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
             self.sendmsg(content_str)
@@ -356,9 +354,8 @@ class PreTask():
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="pre_task")
         else:
             retcode = 0
-            content_str = "without pre_task to do"
-            msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),content_str),ensure_ascii=False).encode('utf-8')
-            self.request.websocket.send(msg)
+            content_str = "INFO pre_task: nothing to do \n\r"
+            self.log("info", content_str)
         return True if retcode == 0 else False
 #         if retcode == 0:
 #             return True

@@ -285,7 +285,7 @@ def WorkOrderFlow_permit(request):
             obj_level = obj_AuditFlow.level
             obj_status = obj_WorkOrderFlow.status
             t01 = WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
-            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
             if obj_level == "1":
                 obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
                 if obj_l1 in obj_group:
@@ -345,7 +345,7 @@ def WorkOrderFlow_deny(request):
             WorkOrderFlow_id = request.POST["id"]
             
             
-            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')   
+            time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')   
             login_user = str(request.user) 
             obj_user = UserInfo.objects.get(username=request.user)    
             obj_group = obj_user.usergroup_set.all()  

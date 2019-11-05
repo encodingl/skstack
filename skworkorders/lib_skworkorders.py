@@ -154,10 +154,9 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
             task = var_change2(task,**var_built_in_dic)
         task_list = task.split("\r") 
         print(task_list)
-        ret_message="%s:开始执行" % taskname
+        ret_message="INFO %s:start \n\r" % taskname
         log.info(ret_message)
-        ret_message = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message),ensure_ascii=False).encode('utf-8')
-        request.websocket.send(ret_message)
+        
 
         if obj.config_center in [None]:
             for cmd in task_list:
@@ -177,10 +176,10 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                 retcode=pcmd.wait()
                
                 if retcode==0:
-                    ret_message="INFO %s:执行成功" % taskname
+                    ret_message="INFO %s: succesfull \n\r" % taskname
                     
                 else:
-                    ret_message="ERROR %s:执行失败" % taskname
+                    ret_message="ERROR %s: failed \n\r" % taskname
                     
                     log.error(ret_message)
                     break
@@ -194,12 +193,11 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     log.error("ssh_cmd_result:%s" % msg)
                     retcode = 1111
                 if retcode == 0:          
-                    ret_message="INFO %s:执行成功" % taskname
+                    ret_message="INFO %s:successful \n\r" % taskname
                     log.info(ret_message)
                 else:
-                    ret_message="ERROR %s:执行失败" % taskname
-        ret_message = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ret_message),ensure_ascii=False).encode('utf-8')
-        request.websocket.send(ret_message)
+                    ret_message="ERROR %s: faild \n\r" % taskname
+        
     return retcode
          
 def permission_submit_pass(user,WorkOrder_id):

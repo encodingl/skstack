@@ -188,7 +188,8 @@ $(function () {
             /* console.log('message: ' + e.data);//打印出服务端返回过来的数据 */
                 var text = JSON.parse(e.data);  
                 var colorConfig = { 
-                		"\x1b[32m": ["ok", "SUCCESS","成功","Pass","INFO"],
+                		"\x1b[36m": ["The Job"],
+                		"\x1b[32m": ["ok", "SUCCESS","成功","Pass","successful"],
                 		"\x1b[33m": ["changed","WARNING","warning"],  
                 		"\x1b[31m": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
                 
@@ -209,7 +210,7 @@ $(function () {
                     });  
                 });  
 
-                term.writeln(text)
+                term.write(text)
 
 /*              if (text.indexOf("finished") != -1) {
                 window.ws.close();
