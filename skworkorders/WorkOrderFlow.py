@@ -9,16 +9,19 @@ from skaccounts.permission import permission_verify
 
 from .forms import WorkOrderFlow_detail_form,WorkOrderFlow_release_form,CeleryTaskResult_form,Comment_form
 from django.shortcuts import render
-from django.template import RequestContext
+
 from skcmdb.api import get_object
 from django_celery_results.models import TaskResult
 from datetime import datetime
 from django.utils import timezone
 from datetime import timedelta
+from django.core import serializers
+from django.forms.models import model_to_dict  
 
 
 from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
+import json
 
 # #from dwebsocket.decorators import accept_websocket
 
@@ -74,6 +77,7 @@ def WorkOrderFlow_foreground_history(request):
     current_date=timezone.now()  
     tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
+    tpl_dic_column={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
         print(from_date)
@@ -85,13 +89,47 @@ def WorkOrderFlow_foreground_history(request):
 
         for e in tpl_env:
             obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=True)
+#             obj = serializers.serialize("json", obj)
+            
+            
             tpl_dic_obj[e.name_english]=obj
     else:
     
-
+        
         for e in tpl_env:
-            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=True)
-            tpl_dic_obj[e.name_english]=obj
+            print(e)
+            
+            obj2 = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=True).values("id","title","user_vars","workorder_group","user_commit","finished_at","status")
+            tpl_list_obj2 = []
+            tpl_list_columns = []
+
+            for x in obj2:
+
+                show_dic = {}
+                for k,v in x.items():
+                    
+                    if k == "user_vars":
+                        v = json.loads(v)
+                        for k2,v2 in v.items():
+                          
+                            show_dic[k2] = v2
+                    else:
+                        show_dic[k] = v
+                 
+#                     print(show_dic)
+                tpl_list_obj2.append(show_dic)
+            try:
+                for x2 in tpl_list_obj2[0].keys():
+                    
+                    tpl_list_columns.append(x2)
+            
+            except IndexError:
+                pass    
+            tpl_dic_obj[e.name_english]=tpl_list_obj2
+            tpl_dic_column[e.name_english]=tpl_list_columns
+            print(tpl_list_columns)
+           
+            
     
 
     
