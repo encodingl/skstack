@@ -83,7 +83,16 @@
 					{% for k2,v2 in tpl_dic_column.items %}
                              	        {% if k2 == k %}
                              	          {% for v3 in v2 %}
-	                     				   <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ v3 }}</a> || 
+                             	             {% if v3 == 'finished_at' %}
+                             	           		  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">EndTime</a> ||
+                             	             {% elif v3 == 'workorder_group' %}
+                             	             	  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">Category</a> ||
+                             	             {% elif v3 == 'user_commit' %}
+                             	             	  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">Applicant</a> ||
+                             	             {% else %}
+	                     				      <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ v3 }}</a> || 
+	                     				     {% endif %}
+	                     				      
 	                     				  {% endfor %} 
 	                     				  
 		                               {% endif %}
@@ -108,7 +117,7 @@
 		                         
 		                                    
                                     
-                                    <th class="text-center">功能</th>                            
+                                    <th class="text-center">Others</th>                            
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,7 +135,7 @@
 				                                      {% endif %} 
 				                                   {% endfor %}
 				                                   <td class="text-center" id="features" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">details</li></a>
                                        </td>
 				                                      
                                         
@@ -179,8 +188,13 @@ function checkAll(sender, checkClass) {
 	        "autoWidth": false,
 	        "aaSorting": [[0,'desc']],
 	        "columnDefs": [
+	        	{"targets": 4,"title": "Category"},
+	        	{"targets": 5,"title": "Applicant"},
+	        	{"targets": 6,"title": "EndTime"},
+	        
 	            {
 	            	"targets": 7,
+	            	"title": "Status",
 	                "render": function ( data, type, row ) {
 	                	switch(data){
 	                		case '0':
@@ -215,7 +229,7 @@ function checkAll(sender, checkClass) {
 	            api.columns().indexes().flatten().each( function ( i ) {
 	                var column = api.column( i );
 	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
-	            	if (i == 3){
+	            	if (i == 4){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
 	                    .on( 'change', function () {
