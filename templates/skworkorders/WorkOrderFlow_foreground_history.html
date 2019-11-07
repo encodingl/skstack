@@ -4,6 +4,7 @@
 
     <script src="/static/plugins/daterangepicker/moment.min.js"></script>
     <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="/static/plugins/daterangepicker/moment.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/plugins/daterangepicker/daterangepicker.css">
     
   
@@ -27,9 +28,7 @@
                    		<div class="col-md-8">
 									
 								</div>
-								
-						
-								
+
 								<div class="col-md-4">
 								 	<form action="{% url 'WorkOrderFlow_foreground_history' %}" method="POST">
                				 			{% csrf_token %}
@@ -100,7 +99,7 @@
                              	      {% for k2,v2 in tpl_dic_column.items %}
                              	        {% if k2 == k %}
                              	          {% for v3 in v2 %}
-	                     				   <th>{{ v3 }}</th>
+	                     				   <th id={{ v3 }}>{{ v3 }}</th>
 	                     				  {% endfor %} 
 	                     				  
 		                               {% endif %}
@@ -120,7 +119,11 @@
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
 			                                
 				                                   {% for k5,v5 in v4.items %}
-				                                        <td>{{ v5 }}</td>
+				                                      {% if k5 == 'finished_at' %}
+				                                   		   <td>{{ v5|date:"Y-m-d H:i:s" }}</td>
+				                                      {% else %}
+				                                      	   <td>{{ v5 }}</td>
+				                                      {% endif %} 
 				                                   {% endfor %}
 				                                   <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
@@ -151,17 +154,7 @@
         <!-- /.content -->
 </div>
 <input id="handle_status" value="" hidden="hidden">
-<script>
-$(document).ready(function(){  
-    
-    $("td#x_user_vars").each(function () {  
-        var text = $(this).html();  
-        text = text.replace(/(,)/, '$1<br>');
-        console.log(text)
-        $(this).html(text);  
-    });  
-});
-</script>
+
 <script>
 function checkAll(sender, checkClass) {
     var checkItems = document.getElementsByTagName('input');
@@ -173,21 +166,49 @@ function checkAll(sender, checkClass) {
     }
 }
 </script>
-<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
 
 <script>
   $(document).ready(function() {
 	    var table = $('.table').DataTable( {
-	    	  "paging": false,
+	    	"paging": false,
 	        "lengthChange": true,
 	        "searching": true,
 	        "scrollY": "500px",
-	        
 	        "info": true,
 	        "autoWidth": false,
 	        "aaSorting": [[0,'desc']],
-	        
+	        "columnDefs": [
+	            {
+	            	"targets": 7,
+	                "render": function ( data, type, row ) {
+	                	switch(data){
+	                		case '0':
+	                			 return data = '<span class="label label-primary">' + 'Submitted' + '</span>';break
+	                		case '1':
+	                			 return data = '<span class="label label-primary">' + 'L1 Allowed' + '</span>';break
+	                		case '2':
+	                		case '6':
+	                		case '8':	
+	                			 return data = '<span class="label label-warning">' + 'L1 Denied' + '</span>';break
+	                		case '3':
+	                			 return data = '<span class="label label-success">' + 'OK' + '</span>';break
+	                		case '4':
+	                			 return data = '<span class="label label-danger">' + 'Failed' + '</span>';break
+	                		case '5':
+	                			 return data = '<span class="label label-primary">' + 'L2 Allowed' + '</span>';break
+	                		case '7':
+	                			 return data = '<span class="label label-primary">' + 'L3 Allowed' + '</span>';break
+	                		case '9':
+	                			 return data = '<span class="label label-warning">' + 'Revoked' + '</span>';break
+	                		default:
+	                			 return data = '<span class="label label-primary">' + data + '</span>';break
+	                	}
+	                }
+	            },
+	            
+	      
+	        ],
 	      
 	        initComplete: function () {
 	            var api = this.api();

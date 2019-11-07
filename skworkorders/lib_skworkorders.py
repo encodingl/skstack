@@ -103,7 +103,38 @@ def get_VarsGroup_form(args):
 #     for form in tpl_custom_form:
 #         print form
         
-     
+def dynamic_column_data(queryset_Environment,WorkOrderFlow,date_range):
+    tpl_dic_obj={}
+    tpl_dic_column={}
+    for e in queryset_Environment:
+        obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=date_range,celery_task_id__isnull=True).values("id","title","user_vars","workorder_group","user_commit","finished_at","status")
+        tpl_list_obj = []
+        tpl_list_columns = []
+    
+        for x in obj:
+    
+            show_dic = {}
+            for k,v in x.items():
+                
+                if k == "user_vars":
+                    v = json.loads(v)
+                    for k2,v2 in v.items():
+                      
+                        show_dic[k2] = v2
+                else:
+                    show_dic[k] = v
+            tpl_list_obj.append(show_dic)
+        try:
+            for x2 in tpl_list_obj[0].keys():
+                
+                tpl_list_columns.append(x2)
+        
+        except IndexError:
+            pass    
+        tpl_dic_obj[e.name_english]=tpl_list_obj
+        tpl_dic_column[e.name_english]=tpl_list_columns
+    return tpl_dic_column,tpl_dic_obj
+    
 
 def var_change2(arg,**kwargs):
     for key,value in list(kwargs.items()):       

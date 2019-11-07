@@ -26,7 +26,7 @@ import json
 # #from dwebsocket.decorators import accept_websocket
 
 from skworkorders.lib_skworkorders2 import WorkOrdkerFlowTask
-
+from skworkorders.lib_skworkorders import dynamic_column_data
 import logging
 
 
@@ -80,59 +80,15 @@ def WorkOrderFlow_foreground_history(request):
     tpl_dic_column={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
-        print(from_date)
-        print(type(from_date))
         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
-       
         to_date = request.POST.get('to_date', '')
         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-
-        for e in tpl_env:
-            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=True)
-#             obj = serializers.serialize("json", obj)
-            
-            
-            tpl_dic_obj[e.name_english]=obj
+        date_range = (from_date,to_date)
+        tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
     else:
-    
-        
-        for e in tpl_env:
-            print(e)
-            
-            obj2 = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=True).values("id","title","user_vars","workorder_group","user_commit","finished_at","status")
-            tpl_list_obj2 = []
-            tpl_list_columns = []
+        date_range = (current_date + timedelta(days=-30),current_date)
+        tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
 
-            for x in obj2:
-
-                show_dic = {}
-                for k,v in x.items():
-                    
-                    if k == "user_vars":
-                        v = json.loads(v)
-                        for k2,v2 in v.items():
-                          
-                            show_dic[k2] = v2
-                    else:
-                        show_dic[k] = v
-                 
-#                     print(show_dic)
-                tpl_list_obj2.append(show_dic)
-            try:
-                for x2 in tpl_list_obj2[0].keys():
-                    
-                    tpl_list_columns.append(x2)
-            
-            except IndexError:
-                pass    
-            tpl_dic_obj[e.name_english]=tpl_list_obj2
-            tpl_dic_column[e.name_english]=tpl_list_columns
-            print(tpl_list_columns)
-           
-            
-    
-
-    
     return render(request,'skworkorders/WorkOrderFlow_foreground_history.html', locals())
  
 @login_required()
