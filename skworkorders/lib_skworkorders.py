@@ -197,12 +197,16 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     pcmd = Popen(cmd,stdout=PIPE,stderr=STDOUT,shell=True)
                     while True:
                         for line in iter(pcmd.stdout.readline,b''):
-                      
+                            line = str(line, encoding='utf-8').replace('\n', "\n\r");
                             request.websocket.send(json.dumps(line,ensure_ascii=False).encode('utf-8'))
                         if pcmd.poll() is not None:
                             break  
                 except Exception as msg:
                     log.error("cmd_result:%s" % msg)
+                    msg = "ERROR %s \n\r" % msg
+                    msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),msg),ensure_ascii=False).encode('utf-8')
+                    request.websocket.send(msg)
+                    return 1
 
                 retcode=pcmd.wait()
                
