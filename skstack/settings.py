@@ -39,7 +39,7 @@ config.read(CONFIGFILE)
 SECRET_KEY = 'n@s)3&f$tu#-^^%k-dj__th2)7m!m*(ag!fs=6ezyzb7l%@i@9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.get('setup', 'debug')
 
 # DEBUG = True if config.get('setup', 'debug') == 'True' else False
 ALLOWED_HOSTS = config.get('setup', 'allowed_hosts').split(',')
