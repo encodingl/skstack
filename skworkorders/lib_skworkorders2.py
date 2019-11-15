@@ -163,7 +163,7 @@ class WorkOrdkerFlowTask():
             self.obj.status="3"
             self.obj.finished_at = obj_finished_at
             self.obj.save()
-            content_str = "INFO finished:工单执行成功"
+            content_str = "INFO The Job: finished successful \n\r"
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("info", content_str)
@@ -172,7 +172,7 @@ class WorkOrdkerFlowTask():
             self.obj.status="4"
             self.obj.finished_at = obj_finished_at
             self.obj.save()
-            content_str = "ERROR finished:工单执行失败"
+            content_str = "ERROR The Job: failed \n\r"
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("error", content_str)
@@ -316,7 +316,7 @@ class PreTask():
             self.message_dic_format["status"] = 0
             self.message_dic_format["celery_schedule_time"] = time01
             WorkOrderFlow.objects.create(**self.message_dic_format)
-            content_str = "finished:工单提交成功"
+            content_str = "INFO The Job: submitted successful \n\r"
             self.sendmsg(content_str)
             self.log("info", content_str)
            
@@ -326,7 +326,7 @@ class PreTask():
         self.message_dic_format.pop("celery_schedule_time")
 
         WorkOrderFlow.objects.create(**self.message_dic_format)
-        content_str = "INFO finished:工单提交成功"
+        content_str = "INFO The Job: submitted successful \n\r"
         self.sendmsg(content_str)
         self.log("info", content_str)
         
@@ -363,9 +363,9 @@ class PreTask():
 #             return False
         
     def pre_task_failed(self):
-        content_str = "WARN finished:工单提交失败"
+        content_str = "ERROR The Job finished:  failed  \n\r"
         self.sendmsg(content_str)
-        self.log("warning", content_str)
+        self.log("error", content_str)
        
 
     
