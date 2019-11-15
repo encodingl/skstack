@@ -70,6 +70,27 @@ def WorkOrderFlow_background_release(request):
 
     return render(request,'skworkorders/WorkOrderFlow_background_release.html', locals())
 
+# @login_required()
+# @permission_verify()
+# def WorkOrderFlow_foreground_history(request):
+#     temp_name = "skworkorders/skworkorders-header.html"  
+#     current_date=timezone.now()  
+#     tpl_env = Environment.objects.all().order_by("name_english")
+#     tpl_dic_obj={}
+#     tpl_dic_column={}
+#     if request.method == 'POST':
+#         from_date = request.POST.get('from_date', '')
+#         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
+#         to_date = request.POST.get('to_date', '')
+#         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
+#         date_range = (from_date,to_date)
+#         tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
+#     else:
+#         date_range = (current_date + timedelta(days=-30),current_date)
+#         tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
+# 
+#     return render(request,'skworkorders/WorkOrderFlow_foreground_history.html', locals())
+
 @login_required()
 @permission_verify()
 def WorkOrderFlow_foreground_history(request):
@@ -77,18 +98,27 @@ def WorkOrderFlow_foreground_history(request):
     current_date=timezone.now()  
     tpl_env = Environment.objects.all().order_by("name_english")
     tpl_dic_obj={}
-    tpl_dic_column={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
+        print(from_date)
+        print(type(from_date))
         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
+       
         to_date = request.POST.get('to_date', '')
         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-        date_range = (from_date,to_date)
-        tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
-    else:
-        date_range = (current_date + timedelta(days=-30),current_date)
-        tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
 
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=True)
+            tpl_dic_obj[e.name_english]=obj
+    else:
+    
+
+        for e in tpl_env:
+            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date),celery_task_id__isnull=True)
+            tpl_dic_obj[e.name_english]=obj
+    
+
+    
     return render(request,'skworkorders/WorkOrderFlow_foreground_history.html', locals())
  
 @login_required()

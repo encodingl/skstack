@@ -4,7 +4,6 @@
 
     <script src="/static/plugins/daterangepicker/moment.min.js"></script>
     <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="/static/plugins/daterangepicker/moment.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/plugins/daterangepicker/daterangepicker.css">
     
   
@@ -28,7 +27,9 @@
                    		<div class="col-md-8">
 									
 								</div>
-
+								
+						
+								
 								<div class="col-md-4">
 								 	<form action="{% url 'WorkOrderFlow_foreground_history' %}" method="POST">
                				 			{% csrf_token %}
@@ -80,78 +81,81 @@
                       <tr>
                       <div>
 					隐藏列: 
-					{% for k2,v2 in tpl_dic_column.items %}
-                             	        {% if k2 == k %}
-                             	          {% for v3 in v2 %}
-                             	             {% if v3 == 'finished_at' %}
-                             	           		  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">EndTime</a> ||
-                             	             {% elif v3 == 'workorder_group' %}
-                             	             	  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">Category</a> ||
-                             	             {% elif v3 == 'user_commit' %}
-                             	             	  <a class="toggle-vis" data-column="{{ forloop.counter0 }}">Applicant</a> ||
-                             	             {% else %}
-	                     				      <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ v3 }}</a> || 
-	                     				     {% endif %}
-	                     				      
-	                     				  {% endfor %} 
-	                     				  
-		                               {% endif %}
-		                               
-                     				  {% endfor %}
-					
-					
+					<a class="toggle-vis" data-column="0">id</a> - 
+					<a class="toggle-vis" data-column="1">标题</a> - 
+					<a class="toggle-vis" data-column="2">参数</a> - 
+					<a class="toggle-vis" data-column="3">分类</a> - 
+					<a class="toggle-vis" data-column="4">申请人</a> - 
+					<a class="toggle-vis" data-column="5">完成时间</a>
 				</div> 
                       </tr>
                         <tr>
-                        
+                       				   <th>id</th>
+                         
+                                    <th>标题</th>
+                                          
+                                   <th>参数</th>
+                                    <th>分类</th>
+                                
+                                    <th>申请人</th> 
+                                   
                                  
-                             	      {% for k2,v2 in tpl_dic_column.items %}
-                             	        {% if k2 == k %}
-                             	          {% for v3 in v2 %}
-	                     				   <th id={{ v3 }}>{{ v3 }}</th>
-	                     				  {% endfor %} 
-	                     				  
-		                               {% endif %}
-		                               
-                     				  {% endfor %}
-		                         
-		                                    
-                                    
-                                    <th class="text-center">Others</th>                            
+                                 
+                                    <th>完成时间</th> 
+                                    <th>当前状态</th>       
+                                    <th class="text-center">功能</th>                            
                                 </tr>
                             </thead>
                             <tbody>
-                             {% if v %}
-				                                {% for v4 in v %}
+                              {% if v %}
+                                {% for x in v %}
                                     <tr class="even gradeA">
                                        
                                         <input type="hidden" name="u_name" value="{{ x.name }}">
-			                                
-				                                   {% for k5,v5 in v4.items %}
-				                                      {% if k5 == 'finished_at' %}
-				                                   		   <td>{{ v5|date:"Y-m-d H:i:s" }}</td>
-				                                      {% else %}
-				                                      	   <td>{{ v5 }}</td>
-				                                      {% endif %} 
-				                                   {% endfor %}
-				                                   <td class="text-center" id="features" data-editable='false'>
-                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">details</li></a>
-                                       </td>
-				                                      
+                                        <td>{{ x.id}}</td>
+                                        <td id="xtitle">{{ x.title}}</td>
+                                      
+                                     <td id="x_user_vars" >{{ x.user_vars }}</td>
+                                     
+                                      <td>{{ x.workorder_group }}</td>
+                                       <td>{{ x.user_commit }}</td>
+                                     
+                                     
+                                        <td>{{ x.finished_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
+                                        	  {% if x.status == "3" %}
+                                                <span class="label label-success">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "9" %}
+                                                <span class="label label-default">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
+                                                <span class="label label-danger">{{ x|displayName:'status' }}</span>
+                                            {% elif x.status == "10" %}
+                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+                                            {% else %}
+                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+                                            {% endif %}
                                         
+                                        
+                                        
+                                        </td>
+                                        <td class="text-center" id="features" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
+                    
+                                   
+                                        
+                                    </td>
                                     </tr>
                                 {% endfor %}
-				                                
-			                                {% else %}
-			                                    <p>No Item are available.</p>
-			                               {% endif %} 
+                                {% else %}
+                                    <p>No Item are available.</p>
+                               {% endif %}
 
                             </tbody>
                   </table>
                   
                    </div>
                    {% endfor %}
-              {% endif %}
+                	 	  {% endif %}
                     </div>
 						<!-- /.tab-content -->
 
@@ -163,7 +167,17 @@
         <!-- /.content -->
 </div>
 <input id="handle_status" value="" hidden="hidden">
-
+<script>
+$(document).ready(function(){  
+    
+    $("td#x_user_vars").each(function () {  
+        var text = $(this).html();  
+        text = text.replace(/(,)/, '$1<br>');
+        console.log(text)
+        $(this).html(text);  
+    });  
+});
+</script>
 <script>
 function checkAll(sender, checkClass) {
     var checkItems = document.getElementsByTagName('input');
@@ -175,61 +189,28 @@ function checkAll(sender, checkClass) {
     }
 }
 </script>
-
+<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 
 <script>
   $(document).ready(function() {
 	    var table = $('.table').DataTable( {
-	    	"paging": false,
+	    	  "paging": false,
 	        "lengthChange": true,
 	        "searching": true,
 	        "scrollY": "500px",
+	        
 	        "info": true,
 	        "autoWidth": false,
 	        "aaSorting": [[0,'desc']],
-	        "columnDefs": [
-	        	{"targets": 4,"title": "Category"},
-	        	{"targets": 5,"title": "Applicant"},
-	        	{"targets": 6,"title": "EndTime"},
 	        
-	            {
-	            	"targets": 7,
-	            	"title": "Status",
-	                "render": function ( data, type, row ) {
-	                	switch(data){
-	                		case '0':
-	                			 return data = '<span class="label label-primary">' + 'Submitted' + '</span>';break
-	                		case '1':
-	                			 return data = '<span class="label label-primary">' + 'L1 Allowed' + '</span>';break
-	                		case '2':
-	                		case '6':
-	                		case '8':	
-	                			 return data = '<span class="label label-warning">' + 'L1 Denied' + '</span>';break
-	                		case '3':
-	                			 return data = '<span class="label label-success">' + 'OK' + '</span>';break
-	                		case '4':
-	                			 return data = '<span class="label label-danger">' + 'Failed' + '</span>';break
-	                		case '5':
-	                			 return data = '<span class="label label-primary">' + 'L2 Allowed' + '</span>';break
-	                		case '7':
-	                			 return data = '<span class="label label-primary">' + 'L3 Allowed' + '</span>';break
-	                		case '9':
-	                			 return data = '<span class="label label-warning">' + 'Revoked' + '</span>';break
-	                		default:
-	                			 return data = '<span class="label label-primary">' + data + '</span>';break
-	                	}
-	                }
-	            },
-	            
-	      
-	        ],
 	      
 	        initComplete: function () {
 	            var api = this.api();
 	            api.columns().indexes().flatten().each( function ( i ) {
 	                var column = api.column( i );
 	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
-	            	if (i == 4){
+	            	if (i == 3){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
 	                    .on( 'change', function () {
