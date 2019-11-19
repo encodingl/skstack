@@ -101,7 +101,10 @@ def WorkOrderCommit_add(request, ids):
             tpl_WorkOrderCommit_form.fields["back_exe_enable"].widget=forms.HiddenInput()
         if obj.auto_exe_enable == False:
             tpl_WorkOrderCommit_form.fields["auto_exe_enable"].widget=forms.HiddenInput()
-            
+        
+        print(tpl_custom_form_list)  
+        for x in tpl_custom_form_list:
+            print(x)  
         return render(request,"skworkorders/WorkOrderCommit_add.html", locals())
     else:
         response_data = {}  

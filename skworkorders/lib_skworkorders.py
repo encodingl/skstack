@@ -46,7 +46,7 @@ def get_Vars_form(obj_var):
            
     elif obj.value_form_type == "RadioSelect":
         new_fields = {
-            var_name: forms.ChoiceField(label='变量名', error_messages={'required': '不能为空'},widget=forms.RadioSelect(attrs={'class': 'form-control'}))
+            var_name: forms.ChoiceField(label='变量名', error_messages={'required': '不能为空'},widget=forms.RadioSelect(attrs={'class': 'list-group'}))
             }       
 
     elif obj.value_form_type == "SelectMultiple":
@@ -56,7 +56,7 @@ def get_Vars_form(obj_var):
         
     elif obj.value_form_type == "CheckboxSelectMultiple":
         new_fields = {
-            var_name: forms.MultipleChoiceField(label='变量名',error_messages={'required': '不能为空'},widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
+            var_name: forms.MultipleChoiceField(label='变量名',error_messages={'required': '不能为空'},widget=forms.CheckboxSelectMultiple(attrs={'class': 'list-group'}))
             }
         
     elif obj.value_form_type == "TextInput":
@@ -98,10 +98,10 @@ def get_VarsGroup_form(args):
         obj_var_form = get_Vars_form(obj_var)
      
         tpl_custom_form.append(obj_var_form)
-        
-    return tpl_custom_form  
 #     for form in tpl_custom_form:
-#         print form
+#         print(form)    
+    return tpl_custom_form  
+    
         
 def dynamic_column_data(queryset_Environment,WorkOrderFlow,date_range):
     tpl_dic_obj={}

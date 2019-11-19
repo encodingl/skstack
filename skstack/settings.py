@@ -348,7 +348,7 @@ LOGGING = {
         },
         'skstack': {
             'handlers': ['console', 'info_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
          'skworkorders': {
