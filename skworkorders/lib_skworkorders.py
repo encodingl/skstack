@@ -5,6 +5,7 @@ import django
 django.setup()
 
 from django import forms
+import traceback
 
 from skworkorders.models import VarsGroup,WorkOrder,ConfigCenter
 from skworkorders.forms import Custom_form
@@ -79,13 +80,14 @@ def get_Vars_form(obj_var):
     elif obj.value_method == "script":
         try:
             l1 = subprocess.getoutput(obj.value_script)
-        except Exception as msg:
-            log.error(msg)
-            return msg    
+            obj_value_optional = eval(l1)
+            print(obj_value_optional)
+            tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)
+        except Exception :
+            log.error(traceback.format_exc())
+            return traceback.format_exc()  
         
-        obj_value_optional = eval(l1)
-        print(obj_value_optional)
-        tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional) 
+         
     elif obj.value_method == "manual":
         pass
     
