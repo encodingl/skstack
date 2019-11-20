@@ -87,6 +87,7 @@ class ConfigCenter(models.Model):
     
 class Environment(models.Model):
     name_english  = models.CharField("英文简称",max_length=50,unique=True)
+    label_sort = models.PositiveIntegerField("label_sort",default=10)
     desc = models.CharField("描述", max_length=300, null=True, blank=True)
     
     def __str__(self):

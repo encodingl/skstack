@@ -43,6 +43,7 @@
                             
                                     
                                     <th>名称</th>
+                                    <th>标签排序</th>
                                     <th>描述</th>    
                                     <th class="text-center">功能</th>                            
                                 </tr>
@@ -54,6 +55,7 @@
                                         
                                         
                                         <td>{{ x.name_english }}</td>
+                                        <td>{{ x.label_sort }}</td>
                                         <td>{{ x.desc }}</td>
                                         <td class="text-center" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu(this.value)" value="{{ x.id }}">编辑</li></a>

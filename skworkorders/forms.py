@@ -30,6 +30,7 @@ class Environment_form(forms.ModelForm):
         widgets = {
            
             'name_english': forms.TextInput(attrs={'class': 'form-control'}),
+            'label_sort': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
           
         }
