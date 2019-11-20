@@ -102,5 +102,4 @@ def Vars_check(request,ids):
     temp_name = "skworkorders/skworkorders-header.html"
     obj = get_object(Vars, id=ids)
     tpl_var_check_form = get_Vars_form(obj)
-    tpl_error_msg = tpl_var_check_form
     return render(request,"skworkorders/Vars_check.html", locals())
