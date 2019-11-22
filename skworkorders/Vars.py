@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Vars_form
 from django.shortcuts import render
-from django.template import RequestContext
 from skcmdb.api import get_object
 import time
 from skworkorders.lib_skworkorders import get_Vars_form
+import traceback,json
 
 
 
@@ -103,3 +103,13 @@ def Vars_check(request,ids):
     obj = get_object(Vars, id=ids)
     tpl_var_check_form = get_Vars_form(obj)
     return render(request,"skworkorders/Vars_check.html", locals())
+#     try:
+#         tpl_var_check_form = get_Vars_form(obj)
+#         return render(request,"skworkorders/Vars_check.html", locals())
+#     except Exception :
+#         error_log = traceback.format_exc()
+#         response_data = {}  
+#         response_data['result'] = 'failed'  
+#         response_data['message'] = error_log 
+#         return HttpResponse(json.dumps(response_data), content_type="application/json") 
+    

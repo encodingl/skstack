@@ -73,25 +73,20 @@ def get_Vars_form(obj_var):
     
     tpl_Custom_form = type('tpl_Custom_form', (Custom_form,),  new_fields)
     tpl_Custom_form = tpl_Custom_form(initial=content)
+     
 #判断变量来源获取变量内容    
+    
     if obj.value_method == "admin_def":
         obj_value_optional = eval(obj.value_optional)       
         tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)       
     elif obj.value_method == "script":
-        try:
-            l1 = subprocess.getoutput(obj.value_script)
-            obj_value_optional = eval(l1)
-            print(obj_value_optional)
-            tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)
-        except Exception :
-            log.error(traceback.format_exc())
-            return traceback.format_exc()  
-        
-         
+        l1 = subprocess.getoutput(obj.value_script)
+        obj_value_optional = eval(l1)
+        tpl_Custom_form.fields[var_name].widget.choices = list_to_formlist(obj_value_optional)
     elif obj.value_method == "manual":
         pass
-    
-    tpl_Custom_form.fields[var_name].label = obj.label_name   
+
+    tpl_Custom_form.fields[var_name].label = obj.label_name 
     return tpl_Custom_form
     
 def get_VarsGroup_form(args):  
@@ -102,7 +97,6 @@ def get_VarsGroup_form(args):
    
     for obj_var in obj_VarsGroup.vars.all():
         obj_var_form = get_Vars_form(obj_var)
-     
         tpl_custom_form.append(obj_var_form)
 #     for form in tpl_custom_form:
 #         print(form)    

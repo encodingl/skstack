@@ -13,6 +13,7 @@ from skcmdb.api import get_object
 
 from datetime import datetime
 import json
+import sys
 from skaccounts.models import UserInfo
 from django import forms
 from dwebsocket.decorators import accept_websocket
@@ -27,6 +28,7 @@ from datetime import datetime,timedelta
 import pytz
 from skworkorders import tasks
 from skstack.celery import app as celery_app
+
 
 
 
@@ -91,8 +93,16 @@ def WorkOrderCommit_add(request, ids):
  
     if permission_submit_pass(user, WorkOrder_id=ids):
         tpl_WorkOrderCommit_form = WorkOrderCommit_form(initial=dic_init)  
+      
         if obj.var_opional_switch == True and obj.var_opional: 
-            tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
+            try:
+                tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
+                print(tpl_custom_form_list)
+            except:
+                tpl_error_msg = {}  
+                tpl_error_msg['result'] = 'failed'  
+                tpl_error_msg['message'] = 'Please check that registration variable is correct,for more information, please contact the administrator' 
+                return render(request,"error_result.html", locals())  
         if obj.audit_enable == False:
             tpl_WorkOrderCommit_form.fields["desc"].widget=forms.HiddenInput()
         if obj.schedule_enable == False:
@@ -101,14 +111,15 @@ def WorkOrderCommit_add(request, ids):
             tpl_WorkOrderCommit_form.fields["back_exe_enable"].widget=forms.HiddenInput()
         if obj.auto_exe_enable == False:
             tpl_WorkOrderCommit_form.fields["auto_exe_enable"].widget=forms.HiddenInput()
+        return render(request,"skworkorders/WorkOrderCommit_add.html", locals())
         
    
-        return render(request,"skworkorders/WorkOrderCommit_add.html", locals())
+        
     else:
-        response_data = {}  
-        response_data['result'] = 'failed'  
-        response_data['message'] = 'You donot have permisson' 
-        return HttpResponse(json.dumps(response_data), content_type="application/json")  
+        tpl_error_msg = {}  
+        tpl_error_msg['result'] = 'failed'  
+        tpl_error_msg['message'] = 'permission deny' 
+        return render(request,"error_result.html", locals())  
 
 @login_required()
 @permission_verify()
