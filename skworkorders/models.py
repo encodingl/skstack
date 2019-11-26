@@ -136,8 +136,8 @@ class WorkOrder(models.Model):
     var_opional = models.ForeignKey(VarsGroup, verbose_name="可选参数组", on_delete=models.PROTECT, null=True, blank=True)
     
     pre_task = models.CharField("前置任务",max_length=500,null=True, blank=True)
-    main_task = models.CharField("主任务",max_length=200,null=True, blank=True)
-    post_task = models.CharField("后置任务",max_length=200,null=True, blank=True)
+    main_task = models.CharField("主任务",max_length=500,null=True, blank=True)
+    post_task = models.CharField("后置任务",max_length=500,null=True, blank=True)
    
     audit_enable = models.BooleanField("是否开启审核")
     audit_flow = models.ForeignKey(AuditFlow, verbose_name="审核流程", on_delete=models.PROTECT, null=True,blank=True)
