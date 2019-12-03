@@ -62,7 +62,6 @@ def index(request):
     idcnamenumlist = []
     for nameid in idcnameid:
         idcnamenumdict = {}
-        # print(nameid[0],nameid[1])
         idcnamelist.append(nameid[0])
         hostnum = Host.objects.filter(idc_id=nameid[1]).count()
         idcnamenumdict['value'] = hostnum
@@ -83,22 +82,6 @@ def index(request):
 
 
     #工单执行数统计
-    # '''
-    # [
-	#         {
-	#             name:'PROD',
-	#             type:# 'line',
-	#             stack: '总量',
-	#             data:[99, 332, 101, 134, 90, 230, 210]
-	#         },
-	#         {
-	#             name:'STG',
-	#             type:# 'line',
-	#             stack: '总量',
-	#             data:[220, 182, 191, 234, 290, 330, 310]
-	#         },
-	#     ]
-    # '''
     weekoffset = datetime.datetime.now().weekday()
     datelist = []
     datelisttemp = []
@@ -113,52 +96,21 @@ def index(request):
     envnamelist = []
     envdictnum = {'type':'line','stack':'总量'}
     envdictnumlist = []
-    test_dict = {}
-    # vauledate = []
     for ename in envname:
-        # print(ename)
-        # vauledate = []
-        # envdictnum = {'type': 'line', 'stack': '总量'}
         envdictnum['name'] = ename
         envnamelist.append(ename['name_english'])
 
     for eename in envnamelist:
-        # print(eename)
         vauledate = []
         envdictnum =  {'type': 'line', 'stack': '总量'}
         for start in datelisttemp:
             envdictnum['name'] = eename
-            # print(eename)
             startdate = datetime.datetime.strptime(start,"%Y-%m-%d").date()
             enddate = startdate + datetime.timedelta(days=6)
             numdate = WorkOrderFlow.objects.filter(finished_at__gte=startdate,finished_at__lte=enddate,env=eename).count()
             vauledate.append(numdate)
-            # print(startdate,enddate,numdate)
-        print(vauledate)
         envdictnum['data'] = vauledate
         envdictnumlist.append(envdictnum)
-
-
-        # print(vauledate)
-    print(envdictnumlist)
-    print(wonamenumlist)
-
-
-
-
-
-    # print(envnamelist)
-
-
-
-
-
-
-
-
-
-
-
     return render(request,"skrpt/index.html", locals())
  
 
