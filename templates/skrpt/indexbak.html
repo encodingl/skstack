@@ -152,7 +152,7 @@
 
 <script>
 var myChart = echarts.init(document.getElementById('echart1'),'light');
-
+dictarr = {'PROD':[99, 332, 101, 134, 90, 230, 210],'STG':[220, 182, 191, 234, 290, 330, 310]}
 var option = {
 	    title: {
 	        text: '工单执行按周统计'
@@ -163,7 +163,7 @@ var option = {
 	    },
 	    legend: {
 
-	        data:{{ envnamelist |safe }}
+	        data:['PROD','STG','other']
 	    },
 	    grid: {
 	        left: '1%',
@@ -179,12 +179,25 @@ var option = {
 	    xAxis: {
 	        type: 'category',
 	        boundaryGap: false,
-	        data: {{ datelist | safe }}
+	        data: ['20190928','20191005','20191012','20191019','20191026']
 	    },
 	    yAxis: {
 	        type: 'value'
 	    },
-	    series: {{ envdictnumlist |safe }}
+	    series: [
+	        {
+	            name:'PROD',
+	            type:'line',
+	            stack: '总量',
+	            data:[99, 332, 101, 134, 90, 230, 210]
+	        },
+	        {
+	            name:'STG',
+	            type:'line',
+	            stack: '总量',
+	            data:[220, 182, 191, 234, 290, 330, 310]
+	        },
+	    ]
 	};
 
 

@@ -5,13 +5,16 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from django.urls import reverse
-from .models import Rpt
-from .forms import Rpt_form
+# from .models import Rpt
+# from .forms import Rpt_form
 from skaccounts.models import UserInfo
-from skcmdb.models import Host, App
+from skcmdb.models import Host, App,Idc
 from skworkorders.models import WorkOrder,WorkOrderFlow
 from sktask.models import history
 import  datetime
+from skrecord.models import *
+from skaccounts.models import *
+from skworkorders.models import *
 import time
 from django.db.models import Q
 
@@ -20,50 +23,94 @@ from django.db.models import Q
 @permission_verify()
 def index(request):
     temp_name = "skrpt/navi-header.html"
-    usernum = UserInfo.objects.all().count()
-    phynum = Host.objects.filter(group_id__in=[1]).count()
-    vmnum = Host.objects.filter(group_id__in=[2]).count()
-    appnum =  App.objects.all().count()
-    worklistnum = WorkOrder.objects.filter(status="yes").count()
+    usernumtotal = UserInfo.objects.filter(is_active=1).count() #激活用户总数
+    appnum =  App.objects.all().count() #应用总数
+    worklistnum = WorkOrder.objects.filter(status="yes").count() #激活工单总数
+    eventlistnum = Track.objects.all().count() #事件总数
 
-    print(worklistnum)
-     #-----------------chart start--------------------------
-    date_list = []  
-    num_list_prod = []
-    num_list_stg = []
+    #获取事件分类级别及各登记事件数量，
+    eventclass = Track_list.objects.all().values_list('name', 'id')
+    eventclasslist = []
+    eventclasslistnum = []
+    for classid in eventclass:
+        eventclassdict = {}
+        eventclasslist.append(classid[0])
+        pnum = Track.objects.filter(trackclass_id=classid[1]).count()
+        eventclassdict['value'] = pnum
+        eventclassdict['name'] = classid[0]
+        eventclasslistnum.append(eventclassdict)
+    eventclasslist.sort()
 
-    endDate = datetime.date.today() 
-    startDate = endDate - datetime.timedelta(days=14)
-    datediff = (endDate - startDate).days
-    
-    startDate = str(startDate)
-    endDate = str(endDate)
-    startDateArr = startDate.split("-")
-    startDateArr = list(map(int, startDateArr))
-    endDateArr = endDate.split("-")
-    endDateArr = list(map(int, endDateArr))
-    begin = datetime.date(startDateArr[0], startDateArr[1], startDateArr[2])
-    end = datetime.date(endDateArr[0], endDateArr[1], endDateArr[2])
+    #获取用户组及所属组用户数量
+    usergroupall = UserGroup.objects.all().values_list('name','id')
+    usergrouplist = [] #存储用户组名称信息
+    usergroupnumlist = []#存储所有用户组及用户组的用户数量
+    for group in usergroupall:
+        usergroupdict = {} #存储单个用户组及用户组的用户数量
+        # print(group[0],group[1])
+        #group[0]用户组名称，group[1]用户组对应的id
+        usergrouplist.append(group[0])
+        b = UserGroup.objects.get(id=group[1])
+        usernum = b.members.all().count()
+        usergroupdict['value'] = usernum
+        usergroupdict['name']  = group[0]
+        usergroupnumlist.append(usergroupdict)
+
+    #h获取机房及机房资产信息
+    idcnameid = Idc.objects.all().values_list('name','id')
+    idcnamelist = []
+    idcnamenumlist = []
+    for nameid in idcnameid:
+        idcnamenumdict = {}
+        idcnamelist.append(nameid[0])
+        hostnum = Host.objects.filter(idc_id=nameid[1]).count()
+        idcnamenumdict['value'] = hostnum
+        idcnamenumdict['name'] = nameid[0]
+        idcnamenumlist.append(idcnamenumdict)
+
+    # 工单统计
+    wonameid = WorkOrderGroup.objects.all().values_list('name','id')
+    wonamelist = []
+    wonamenumlist = []
+    for nameid in wonameid:
+        wonamenumdict = {}
+        wonamelist.append(nameid[0])
+        wonum = WorkOrder.objects.filter(group_id=nameid[1]).count()
+        wonamenumdict['value'] = wonum
+        wonamenumdict['name'] = nameid[0]
+        wonamenumlist.append(wonamenumdict)
 
 
-    d = begin
-    delta = datetime.timedelta(days=1)
+    #工单执行数统计
+    weekoffset = datetime.datetime.now().weekday()
+    datelist = []
+    datelisttemp = []
+    for i in range(5):
+        weekstartday = (datetime.datetime.now() - datetime.timedelta(days=weekoffset))
+        print(weekstartday)
+        datelist.append(weekstartday.strftime("%Y%m%d"))
+        datelisttemp.append(weekstartday.strftime("%Y-%m-%d"))
+        weekoffset = weekoffset + 7
+    datelist.reverse()
+    envname = Environment.objects.all().values('name_english')
+    envnamelist = []
+    envdictnum = {'type':'line','stack':'总量'}
+    envdictnumlist = []
+    for ename in envname:
+        envdictnum['name'] = ename
+        envnamelist.append(ename['name_english'])
 
-    while d <= end:  
-        m = d.strftime("%Y-%m-%d")
-        # daynum = history.objects.filter(time_task_finished__contains=m).count()
-        daynumprod = WorkOrderFlow.objects.filter(finished_at__contains=m, env='prod').count()
-        daynumstg = WorkOrderFlow.objects.filter(finished_at__contains=m, env='stg').count()
-        date_list.append(m)
-        num_list_prod.append(daynumprod)
-        num_list_stg.append(daynumstg)
-        d += delta
-    # print(num_list_prod)
-    # print(num_list_stg)
-   #--------------------------chart end---------------------------------------
-
-
-
+    for eename in envnamelist:
+        vauledate = []
+        envdictnum =  {'type': 'line', 'stack': '总量'}
+        for start in datelisttemp:
+            envdictnum['name'] = eename
+            startdate = datetime.datetime.strptime(start,"%Y-%m-%d").date()
+            enddate = startdate + datetime.timedelta(days=6)
+            numdate = WorkOrderFlow.objects.filter(finished_at__gte=startdate,finished_at__lte=enddate,env=eename).count()
+            vauledate.append(numdate)
+        envdictnum['data'] = vauledate
+        envdictnumlist.append(envdictnum)
     return render(request,"skrpt/index.html", locals())
  
 
