@@ -29,7 +29,7 @@ from sktask.models import ONLINE_STATUS
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
-log("setup.log", level, log_path)
+log("skstack.log", level, log_path)
 ansible_dir = get_dir("a_path")
 
 

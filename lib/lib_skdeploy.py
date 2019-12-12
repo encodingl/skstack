@@ -12,7 +12,7 @@ from lib.lib_config import get_config_var
 
 level = get_config_var("log_level")
 log_path = get_config_var("log_path")
-log("setup.log", level, log_path)
+log("skstack.log", level, log_path)
 
 def adv_task_step(hosts,env,project,task_file,forks=30):
     proj_base_dir = get_config_var("pro_path")

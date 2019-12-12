@@ -121,12 +121,11 @@ class WorkOrderCommit_help_form(forms.ModelForm):
 class WorkOrderFlow_release_form(forms.ModelForm):
     class Meta:
         model = WorkOrderFlow
-        fields = ("id","workorder","desc","env",'user_vars')
+        fields = ("id","workorder","env",'user_vars')
          
         widgets = {         
             'workorder': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'id': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'desc': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_vars': forms.Textarea(attrs={'class': 'form-control','style': 'height: 60px;','readonly':True}),
  

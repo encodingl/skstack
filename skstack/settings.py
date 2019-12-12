@@ -99,7 +99,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'skstack.context_processor.url_permission',
-                'skstack.context_processor.skworkorder_todo_statistics',
             ],
         },
     },
@@ -299,26 +298,7 @@ LOGGING = {
             'backupCount': 5,  
             'formatter': 'standard',  
         },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-error.log'),
-            'formatter': 'standard'
-        },
-        'info_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-info.log'),
-            'formatter': 'standard'
-        },
-        'debug': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack-debug.log'),
-            'maxBytes': 1024 * 1024 * 5,  
-            'backupCount': 5,  
-            'formatter': 'standard',  
-        },
+
      
         'console': {
             'level': 'DEBUG',
@@ -342,12 +322,12 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['console', 'info_file'],
+            'handlers': ['console', 'default'],
             'level': 'INFO',
             'propagate': False,
         },
         'skstack': {
-            'handlers': ['console', 'info_file'],
+            'handlers': ['console', 'default'],
             'level': 'INFO',
             'propagate': False,
         },

@@ -23,7 +23,7 @@ from skaccounts.models import UserInfo,UserGroup
 from django.db.models import Q
 import json
 
-# #from dwebsocket.decorators import accept_websocket
+from dwebsocket.decorators import accept_websocket
 
 from skworkorders.lib_skworkorders2 import WorkOrdkerFlowTask
 from skworkorders.lib_skworkorders import dynamic_column_data
@@ -38,7 +38,7 @@ def WorkOrderFlow_foreground_release(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     current_date=timezone.now()
 
-    tpl_env = Environment.objects.all().order_by("name_english")
+    tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
 
     for e in tpl_env:
@@ -56,7 +56,7 @@ def WorkOrderFlow_background_release(request):
     from_date = current_date + timedelta(days=-7)
     print(current_date)
 
-    tpl_env = Environment.objects.all().order_by("name_english")
+    tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
 
     for e in tpl_env:
@@ -96,7 +96,7 @@ def WorkOrderFlow_background_release(request):
 def WorkOrderFlow_foreground_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
-    tpl_env = Environment.objects.all().order_by("name_english")
+    tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
@@ -127,7 +127,7 @@ def WorkOrderFlow_background_history(request):
     temp_name = "skworkorders/skworkorders-header.html"  
     current_date=timezone.now()  
     from_date = current_date + timedelta(days=-30)
-    tpl_env = Environment.objects.all().order_by("name_english")
+    tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
     if request.method == 'POST':
         from_date = request.POST.get('from_date', '')
@@ -165,11 +165,13 @@ def WorkOrderFlow_revoke(request):
     login_user = request.user
     WorkOrderFlow_id = request.GET.get('id', '')
     t01 =  WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
+    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     if WorkOrderFlow_id:
         if t01.obj.celery_task_id:
             t01.celery_task_revoke()
-       
+        else:
+            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="9",finished_at=time_now)
         return HttpResponse('successful')
     else:
         return HttpResponse('the WorkOrderFlow_id didnot exist')
@@ -219,7 +221,6 @@ def WorkOrderFlow_release(request, ids):
     obj = get_object(WorkOrderFlow, id=ids) 
     obj_title=obj.title
     dic_init={'workorder':obj.workorder,
-                  'desc':obj.desc,          
                  'env':obj.env,
                  'user_vars':obj.user_vars,            
                  }
@@ -232,7 +233,7 @@ def WorkOrderFlow_release(request, ids):
      
      
  
-#@accept_websocket
+@accept_websocket
 @login_required()
 @permission_verify()
 def WorkOrderFlow_release_run(request):
@@ -278,7 +279,7 @@ def WorkOrderFlow_audit(request):
    
 
     
-    tpl_env = Environment.objects.all().order_by("name_english")
+    tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
 
     for e in tpl_env:

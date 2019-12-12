@@ -162,7 +162,8 @@ def format_to_user_vars(**message_dic):
     
     message_dic.pop("csrfmiddlewaretoken")
     message_dic.pop("id")
-    message_dic["user_vars"] = str(json.dumps(user_vars_dic))
+#     message_dic["user_vars"] = str(json.dumps(user_vars_dic))
+    message_dic["user_vars"] = user_vars_dic
     if "back_exe_enable" in message_dic:
         if message_dic["back_exe_enable"] == "on":
             message_dic["back_exe_enable"] = 1

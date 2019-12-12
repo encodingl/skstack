@@ -28,7 +28,7 @@ from lib.lib_config import get_config_var
 
 level = get_dir("log_level")
 log_path = get_dir("log_path")
-log("setup.log", level, log_path)
+log("skworkorders.log", level, log_path)
 git_path = get_dir("git_path")
 proj_base_dir = get_dir("pro_path")
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block self_head_css_js %}
-   
+<link rel="stylesheet" href="/static/plugins/xterm/xterm.css" />
+<script src="/static/plugins/xterm/xterm.js"></script>
 {% endblock %}
 {% block content %}
 
@@ -30,9 +31,7 @@
 						        <h3 class="panel-title">执行结果</h3>
 						    </div>
 						    
-						    <div class="panel-body" style="border: 1px solid ;height:200px;overflow:scroll">
-						    		<div id="messagecontainer" ></div>
-						    </div>
+						    <div id="terminal" class="panel-body" style="border: 1px solid ;"> </div>
 				    
 				  </div>	
       </div>
@@ -58,72 +57,125 @@ $(document).ready(function(){
 });
 </script>
 
-<script type="text/javascript">//<![CDATA[
-$(function () {
+<script>
+	function get_term_size() {
+	    var init_width = 10;
+	    var init_height =30;
+	
+	    var windows_width = $(".panel-body").width();
+	    var windows_height = $(window).height();
+	
+	    return {
+	        cols: Math.floor(windows_width / init_width),
+	        rows: Math.floor(windows_height / init_height),
+	    }
+	}
+	var cols = get_term_size().cols;
+	var rows = get_term_size().rows;
+	var term = new Terminal(
+	        {
+	            cols: cols,
+	            rows: rows,
+	            useStyle: true,
+	            cursorBlink: true
+	        }
+	        )
+	term.open(document.getElementById('terminal'));
+	
+	$(window).resize(function () {
+	    var cols = get_term_size().cols;
+	    var rows = get_term_size().rows;
+	    term.resize(cols, rows);
+	})
+	
+	
+	
+	$(function () {
+		$.ajaxSetup({
+		    contentType: "application/x-www-form-urlencoded; charset=utf-8"
+		});
+	
+	
+	    $('#release_btn').click(function () {
+	      if (confirm("确认?")) {
+	
+	         var ishttps = 'https:' == document.location.protocol ? true: false;
+	
+	        if(ishttps){
+	
+	         var socket = new WebSocket("wss://" + window.location.host + "/skworkorders/WorkOrderFlow/release/run/");
+	
+	        }else{
+	
+	         var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderFlow/release/run/");
+	
+	        }
+	
+	        window.ws = socket;
+	        socket.onopen = function () {
+	            console.log('WebSocket open');//成功连接上Websocket
+	            var WorkOrderFlow_id = $('#WorkOrderFlow_id').val()
+	            console.log(WorkOrderFlow_id)
+	        	window.ws.send(WorkOrderFlow_id);//通过websocket发送数据
+	            
+	            
+	        };
+	        socket.onerror = function () {
+	        	console.error('WebSocket closed unexpectedly');
+	        };
+	     
+	        socket.onclose = function () {
+		        console.log("WebSocket closed");
+		    }
+	
+	        socket.onmessage = function (e) {
+	            /* console.log('message: ' + e.data);//打印出服务端返回过来的数据 */
+	                var text = JSON.parse(e.data);  
+	                var colorConfig = { 
+	                		"\x1b[36m": ["The Job"],
+	                		"\x1b[32m": ["ok", "SUCCESS","成功","Pass","successful"],
+	                		"\x1b[33m": ["changed","WARNING","warning"],  
+	                		"\x1b[31m": ["ERROR","error","unreachable","UNREACHABLE","failed","FAILED","Errno","失败"] };
+	                
+	                jQuery.each(colorConfig, function (color, values) {  
+	                    jQuery.each(values, function (i, item) { 
+	                  	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
+	
+	                  	   
+	                  	   text = text.replace(re,function(result){
+	                  		   return color + result + '\x1B[0m'
+	                  	   });
+	                  	   
+	                  	   var re2 = new RegExp(item,"g");
+	                  	   text = text.replace(re2,function(result){
+	                  		 return color + result + '\x1B[0m'
+	                  	   });
+	                  	   
+	                    });  
+	                });  
+	
+	                term.write(text)
+	
+	/*              if (text.indexOf("finished") != -1) {
+	                window.ws.close();
+	            }   */
+	              
+	        };
+	   
+	     }else{
+	       	 return false };
+	     
+	   
+	    });
+	   
+	window.onbeforeunload = function(event) {
+	        window.ws.close();
+	    }
+	
+	
+	});
+</script>
 
-
-    $('#release_btn').click(function () {
-     if (confirm("确认?")) {
-        if (window.s) {
-            window.s.close()
-        }
-        /*创建socket连接*/
-        var socket = new WebSocket("ws://" + window.location.host + "/skworkorders/WorkOrderFlow/release/run/");
-        window.s = socket;
-        socket.onopen = function () {
-            console.log('WebSocket open');//成功连接上Websocket
-
-            var WorkOrderFlow_id = $('#WorkOrderFlow_id').val()
-            console.log(WorkOrderFlow_id)
-        	   window.s.send(WorkOrderFlow_id);//通过websocket发送数据
-            
-        };
-   
-        
-        
-       
-        
-       
-        socket.onmessage = function (e) {
-            console.log('message: ' + e.data);//打印出服务端返回过来的数据
-            
-            var colorConfig = { "green": ["ok", "SUCCESS","执行成功","success"],"orange": ["changed","WARNING","warning" ],  "red": ["unreachable","UNREACHABLE","failed","FAILED","Errno","执行失败"] };  
-           
-                var text = e.data;  
-                jQuery.each(colorConfig, function (color, values) {  
-                    jQuery.each(values, function (i, item) { 
-                  	   var re =new RegExp(item +"="+"[1-9][0-9]*","g");
-
-                  	   
-                  	   text = text.replace(re,function(result){
-                  		   return '<font color="' + color + '">' + result + '</font>'
-                  	   });
-                  	   
-                  	   var re2 = new RegExp(item,"g");
-                  	   text = text.replace(re2,function(result){
-                  		   return '<font color="' + color + '">' + result + '</font>'
-                  	   });
-                  	   
-                    });  
-                });  
-            
-         
-            
-            
-            $('#messagecontainer').append('<p>' + text + '</p>');
-            $('.panel-body').scrollTop( $('.panel-body')[0].scrollHeight );
-            var h = document.documentElement.scrollHeight || document.body.scrollHeight;
-            window.scrollTo(h,h);
-        };
-     }else{
-       	 return false };
-        
-    });
-    
-
-
-});
-//]]></script>
 {% endblock %}
 
 

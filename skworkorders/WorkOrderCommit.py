@@ -164,7 +164,7 @@ def pretask(request):
                
                 
             else:
-                message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook)
+                message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook,strict=False)
  
                 WorkOrder_id = int(message_dic['id'])
                 pt01 = PreTask(WorkOrder_id,request,message_dic)
