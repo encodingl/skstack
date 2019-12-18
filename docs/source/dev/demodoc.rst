@@ -2,17 +2,26 @@
 ==============================
 
 概述
-----------------
+--------------------------------
 
  #. 文档使用sphinx生成，采用reStructuredText标记语言
  #. 开发人员，新增文档，请才有已有文档结构和文档工具书写
  #. `文档实例参考  <https://readthedocs.org/>`_
  #. `restructuredtext语法参考  <https://3vshej.cn/rstSyntax/index.html>`_
  #. `sphinx官方文档参考  <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
+ 
+sphinx文档更新命令
+--------------------------------
+
+编辑保存后执行如下命令，会自动生成html文档
+
+ #. cd ./docs 
+ #. workon skstack
+ #. make html
 
 
 序号和超链接
-----------------
+--------------------------------
 
 Subtitles are set with '-' and are required to have the same length
 of the subtitle itself, just like titles.
@@ -39,7 +48,7 @@ of the subtitle itself, just like titles.
  
 
 关键字和代码段落
---------------------------
+------------------------------------------
 
 关键字标注
 
@@ -69,7 +78,7 @@ code samples with back quotes, like when you talk about a command: ``sudo``
 	            }
 
 图片和提示
--------------
+-----------------------------
 
 图片
 

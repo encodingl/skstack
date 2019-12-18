@@ -109,6 +109,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">3. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -118,6 +119,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
 </ul>
 
             
@@ -218,7 +220,7 @@
 <li><p>git clone $GitUrl/skstack.git</p></li>
 <li><p>yum install ansible -y</p></li>
 <li><p>yum install smartmontools -y</p></li>
-<li><p>yum install python python-devel -y</p></li>
+<li><p>yum install mysql-devel gcc gcc-devel python-devel</p></li>
 <li><p>cd skstack 进入到项目主目录</p></li>
 <li><p>workon skstack 切换到skstack的python虚拟环境</p></li>
 <li><p>pip install -r requirements.txt</p></li>
@@ -255,6 +257,7 @@
 <li><p>mysql -uroot -p登录数据库</p></li>
 <li><p>CREATE DATABASE skstack DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;  创建schema</p></li>
 <li><p>GRANT ALL PRIVILEGES ON skstack.* TO <a class="reference external" href="mailto:'ser_skstack'&#37;&#52;&#48;'localhost">‘ser_skstack’<span>&#64;</span>’localhost</a>’ IDENTIFIED BY ‘Password59584’; 创建用户</p></li>
+<li><p>flush privileges;</p></li>
 <li><p>workon skstack 切换到python虚拟机环境</p></li>
 </ol>
 </div></blockquote>

@@ -90,22 +90,32 @@ SKSTACK |version| documentation
  :numbered: 
  :hidden:
 
- 
+ plugins/overview
  plugins/docker_deploy
- plugins/static_deploy
+ plugins/git_deploy
+ plugins/package_deploy
  plugins/the_third
    
+   
+:doc:`plugins/overview`
+
+  官方插件使用概述
+    
 :doc:`plugins/docker_deploy`
 
     介绍Docker部署插件的使用方式
     
-:doc:`plugins/static_deploy`
+:doc:`plugins/git_deploy`
 
-    介绍静态文件部署插件的使用方式
+    介绍git静态文件部署插件的使用方式
     
-:doc:`plugins/static_deploy`
+:doc:`plugins/package_deploy`
 
-    第三方插件索引
+    介绍基于nginx作为仓库静态文件版本部署插件的使用方式
+
+:doc:`plugins/the_third`
+
+    第三方插件索引,暂未收录
    
 
 开发者指南

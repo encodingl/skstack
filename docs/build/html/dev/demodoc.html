@@ -37,7 +37,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="2. 插件开发指南1.0" href="skplugins.html" />
-    <link rel="prev" title="2. 静态文件部署插件使用指南" href="../plugins/static_deploy.html" /> 
+    <link rel="prev" title="5. 第三方插件" href="../plugins/the_third.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">1. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">2. 安装手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick_start.html">3. 快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/release_info.html">4. 版本更新说明</a></li>
 </ul>
 <p class="caption"><span class="caption-text">用户手册</span></p>
 <ul>
@@ -94,25 +95,32 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. 文档编写说明和示例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 概述</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1.2. 序号和超链接</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">1.2.1. 序号</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">1.2.2. 超链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.2. sphinx文档更新命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.3. 序号和超链接</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">1.3.1. 序号</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">1.3.2. 超链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">1.3. 关键字和代码段落</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">1.4. 图片和提示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">1.4. 关键字和代码段落</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">1.5. 图片和提示</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="skplugins.html">2. 插件开发指南1.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="skplugins2.html">3. 插件开发指南2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="web.html">4. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="git_guidelines.html">5. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="join_us.html">7. 加入我们</a></li>
 </ul>
 
             
@@ -192,11 +200,22 @@
 </div></blockquote>
 </div>
 <div class="section" id="id4">
-<h2>1.2. 序号和超链接<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2>1.2. sphinx文档更新命令<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>编辑保存后执行如下命令，会自动生成html文档</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>cd ./docs</p></li>
+<li><p>workon skstack</p></li>
+<li><p>make html</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h2>1.3. 序号和超链接<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <p>Subtitles are set with ‘-‘ and are required to have the same length
 of the subtitle itself, just like titles.</p>
-<div class="section" id="id5">
-<h3>1.2.1. 序号<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id6">
+<h3>1.3.1. 序号<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
 <p>点号list:</p>
 <blockquote>
 <div><ul class="simple">
@@ -212,14 +231,14 @@ of the subtitle itself, just like titles.</p>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="id6">
-<h3>1.2.2. 超链接<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id7">
+<h3>1.3.2. 超链接<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
 <p>语法`链接文字 &lt;URL&gt;`_</p>
 <p><a class="reference external" href="https://3vshej.cn/rstSyntax/index.html">语法参考:</a></p>
 </div>
 </div>
-<div class="section" id="id8">
-<h2>1.3. 关键字和代码段落<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h2>1.4. 关键字和代码段落<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
 <p>关键字标注</p>
 <p>Words can have <em>emphasis in italics</em> or be <strong>bold</strong> and you can define
 code samples with back quotes, like when you talk about a command: <code class="docutils literal notranslate"><span class="pre">sudo</span></code></p>
@@ -244,8 +263,8 @@ code samples with back quotes, like when you talk about a command: <code class="
 </pre></div>
 </div>
 </div>
-<div class="section" id="id9">
-<h2>1.4. 图片和提示<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id10">
+<h2>1.5. 图片和提示<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
 <p>图片</p>
 <a class="reference internal image-reference" href="../_images/demo.png"><img alt="image not found" src="../_images/demo.png" style="width: 700px; height: 470px;" /></a>
 <p>提示</p>
@@ -271,7 +290,7 @@ code samples with back quotes, like when you talk about a command: <code class="
         <a href="skplugins.html" class="btn btn-neutral float-right" title="2. 插件开发指南1.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../plugins/static_deploy.html" class="btn btn-neutral float-left" title="2. 静态文件部署插件使用指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../plugins/the_third.html" class="btn btn-neutral float-left" title="5. 第三方插件" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
