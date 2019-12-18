@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Docker部署插件使用指南 &mdash; SKSTACK v0.1 文档</title>
+  <title>2. Docker部署插件使用指南 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="2. 静态文件部署插件使用指南" href="static_deploy.html" />
-    <link rel="prev" title="2. 工单系统" href="../admin/skworkorder.html" /> 
+    <link rel="next" title="3. 静态文件部署插件使用指南" href="git_deploy.html" />
+    <link rel="prev" title="1. 概述" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">1. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">2. 安装手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick_start.html">3. 快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/release_info.html">4. 版本更新说明</a></li>
 </ul>
 <p class="caption"><span class="caption-text">用户手册</span></p>
 <ul>
@@ -94,13 +95,16 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Docker部署插件使用指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#web">1.1. Web模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">1.2. 命令行模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">1.3. 配置指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Docker部署插件使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#web">2.1. Web模式效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.2. 命令行模式效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.3. 配置指南</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -108,6 +112,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
 </ul>
 
             
@@ -153,7 +160,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>1. Docker部署插件使用指南</li>
+      <li>2. Docker部署插件使用指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -173,18 +180,18 @@
            <div itemprop="articleBody">
             
   <div class="section" id="docker">
-<h1>1. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
+<h1>2. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
 <p>略</p>
 <div class="section" id="web">
-<h2>1.1. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
+<h2>2.1. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
 <p>略</p>
 </div>
 <div class="section" id="id1">
-<h2>1.2. 命令行模式效果演示<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>2.2. 命令行模式效果演示<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <p>略</p>
 </div>
 <div class="section" id="id2">
-<h2>1.3. 配置指南<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>2.3. 配置指南<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <p>略</p>
 </div>
 </div>
@@ -197,10 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="static_deploy.html" class="btn btn-neutral float-right" title="2. 静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="git_deploy.html" class="btn btn-neutral float-right" title="3. 静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../admin/skworkorder.html" class="btn btn-neutral float-left" title="2. 工单系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="1. 概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

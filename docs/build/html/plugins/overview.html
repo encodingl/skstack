@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. 概述 &mdash; SKSTACK v0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2. Docker部署插件使用指南" href="docker_deploy.html" />
+    <link rel="prev" title="2. 工单系统" href="../admin/skworkorder.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SKSTACK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">2. 安装手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick_start.html">3. 快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/release_info.html">4. 版本更新说明</a></li>
+</ul>
+<p class="caption"><span class="caption-text">用户手册</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
+</ul>
+<p class="caption"><span class="caption-text">插件使用手册</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 安装步骤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 目录和命名规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 公共配置文件配置说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.4. 功能插件目录和文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.5. 命名规范</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docker_deploy.html">2. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
+</ul>
+<p class="caption"><span class="caption-text">开发者指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SKSTACK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>1. 概述</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="line-block">
+<div class="line">skstack插件库主要配合skstack web平台的工单系统使用，结合skstack工单系统，可以实现工单审核和自动化执行等功能；插件也可以作为独立的脚本使用。</div>
+<div class="line">skstack官方插件基于python开发，所有官方插件均遵循下文中定义的目录和命名规范</div>
+<div class="line">skstack官方插件的python版本与skstack web平台的python版本保持一致。</div>
+<div class="line">skstack每个官方插件包含如下脚本和文件</div>
+</div>
+<ol class="arabic simple">
+<li><p>前置任务脚本：对应工单系统的前置任务配置项，是主任务执行之前先执行的任务脚本，一般用来做一些前置检查；非必须项</p></li>
+<li><p>主任务脚本：对应工单系统的主任务配置项目，是主要任务功能脚本；必须项</p></li>
+<li><p>后置任务脚本：对应工单系统的后置任务配置项，主任务执行成功后的，会执行后置任务脚本；非必须项</p></li>
+<li><p>变量获取脚本：用于工单系统交互界面获取动态变量用；非必须；</p></li>
+<li><p>子任务脚本：用于给前置、主、后置任务调用的脚本，不会单独执行。</p></li>
+<li><p>配置文件：各脚本读取的配置参数，必须项</p></li>
+<li><p>私有库和模块：各脚本共用的模块，非必须</p></li>
+</ol>
+<div class="section" id="id2">
+<h2>1.1. 安装步骤<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>下载插件库：git clone &lt;skstack_plugins_git_url&gt;</p></li>
+<li><p>安装python 虚拟机：略。tips：若已安装skstack web系统，请忽略该步骤，直接使用skstack web平台的python虚拟机即可</p></li>
+<li><p>安装依赖库：切换到skstack python虚拟机执行 pip install -r requirements.txt</p></li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>1.2. 目录和命名规范<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>目录介绍</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(skstack) [root@registry soft]# tree -d skstack_plugins
+skstack_plugins      #插件库主目录
+├── conf_pub                    #插件库公共配置文件目录，如日志路径定义参数
+├── lib_pub                             #插件库公共库文件和函数模块位置，如日志格式化函数，配置文件加载函数
+├── pl_ansible                  #ansible功能插件主目录
+│   ├── conf                    #所属功能插件配置文件目录
+│   └── lib_pri                 #所属功能插件私有库目录，该功能插件多个脚本可以共用的私有函数和类保存到该文件夹
+├── pl_deploy_docker    #docker部署功能插件主目录
+│   └── conf
+├── pl_deploy_git               #git部署功能插件主目录
+│   ├── conf
+│   ├── lib_pri
+└── pl_deploy_package   #压缩包部署功能插件主目录
+    ├── conf
+    ├── lib_pri
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>1.3. 公共配置文件配置说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="line-block">
+<div class="line">配置参数通过json文件里面定义的字典方式进行引用</div>
+<div class="line">公共配置文件目前版本只定义所有官方插件的日志根路径</div>
+<div class="line">最佳实践为不同环境单独使用一个配置文件，如生产配置文件prod_conf.json 使用demo.json复制</div>
+<div class="line">配置文件强制遵循命名规范，必须以”_conf.json”结尾，否则各插件无法应用</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(skstack) [root@registry skstack_plugins]# tree conf_pub/
+conf_pub/
+├── demo.json
+├── prod_conf.json
+└── stage_conf.json
+
+(skstack) [root@registry skstack_plugins]# more conf_pub/demo.json
+{
+        &quot;log_path&quot;:&quot;/opt/sklogs/&quot;   #定义所有插件的日志根目录
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>1.4. 功能插件目录和文件说明<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>以git部署插件为例说明</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@registry skstack_plugins]# tree pl_deploy_git/
+pl_deploy_git/                          #插件主目录
+├── conf                                        #插件配置文件目录
+│   ├── demo.json                       #示例配置文件
+│   ├── prod_conf.json          #prod环境配置文件，
+│   └── stage_conf.json         #stage环境配置文件
+├── __init__.py
+├── lib_pri
+│   ├── git.py
+├── main_git_deploy.py          #主任务脚本
+├── pre_git_pull.py                     #前置任务脚本
+├── sc_static_sync.yml          #被调用的任务脚本
+└── var_git_commit_id.py        #变量获取脚本
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>1.5. 命名规范<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>插件目录命名：加pl_前缀</p></li>
+<li><p>前置任务脚本：加pre_前缀,</p></li>
+<li><p>主任务脚本：加main_前缀</p></li>
+<li><p>后置任务脚本：加post_前缀</p></li>
+<li><p>变量获取脚本：加var_前缀</p></li>
+<li><p>配置文件命名：加_conf.json后缀</p></li>
+<li><p>脚本文件命名：加sc_前缀；脚本文件主要用于主任务脚本调用</p></li>
+<li><p>私有库目录：lib_pri；私有库函数主要用于主任务脚本或者sc_脚本调用</p></li>
+<li><p>日志文件命名：”插件主目录名称+.log” ;如pl_deploy_git.log</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="docker_deploy.html" class="btn btn-neutral float-right" title="2. Docker部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../admin/skworkorder.html" class="btn btn-neutral float-left" title="2. 工单系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, encodingl@sina.com
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

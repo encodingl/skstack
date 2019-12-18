@@ -85,17 +85,19 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. 概述</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 功能介绍</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 工单系统基本原理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#demo">1.3. Demo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#docker">1.3.1. Docker项目版本发布</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gitlab">1.3.2. gitlab项目版本发布</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">1.3.3. 压缩包项目版本发布</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 工单系统架构图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 工单系统主要工作原理图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo">1.4. Demo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">1.4.1. Docker项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gitlab">1.4.2. gitlab项目版本发布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">1.4.3. 压缩包项目版本发布</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">2. 安装手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">3. 快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_info.html">4. 版本更新说明</a></li>
 </ul>
 <p class="caption"><span class="caption-text">用户手册</span></p>
 <ul>
@@ -104,8 +106,11 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -113,6 +118,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
 </ul>
 
             
@@ -197,7 +205,7 @@ SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;�
 </div></blockquote>
 </div>
 <div class="section" id="id3">
-<h2>1.2. 工单系统基本原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2>1.2. 工单系统架构图<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <img alt="image not found" src="../_images/skw_framework.png" />
 <div class="admonition note">
 <p class="admonition-title">注解</p>
@@ -209,10 +217,22 @@ SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;�
 </ol>
 </div>
 </div>
+<div class="section" id="id4">
+<h2>1.3. 工单系统主要工作原理图<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/skstack_workflow.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>前置任务未非必须项，若没有会跳过改执行步骤</p></li>
+<li><p>后置任务未非必须项，若没有会跳过改执行步骤</p></li>
+<li><p>只有变量注册为通过变量脚本获取的可选变量时才会执行变量获取脚本。没有则跳过该步骤</p></li>
+</ol>
+</div>
+</div>
 <div class="section" id="demo">
-<h2>1.3. Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
+<h2>1.4. Demo<a class="headerlink" href="#demo" title="永久链接至标题">¶</a></h2>
 <div class="section" id="docker">
-<h3>1.3.1. Docker项目版本发布<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h3>
+<h3>1.4.1. Docker项目版本发布<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p>基于公有云docker镜像仓库或者私有docker镜像仓库做版本仓库库管理；</p></li>
@@ -228,7 +248,7 @@ SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;�
 <a class="reference internal image-reference" href="../_images/skw_audit_front.png"><img alt="image not found" src="../_images/skw_audit_front.png" style="width: 800px;" /></a>
 </div>
 <div class="section" id="gitlab">
-<h3>1.3.2. gitlab项目版本发布<a class="headerlink" href="#gitlab" title="永久链接至标题">¶</a></h3>
+<h3>1.4.2. gitlab项目版本发布<a class="headerlink" href="#gitlab" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p>基于gitlab做版本仓库库管理；</p></li>
@@ -238,8 +258,8 @@ SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;�
 </div></blockquote>
 <a class="reference internal image-reference" href="../_images/skw_git_submmit.png"><img alt="image not found" src="../_images/skw_git_submmit.png" style="width: 800px;" /></a>
 </div>
-<div class="section" id="id4">
-<h3>1.3.3. 压缩包项目版本发布<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id5">
+<h3>1.4.3. 压缩包项目版本发布<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p>基于nginx做压缩包版本仓库管理；</p></li>

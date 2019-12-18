@@ -36,7 +36,7 @@
  #. git clone $GitUrl/skstack.git
  #. yum install ansible -y
  #. yum install smartmontools -y
- #. yum install python python-devel -y
+ #. yum install mysql-devel gcc gcc-devel python-devel
  #. cd skstack 进入到项目主目录
  #. workon skstack 切换到skstack的python虚拟环境
  #. pip install -r requirements.txt
@@ -67,6 +67,7 @@
  #. mysql -uroot -p登录数据库
  #. CREATE DATABASE skstack DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;  创建schema
  #. GRANT ALL PRIVILEGES ON skstack.* TO 'ser_skstack'@'localhost' IDENTIFIED BY 'Password59584'; 创建用户
+ #. flush privileges;
 
 
  #. workon skstack 切换到python虚拟机环境
