@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="3. 静态文件部署插件使用指南" href="git_deploy.html" />
+    <link rel="next" title="3. Git静态文件部署插件使用指南" href="git_deploy.html" />
     <link rel="prev" title="1. 概述" href="overview.html" /> 
 </head>
 
@@ -97,13 +97,24 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. Docker部署插件使用指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#web">2.1. Web模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">2.2. 命令行模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">2.3. 配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.2. 目录说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.3. 配置文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">2.4. 脚本说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.4.1. 变量获取脚本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.4.2. 主任务脚本</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. 静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2.5. 最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.5.1. 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web">2.5.2. Web模式效果演示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.5.3. 命令行模式效果演示</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
@@ -181,18 +192,174 @@
             
   <div class="section" id="docker">
 <h1>2. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
-<p>略</p>
-<div class="section" id="web">
-<h2>2.1. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
-<p>略</p>
-</div>
 <div class="section" id="id1">
-<h2>2.2. 命令行模式效果演示<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>2.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>docker部署插件支持如下几种执行模式：</p>
+<ul>
+<li><p>update：版本更新优雅模式，过程如下：</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>下载镜像 ；</p></li>
+<li><p>从eureka注销服务（未使用eureka则跳过该步骤）；</p></li>
+<li><p>等待eureka刷新缓存（未使用eureka则跳过该步骤） ；</p></li>
+<li><p>停止服务 ；</p></li>
+<li><p>启动新镜像；</p></li>
+<li><p>eureka健康检测（未使用eureka则跳过该步骤）</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>restart：重启服务</p></li>
+<li><p>inquery：版本查询</p></li>
+<li><p>rollback：回滚，回滚到当前项目docker状态为Exit的最新版本；只能回滚一次，若执行多次，会在最新两个版本之间来回变更。</p></li>
+<li><p>update_hard：版本更新强制模式，过程如下：</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>下载镜像</p></li>
+<li><p>停止服务</p></li>
+<li><p>启动新镜像；hard模式用于常规update模式无法更新或者第一次发布服务的情况。</p></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>部署方式：多个节点情况下为滚动更新；</p></li>
+<li><p>docker镜像tag限制：限制使用latest更新；未使用eureka服务的项目update模式过程与update_hard模式一致</p></li>
+</ol>
+</div>
 </div>
 <div class="section" id="id2">
-<h2>2.3. 配置指南<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>2.2. 目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pl_deploy_docker/                       <span class="c1">#docker部署插件主目录</span>
+├── conf                                        <span class="c1">#配置文件目录</span>
+│   ├── demo.json                       <span class="c1">#配置文件参考模板</span>
+│   ├── prod_conf.json          <span class="c1">#_conf.json结尾的文件为用户定义的线上配置文件</span>
+│   └── stage_conf.json
+├── main_docker_deploy.py       <span class="c1">#docker部署插件主任务脚本</span>
+├── sc_docker_rollback.py
+├── sc_eureka_health_check.sh
+├── sc_restart.yml
+├── sc_rollback.yml
+├── sc_update_hard.yml
+├── sc_update_soft.yml
+└── var_json_keys.py            <span class="c1">#如需将多个项目合并到一个工单上面，可以通过该变量获取脚本获取配置文件里面的多个项目名称</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>2.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+
+        <span class="s2">&quot;public&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">#所有项目共有配置参数区域</span>
+                <span class="s2">&quot;EurekaUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://eureka.demo.com:9001&quot;</span> <span class="c1">#eureka地址，若无可以留空</span>
+        <span class="p">},</span>
+
+        <span class="s2">&quot;demo1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="c1">#项目名</span>
+                <span class="s2">&quot;DockerImageURL&quot;</span><span class="p">:</span> <span class="s2">&quot;registry.cn-hongkong.aliyuncs.com/namespace_demo/&quot;</span><span class="p">,</span>  <span class="c1">#docker镜像命名空间地址</span>
+                <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;demo1&quot;</span><span class="p">,</span>       <span class="c1">#指定需要部署到目标主机的ansible hosts group</span>
+                <span class="s2">&quot;DockerRunArg&quot;</span><span class="p">:</span> <span class="s2">&quot; -d -m 1000m -v /data/logs:/logs&quot;</span><span class="p">,</span> <span class="c1">#docker run 指定运行参数，可为空</span>
+                <span class="s2">&quot;DockerRunCmd&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1">#指定docker起来后运行的命令，覆盖docker file构建时的默认命令，可为空</span>
+                <span class="s2">&quot;AppSpringName&quot;</span><span class="p">:</span> <span class="s2">&quot;null&quot;</span>  <span class="c1">#指定该项目注册在eureka中的生产者名称，若未使用eureka，可以指定为null</span>
+        <span class="p">},</span>
+
+        <span class="s2">&quot;demo2&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;DockerImageURL&quot;</span><span class="p">:</span> <span class="s2">&quot;registry.cn-hongkong.aliyuncs.com/namespace_demo/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;DockerRunArg&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;DockerRunCmd&quot;</span><span class="p">:</span> <span class="s2">&quot;java  -jar -Xms2g -Xmx4g demo2.jar --spring.config.location=file:./config/demo2.yml&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;AppSpringName&quot;</span><span class="p">:</span> <span class="s2">&quot;demo2&quot;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>DockerImageURL：使用插件之前需要用户先自己完成服务器到镜像仓库认证，插件不负责认证;镜像地址拼接方式为DockerImageURL+”项目名字”+”:latest”</p></li>
+<li><p>hosts：，若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错</p></li>
+<li><p>public key为配置文件内置参数，用于指定EurekaUrl和后期需要扩展的其他公共参数，项目名不可使用该key命名</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>2.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>2.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@host175 pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -h</span>
+usage: var_json_keys.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-k <span class="o">[</span>keyword1<span class="p">|</span>keyword2<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -k <span class="o">[</span>keyword1<span class="p">|</span>keyword2<span class="o">]</span>, --filter-keyword <span class="o">[</span>keyword1<span class="p">|</span>keyword2<span class="o">]</span>
+                        the project keyword you want to filter
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>, --environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>
+                        the environment you need deploy
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>2.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@registry pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
+usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
+                             <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
+                             <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
+                             <span class="o">[</span>-w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]]</span>
+                             <span class="o">[</span>-m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>, --Environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>
+                        input the environment in which the script needs to be
+                        executed
+  -p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>, --proj-docker <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>
+                        the docker project you want to depoly
+  -t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>, --DockerImageTag <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>
+                        input the docker image tag <span class="nv">default</span><span class="o">=</span>latest
+  -a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>, --AnsibleHosts <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>
+                        input AnsibleHosts,default is the same as -p parameter
+  -w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>, --WaitTimes <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>
+                        input securyty <span class="nb">wait</span> <span class="nb">times</span> <span class="k">for</span> rolling update
+                        <span class="nv">default</span><span class="o">=</span>60s
+  -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>
+                        input the execution mode you need
+<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@registry pl_deploy_docker<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>2.5. 最佳实践<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id8">
+<h3>2.5.1. 配置文件<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+</div>
+<div class="section" id="web">
+<h3>2.5.2. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h3>
+<p>提单页面如下：</p>
+<img alt="image not found" src="../_images/docker_submit.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>Project项下来菜单表示为该工单可选的docker项目，通过插件变量获取脚本从配置文件获取指定项目；</p></li>
+<li><p>多个docker项目可以合并到一个工单上，也可以一个docker项目使用一个工单</p></li>
+</ol>
+</div>
+<p>结果页展示：</p>
+<img alt="image not found" src="../_images/docker_update_result.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>结果页面，参考ansible结果日志</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>2.5.3. 命令行模式效果演示<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+</div>
 </div>
 </div>
 
@@ -204,7 +371,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="git_deploy.html" class="btn btn-neutral float-right" title="3. 静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="git_deploy.html" class="btn btn-neutral float-right" title="3. Git静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="overview.html" class="btn btn-neutral float-left" title="1. 概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
