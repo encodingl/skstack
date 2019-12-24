@@ -37,7 +37,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="2. 工单系统" href="skworkorder.html" />
-    <link rel="prev" title="3. 快速入门" href="../intro/quick_start.html" /> 
+    <link rel="prev" title="4. 版本更新说明" href="../intro/release_info.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,20 +86,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">1. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">2. 安装手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick_start.html">3. 快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/release_info.html">4. 版本更新说明</a></li>
 </ul>
 <p class="caption"><span class="caption-text">用户手册</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. 用户系统</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 菜单权限配置</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 审核流程配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 菜单角色配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 用户配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.4. 用户组配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.5. 审核流程配置</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="skworkorder.html">2. 工单系统</a></li>
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">1. Docker部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/static_deploy.html">2. 静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -107,6 +114,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
 </ul>
 
             
@@ -176,11 +186,51 @@
 <p>请先参考快速入门手册，后续补充改章节内容</p>
 <div class="section" id="id2">
 <h2>1.1. 菜单权限配置<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<img alt="image not found" src="../_images/menu_permission_list.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>菜单权限基于url方式配置，可以用超级管理员登录，查看各菜单的url后配置其他菜单权限</p></li>
+</ol>
+</div>
 </div>
 <div class="section" id="id3">
-<h2>1.2. 审核流程配置<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>1.2. 菜单角色配置<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/menu_role.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>定义菜单角色，授权用户只能访问授权菜单。</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>1.3. 用户配置<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>创建用户管理菜单角色，授权该用户能够访问的菜单权限，步骤 略</p>
+</div>
+<div class="section" id="id5">
+<h2>1.4. 用户组配置<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>创建用户组，添加用户到用户组，略</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>工单系统授权和审核流配置都是基于用户组</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>1.5. 审核流程配置<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/audit_flow.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>名称：审核流程名称，若工单系统开启审核功能，需要通过该名称关联审核流</p></li>
+<li><p>审核层级：表示用户提交工单后需要通过几层审核后，用户才可以执行工单，支持1/2/3 层审核(/表示或)，只能输入1、2、3其中一个数字，若指定为1，即使后面第2级和第3级审核群组关联了用户组 也不会执行。</p></li>
+<li><p>第1级审核群组：用户提单后，第1层审核权限用户组，审核层级需要指定为1/2/3其中一个才会生效</p></li>
+<li><p>第2级审核群组：用户提单后，第2层审核权限用户组，审核层级需要指定为2/3其中一个 才会生效</p></li>
+<li><p>第3级审核群组：用户提单后，第3层审核权限用户组，审核层级需要指定为3才会生效</p></li>
+</ol>
+</div>
 </div>
 </div>
 
@@ -195,7 +245,7 @@
         <a href="skworkorder.html" class="btn btn-neutral float-right" title="2. 工单系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../intro/quick_start.html" class="btn btn-neutral float-left" title="3. 快速入门" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../intro/release_info.html" class="btn btn-neutral float-left" title="4. 版本更新说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

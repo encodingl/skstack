@@ -129,8 +129,7 @@ SKSTACK |version| documentation
 
 
  dev/demodoc
- dev/skplugins
- dev/skplugins2
+ dev/skplugins3
  dev/web
  dev/git_guidelines
  dev/author_info
@@ -140,13 +139,11 @@ SKSTACK |version| documentation
 
     文档编写指南.
 
-:doc:`dev/skplugins`
 
-    适用于已发布项目维护，新项目插件开发请参考2.0；
     
-:doc:`dev/skplugins2`
+:doc:`dev/skplugins3`
 
-    介绍插件目录、脚本、库文件、配置文件、日志文件命名规范和使用规范
+    介绍插件目录、脚本、库文件、配置文件、日志文件命名规范和使用规范,未完成
     
 :doc:`dev/web`
 

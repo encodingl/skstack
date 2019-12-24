@@ -105,10 +105,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#id6">2.4.2. 主任务脚本</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">2.5. 最佳实践</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id8">2.5.1. 配置文件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#web">2.5.2. Web模式效果演示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">2.5.3. 命令行模式效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web">2.5. Web模式效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2.6. 命令行模式脚本效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">2.7. 最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.7.1. 步骤概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.7.2. 步骤1：配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">2.7.3. 步骤2：docker镜像仓库认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.7.4. 步骤3：项目变量获取脚本检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.7.5. 步骤4：主任务脚本功能检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#skstack-web">2.7.6. 步骤5：skstack web工单系统配置</a></li>
 </ul>
 </li>
 </ul>
@@ -194,39 +199,49 @@
 <h1>2. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
 <h2>2.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
-<p>docker部署插件支持如下几种执行模式：</p>
-<ul>
-<li><p>update：版本更新优雅模式，过程如下：</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>下载镜像 ；</p></li>
-<li><p>从eureka注销服务（未使用eureka则跳过该步骤）；</p></li>
-<li><p>等待eureka刷新缓存（未使用eureka则跳过该步骤） ；</p></li>
-<li><p>停止服务 ；</p></li>
-<li><p>启动新镜像；</p></li>
-<li><p>eureka健康检测（未使用eureka则跳过该步骤）</p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>restart：重启服务</p></li>
-<li><p>inquery：版本查询</p></li>
-<li><p>rollback：回滚，回滚到当前项目docker状态为Exit的最新版本；只能回滚一次，若执行多次，会在最新两个版本之间来回变更。</p></li>
-<li><p>update_hard：版本更新强制模式，过程如下：</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>下载镜像</p></li>
-<li><p>停止服务</p></li>
-<li><p>启动新镜像；hard模式用于常规update模式无法更新或者第一次发布服务的情况。</p></li>
-</ol>
-</div></blockquote>
-</li>
-</ul>
+<p><em>docker部署插件支持如下几种执行模式</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>update：版本更新优雅模式，过程如下：
+
+        1. 下载镜像 ；
+        2.  从eureka注销服务（未使用eureka则跳过该步骤）；
+        3. 等待eureka刷新缓存（未使用eureka则跳过该步骤） ；
+        4. 停止服务 ；
+        5. 启动新镜像；
+        6. eureka健康检测（未使用eureka则跳过该步骤）
+
+restart：重启服务
+
+inquery：版本查询
+
+rollback：回滚，回滚到当前项目docker状态为Exit的最新版本；只能回滚一次，若执行多次，会在最新两个版本之间来回变更。
+
+update_hard：版本更新强制模式，过程如下：
+
+        1. 下载镜像
+        2. 停止服务
+        3. 启动新镜像；hard模式用于常规update模式无法更新或者第一次发布服务的情况。
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
 <li><p>部署方式：多个节点情况下为滚动更新；</p></li>
-<li><p>docker镜像tag限制：限制使用latest更新；未使用eureka服务的项目update模式过程与update_hard模式一致</p></li>
+<li><p>未使用eureka服务的项目update模式过程与update_hard模式一致</p></li>
 </ol>
+</div>
+<p><em>版本管理</em></p>
+<ul class="simple">
+<li><p>docker run启动的时候指定docker name为“项目名-时间戳”的方式定义当前发布版本，如：demo1-20191224.022231</p></li>
+<li><p>docker发布的历史版本都在目标服务器上面，如下查询某个项目当前所有版本</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -e stage -p demo1 -m inquiry</span>
+ localhost <span class="p">|</span> CHANGED <span class="p">|</span> <span class="nv">rc</span><span class="o">=</span><span class="m">0</span> &gt;&gt;
+CONTAINER ID        IMAGE                                                                               COMMAND                  CREATED             STATUS                        PORTS                                            NAMES
+da2ccd657c61        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest         <span class="s2">&quot;java -javaagent:/...&quot;</span>   <span class="m">17</span> hours ago        Up <span class="m">17</span> hours                                                                    demo1-20191223.092915
+f289e56dc36f        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest         <span class="s2">&quot;java -javaagent:/...&quot;</span>   <span class="m">17</span> hours ago        Exited <span class="o">(</span><span class="m">143</span><span class="o">)</span> <span class="m">17</span> hours ago                                                      demo1-20191223.090808
+55414f6c1709        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest         <span class="s2">&quot;java -javaagent:/...&quot;</span>   <span class="m">18</span> hours ago        Exited <span class="o">(</span><span class="m">143</span><span class="o">)</span> <span class="m">17</span> hours ago                                                      demo1-20191223.085341
+22f189b2984a        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest         <span class="s2">&quot;java -javaagent:/...&quot;</span>   <span class="m">18</span> hours ago        Exited <span class="o">(</span><span class="m">143</span><span class="o">)</span> <span class="m">18</span> hours ago                                                      demo1-20191223.085210
+</pre></div>
 </div>
 </div>
 <div class="section" id="id2">
@@ -255,12 +270,12 @@
                 <span class="s2">&quot;EurekaUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://eureka.demo.com:9001&quot;</span> <span class="c1">#eureka地址，若无可以留空</span>
         <span class="p">},</span>
 
-        <span class="s2">&quot;demo1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="c1">#项目名</span>
+        <span class="s2">&quot;demo1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="c1">#项目名与docker镜像名称保持一致</span>
                 <span class="s2">&quot;DockerImageURL&quot;</span><span class="p">:</span> <span class="s2">&quot;registry.cn-hongkong.aliyuncs.com/namespace_demo/&quot;</span><span class="p">,</span>  <span class="c1">#docker镜像命名空间地址</span>
                 <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;demo1&quot;</span><span class="p">,</span>       <span class="c1">#指定需要部署到目标主机的ansible hosts group</span>
                 <span class="s2">&quot;DockerRunArg&quot;</span><span class="p">:</span> <span class="s2">&quot; -d -m 1000m -v /data/logs:/logs&quot;</span><span class="p">,</span> <span class="c1">#docker run 指定运行参数，可为空</span>
                 <span class="s2">&quot;DockerRunCmd&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1">#指定docker起来后运行的命令，覆盖docker file构建时的默认命令，可为空</span>
-                <span class="s2">&quot;AppSpringName&quot;</span><span class="p">:</span> <span class="s2">&quot;null&quot;</span>  <span class="c1">#指定该项目注册在eureka中的生产者名称，若未使用eureka，可以指定为null</span>
+                <span class="s2">&quot;AppSpringName&quot;</span><span class="p">:</span> <span class="s2">&quot;null&quot;</span>  <span class="c1">#指定该项目注册在eureka中的生产者名称，指定为null表示不会使用eureka健康检测和优雅关闭模块，直接使用docker stop命令关闭服务。</span>
         <span class="p">},</span>
 
         <span class="s2">&quot;demo2&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -277,7 +292,7 @@
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
 <li><p>DockerImageURL：使用插件之前需要用户先自己完成服务器到镜像仓库认证，插件不负责认证;镜像地址拼接方式为DockerImageURL+”项目名字”+”:latest”</p></li>
-<li><p>hosts：，若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错</p></li>
+<li><p>hosts：，若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错，建议在json文件中指定</p></li>
 <li><p>public key为配置文件内置参数，用于指定EurekaUrl和后期需要扩展的其他公共参数，项目名不可使用该key命名</p></li>
 </ol>
 </div>
@@ -286,7 +301,8 @@
 <h2>2.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id5">
 <h3>2.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@host175 pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -h</span>
+<p>如果使用默认latest标签发布docker项目，一个工单可以只关联一个项目，也可以通过项目变量获取脚本关联多个项目</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -h</span>
 usage: var_json_keys.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-k <span class="o">[</span>keyword1<span class="p">|</span>keyword2<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
 
 version <span class="m">2</span>.0.0
@@ -299,10 +315,17 @@ optional arguments:
                         the environment you need deploy
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-k 指定关键字可以从配置文件中过滤包含此关键字的项目，详见最佳实例</p></li>
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+</ol>
+</div>
 </div>
 <div class="section" id="id6">
 <h3>2.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@registry pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
 usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
                              <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
                              <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
@@ -327,18 +350,23 @@ optional arguments:
                         <span class="nv">default</span><span class="o">=</span>60s
   -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>
                         input the execution mode you need
-<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@registry pl_deploy_docker<span class="o">]</span><span class="c1">#</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+<li><p>-p 指定需要操作的项目名字，该项目必须存在于指定配置文件当中</p></li>
+<li><p>-t 指定所属项目的docker标签，默认为latest</p></li>
+<li><p>-a 指定项目所在的目标主机，若为空则读取ansbile hosts文件中 与项目名一致的group。</p></li>
+<li><p>-w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用</p></li>
+<li><p>-m 指定执行模式，执行模式描述详见概述部分内容</p></li>
+</ol>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>2.5. 最佳实践<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
-<div class="section" id="id8">
-<h3>2.5.1. 配置文件<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
 </div>
 <div class="section" id="web">
-<h3>2.5.2. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h3>
+<h2>2.5. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
 <p>提单页面如下：</p>
 <img alt="image not found" src="../_images/docker_submit.png" />
 <div class="admonition note">
@@ -357,8 +385,150 @@ optional arguments:
 </ol>
 </div>
 </div>
+<div class="section" id="id7">
+<h2>2.6. 命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>项目变量获取</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -e prod -k demo</span>
+<span class="o">[</span><span class="s1">&#39;demo1&#39;</span>, <span class="s1">&#39;demo2&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>如上表示从-e表示从prod_conf.json 读取 包含demo关键字的项目，返回结果为list。</p></li>
+</ol>
+</div>
+<p>主任务脚本-优雅更新模式</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -e stage -p demo1 -a localhost -w 1s -m update</span>
+
+PLAY <span class="o">[</span>localhost<span class="o">]</span> ****************************************************************************************************************************************************************************************
+
+TASK <span class="o">[</span>Step:1/8:Get the AppInstance ID<span class="o">(</span>e.host:port<span class="o">)</span> from eureka.<span class="o">]</span> ****************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:2/8:Get the DockerAppId which is running.<span class="o">]</span> ***************************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:3/8:Download docker image.<span class="o">]</span> ******************************************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:4/8:Deregister service.<span class="o">]</span> *********************************************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:5/8:Securyty <span class="nb">wait</span> <span class="nb">times</span> <span class="k">for</span> eureka server<span class="p">&amp;</span>client cache refresh <span class="o">(</span>default 60s<span class="o">)</span>.<span class="o">]</span> ***************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:6/8:Docker app stop.<span class="o">]</span> ************************************************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:7/8:Docker app run.<span class="o">]</span> *************************************************************************************************************************************************************************
+...
+TASK <span class="o">[</span>Step:8/8:LoopHealthCheck <span class="k">until</span> successful, max time<span class="o">(</span>2min<span class="o">)</span>.<span class="o">]</span> ***************************************************************************************************************************************
+...
+PLAY RECAP **********************************************************************************************************************************************************************************************
+localhost                  : <span class="nv">ok</span><span class="o">=</span><span class="m">8</span>    <span class="nv">changed</span><span class="o">=</span><span class="m">8</span>    <span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span>    <span class="nv">failed</span><span class="o">=</span><span class="m">0</span>    <span class="nv">skipped</span><span class="o">=</span><span class="m">0</span>    <span class="nv">rescued</span><span class="o">=</span><span class="m">0</span>    <span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+
+<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>update简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update</p></li>
+<li><p>update指定目标主机和等待时间模式：python main_docker_deploy.py -e stage -p demo1 -a localhost -w 1s -m update</p></li>
+<li><p>restart简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m restart</p></li>
+<li><p>inquiry简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m inquiry</p></li>
+<li><p>rollback简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m rollback</p></li>
+<li><p>update_hard]简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update_hard]</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>2.7. 最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id9">
-<h3>2.5.3. 命令行模式效果演示<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<h3>2.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p>配置各环境的配置文件</p></li>
+<li><p>docker镜像仓库认证</p></li>
+<li><p>项目变量获取脚本检查</p></li>
+<li><p>使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。</p></li>
+<li><p>配置skstack web工单系统将各项目注册到工单系统，以方便用户通过web完成自动化发布流程，配置步骤如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>注册工单可选变量并校验</p></li>
+<li><p>配置变量组管理工单可选变量</p></li>
+<li><p>配置工单，关联变量组、主任务运行脚本、和相关运行参数</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>2.7.2. 步骤1：配置文件<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
+复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
+具体配置参数，参考配置文件说明章节
+</pre></div>
+</div>
+</div>
+<div class="section" id="id11">
+<h3>2.7.3. 步骤2：docker镜像仓库认证<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>完成目标服务器到docker镜像仓库认证</p>
+</div>
+<div class="section" id="id12">
+<h3>2.7.4. 步骤3：项目变量获取脚本检查<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
+</div>
+<div class="section" id="id13">
+<h3>2.7.5. 步骤4：主任务脚本功能检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><p>#.使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。
+#.依次使用update inquiry restart rollback 简易模式验证其他模式是否工作正常
+#.使用方法详见命令行模式脚本效果演示章节</p>
+</div></blockquote>
+</div>
+<div class="section" id="skstack-web">
+<h3>2.7.6. 步骤5：skstack web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<p id="user-vars">1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：group1
+ 变量表单标签名字：Project
+描述：描述内容
+变量取值方法：脚本生成
+变量表单类型：单选select2下拉框
+变量值：为空（因这里使用脚本生成可选变量，非管理员定义，所以无需定义）
+变量获取脚本：python /opt/soft/skstack_plugins/pl_deploy_docker/var_json_keys.py -e prod -k group1
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployDocker （若无请先添加用途分类）
+
+变量名：DockerDeployMode
+ 变量表单标签名字：ExecMode
+描述：描述内容
+变量取值方法：管理员定义
+变量表单类型：单选icheck Radio
+变量值：[&quot;update&quot;,&quot;restart&quot;,&quot;inquiry&quot;,&quot;rollback&quot;,&quot;update_hard&quot;]
+变量获取脚本：为空
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployDocker （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>2 配置变量组管理工单可选变量</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>名字：docker_deploy_group1
+描述：描述内容
+变量：group1 DockerDeployMode （关联上述步骤配置的变量）
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployDocker （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>3 配置工单，关联变量组、主任务运行脚本、和相关运行参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>工单名字：project_group1
+项目描述：改工单所发布的项目进行简要描述，方便提单用户通过帮助按钮阅读
+提单权限用户：选择具有提单权限的用户组，需要先到用户管理界面添加相关用户组
+可选参数组：docker_deploy_group1
+前置任务：留空
+主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}
+后置任务：留空
+是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
+审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
+其余选项：暂未上线，不勾选
+配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
+</pre></div>
+</div>
 </div>
 </div>
 </div>
