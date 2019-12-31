@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="4. web服务器静态文件版本部署插件使用指南" href="package_deploy.html" />
+    <link rel="next" title="4. tar压缩包版本部署插件使用指南" href="package_deploy.html" />
     <link rel="prev" title="2. Docker部署插件使用指南" href="docker_deploy.html" /> 
 </head>
 
@@ -98,19 +98,36 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Git静态文件部署插件使用指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#web">3.1. Web模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">3.2. 命令行模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">3.3. 配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">3.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.2. 目录说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">3.3. 配置文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">3.4. 脚本说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">3.4.1. 变量获取脚本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.4.2. 主任务脚本</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web">3.5. Web模式效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">3.6. 命令行模式脚本效果演示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">3.7. 最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">3.7.1. 步骤概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">3.7.2. 安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">3.7.3. 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">3.7.4. Git镜像仓库认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">3.7.5. 项目变量获取脚本测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">3.7.6. 任务脚本功能测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#skstack-web">3.7.7. Skstack Web工单系统配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
@@ -181,18 +198,305 @@
             
   <div class="section" id="git">
 <h1>3. Git静态文件部署插件使用指南<a class="headerlink" href="#git" title="永久链接至标题">¶</a></h1>
-<p>略</p>
-<div class="section" id="web">
-<h2>3.1. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
-<p>略</p>
-</div>
 <div class="section" id="id1">
-<h2>3.2. 命令行模式效果演示<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>3.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>git部署插件，主要用于部署git类静态文件项目，版本发布和回滚都基于指定分支的commit id。</p>
+<p><em>版本管理</em></p>
+<ul class="simple">
+<li><p>基于gitlab仓库，或者其他git仓库镜像，的master或者其他指定分支，commit id进行版本管理</p></li>
+</ul>
 </div>
 <div class="section" id="id2">
-<h2>3.3. 配置指南<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>3.2. 目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pl_deploy_git/                          <span class="c1">#插件主目录</span>
+├── conf                                        <span class="c1">#配置文件目录</span>
+│   ├── demo.json                       <span class="c1">#配置文件模板</span>
+├── lib_pri
+│   ├── git.py
+├── main_git_deploy.py      <span class="c1">#主任务脚本，用于将项目文件同步到目标服务器</span>
+├── pre_git_pull.py                     <span class="c1">#前置任务脚本，用于将项目文件从git上pull下来，并切换到指定commit id</span>
+├── sc_static_sync.yml          <span class="c1">#主任务模块调用的ansible playbook，用来同步文件到目标服务器使用</span>
+└── var_git_commit_id.py    <span class="c1">#变量获取脚本，用于获取指定分支的commit id 最近前10次提交。</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>3.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>demo.json为例</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>{</p>
+<blockquote>
+<div><dl class="simple">
+<dt>“proj1”:{  #项目名称</dt><dd><p>“type”:”git”,   #项目类型，必须指定为git
+“hosts”: “demo1”,      #指定需要部署到目标主机的ansible hosts group
+“repo_url”: “<a class="reference external" href="http://git_host/path/proj1.git">http://git_host/path/proj1.git</a>”,  #项目git地址
+“proj_local_path”:”/opt/gitsource/proj1”,     #项目拉取到本地仓库的路径
+“deploy_src_path”:”/opt/gitsource/proj1”,     #项目本地源文件路径
+“deploy_dest_path”:”/opt/soft/”,  #项目目标服务器路径
+“rsync_opts”:[],                       #排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.
+“delete_enable”:”no”,      #是否删除目标服务器目录存在而源目录不存在的文件。
+“owner”: “nginx”,                      #文件和目录所属系统用户权限
+“group”: “nginx”},                     #文件和目录所属系统用户组权限</p>
+</dd>
+<dt>“proj2”:{</dt><dd><p>“type”:”git”,
+“hosts”: “none”,
+“repo_url”: “<a class="reference external" href="http://git_host/path/proj2.git">http://git_host/path/proj2.git</a>”,
+“proj_local_path”:”/opt/gitsource/proj2”,
+“deploy_src_path”:”/opt/gitsource/proj2/sub1/”,
+“deploy_dest_path”:”/opt/soft/proj2/”,
+“rsync_opts”:[“–no-motd”,”–exclude=RedisConnect.php”,”–exclude=config”,”–exclude=runtime”],
+“delete_enable”:”no”,
+“owner”: “nginx”,
+“group”: “nginx”}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>}</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>repo_url：使用插件之前需要用户先自己完成插件服务器到git镜像仓库认证，插件不负责认证。保证在插件服务器可以通过git clone和git pull命令拉取代码。</p></li>
+<li><p>hosts：若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错，建议在json文件中指定</p></li>
+<li><p>type：项目保留参数，方便后期插件功能扩展，目前必须指定为git。</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>3.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>3.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>如果使用默认latest标签发布docker项目，一个工单可以只关联一个项目，也可以通过项目变量获取脚本关联多个项目</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python var_git_commit_id.py -h</span>
+usage: var_git_commit_id.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p <span class="o">[</span>git_project_name<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
+                            <span class="o">[</span>-b <span class="o">[</span>master<span class="p">|</span>feature-xxx<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p <span class="o">[</span>git_project_name<span class="o">]</span>, --proj-git <span class="o">[</span>git_project_name<span class="o">]</span>
+                        the static git project name you want to depoly
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>, --environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>
+                        the environment you need deploy
+  -b <span class="o">[</span>master<span class="p">|</span>feature-xxx<span class="o">]</span>, --branch <span class="o">[</span>master<span class="p">|</span>feature-xxx<span class="o">]</span>
+                        the git branch you need deploy <span class="nv">default</span><span class="o">=</span>master
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-p 指定git项目名称，详见最佳实例</p></li>
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+<li><p>-e 指定分支，默认为master</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>3.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python main_git_deploy.py -h</span>
+usage: main_git_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span> <span class="o">[</span>-p <span class="o">[</span>git_project_name<span class="o">]]</span>
+                          <span class="o">[</span>-a <span class="o">[</span>ansible-hosts<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>, --environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>
+                        the environment you need deploy
+  -p <span class="o">[</span>git_project_name<span class="o">]</span>, --proj-git <span class="o">[</span>git_project_name<span class="o">]</span>
+                        the static git project name you want to depoly
+  -a <span class="o">[</span>ansible-hosts<span class="o">]</span>, --ansible-hosts <span class="o">[</span>ansible-hosts<span class="o">]</span>
+                        the destination hosts you want to depoly
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+<li><p>-p 指定需要操作的git项目名字，该项目必须存在于指定配置文件当中</p></li>
+<li><p>-a 指定项目所在的目标主机，若为空则读取ansbile hosts文件中 与项目名一致的group。</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="web">
+<h2>3.5. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
+<p>提单页面如下：</p>
+<img alt="image not found" src="../_images/git_submit.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>commit id下拉菜单表示最近十次的提交记录，按照时间排序，最新的提交在最前面；</p></li>
+</ol>
+</div>
+<p>结果页展示：</p>
+<img alt="image not found" src="../_images/git_result.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>结果页面，参考ansible结果日志</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>3.6. 命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>项目变量获取</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python var_git_commit_id.py -e stage -p skstack_plugins_conf -b master</span>
+<span class="o">[</span><span class="s1">&#39;953f4f1 (2 weeks ago)  demouser@github.com add market config&#39;</span>, <span class="s1">&#39;603b4b9 (2 weeks ago)  demouser@github.com add payment config&#39;</span>, .........<span class="o">]</span>
+<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>如上表示从-e表示从stage_conf.json 读取 包含skstack_plugins_conf关键字的项目，返回结果为list,只返回最新10次提交记录</p></li>
+<li><p>如上表示从-b表示从master分支读取，最新10次提交记录，-b参数默认为master，此处可以省略。</p></li>
+</ol>
+</div>
+<p>前置任务脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python pre_git_pull.py -e stage -p skstack_plugins_conf -i 953f4f1</span>
+<span class="m">2019</span>-12-31 <span class="m">03</span>:15:30.031 INFO Note: checking out <span class="s1">&#39;953f4f1&#39;</span>.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>执行前置任务脚本之前，可以先通过变量获取脚本获取某个项目的提交记录，或者直接通过git仓库获取提交记录</p></li>
+<li><p>-i 参数表示指定的commit id。</p></li>
+</ol>
+</div>
+<p>主任务脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python main_git_deploy.py -e stage -p skstack_plugins_conf</span>
+start deploy static files
+ <span class="o">[</span>WARNING<span class="o">]</span>: Invalid characters were found in group names but not replaced, use -vvvv to see details
+ <span class="o">[</span>WARNING<span class="o">]</span>: Found variable using reserved name: hosts
+
+PLAY <span class="o">[</span>skstack_plugins_conf<span class="o">]</span> ********************************************************************************************************************************************************************************************
+
+TASK <span class="o">[</span>sync  to the destination<span class="o">]</span> ****************************************************************************************************************************************************************************************
+ok: <span class="o">[</span>localhost<span class="o">]</span>
+
+TASK <span class="o">[</span>change dir owner<span class="o">]</span> ************************************************************************************************************************************************************************************************
+ok: <span class="o">[</span>localhost<span class="o">]</span>
+
+PLAY RECAP *************************************************************************************************************************************************************************************************************
+localhost                  : <span class="nv">ok</span><span class="o">=</span><span class="m">2</span>    <span class="nv">changed</span><span class="o">=</span><span class="m">0</span>    <span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span>    <span class="nv">failed</span><span class="o">=</span><span class="m">0</span>    <span class="nv">skipped</span><span class="o">=</span><span class="m">0</span>    <span class="nv">rescued</span><span class="o">=</span><span class="m">0</span>    <span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>指定目标主机模式：python main_git_deploy.py -e stage -p skstack_plugins_conf -a host1</p></li>
+<li><p>执行主任务脚本之前需要先执行前置任务脚本拉取想要部署的指定分支commit id文件</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>3.7. 最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h3>3.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p>安装</p></li>
+<li><p>配置各环境的json配置文件</p></li>
+<li><p>各项目git镜像仓库认证</p></li>
+<li><p>项目变量获取脚本测试</p></li>
+<li><p>前置任务、主任务脚本测试</p></li>
+<li><p>配置skstack web工单系统将各项目注册到工单系统，以方便用户通过web完成自动化发布流程，配置步骤如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>注册工单可选变量并校验</p></li>
+<li><p>配置变量组管理工单可选变量</p></li>
+<li><p>配置工单，关联变量组、主任务运行脚本、和相关运行参数</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>3.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>官方插件与ansible服务器安装在同一台服务器上；</p></li>
+<li><p>不同环境的插件库和ansible服务器分开管理；</p></li>
+<li><p>skstack web将不同环境的ansible服务器（插件库所在服务器）注册到skstack 工单系统</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id11">
+<h3>3.7.3. 配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
+复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
+具体配置参数，参考配置文件说明章节
+</pre></div>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>3.7.4. Git镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>各环境json配置文件指定插件git本地仓库地址 “proj_local_path”:”/opt/gitsource/proj1”, 进入仓库地址，并执行git clone，git pull命令，人工完成到git仓库的认证，保证后续执行git pull无需再次输入密码。</p>
+</div>
+<div class="section" id="id13">
+<h3>3.7.5. 项目变量获取脚本测试<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
+</div>
+<div class="section" id="id14">
+<h3>3.7.6. 任务脚本功能测试<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><p>#.使用前置任务脚本测试，保证指定配置文件的项目可以切换到指定分支
+#.使用主任务脚本保证，可以将发布插件本地仓库的文件同步到目标服务器；
+#.使用方法详见命令行模式脚本效果演示章节</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>执行主任务脚本之前，需先完成ansible服务器到目标服务器的认证，保证ansible可以管理目标服务器</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="skstack-web">
+<h3>3.7.7. Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<p>1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：skstack_conf_git
+ 变量表单标签名字：Git CommitId
+描述：skstack_conf项目最新10次git提交记录变量list
+变量取值方法：脚本生成
+变量表单类型：单选select2下拉框
+变量值：为空（因这里使用脚本生成可选变量，非管理员定义，所以无需定义）
+变量获取脚本：python /opt/soft/skstack_plugins/pl_deploy_git/var_git_commit_id.py -e prod -p skstack_plugins_conf
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployGit （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>2 配置变量组管理工单可选变量</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>名字：skstack_conf_public
+描述：skstack_conf工单使用的提供给用户的可选变量组
+变量：skstack_conf_git  （关联上述步骤配置的变量）
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployGit （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>3 配置工单，关联变量组、主任务运行脚本、和相关运行参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>工单名字：skstack_plugins_conf
+项目描述：改工单所发布的项目进行简要描述，方便提单用户通过帮助按钮阅读
+提单权限用户：选择具有提单权限的用户组，需要先到用户管理界面添加相关用户组
+项目环境：PROD
+项目分类：DeployGit
+是否激活工单：激活   #未激活工单，提单用户无法看到
+内置变量：{&quot;GitProjName&quot;:&quot;skstack_plugins_conf&quot;}
+可选参数组：skstack_conf_public
+前置任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_git/pre_git_pull.py -e prod -p {GitProjName} -i &quot;{skstack_conf_git}&quot;
+主任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_git/main_git_deploy.py -e prod -p {GitProjName}
+后置任务：留空
+是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
+审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
+其余选项：暂未上线，不勾选
+配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -204,7 +508,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="package_deploy.html" class="btn btn-neutral float-right" title="4. web服务器静态文件版本部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="package_deploy.html" class="btn btn-neutral float-right" title="4. tar压缩包版本部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="docker_deploy.html" class="btn btn-neutral float-left" title="2. Docker部署插件使用指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

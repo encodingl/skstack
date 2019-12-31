@@ -109,24 +109,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#id7">2.6. 命令行模式脚本效果演示</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id8">2.7. 最佳实践</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id9">2.7.1. 步骤概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">2.7.2. 步骤1：配置文件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">2.7.3. 步骤2：docker镜像仓库认证</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">2.7.4. 步骤3：项目变量获取脚本检查</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">2.7.5. 步骤4：主任务脚本功能检查</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#skstack-web">2.7.6. 步骤5：skstack web工单系统配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.7.2. 安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">2.7.3. 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.7.4. docker镜像仓库认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.7.5. 项目变量获取脚本检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">2.7.6. 主任务脚本功能检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#skstack-web">2.7.7. Skstack Web工单系统配置</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
@@ -199,6 +200,7 @@
 <h1>2. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
 <h2>2.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>docker部署插件，主要用于docker类项目部署、回滚、重启和版本查询</p>
 <p><em>docker部署插件支持如下几种执行模式</em></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>update：版本更新优雅模式，过程如下：
 
@@ -264,6 +266,7 @@ f289e56dc36f        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest    
 </div>
 <div class="section" id="id3">
 <h2>2.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>demo.json为例</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 
         <span class="s2">&quot;public&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">#所有项目共有配置参数区域</span>
@@ -372,7 +375,7 @@ optional arguments:
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
-<li><p>Project项下来菜单表示为该工单可选的docker项目，通过插件变量获取脚本从配置文件获取指定项目；</p></li>
+<li><p>Project项下拉菜单表示为该工单可选的docker项目，通过插件变量获取脚本从配置文件获取指定项目；</p></li>
 <li><p>多个docker项目可以合并到一个工单上，也可以一个docker项目使用一个工单</p></li>
 </ol>
 </div>
@@ -443,7 +446,8 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 <h3>2.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic">
-<li><p>配置各环境的配置文件</p></li>
+<li><p>安装</p></li>
+<li><p>配置各环境的json配置文件</p></li>
 <li><p>docker镜像仓库认证</p></li>
 <li><p>项目变量获取脚本检查</p></li>
 <li><p>使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。</p></li>
@@ -460,23 +464,33 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="id10">
-<h3>2.7.2. 步骤1：配置文件<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<h3>2.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>官方插件与ansible服务器安装在同一台服务器上；</p></li>
+<li><p>不同环境的插件库和ansible服务器分开管理；</p></li>
+<li><p>skstack web将不同环境的ansible服务器（插件库所在服务器）注册到skstack 工单系统</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id11">
+<h3>2.7.3. 配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
 复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
 具体配置参数，参考配置文件说明章节
 </pre></div>
 </div>
 </div>
-<div class="section" id="id11">
-<h3>2.7.3. 步骤2：docker镜像仓库认证<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id12">
+<h3>2.7.4. docker镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
 <p>完成目标服务器到docker镜像仓库认证</p>
 </div>
-<div class="section" id="id12">
-<h3>2.7.4. 步骤3：项目变量获取脚本检查<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id13">
+<h3>2.7.5. 项目变量获取脚本检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
 </div>
-<div class="section" id="id13">
-<h3>2.7.5. 步骤4：主任务脚本功能检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id14">
+<h3>2.7.6. 主任务脚本功能检查<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><p>#.使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。
 #.依次使用update inquiry restart rollback 简易模式验证其他模式是否工作正常
@@ -484,11 +498,11 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="skstack-web">
-<h3>2.7.6. 步骤5：skstack web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<h3>2.7.7. Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
 <p id="user-vars">1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：group1
  变量表单标签名字：Project
-描述：描述内容
+描述：该变量用于提供用户选择哪些项目可以使用关联工单进行项目部署
 变量取值方法：脚本生成
 变量表单类型：单选select2下拉框
 变量值：为空（因这里使用脚本生成可选变量，非管理员定义，所以无需定义）
@@ -498,7 +512,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 
 变量名：DockerDeployMode
  变量表单标签名字：ExecMode
-描述：描述内容
+描述：该变量用于提供给用户选择指定的部署和执行模式
 变量取值方法：管理员定义
 变量表单类型：单选icheck Radio
 变量值：[&quot;update&quot;,&quot;restart&quot;,&quot;inquiry&quot;,&quot;rollback&quot;,&quot;update_hard&quot;]
@@ -519,6 +533,10 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>工单名字：project_group1
 项目描述：改工单所发布的项目进行简要描述，方便提单用户通过帮助按钮阅读
 提单权限用户：选择具有提单权限的用户组，需要先到用户管理界面添加相关用户组
+项目环境：PROD
+项目分类：DeployDocker
+是否激活工单：激活   #未激活工单，提单用户无法看到
+内置变量：留空
 可选参数组：docker_deploy_group1
 前置任务：留空
 主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}
