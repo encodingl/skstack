@@ -114,8 +114,8 @@
 ^^^^^^^^^^^^^^^^^^^^^^  
  
 #. ansible安装：略
-#. 插件安装：git clone 《插件git url》，注意：插件安装到ansible服务器
-#. 安装python2.7的python虚拟环境：略；该插件
+#. 插件安装：执行 git clone 《插件git url》，注意：插件安装到ansible服务器/opt/soft目录
+#. 该插件与skstack web系统使用同一python虚拟机环境
 #. 配置demo1作为ansible 远程执行命令的客户机 作为测试：略
 
 
@@ -128,69 +128,51 @@ ansible cmd插件测试
 | 确认ansible cmd脚本"ansible_cmd.py"的配置文件配置正确
 
 .. code-block:: console
-	:emphasize-lines: 4
+	:emphasize-lines: 3
 	
-	(skplugins) [root@devops scAnsible]# more ../conf/ansible_conf_dev.py
-	#! /usr/bin/env python
-	# -*- coding: utf-8 -*-
-	ansible_hosts_file = "/etc/ansible/hosts"
+	(skstack) [root@devops pl_ansible]# more ./conf/dev_conf.json
+	{
+	        "ansible_hosts_file":"/etc/ansible/hosts",
+	        "forks":"5"
+	}
+
+
 	
 	
 
 .. code-block:: console
 
-	(skplugins) [root@devops scAnsible]# python ansible_cmd.py -e dev -g demo1 -c date
+	(skstack) [root@devops pl_ansible]# python main_ansible_shell.py -e dev -g demo1 -c date
+	2020-01-07 17:56:59.115794 INFO the ansible shell task started
 	svn | CHANGED | rc=0 >>
-	2019年 10月 28日 星期一 15:27:26 CST
-	(skplugins) [root@devops scAnsible]# python ansible_cmd.py -h
-	Usage: ansible_cmd.py [options]
-	
-	Options:
-	  --version             show program's version number and exit
-	  -h, --help            show this help message and exit
-	  -e [prod|stg|...], --environment=[prod|stg|...]
-	                        input the environment in which the script needs to be
-	                        executed
-	  -g [gp01|ip|...], --group=[gp01|ip|...]
-	                        input the ansible hosts group
-	  -c [ls|cd|...], --command=[ls|cd|...]
-	                        input the command
-	(skplugins) [root@devops scAnsible]# ll
-	总用量 12
-	-rwxr-xr-x. 1 root root 1672 7月   8 12:02 ansible_cmd.py
-	-rwxr-xr-x. 1 root root 1492 6月   5 11:47 ansible_playbook.py
-	-rw-r--r--. 1 root root    0 5月  21 17:19 __init__.py
-	-rwxr-xr-x. 1 root root 1494 5月  21 17:19 vars_get_AnsibleHosts.py
-	(skplugins) [root@devops scAnsible]#
+	2020年 01月 07日 星期二 17:57:00 CST
+	2020-01-07 17:57:00.947437 INFO the ansible shell task finished
+	(skstack) [root@devops pl_ansible]#
+
 	
 .. note::
-	该处--e为预留参数，该脚本没有使用，后续将用于不同环境的配置文件读取
+	该处--e表示读取./conf/dev_conf.json 配置文件  -g表示项目名称  -c表示执行的shell命令
 ..
 
 
-确认ansible hosts变量获取脚本工作正常
+确认ansible hosts变量获取脚本工作正常,
 
 .. code-block:: console
 
-	(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -e dev
-	['appT_h5', 'app_h5', 'demo1', 'dev_nginx', 'mitrade-cloud-config-repo', 'skplugins', 'system-hosts-file', 'web-cms-app', 'webtrader', 'webtrader2']
-	(skplugins) [root@devops scAnsible]# python vars_get_AnsibleHosts.py -h
-	Usage: vars_get_AnsibleHosts.py [options]
-	
-	Options:
-	  --version             show program's version number and exit
-	  -h, --help            show this help message and exit
-	  -e [prod|stg|...], --environment=[prod|stg|...]
-	                        input the environment in which the script needs to be
-	                        executed
+	(skstack) [root@devops pl_ansible]# python vars_get_AnsibleHosts.py -e dev
+	['demo1', 'demo2', 'dev_nginx']
+
+
 	        
 	
 .. note::
-	该处-e参数为获取不同环境的配置文件参数；执行结果返回看到ansible hosts里面定义的group列表即为正常
+	#. 该处-e参数为获取不同环境的配置文件参数；该处--e表示读取./conf/dev_conf.json 配置文件。
+	#. 执行结果返回/etc/ansible/hosts下的group列表清单表示工作正常
 ..
 
 
 .. _config-center:
+
 
 添加配置中心
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -275,7 +257,8 @@ ansible cmd插件测试
 .. note::
 	#. 每定义一个任务工单，可以传递外部list变量（用户可选）和内部变量（对用户不可见）给工单
 	#. 内部变量此处未用，格式为dict 如{"GitProjName":"app01"} key为变量名，value为值，可以定义多个kv
-	#. 外部和内部变量通过"{变量名}" 传递给任务脚本；如 ansible_cmd.py -e prod -g "{AnsibleHosts}" -c "{AnsibleCMD}"
+	#. 外部和内部变量通过"{变量名}" 传递给任务脚本；如 main_ansible_shell.py -e dev -g "{AnsibleHosts}" -c "{AnsibleCMD}"
+	#. 主任务配置项的python虚拟机路径的python命令和脚本路径需要使用绝对路径，详见截图"
 	
 ..
 

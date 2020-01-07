@@ -14,6 +14,10 @@ WEB平台开发指南
 #. 前端框架：adminlte bootstrap echart
 
 
+.. note::
+	  若使用windows开发，需要将ansible安装到centos系统
+..
+
  
 
 目录规范

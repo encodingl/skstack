@@ -39,39 +39,40 @@ demo.json为例
 
 .. code-block:: python
 
-{
-
-	"proj1":{  #项目名称
-		 "type":"git",   #项目类型，必须指定为git
-		 "hosts": "demo1",	#指定需要部署到目标主机的ansible hosts group
-		 "repo_url": "http://git_host/path/proj1.git",  #项目git地址
-		 "proj_local_path":"/opt/gitsource/proj1",     #项目拉取到本地仓库的路径
-		 "deploy_src_path":"/opt/gitsource/proj1",     #项目本地源文件路径
-		 "deploy_dest_path":"/opt/soft/",  #项目目标服务器路径
-		 "rsync_opts":[],  			#排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.
-		 "delete_enable":"no",      #是否删除目标服务器目录存在而源目录不存在的文件。
-		 "owner": "nginx",			#文件和目录所属系统用户权限
-		 "group": "nginx"},			#文件和目录所属系统用户组权限
+	{
 	
-	"proj2":{
-		 "type":"git",
-		 "hosts": "none",	
-		 "repo_url": "http://git_host/path/proj2.git",
-		 "proj_local_path":"/opt/gitsource/proj2",
-		 "deploy_src_path":"/opt/gitsource/proj2/sub1/",
-		 "deploy_dest_path":"/opt/soft/proj2/",
-		 "rsync_opts":["--no-motd","--exclude=RedisConnect.php","--exclude=config","--exclude=runtime"],
-		 "delete_enable":"no",
-		 "owner": "nginx",
-		 "group": "nginx"}
-
-}
+		"proj1":{  #项目名称
+			 "type":"git",   #项目类型，必须指定为git
+			 "hosts": "demo1",	#指定需要部署到目标主机的ansible hosts group
+			 "repo_url": "http://git_host/path/proj1.git",  #项目git地址
+			 "proj_local_path":"/opt/gitsource/proj1",     #项目拉取到本地仓库的路径
+			 "deploy_src_path":"/opt/gitsource/proj1",     #项目本地源文件路径
+			 "deploy_dest_path":"/opt/soft/",  #项目目标服务器路径
+			 "rsync_opts":[],  			#排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.
+			 "delete_enable":"no",      #是否删除目标服务器目录存在而源目录不存在的文件。
+			 "owner": "nginx",			#文件和目录所属系统用户权限
+			 "group": "nginx"},			#文件和目录所属系统用户组权限
+		
+		"proj2":{
+			 "type":"git",
+			 "hosts": "none",	
+			 "repo_url": "http://git_host/path/proj2.git",
+			 "proj_local_path":"/opt/gitsource/proj2",
+			 "deploy_src_path":"/opt/gitsource/proj2/sub1/",
+			 "deploy_dest_path":"/opt/soft/proj2/",
+			 "rsync_opts":["--no-motd","--exclude=RedisConnect.php","--exclude=config","--exclude=runtime"],
+			 "delete_enable":"no",
+			 "owner": "nginx",
+			 "group": "nginx"}
+	
+	}
 
 
 .. note::
 	  #. repo_url：使用插件之前需要用户先自己完成插件服务器到git镜像仓库认证，插件不负责认证。保证在插件服务器可以通过git clone和git pull命令拉取代码。
 	  #. hosts：若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错，建议在json文件中指定
 	  #. type：项目保留参数，方便后期插件功能扩展，目前必须指定为git。
+	  #. rsync_opts：参数定义参考ansible playbook synchronize模块的rsync_opts参数定义
 
 ..
 
@@ -167,7 +168,7 @@ Web模式效果演示
  
 	(skstack) [root@ansible pl_deploy_git]# python var_git_commit_id.py -e stage -p skstack_plugins_conf -b master
 	['953f4f1 (2 weeks ago)  demouser@github.com add market config', '603b4b9 (2 weeks ago)  demouser@github.com add payment config', .........]
-	(skstack) [root@ansible pl_deploy_git]#
+
 	
 .. note::
 	  #. 如上表示从-e表示从stage_conf.json 读取 包含skstack_plugins_conf关键字的项目，返回结果为list,只返回最新10次提交记录
@@ -233,8 +234,8 @@ Web模式效果演示
 安装
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
- #. 官方插件与ansible服务器安装在同一台服务器上；
- #. 不同环境的插件库和ansible服务器分开管理；
+ #. 不同环境单独使用一台ansible服务器作为作为配置管理服务器；如prod一台ansible， stage一台ansible。
+ #. 将skstack_plugins插件库安装到ansible服务器的/opt/soft/目录，并创建/opt/gitsource/目录作为git项目文件的临时版本库。
  #. skstack web将不同环境的ansible服务器（插件库所在服务器）注册到skstack 工单系统
 
 配置文件

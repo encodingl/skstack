@@ -8,8 +8,7 @@
 * Python3.7.4
 * Django2.2.5 
 * system：windows or linux 
-* Verified operating system：Centos7（suggested ）and  windlows 10
-
+* 生产环境建议：Centos7或以上版本（suggested ）
 
  
 
@@ -20,9 +19,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~
 
  * 安装python 3.7和python虚拟机  略（为了不影响其他python应用环境强烈建议安装python虚拟机）；
-
  * 用virtualenvwrapper按照python虚拟环境
- 
+  * 安装位置建议：/root/.virtualenvs/skstack
+  
   #. mkvirtualenv skstack
   #. workon skstack
 
