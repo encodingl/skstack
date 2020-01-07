@@ -20,7 +20,7 @@
 
  * 安装python 3.7和python虚拟机  略（为了不影响其他python应用环境强烈建议安装python虚拟机）；
  * 用virtualenvwrapper按照python虚拟环境
-  * 安装位置建议：/root/.virtualenvs/skstack
+ * 安装位置建议：/root/.virtualenvs/skstack
   
   #. mkvirtualenv skstack
   #. workon skstack
