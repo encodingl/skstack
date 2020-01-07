@@ -93,7 +93,7 @@
 <li class="toctree-l1"><a class="reference internal" href="skaccounts.html">1. 用户系统</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. 工单系统</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">2.1. 原理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">2.2. 配置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.2. 管理员配置手册</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id4">2.2.1. 基础配置</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">2.2.2. 配置中心</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">2.2.3. 变量配置</a><ul>
@@ -102,13 +102,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#id9">2.2.3.3. 变量传递</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">2.2.4. 工单使用</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">2.3. 提单</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id12">2.4. 审核</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id13">2.5. 执行</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">2.6. 审计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">2.3. 用户使用手册</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">2.3.1. 提单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.3.2. 审核</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.3.3. 执行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">2.3.4. 审计</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -117,14 +119,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
@@ -201,7 +203,7 @@
 <p>详见快速入门手册概述部分</p>
 </div>
 <div class="section" id="id3">
-<h2>2.2. 配置<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2>2.2. 管理员配置手册<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <p>详见快速入门手册demo章节</p>
 <div class="section" id="id4">
 <h3>2.2.1. 基础配置<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
@@ -214,7 +216,7 @@
 </div>
 <div class="section" id="id5">
 <h3>2.2.2. 配置中心<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
-<p>参考:ref:<cite>示例快速入门配置中心 &lt;config-center&gt;</cite>.</p>
+<p>参考 <a class="reference internal" href="../intro/quick_start.html#config-center"><span class="std std-ref">示例快速入门配置中心</span></a>.</p>
 </div>
 <div class="section" id="id6">
 <h3>2.2.3. 变量配置<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
@@ -249,28 +251,61 @@
 </div></blockquote>
 </div>
 </div>
+</div>
 <div class="section" id="id10">
-<h3>2.2.4. 工单使用<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
-</div>
-</div>
+<h2>2.3. 用户使用手册<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id11">
-<h2>2.3. 提单<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<h3>2.3.1. 提单<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <div class="line-block">
-<div class="line">由已授权提单权限用户使用，若工单开启审核，提交工单后，需等待完成审核流定义的各层级完成审核后 才能到执行菜单界面 执行工单</div>
-<div class="line">若没有开启审核，可以在提单页面直接执行工单</div>
+<div class="line">由已授权提单权限用户使用，若工单开启审核，提交工单后，需等待完成审核流定义的各层级完成审核后 才能到执行菜单界面 执行工单，将图1</div>
+<div class="line">若没有开启审核，可以在提单页面直接执行工单,将图2</div>
+</div>
+<p>图1</p>
+<img alt="image not found" src="../_images/submit_only.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>提交成功后显示submited successful，表示提交成功，需要审核通过后才能进入执行页面执行任务。</p></li>
+</ol>
+</div>
+<p>图2</p>
+<img alt="image not found" src="../_images/submit_all.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>提交成功后显示finished successful表示发布成功</p></li>
+</ol>
 </div>
 </div>
 <div class="section" id="id12">
-<h2>2.4. 审核<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
-<p>由审核人员使用，工单开启审核后，需要通过审核流程中所定义审核流程才能执行。拒绝必须填写拒绝理由，同意可以不填 意见，直接点击同意按钮</p>
+<h3>2.3.2. 审核<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>由审核人员使用，工单开启审核后，需要通过审核流程中所定义审核流程才能执行。拒绝必须填写拒绝理由，同意可以不填 意见，直接点击同意按钮
+进入审核页面如下：</p>
+<img alt="image not found" src="../_images/audit_index.png" />
+<p>点击同意后：拒绝必须给出拒绝理由，同意可以不用填意见</p>
+<img alt="image not found" src="../_images/audit_permit.png" />
+<p>查看详情</p>
+<img alt="image not found" src="../_images/audit_permit.png" />
 </div>
 <div class="section" id="id13">
-<h2>2.5. 执行<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<h3>2.3.3. 执行<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>审核通过后，已授权提单用户可以到该页面选择提交的工单并执行</p>
+<p>进入执行索引页面：</p>
+<img alt="image not found" src="../_images/deploy_index.png" />
+<p>进入项目执行界面：</p>
+<img alt="image not found" src="../_images/deploy_result.png" />
 </div>
 <div class="section" id="id14">
-<h2>2.6. 审计<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<h3>2.3.4. 审计<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <p>这里记录所有工单执行历史，具有访问该菜单权限的用户，可以查看所有执行记录，包含其他用户的执行记录，以便于进行历史版本查看</p>
+<img alt="image not found" src="../_images/history.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>历史记录审计页面当前所有提交记录都记录在前台任务页面，后台任务模块暂未release。</p></li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 

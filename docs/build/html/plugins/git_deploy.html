@@ -223,43 +223,42 @@
 <div class="section" id="id3">
 <h2>3.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <p>demo.json为例</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+
+        <span class="s2">&quot;proj1&quot;</span><span class="p">:{</span>  <span class="c1">#项目名称</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;git&quot;</span><span class="p">,</span>   <span class="c1">#项目类型，必须指定为git</span>
+                 <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;demo1&quot;</span><span class="p">,</span>      <span class="c1">#指定需要部署到目标主机的ansible hosts group</span>
+                 <span class="s2">&quot;repo_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://git_host/path/proj1.git&quot;</span><span class="p">,</span>  <span class="c1">#项目git地址</span>
+                 <span class="s2">&quot;proj_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/gitsource/proj1&quot;</span><span class="p">,</span>     <span class="c1">#项目拉取到本地仓库的路径</span>
+                 <span class="s2">&quot;deploy_src_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/gitsource/proj1&quot;</span><span class="p">,</span>     <span class="c1">#项目本地源文件路径</span>
+                 <span class="s2">&quot;deploy_dest_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/soft/&quot;</span><span class="p">,</span>  <span class="c1">#项目目标服务器路径</span>
+                 <span class="s2">&quot;rsync_opts&quot;</span><span class="p">:[],</span>                       <span class="c1">#排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.</span>
+                 <span class="s2">&quot;delete_enable&quot;</span><span class="p">:</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>      <span class="c1">#是否删除目标服务器目录存在而源目录不存在的文件。</span>
+                 <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">,</span>                      <span class="c1">#文件和目录所属系统用户权限</span>
+                 <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">},</span>                     <span class="c1">#文件和目录所属系统用户组权限</span>
+
+        <span class="s2">&quot;proj2&quot;</span><span class="p">:{</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;git&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;repo_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://git_host/path/proj2.git&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;proj_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/gitsource/proj2&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;deploy_src_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/gitsource/proj2/sub1/&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;deploy_dest_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/soft/proj2/&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;rsync_opts&quot;</span><span class="p">:[</span><span class="s2">&quot;--no-motd&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=RedisConnect.php&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=config&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=runtime&quot;</span><span class="p">],</span>
+                 <span class="s2">&quot;delete_enable&quot;</span><span class="p">:</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">}</span>
+
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>{</p>
-<blockquote>
-<div><dl class="simple">
-<dt>“proj1”:{  #项目名称</dt><dd><p>“type”:”git”,   #项目类型，必须指定为git
-“hosts”: “demo1”,      #指定需要部署到目标主机的ansible hosts group
-“repo_url”: “<a class="reference external" href="http://git_host/path/proj1.git">http://git_host/path/proj1.git</a>”,  #项目git地址
-“proj_local_path”:”/opt/gitsource/proj1”,     #项目拉取到本地仓库的路径
-“deploy_src_path”:”/opt/gitsource/proj1”,     #项目本地源文件路径
-“deploy_dest_path”:”/opt/soft/”,  #项目目标服务器路径
-“rsync_opts”:[],                       #排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.
-“delete_enable”:”no”,      #是否删除目标服务器目录存在而源目录不存在的文件。
-“owner”: “nginx”,                      #文件和目录所属系统用户权限
-“group”: “nginx”},                     #文件和目录所属系统用户组权限</p>
-</dd>
-<dt>“proj2”:{</dt><dd><p>“type”:”git”,
-“hosts”: “none”,
-“repo_url”: “<a class="reference external" href="http://git_host/path/proj2.git">http://git_host/path/proj2.git</a>”,
-“proj_local_path”:”/opt/gitsource/proj2”,
-“deploy_src_path”:”/opt/gitsource/proj2/sub1/”,
-“deploy_dest_path”:”/opt/soft/proj2/”,
-“rsync_opts”:[“–no-motd”,”–exclude=RedisConnect.php”,”–exclude=config”,”–exclude=runtime”],
-“delete_enable”:”no”,
-“owner”: “nginx”,
-“group”: “nginx”}</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>}</p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
 <li><p>repo_url：使用插件之前需要用户先自己完成插件服务器到git镜像仓库认证，插件不负责认证。保证在插件服务器可以通过git clone和git pull命令拉取代码。</p></li>
 <li><p>hosts：若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错，建议在json文件中指定</p></li>
 <li><p>type：项目保留参数，方便后期插件功能扩展，目前必须指定为git。</p></li>
+<li><p>rsync_opts：参数定义参考ansible playbook synchronize模块的rsync_opts参数定义</p></li>
 </ol>
 </div>
 </div>
@@ -345,7 +344,6 @@ optional arguments:
 <p>项目变量获取</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python var_git_commit_id.py -e stage -p skstack_plugins_conf -b master</span>
 <span class="o">[</span><span class="s1">&#39;953f4f1 (2 weeks ago)  demouser@github.com add market config&#39;</span>, <span class="s1">&#39;603b4b9 (2 weeks ago)  demouser@github.com add payment config&#39;</span>, .........<span class="o">]</span>
-<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1">#</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -420,8 +418,8 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 <h3>3.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>官方插件与ansible服务器安装在同一台服务器上；</p></li>
-<li><p>不同环境的插件库和ansible服务器分开管理；</p></li>
+<li><p>不同环境单独使用一台ansible服务器作为作为配置管理服务器；如prod一台ansible， stage一台ansible。</p></li>
+<li><p>将skstack_plugins插件库安装到ansible服务器的/opt/soft/目录，并创建/opt/gitsource/目录作为git项目文件的临时版本库。</p></li>
 <li><p>skstack web将不同环境的ansible服务器（插件库所在服务器）注册到skstack 工单系统</p></li>
 </ol>
 </div></blockquote>

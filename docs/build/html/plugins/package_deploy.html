@@ -99,9 +99,26 @@
 <li class="toctree-l1"><a class="reference internal" href="docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4. tar压缩包版本部署插件使用指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#web">4.1. Web模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">4.2. 命令行模式效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">4.3. 配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">4.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.2. 目录说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">4.3. 配置文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">4.4. 脚本说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.4.1. 变量获取脚本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.4.2. 主任务脚本</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#web">4.5. Web模式示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">4.6. 命令行模式脚本示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">4.7. 最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">4.7.1. 步骤概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.7.2. 安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">4.7.3. 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nginx">4.7.4. 配置nginx版本仓库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">4.7.5. 项目变量获取脚本测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">4.7.6. 任务脚本功能测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#skstack-web">4.7.7. Skstack Web工单系统配置</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
@@ -181,18 +198,339 @@
             
   <div class="section" id="tar">
 <h1>4. tar压缩包版本部署插件使用指南<a class="headerlink" href="#tar" title="永久链接至标题">¶</a></h1>
-<p>基于nginx服务器托管的tar.gz压缩包文件版本管理和部署指南</p>
-<div class="section" id="web">
-<h2>4.1. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
-<p>略</p>
-</div>
 <div class="section" id="id1">
-<h2>4.2. 命令行模式效果演示<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>压缩包部署插件，主要用于部署tar.gz压缩包静态文件项目，压缩包以版本命名的方式，存放到nginx特定目录。
+发布插件通过爬虫获取nginx中对应的项目版本，并拉取下来部署到目标服务器。</p>
+<p><em>版本管理</em></p>
+<ul class="simple">
+<li><p>基于nginx web仓库，将对应版本文件release到nginx对应目录，并开启nginx autoindex参数，发布插件通过爬虫获取版本号</p></li>
+</ul>
 </div>
 <div class="section" id="id2">
-<h2>4.3. 配置指南<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>略</p>
+<h2>4.2. 目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pl_deploy_package/              <span class="c1">#插件主目录</span>
+├── conf                                <span class="c1">#配置文件目录</span>
+│   ├── demo.json               <span class="c1">#配置文件模板</span>
+├── lib_pri
+│   ├── func.py
+├── main_static_deploy.py       <span class="c1">#主任务脚本，用于将项目文件同步到目标服务器</span>
+├── pre_package_download.py     <span class="c1">#前置任务脚本，用于将对应版本的项目文件从nginx上下载下来</span>
+├── sc_static_sync.yml          <span class="c1">#主任务模块调用的ansible playbook，用来同步文件到目标服务器使用</span>
+└── var_package_version.py       <span class="c1">#变量获取脚本，用于获取对应项目在nginx上的版本清单。</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>4.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>demo.json为例</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+
+        <span class="s2">&quot;proj1&quot;</span><span class="p">:{</span>  <span class="c1">#项目名称，发布插件爬虫将以此项目名称关键字匹配包含此关键字的对应项目文件。</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;local_owner&quot;</span><span class="p">,</span>   <span class="c1">#项目类型：目前只支持tar和local_owner两种类型。详见note说明</span>
+                 <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;demo1&quot;</span><span class="p">,</span>      <span class="c1">#指定需要部署到目标主机的ansible hosts group</span>
+                 <span class="s2">&quot;repo_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://nginx_host/tarbase/proj1&quot;</span><span class="p">,</span>  <span class="c1">#项目nginx仓库地址</span>
+                 <span class="s2">&quot;proj_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/tarsource/proj1/&quot;</span><span class="p">,</span>     <span class="c1">#项目解压到本地仓库的路径</span>
+                 <span class="s2">&quot;deploy_src_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/tarsource/proj1/&quot;</span><span class="p">,</span>     <span class="c1">#需要同步到目标服务器的项目本地源文件路径</span>
+                 <span class="s2">&quot;deploy_dest_path&quot;</span><span class="p">:</span><span class="s2">&quot;/nginx_root_path/proj1/&quot;</span><span class="p">,</span>  <span class="c1">#项目目标服务器路径</span>
+                 <span class="s2">&quot;rsync_opts&quot;</span><span class="p">:[],</span>                       <span class="c1">#排除项指定无需同步的文件，必须指定为list类型，格式见proj2；空list表示没有文件排除，整个源目录同步，.</span>
+                 <span class="s2">&quot;delete_enable&quot;</span><span class="p">:</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>      <span class="c1">#是否删除目标服务器目录存在而源目录不存在的文件。</span>
+                 <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">,</span>                      <span class="c1">#文件和目录所属系统用户权限</span>
+                 <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">},</span>                     <span class="c1">#文件和目录所属系统用户组权限</span>
+
+        <span class="s2">&quot;proj2&quot;</span><span class="p">:{</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;tar&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;repo_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://nginx_host/tarbase/proj2&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;proj_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/tarsource/proj2/&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;deploy_src_path&quot;</span><span class="p">:</span><span class="s2">&quot;/opt/tarsource/proj2/sub1/&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;deploy_dest_path&quot;</span><span class="p">:</span><span class="s2">&quot;/nginx_root_path/proj2/&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;rsync_opts&quot;</span><span class="p">:[</span><span class="s2">&quot;--no-motd&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=RedisConnect.php&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=config&quot;</span><span class="p">,</span><span class="s2">&quot;--exclude=runtime&quot;</span><span class="p">],</span>
+                 <span class="s2">&quot;delete_enable&quot;</span><span class="p">:</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;nginx&quot;</span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>repo_url：使用插件之前需要用户先配置好nginx版本仓库，一般由研发根据版本命名规则打包并上传到nginx下指定项目命名的文件夹下。</p></li>
+<li><p>hosts：若显示指定为none，这插件会读取插件所在服务器的ansible hosts文件中group等于项目名的目标主机，若无则报错，建议在json文件中指定</p></li>
+<li><p>type：tar类型表示先同步文件到目标服务器再修改权限；local_owner表示，先修改权限再同步文件到目标服务器。一般情况下建议使用tar类型</p></li>
+<li><p>rsync_opts：参数定义参考ansible playbook synchronize模块的rsync_opts参数定义</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>4.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>4.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>如果使用默认latest标签发布docker项目，一个工单可以只关联一个项目，也可以通过项目变量获取脚本关联多个项目</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_package<span class="o">]</span><span class="c1"># python var_package_version.py -h</span>
+usage: pre_package_download.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
+                       <span class="o">[</span>-f <span class="o">[</span>file_name<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]</span>, --project-name <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]</span>
+                        the project name you want to depoly
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>, --environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>
+                        the environment you need deploy
+  -f <span class="o">[</span>file_name<span class="o">]</span>, --file-name <span class="o">[</span>file_name<span class="o">]</span>
+                        the file name you want to depoly
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-p 指定项目名称，详见最佳实例</p></li>
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>4.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_package<span class="o">]</span><span class="c1"># python main_static_deploy.py -h</span>
+usage: main_static_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
+                             <span class="o">[</span>-a <span class="o">[</span>ansible-hosts<span class="o">]]</span>
+
+version <span class="m">2</span>.0.0
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]</span>, --project-name <span class="o">[</span>proj1<span class="p">|</span>proj2<span class="o">]</span>
+                        the project name you want to depoly
+  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>, --environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]</span>
+                        the environment you need deploy
+  -a <span class="o">[</span>ansible-hosts<span class="o">]</span>, --ansible-hosts <span class="o">[</span>ansible-hosts<span class="o">]</span>
+                        the destination hosts you want to depoly
+
+<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_package<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>-e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例</p></li>
+<li><p>-p 指定需要操作的git项目名字，该项目必须存在于指定配置文件当中</p></li>
+<li><p>-a 指定项目所在的目标主机，若为空则读取ansbile hosts文件中 与项目名一致的group。</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="web">
+<h2>4.5. Web模式示例<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
+<p>提单页面如下：</p>
+<img alt="image not found" src="../_images/tar_submit.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>获取版本按照文件名倒序排序；</p></li>
+</ol>
+</div>
+<p>结果页展示：</p>
+<img alt="image not found" src="../_images/tar_result.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>结果页面，参考ansible结果日志</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>4.6. 命令行模式脚本示例<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>项目变量获取</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_package<span class="o">]</span><span class="c1"># python var_package_version.py -e dev -p proj1</span>
+<span class="o">[</span><span class="s1">&#39;proj1-201909270820.tar.gz&#39;</span>, <span class="s1">&#39;proj1-201909270746.tar.gz&#39;</span>, <span class="s1">&#39;proj1-201908190124.tar.gz&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>如上表示从-e表示从dev_conf.json 配置文件读取 包含proj1关键字的项目，返回结果为list，根据文件名倒序进行排序</p></li>
+</ol>
+</div>
+<p>前置任务脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_package<span class="o">]</span><span class="c1"># python pre_package_download.py -e dev -p proj1 -f proj1-201909270820.tar.gz</span>
+
+<span class="m">2020</span>-01-07 <span class="m">16</span>:13:13.007 INFO clean up the old version ...
+<span class="m">2020</span>-01-07 <span class="m">16</span>:13:13.007 INFO clean job finished,wget the file ...
+--2020-01-07 <span class="m">16</span>:13:13--  http://119.252.143.91/h5/proj1-201909270820.tar.gz
+正在连接 <span class="m">119</span>.252.143.91:80... 已连接。
+已发出 HTTP 请求，正在等待回应... <span class="m">200</span> OK
+长度：2126666 <span class="o">(</span><span class="m">2</span>.0M<span class="o">)</span> <span class="o">[</span>text/plain<span class="o">]</span>
+正在保存至: “proj1-201909270820.tar.gz”
+
+<span class="m">100</span>%<span class="o">[===============================================================================================================================================================</span>&gt;<span class="o">]</span> <span class="m">2</span>,126,666   <span class="m">2</span>.37MB/s 用时 <span class="m">0</span>.9s
+
+<span class="m">2020</span>-01-07 <span class="m">16</span>:13:14 <span class="o">(</span><span class="m">2</span>.37 MB/s<span class="o">)</span> - 已保存 “proj1-201909270820.tar.gz” <span class="o">[</span><span class="m">2126666</span>/2126666<span class="o">])</span>
+
+<span class="m">2020</span>-01-07 <span class="m">16</span>:13:14.007 INFO wget job finished,extract file ...
+./proj1/
+./proj1/css/
+./proj1/css/account-report.css
+...
+...
+...
+<span class="m">2020</span>-01-07 <span class="m">16</span>:13:15.007 INFO extract job finished ...
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>执行前置任务脚本之前，可以先通过变量获取脚本获取所需部署项目的文件名</p></li>
+<li><p>-f 参数表示指定的文件名，文件名一般约定版本命名方式命名。</p></li>
+</ol>
+</div>
+<p>主任务脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@devops pl_deploy_package<span class="o">]</span><span class="c1"># python main_static_deploy.py -e dev -p proj1</span>
+start deploy static files
+ <span class="o">[</span>WARNING<span class="o">]</span>: Found variable using reserved name: hosts
+
+PLAY <span class="o">[</span>svn<span class="o">]</span> **********************************************************************************************************************************************************************************************
+
+TASK <span class="o">[</span>change <span class="nb">local</span> dir owner<span class="o">]</span> ***************************************************************************************************************************************************************************
+ok: <span class="o">[</span>svn -&gt; <span class="m">127</span>.0.0.1<span class="o">]</span>
+
+TASK <span class="o">[</span>sync  to the destination<span class="o">]</span> *************************************************************************************************************************************************************************
+ok: <span class="o">[</span>svn<span class="o">]</span>
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+svn                        : <span class="nv">ok</span><span class="o">=</span><span class="m">2</span>    <span class="nv">changed</span><span class="o">=</span><span class="m">0</span>    <span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span>    <span class="nv">failed</span><span class="o">=</span><span class="m">0</span>
+
+<span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@devops pl_deploy_package<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>指定目标主机模式：python main_static_deploy.py -e dev -p proj1 -a host1</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>4.7. 最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h3>4.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p>安装</p></li>
+<li><p>配置各环境的json配置文件</p></li>
+<li><p>配置nginx版本仓库</p></li>
+<li><p>项目变量获取脚本测试</p></li>
+<li><p>前置任务、主任务脚本测试</p></li>
+<li><p>配置skstack web工单系统将各项目注册到工单系统，以方便用户通过web完成自动化发布流程，配置步骤如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>注册工单可选变量并校验</p></li>
+<li><p>配置变量组管理工单可选变量</p></li>
+<li><p>配置工单，关联变量组、主任务运行脚本、和相关运行参数</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>4.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>不同环境单独使用一台ansible服务器作为作为配置管理服务器；如prod一台ansible， stage一台ansible。</p></li>
+<li><p>将skstack_plugins插件库安装到ansible服务器的/opt/soft/目录，并创建/opt/tarsource/目录作为tar.gz项目文件的临时版本库。</p></li>
+<li><p>skstack web将不同环境的ansible服务器（插件库所在服务器）注册到skstack 工单系统</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id11">
+<h3>4.7.3. 配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
+复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
+具体配置参数，参考配置文件说明章节
+</pre></div>
+</div>
+</div>
+<div class="section" id="nginx">
+<h3>4.7.4. 配置nginx版本仓库<a class="headerlink" href="#nginx" title="永久链接至标题">¶</a></h3>
+<p>定义仓库根目录和相关location如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>location /tarbase {    #定义tar.gz包仓库根目录
+     alias /tarbase ;
+     autoindex on ;  #激活autoindex选项，方便发布插件爬虫获取仓库地址下对应项目的文件名
+}
+
+     1 在nginx版本仓库根目录&quot;/tarbase&quot;创建对应的项目子目录如proj1，并将对应打包好的文件上传到对应项目子目录里面
+     2 配置完成后可以通过浏览器访问http://nginx_host/tarbase/proj1 获取到对应项目所有版本列表，表示配置成功，如下所示：
+
+             Index of /tarbase/proj1/
+     ../
+             proj1-v1.4.1-201909101044.tar.gz        10-Sep-2019 02:51             1993603
+             proj1-v1.4.2-201909111428.tar.gz        11-Sep-2019 09:45             1997339
+             proj1-v1.4.2-201909231641.tar.gz        23-Sep-2019 08:44             2005695
+</pre></div>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>4.7.5. 项目变量获取脚本测试<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
+</div>
+<div class="section" id="id13">
+<h3>4.7.6. 任务脚本功能测试<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><p>#.使用前置任务脚本测试，确保文件可以正常从nginx仓库下载到发布系统本地仓库并解压
+#.使用主任务脚本保证，可以将发布插件本地仓库的文件同步到目标服务器；
+#.使用方法详见命令行模式脚本效果演示章节</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>执行主任务脚本之前，需先完成ansible服务器到目标服务器的认证，保证ansible可以管理目标服务器</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="skstack-web">
+<h3>4.7.7. Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<p>1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：proj1Version
+ 变量表单标签名字：Version
+描述：此变量相关描述内容
+变量取值方法：脚本生成
+变量表单类型：单选select2下拉框
+变量值：为空（因这里使用脚本生成可选变量，非管理员定义，所以无需定义）
+变量获取脚本：python /opt/soft/skstack_plugins/pl_deploy_package/var_package_version.py -e prod -p proj1
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployTar （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>2 配置变量组管理工单可选变量</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>名字：proj1_public
+描述：proj1工单使用的提供给用户的可选变量组
+变量：proj1Version  （关联上述步骤配置的变量）
+所属环境：PROD （若无请先添加环境分类）
+所属分类：DeployTar （若无请先添加用途分类）
+</pre></div>
+</div>
+<p>3 配置工单，关联变量组、主任务运行脚本、和相关运行参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>工单名字：proj1
+项目描述：改工单所发布的项目进行简要描述，方便提单用户通过帮助按钮阅读
+提单权限用户：选择具有提单权限的用户组，需要先到用户管理界面添加相关用户组
+项目环境：PROD
+项目分类：DeployTar
+是否激活工单：激活   #未激活工单，提单用户无法看到
+内置变量：{&quot;ProjName&quot;:&quot;proj1&quot;}
+可选参数组：proj1_public
+前置任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_package/pre_package_download.py -e dev -p {ProjName} -f &quot;{proj1Version}&quot;
+主任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_package/main_static_deploy.py -e dev -p {ProjName}
+后置任务：留空
+是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
+审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
+其余选项：暂未上线，不勾选
+配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
