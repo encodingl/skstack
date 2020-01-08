@@ -10,7 +10,7 @@ SKSTACK |version| documentation
 
 
 快速入门
-==================
+====================================
 
 .. toctree::
    :caption: 快速入门
@@ -27,7 +27,7 @@ SKSTACK |version| documentation
 :doc:`intro/overview`
 
 .. note::
-	  该系统从py2升级到py3后 以及django1.9升级到django2.2，还在调试当中。请勿投入生产系统使用
+	 该项目目前处于内测阶段，暂未开源，请其他渠道获取代码的童鞋 暂未投入生产使用
 ..
 
 :主要包含功能如下:
@@ -57,17 +57,17 @@ SKSTACK |version| documentation
 
 
 用户手册
-==================
+====================================
 
 .. toctree::
- :caption: 用户手册
- :maxdepth: 3
- :numbered: 
- :hidden:
-
- 
- admin/skaccounts
- admin/skworkorder
+	:caption: 用户手册
+	:maxdepth: 3
+	:numbered: 
+	:hidden:
+	
+	
+	admin/skaccounts
+	admin/skworkorder
 
    
 :doc:`admin/skaccounts`
@@ -82,19 +82,19 @@ SKSTACK |version| documentation
 
 
 插件使用手册
-==================
+====================================
 
 .. toctree::
- :caption: 插件使用手册
- :maxdepth: 3
- :numbered: 
- :hidden:
-
- plugins/overview
- plugins/docker_deploy
- plugins/git_deploy
- plugins/package_deploy
- plugins/the_third
+	:caption: 插件使用手册
+	:maxdepth: 3
+	:numbered: 
+	:hidden:
+	
+	plugins/overview
+	plugins/docker_deploy
+	plugins/git_deploy
+	plugins/package_deploy
+	plugins/the_third
    
    
 :doc:`plugins/overview`
@@ -119,29 +119,26 @@ SKSTACK |version| documentation
    
 
 开发者指南
-==================
+====================================
 
 .. toctree::
- :caption: 开发者指南
- :maxdepth: 3
- :numbered: 
- :hidden:
-
-
- dev/demodoc
- dev/skplugins3
- dev/web
- dev/git_guidelines
- dev/author_info
- dev/join_us
+	:caption: 开发者指南
+	:maxdepth: 3
+	:numbered: 
+	:hidden:
+	
+	dev/demodoc
+	dev/plugins
+	dev/web
+	dev/git_guidelines
+	dev/author_info
+	dev/join_us
    
 :doc:`dev/demodoc`
 
     文档编写指南.
-
-
     
-:doc:`dev/skplugins3`
+:doc:`dev/plugins`
 
     介绍插件目录、脚本、库文件、配置文件、日志文件命名规范和使用规范,未完成
     

@@ -1,7 +1,7 @@
 版本更新说明
 ===============
 
-v201912.31.beta
+V201912.alpha
 --------------------------------
 
 :new feature:
@@ -18,7 +18,7 @@ v201912.31.beta
 * Simplified Chinese garbled code
 
 
-v201910.01.alpha
+V201910.alpha
 --------------------------------
 
 :new feature:

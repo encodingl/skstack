@@ -30,17 +30,19 @@ Git开发和版本管理指南
 
 版本管理基于tag号版本命名：由tag号保证唯一性。具体规范如下：
 
-命名规范：v发布日期年月.修正版本号.阶段版本号：示例：v201910.01.alpha   v201910.02.release
+命名规范：v发布日期年月.阶段版本号.修正版本号：示例1：v201910.alpha.01   示例2：v201910.release
 
 * 发布日期年月：为版本正式发布日期，精确到月份
-* 修正版本号：当月第一次发布为01 第二次发布为02 以此类推，主要用于bug修复 
 * 阶段版本号定义参考:alpha beta rc release/stable
 
-::
+	  #. alpha：内部测试版
+	  #. beta：公开测试版
+	  #. rc：Release Candidate（候选版本）
+	  #. stable/release：稳定版。
+	  
+* 修正版本号：当月第一次发布为01 第二次发布为02 以此类推，主要用于bug修复 
 
-	  alpha：内部测试版
-	  beta：公开测试版
-	  rc：Release Candidate（候选版本）
-	  stable/release：稳定版。
+
+
 
 

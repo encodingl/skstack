@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. 概述 &mdash; SKSTACK v0.1 文档</title>
+  <title>1. 基础概念 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -95,29 +95,29 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 工作原理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 安装步骤</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 目录规范</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">1.4. 公共配置文件配置说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">1.5. 功能插件目录和文件说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">1.6. 命名规范</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 基础概念</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2. 工作原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.3. 安装步骤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.4. 目录规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.5. 公共配置文件配置说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.6. 功能插件目录和文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">1.7. 命名规范</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins.html">2. 插件开发指南1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins2.html">3. 插件开发指南2.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">4. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -163,7 +163,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>1. 概述</li>
+      <li>1. 基础概念</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,14 +183,17 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1>1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<h1>1. 基础概念<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>1.1. 概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">skstack插件库主要配合skstack web平台的工单系统使用，结合skstack工单系统，可以实现工单审核和自动化执行等功能；插件也可以作为独立的脚本使用。</div>
 <div class="line">skstack官方插件基于python开发，所有官方插件均遵循下文中定义的目录和命名规范</div>
 <div class="line">skstack官方插件的python版本与skstack web平台的python版本保持一致。</div>
 <div class="line">skstack每个官方插件包含如下脚本和文件</div>
 </div>
-<ol class="arabic simple">
+<blockquote>
+<div><ol class="arabic simple">
 <li><p>前置任务脚本：对应工单系统的前置任务配置项，是主任务执行之前先执行的任务脚本，一般用来做一些前置检查；非必须项</p></li>
 <li><p>主任务脚本：对应工单系统的主任务配置项目，是主要任务功能脚本；必须项</p></li>
 <li><p>后置任务脚本：对应工单系统的后置任务配置项，主任务执行成功后的，会执行后置任务脚本；非必须项</p></li>
@@ -199,8 +202,10 @@
 <li><p>配置文件：各脚本读取的配置参数，必须项</p></li>
 <li><p>私有库和模块：各脚本共用的模块，非必须</p></li>
 </ol>
-<div class="section" id="id2">
-<h2>1.1. 工作原理<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2>1.2. 工作原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <img alt="image not found" src="../_images/skstack_workflow1.png" />
 <div class="admonition note">
 <p class="admonition-title">注解</p>
@@ -211,16 +216,16 @@
 </ol>
 </div>
 </div>
-<div class="section" id="id3">
-<h2>1.2. 安装步骤<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h2>1.3. 安装步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>下载插件库：git clone &lt;skstack_plugins_git_url&gt;</p></li>
 <li><p>安装python 虚拟机：略。tips：若已安装skstack web系统，请忽略该步骤，直接使用skstack web平台的python虚拟机即可</p></li>
 <li><p>安装依赖库：切换到skstack python虚拟机执行 pip install -r requirements.txt</p></li>
 </ol>
 </div>
-<div class="section" id="id4">
-<h2>1.3. 目录规范<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h2>1.4. 目录规范<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <p>目录介绍</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(skstack) [root@registry soft]# tree -d skstack_plugins
 skstack_plugins      #插件库主目录
@@ -240,8 +245,8 @@ skstack_plugins      #插件库主目录
 </pre></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>1.4. 公共配置文件配置说明<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id6">
+<h2>1.5. 公共配置文件配置说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">配置参数通过json文件里面定义的字典方式进行引用</div>
 <div class="line">公共配置文件目前版本只定义所有官方插件的日志根路径</div>
@@ -261,8 +266,8 @@ conf_pub/
 </pre></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>1.5. 功能插件目录和文件说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id7">
+<h2>1.6. 功能插件目录和文件说明<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>以git部署插件为例说明</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@registry skstack_plugins]# tree pl_deploy_git/
 pl_deploy_git/                          #插件主目录
@@ -280,8 +285,8 @@ pl_deploy_git/                          #插件主目录
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>1.6. 命名规范<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id8">
+<h2>1.7. 命名规范<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>插件目录命名：加pl_前缀</p></li>
 <li><p>前置任务脚本：加pre_前缀,</p></li>

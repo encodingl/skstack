@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. Git开发和版本管理指南 &mdash; SKSTACK v0.1 文档</title>
+  <title>4. Git开发和版本管理指南 &mdash; SKSTACK v0.1 文档</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="6. 开发人员介绍" href="author_info.html" />
-    <link rel="prev" title="4. WEB平台开发指南" href="web.html" /> 
+    <link rel="next" title="5. 开发人员介绍" href="author_info.html" />
+    <link rel="prev" title="3. WEB平台开发指南" href="web.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -95,25 +95,24 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. web服务器静态文件版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="skplugins3.html">2. 插件开发指南2.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="skplugins3.html#id2">3. 概述</a></li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">4. WEB平台开发指南</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Git开发和版本管理指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">5.1. 分支使用说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">5.2. 版本管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Git开发和版本管理指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">4.1. 分支使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.2. 版本管理</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="author_info.html">6. 开发人员介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="join_us.html">7. 加入我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -159,7 +158,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>5. Git开发和版本管理指南</li>
+      <li>4. Git开发和版本管理指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,9 +178,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="git">
-<h1>5. Git开发和版本管理指南<a class="headerlink" href="#git" title="永久链接至标题">¶</a></h1>
+<h1>4. Git开发和版本管理指南<a class="headerlink" href="#git" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
-<h2>5.1. 分支使用说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>4.1. 分支使用说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <p>功能分支工作流包含分支： feature,master, hotfix</p>
 <dl class="field-list simple">
 <dt class="field-odd">feature分支</dt>
@@ -203,20 +202,23 @@
 </dl>
 </div>
 <div class="section" id="id2">
-<h2>5.2. 版本管理<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>4.2. 版本管理<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <p>版本管理基于tag号版本命名：由tag号保证唯一性。具体规范如下：</p>
-<p>命名规范：v发布日期年月.修正版本号.阶段版本号：示例：v201910.01.alpha   v201910.02.release</p>
-<ul class="simple">
+<p>命名规范：v发布日期年月.阶段版本号.修正版本号：示例1：v201910.alpha.01   示例2：v201910.release</p>
+<ul>
 <li><p>发布日期年月：为版本正式发布日期，精确到月份</p></li>
+<li><p>阶段版本号定义参考:alpha beta rc release/stable</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>alpha：内部测试版</p></li>
+<li><p>beta：公开测试版</p></li>
+<li><p>rc：Release Candidate（候选版本）</p></li>
+<li><p>stable/release：稳定版。</p></li>
+</ol>
+</div></blockquote>
+</li>
 <li><p>修正版本号：当月第一次发布为01 第二次发布为02 以此类推，主要用于bug修复</p></li>
-<li><p>阶段版本号定义参考:alpha beta rc release/stable</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>alpha：内部测试版
-beta：公开测试版
-rc：Release Candidate（候选版本）
-stable/release：稳定版。
-</pre></div>
-</div>
 </div>
 </div>
 
@@ -228,10 +230,10 @@ stable/release：稳定版。
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="author_info.html" class="btn btn-neutral float-right" title="6. 开发人员介绍" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="author_info.html" class="btn btn-neutral float-right" title="5. 开发人员介绍" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="web.html" class="btn btn-neutral float-left" title="4. WEB平台开发指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="web.html" class="btn btn-neutral float-left" title="3. WEB平台开发指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
