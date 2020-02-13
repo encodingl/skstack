@@ -3,7 +3,7 @@
 # update by guohongze@126.com
 from django import forms
 from django.contrib import auth
-from .models import UserInfo, RoleList, PermissionList, RoleJob, AuditFlow, UserGroup
+from .models import UserInfo, RoleList, PermissionList, AuditFlow, UserGroup
 from lib.type import User_TYPE
 
 
@@ -38,7 +38,7 @@ class LoginUserForm(forms.Form):
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ('username', 'password', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'role_job', 'is_active')
+        fields = ('username', 'password', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'is_active')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -48,7 +48,6 @@ class AddUserForm(forms.ModelForm):
             'nickname': forms.TextInput(attrs={'class': 'form-control'}),
             'type': forms.Select(choices=User_TYPE, attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'role': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'role_job': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'is_active': forms.Select(choices=((True, '启用'), (False, '禁用')), attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
 
@@ -66,7 +65,6 @@ class AddUserForm(forms.ModelForm):
         self.fields['nickname'].error_messages = {'required': '请输入姓名'}
         self.fields['type'].label = '类 型'
         self.fields['role'].label = '菜单角色'
-        self.fields['role_job'].label = 'Ansible任务角色'
         self.fields['is_active'].label = '状 态'
 
     def clean_password(self):
@@ -79,7 +77,7 @@ class AddUserForm(forms.ModelForm):
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ('username', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'role_job', 'is_active')
+        fields = ('username', 'nickname', 'email', 'tel', 'dd', 'type', 'role', 'is_active')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'email': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
@@ -88,7 +86,6 @@ class EditUserForm(forms.ModelForm):
             'nickname': forms.TextInput(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'type': forms.Select(choices=User_TYPE, attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'role': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
-            'role_job': forms.Select(attrs={'class': 'form-control', 'style': 'width:500px;'}),
             'is_active': forms.Select(choices=((True, '启用'), (False, '禁用')),
                                       attrs={'class': 'form-control', 'style': 'width:500px;'}),
         }
@@ -105,7 +102,6 @@ class EditUserForm(forms.ModelForm):
         self.fields['nickname'].error_messages = {'required': '请输入姓名'}
         self.fields['type'].label = '类 型'
         self.fields['role'].label = '菜单角色'
-        self.fields['role_job'].label = 'Ansible任务角色'
         self.fields['is_active'].label = '状 态'
 
     def clean_password(self):
@@ -184,21 +180,7 @@ class PermissionListForm(forms.ModelForm):
         self.fields['url'].error_messages = {'required': '请输入URL'}
 
 
-class RoleJobForm(forms.ModelForm):
-    class Meta:
-        model = RoleJob
-        exclude = ("id",)
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'permission': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '10', 'multiple': 'multiple'}),
-        }
 
-    def __init__(self, *args, **kwargs):
-        super(RoleJobForm, self).__init__(*args, **kwargs)
-        self.fields['name'].label = '名 称'
-        self.fields['name'].error_messages = {'required': '请输入名称'}
-        self.fields['permission'].label = 'job权限'
-        self.fields['permission'].required = False
 
 
 class AuditFlow_form(forms.ModelForm):

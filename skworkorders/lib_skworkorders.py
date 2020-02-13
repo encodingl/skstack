@@ -9,7 +9,7 @@ import traceback
 
 from skworkorders.models import VarsGroup,WorkOrder,ConfigCenter
 from skworkorders.forms import Custom_form
-from skcmdb.api import get_object
+from lib.com import get_object
 from lib.lib_format import list_to_formlist
 from lib.lib_paramiko import ssh_cmd
 from subprocess import Popen, PIPE, STDOUT

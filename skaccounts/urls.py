@@ -17,10 +17,7 @@ urlpatterns = [
     url(r'^role/edit/(?P<ids>\d+)/$', role.role_edit, name='role_edit'),
     url(r'^role/delete/(?P<ids>\d+)/$', role.role_del, name='role_del'),
 
-    url(r'^rolejob/add/$', role.role_job_add, name='role_job_add'),
-    url(r'^rolejob/list/$', role.role_job_list, name='role_job_list'),
-    url(r'^rolejob/edit/(?P<ids>\d+)/$', role.role_job_edit, name='role_job_edit'),
-    url(r'^rolejob/delete/(?P<ids>\d+)/$', role.role_job_del, name='role_job_del'),
+
     url(r'^permission/deny/$', permission.permission_deny, name='permission_deny'),
     url(r'^permission/add/$', permission.permission_add, name='permission_add'),
     url(r'^permission/list/$', permission.permission_list, name='permission_list'),

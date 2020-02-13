@@ -7,7 +7,7 @@ from skaccounts.permission import permission_verify
 from .forms import ConfigCenter_form
 from django.shortcuts import render
 from django.template import RequestContext
-from skcmdb.api import get_object
+from lib.com import get_object
 import logging
 from lib.lib_fabric import  ssh_cmd_back
 log = logging.getLogger('skworkorders')

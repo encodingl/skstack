@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from skaccounts.permission import permission_verify
 from .forms import Vars_form
 from django.shortcuts import render
-from skcmdb.api import get_object
+from lib.com import get_object
 import time
 from skworkorders.lib_skworkorders import get_Vars_form
 import traceback,json

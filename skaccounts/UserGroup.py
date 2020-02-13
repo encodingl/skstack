@@ -10,7 +10,7 @@ from skaccounts.permission import permission_verify
 from .forms import UserGroup_form
 from django.shortcuts import render
 from django.template import RequestContext
-from skcmdb.api import get_object
+
 
 from django.urls import reverse
 import logging

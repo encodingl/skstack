@@ -52,11 +52,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Application definition
 
 INSTALLED_APPS = [
-    'skcmdb',
-    'skyw',
     'skrpt',
-    'skrecord',
-    'sktask',
+#     'sktask',
+#     'skcmdb',
+#     'skrecord',
+#     'skyw',
     'skconfig',
     'skaccounts',
     'skworkorders',

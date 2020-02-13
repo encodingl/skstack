@@ -43,7 +43,7 @@
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-warning"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">事件总数</span>
+                        <span class="info-box-text">执行总数</span>
                         <span class="info-box-number">{{ eventlistnum }}</span>
 
                     </div>
@@ -54,7 +54,7 @@
                 <div class="info-box">
                     <span class="info-box-icon bg-aqua"><i class="fa fa-database"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">应用总数</span>
+                        <span class="info-box-text">环境总数</span>
 
                         <span class="info-box-number">{{ appnum }}</span>
 
@@ -331,7 +331,7 @@ myChart.setOption(option);
 var myChart = echarts.init(document.getElementById('echarth3'),);
 var option = {
 		title: {
-	        text: '事件统计',
+	        text: '执行统计',
 	        x:'center'
 	    },
 	    tooltip: {
@@ -341,8 +341,8 @@ var option = {
 	    legend: {
 	        orient: 'vertical',
 	        x: 'left',
-	        {#data:['P0','P1','P2','P3']#}
-            data: {{ eventclasslist |safe }}
+	        data:['P0','P1','P2','P3']
+            /* data: {{ eventclasslist |safe }}  */
 	    },
 	    series: [
 	        {
@@ -369,7 +369,7 @@ var option = {
 	                }
 	            },
 
-                data: {{ eventclasslistnum | safe }}
+               /*  data: {{ eventclasslistnum | safe }} */
 	        }
 	    ]
 	};
@@ -381,7 +381,7 @@ myChart.setOption(option);
 var myChart = echarts.init(document.getElementById('echarth4'),);
 var option = {
 		title: {
-	        text: '资产统计',
+	        text: '环境统计',
 	        x:'center'
 	    },
 	    tooltip: {

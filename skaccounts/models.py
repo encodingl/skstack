@@ -5,7 +5,6 @@
 
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from sktask.models import job
 from lib.type import AuditFlow_LEVEL
 
 
@@ -26,13 +25,6 @@ class RoleList(models.Model):
         return self.name
 
 
-class RoleJob(models.Model):
-    name = models.CharField(max_length=64)
-    # permission = models.ManyToManyField(PermissionList, null=True, blank=True)
-    permission = models.ManyToManyField(job, blank=True)
-
-    def __str__(self):
-        return self.name
 
 
 class UserManager(BaseUserManager):
@@ -71,7 +63,6 @@ class UserInfo(AbstractBaseUser):
     nickname = models.CharField(max_length=64, null=True)
     type = models.IntegerField(null=True)
     role = models.ForeignKey(RoleList, null=True, blank=True,on_delete=models.SET_NULL)
-    role_job = models.ForeignKey(RoleJob, null=True, blank=True,on_delete=models.SET_NULL)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

@@ -16,7 +16,7 @@ from lib.file import new_file
 from .forms import WorkOrder_form
 from django.shortcuts import render
 from django.template import RequestContext
-from skcmdb.api import get_object
+from lib.com import get_object
 import json
 import logging
 from billiard.util import INFO

@@ -8,11 +8,11 @@ from django.urls import reverse
 # from .models import Rpt
 # from .forms import Rpt_form
 from skaccounts.models import UserInfo
-from skcmdb.models import Host, App,Idc
+
 from skworkorders.models import WorkOrder,WorkOrderFlow
-from sktask.models import history
+
 import  datetime
-from skrecord.models import *
+
 from skaccounts.models import *
 from skworkorders.models import *
 import time
@@ -24,22 +24,10 @@ from django.db.models import Q
 def index(request):
     temp_name = "skrpt/navi-header.html"
     usernumtotal = UserInfo.objects.filter(is_active=1).count() #激活用户总数
-    appnum =  App.objects.all().count() #应用总数
     worklistnum = WorkOrder.objects.filter(status="yes").count() #激活工单总数
-    eventlistnum = Track.objects.all().count() #事件总数
 
-    #获取事件分类级别及各登记事件数量，
-    eventclass = Track_list.objects.all().values_list('name', 'id')
-    eventclasslist = []
-    eventclasslistnum = []
-    for classid in eventclass:
-        eventclassdict = {}
-        eventclasslist.append(classid[0])
-        pnum = Track.objects.filter(trackclass_id=classid[1]).count()
-        eventclassdict['value'] = pnum
-        eventclassdict['name'] = classid[0]
-        eventclasslistnum.append(eventclassdict)
-    eventclasslist.sort()
+
+
 
     #获取用户组及所属组用户数量
     usergroupall = UserGroup.objects.all().values_list('name','id')
@@ -56,17 +44,7 @@ def index(request):
         usergroupdict['name']  = group[0]
         usergroupnumlist.append(usergroupdict)
 
-    #h获取机房及机房资产信息
-    idcnameid = Idc.objects.all().values_list('name','id')
-    idcnamelist = []
-    idcnamenumlist = []
-    for nameid in idcnameid:
-        idcnamenumdict = {}
-        idcnamelist.append(nameid[0])
-        hostnum = Host.objects.filter(idc_id=nameid[1]).count()
-        idcnamenumdict['value'] = hostnum
-        idcnamenumdict['name'] = nameid[0]
-        idcnamenumlist.append(idcnamenumdict)
+
 
     # 工单统计
     wonameid = WorkOrderGroup.objects.all().values_list('name','id')

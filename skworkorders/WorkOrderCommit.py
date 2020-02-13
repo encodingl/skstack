@@ -9,7 +9,7 @@ from skaccounts.permission import permission_verify
 from .forms import WorkOrderCommit_form,WorkOrderCommit_help_form
 from django.shortcuts import render
 from django.template import RequestContext
-from skcmdb.api import get_object
+from lib.com import get_object
 
 from datetime import datetime
 import json

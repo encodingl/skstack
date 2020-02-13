@@ -15,7 +15,7 @@ from skworkorders.lib_skworkorders import format_to_user_vars
 import pytz
 import logging
 # from _mysql import NULL
-from skcmdb.api import get_object
+from lib.com import get_object
 from django.forms.models import model_to_dict
 
 log = logging.getLogger('skworkorders')
