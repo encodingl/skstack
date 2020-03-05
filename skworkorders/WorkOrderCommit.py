@@ -98,10 +98,11 @@ def WorkOrderCommit_add(request, ids):
             try:
                 tpl_custom_form_list = get_VarsGroup_form(obj.var_opional)
                 print(tpl_custom_form_list)
-            except:
+            except Exception as err:
                 tpl_error_msg = {}  
                 tpl_error_msg['result'] = 'failed'  
-                tpl_error_msg['message'] = 'Please check that registration variable is correct,for more information, please contact the administrator' 
+#                 tpl_error_msg['message'] = 'Please check that registration variable is correct,for more information, please contact the administrator' 
+                tpl_error_msg['message'] = err 
                 return render(request,"error_result.html", locals())  
         if obj.audit_enable == False:
             tpl_WorkOrderCommit_form.fields["desc"].widget=forms.HiddenInput()

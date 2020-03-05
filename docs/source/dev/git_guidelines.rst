@@ -39,6 +39,7 @@ Git开发和版本管理指南
 	  #. beta：公开测试版
 	  #. rc：Release Candidate（候选版本）
 	  #. stable/release：稳定版。
+	  #. latest：最新开发版本。
 	  
 * 修正版本号：当月第一次发布为01 第二次发布为02 以此类推，主要用于bug修复 
 

@@ -43,7 +43,7 @@
                              
                                 <th>状态</th>
                                 <th>菜单角色</th>
-                                <th>任务角色</th>
+                           
                            
                                 <th>操作</th>
                             </tr>
@@ -108,7 +108,7 @@
 	            api.columns().indexes().flatten().each( function ( i ) {
 	                var column = api.column( i );
 	             /*    var $span = $('<span class="addselect">▾</span>').appendTo($(column.header())) */
-	            	if (i == 4 || i == 2 || i == 3 ){
+	            	if (i == 2 || i == 3 ){
 	                var select = $('<select><option value="">All</option></select>')
 	                    .appendTo( $(column.header()) )
 	                    .on( 'change', function () {
@@ -184,32 +184,7 @@
             });
         }
     </script>
-    <script>
-        function change_info() {
-            var args = $("#user_form").serialize();
-            window.location = "{% url 'cmdb' %}?" + args
-        }
-
-        function export_excel() {
-            var user_id_all = getIDall();
-            if (user_id_all == '') {
-                if (confirm('您没有勾选，是否导出全部信息？')) {
-                    var args = $("#user_form").serialize();
-                    window.location = "{% url 'cmdb' %}?export=all&" + args
-                } else {
-                    return false;
-                }
-            } else {
-                var args = $("#user_form").serialize();
-                window.location = "{% url 'cmdb' %}?export=true&" + args
-            }
-        }
-        $("#search_input").keydown(function (e) {
-            if (e.keyCode == 13) {
-                change_info()
-            }
-        });
-    </script>
+    
     <script>
         $(document).ready(function () {
             $('.user_del').click(function () {

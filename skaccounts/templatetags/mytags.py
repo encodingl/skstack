@@ -4,7 +4,7 @@
 from django import template
 import ast
 
-from lib.type import WeiXin_Type
+
 
 register = template.Library()
 
@@ -76,17 +76,13 @@ def get_disk_info(disk_info):
 def displayName(value, arg):
     return eval('value.get_'+arg+'_display')(*())
 
-@register.filter(name='get_nickname')
-def get_nickname(get_nickname):
-    return get_nickname.nickname
+
 
 @register.filter(name='get_name')
 def get_name(get_name):
     return get_name.name
 
-@register.filter(name='get_user')
-def get_name(get_user):
-    return get_user.name
+
 
 @register.filter(name='get_app')
 def get_app(get_app):
@@ -127,10 +123,5 @@ def logcont_str2uni(value):
     else:
         return value
 
-@register.filter(name='sal_to_name')
-def sal_to_name(value):
-    for wt in WeiXin_Type:
-        if value == wt[0]:
-            return wt[1]
-    return "unknown"
+
 

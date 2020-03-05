@@ -5,7 +5,11 @@
 
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from lib.type import AuditFlow_LEVEL
+AuditFlow_LEVEL = (
+    (str(1), "一层审核"),
+    (str(2), "二层审核"),
+    (str(3), "三层审核"),
+)
 
 
 class PermissionList(models.Model):
@@ -61,7 +65,6 @@ class UserInfo(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     nickname = models.CharField(max_length=64, null=True)
-    type = models.IntegerField(null=True)
     role = models.ForeignKey(RoleList, null=True, blank=True,on_delete=models.SET_NULL)
     objects = UserManager()
     USERNAME_FIELD = 'username'
