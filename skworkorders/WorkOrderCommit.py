@@ -73,7 +73,7 @@ def WorkOrderCommit_add(request, ids):
     temp_name = "skworkorders/skworkorders-header.html"
     status = 0
     obj = get_object(WorkOrder, id=ids)
-    obj_title = str(obj.name) + "-" + str(obj.env)
+    obj_title = str(obj.name)
     obj_audit = obj.audit_flow
     user = request.user
     if not obj_audit:
@@ -165,7 +165,13 @@ def pretask(request):
                
                 
             else:
-                message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook,strict=False)
+            
+                try:
+                    message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook,strict=False)
+                except:
+                    exinfo="ERROR The Job: exited abnormally, Please contact the administrator \n\r"
+                    msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),exinfo),ensure_ascii=False).encode('utf-8')
+                    request.websocket.send(msg)
  
                 WorkOrder_id = int(message_dic['id'])
                 pt01 = PreTask(WorkOrder_id,request,message_dic)

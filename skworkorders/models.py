@@ -124,7 +124,7 @@ class VarsGroup(models.Model):
     
     
 class WorkOrder(models.Model):   
-    name = models.CharField("工单名字",max_length=50,unique=True)
+    name = models.CharField("工单名字",max_length=100)
     desc  = models.CharField("项目描述",max_length=300)  
     user_dep = models.ManyToManyField(UserGroup, verbose_name="提单权限用户",blank=True)
     env = models.ForeignKey(Environment, verbose_name="项目环境", on_delete=models.PROTECT, null=True, blank=True)
@@ -157,12 +157,12 @@ class WorkOrder(models.Model):
     
 class WorkOrderFlow(models.Model):
     title = models.CharField("标题",max_length=50)
-    desc  = models.CharField("内容概述",max_length=300,null=True,blank=True)
+    desc  = models.CharField("说明",max_length=300,null=True,blank=True)
     user_commit = models.CharField("申请人",max_length=50,null=True,blank=True)
     workorder = models.CharField("工单名称",max_length=50,null=True,blank=True)
     workorder_group = models.CharField("工单分类",max_length=50,null=True,blank=True)
     workorder_id = models.CharField("项目id",max_length=50,null=True,blank=True)
-    env = models.CharField("环境名称",max_length=50,null=True,blank=True)
+    env = models.CharField("环境",max_length=50,null=True,blank=True)
     status = models.CharField("状态", choices=WorkOrderFlow_STATUS, max_length=30, null=True, blank=True)
     user_vars = models.CharField("选定参数",max_length=300,null=True,blank=True)
     created_at = models.DateTimeField('提单时间', auto_now_add=True,null=True)

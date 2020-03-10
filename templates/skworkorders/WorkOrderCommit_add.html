@@ -153,8 +153,10 @@
 		var DataDeal = {
 		//将从form中通过$('#form').serialize()获取的值转成json
 		           formToJson: function (data) {
+		        	   data=data.replace(/\"/g,"_");  //替换表单参数里面的非法双引号
 		               data=data.replace(/&/g,"\",\"");
 		               data=data.replace(/=/g,"\":\"");
+		              
 		               data="{\""+data+"\"}";
 		               return data;
 		            },

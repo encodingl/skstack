@@ -83,18 +83,14 @@ class WorkOrderCommit_form(forms.ModelForm):
         fields = ("title","workorder","workorder_id","workorder_group","env","user_commit","desc","status","audit_level","celery_schedule_time","back_exe_enable","auto_exe_enable")
         
         widgets = {    
+            'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'title': forms.TextInput(attrs={'class': 'form-control','readonly':True}),     
             'workorder': forms.HiddenInput(attrs={'class': 'form-control'}),
             'workorder_id': forms.HiddenInput(attrs={'class': 'form-control','readonly':True}),
             'workorder_group': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'env': forms.HiddenInput(attrs={'class': 'form-control'}),
             'user_commit': forms.HiddenInput(attrs={'class': 'form-control'}),
-        
-            
             'desc': forms.Textarea(attrs={'class': 'form-control'}),
-            
             'celery_schedule_time': forms.DateTimeInput(attrs={'class': 'form-control'}),
-      
             'status': forms.HiddenInput(attrs={'class': 'form-control'}),
             'audit_level': forms.HiddenInput(attrs={'class': 'form-control'}),
             'back_exe_enable': forms.CheckboxInput(), 
