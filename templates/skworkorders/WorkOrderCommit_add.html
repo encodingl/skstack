@@ -183,11 +183,21 @@
 	            var form1 = document.getElementById("WorkOrderCommit_add_form");
 	           
 	            
-	            var formData=$("#WorkOrderCommit_add_form").serialize().replace(/\+/g," ");
+	            //var formData=$("#WorkOrderCommit_add_form").serialize().replace(/\+/g," ");
+	            var formData=$("#WorkOrderCommit_add_form").serializeArray();
 	            console.log(formData);
+	            var obj_dic={};//给obj分配内存
+
+	            for(var i =0;i<formData .length;i++){
+	            	obj_dic[formData [i].name]=formData [i]['value'];
+	           		 }
+
+	            var formData=  JSON.stringify(obj_dic );//转换成string数据
+
+	            
 	
-	            var formData = decodeURIComponent(formData,true);//防止中文乱码
-	            var formData = DataDeal.formToJson(formData);//转化为json
+	           // var formData = decodeURIComponent(formData,true);//防止中文乱码
+	           // var formData = DataDeal.formToJson(formData);//转化为json
 	            console.log(formData);
 	         
 	        	   window.ws.send(formData);//通过websocket发送数据

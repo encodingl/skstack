@@ -168,12 +168,14 @@ def pretask(request):
             
                 try:
                     message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook,strict=False)
+                    print(message_dic)
+                    WorkOrder_id = int(message_dic['id'])
                 except:
                     exinfo="ERROR The Job: exited abnormally, Please contact the administrator \n\r"
                     msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),exinfo),ensure_ascii=False).encode('utf-8')
                     request.websocket.send(msg)
  
-                WorkOrder_id = int(message_dic['id'])
+                
                 pt01 = PreTask(WorkOrder_id,request,message_dic)
                 if pt01.permission_submit_pass():
                     if pt01.pre_task_success():

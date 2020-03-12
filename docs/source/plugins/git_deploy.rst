@@ -313,7 +313,7 @@ Skstack Web工单系统配置
 	是否激活工单：激活   #未激活工单，提单用户无法看到
 	内置变量：{"GitProjName":"skstack_plugins_conf"}
 	可选参数组：skstack_conf_public
-	前置任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_git/pre_git_pull.py -e prod -p {GitProjName} -i "{skstack_conf_git}"
+	前置任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_git/pre_git_pull.py -e prod -p {GitProjName} -i '{skstack_conf_git}'
 	主任务：/root/.virtualenvs/skstack/bin/python /opt/soft/skstack_plugins/pl_deploy_git/main_git_deploy.py -e prod -p {GitProjName}
 	后置任务：留空
 	是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
@@ -321,5 +321,6 @@ Skstack Web工单系统配置
 	其余选项：暂未上线，不勾选
 	配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
 
-	 
+.. note::
+	  #. 前置任务传递git变量时，请务必使用单引号引用，如：'{skstack_conf_git}'；原因： git变量获取脚本将会提取commit id、提交时间、提交用户、提交评论信息，需要使用单引号进行转义特殊字符
 
