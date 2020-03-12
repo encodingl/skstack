@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="1. 概述" href="../plugins/overview.html" />
+    <link rel="next" title="1. 基础概念" href="../plugins/overview.html" />
     <link rel="prev" title="1. 用户系统" href="skaccounts.html" /> 
 </head>
 
@@ -98,17 +98,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#id5">2.2.2. 配置中心</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">2.2.3. 变量配置</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id7">2.2.3.1. 可选变量</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">2.2.3.2. 内部变量</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">2.2.3.3. 变量传递</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">2.2.3.2. 内部自定义变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">2.2.3.3. 系统内置变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">2.2.3.4. 变量传递</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">2.3. 用户使用手册</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id11">2.3.1. 提单</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">2.3.2. 审核</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">2.3.3. 执行</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">2.3.4. 审计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">2.3. 用户使用手册</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.3.1. 提单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.3.2. 审核</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">2.3.3. 执行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">2.3.4. 审计</a></li>
 </ul>
 </li>
 </ul>
@@ -116,21 +117,20 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">4. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -220,7 +220,7 @@
 </div>
 <div class="section" id="id6">
 <h3>2.2.3. 变量配置<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
-<p>每定义一个任务工单，可以传递外部可选变量（用户可选）和内部变量（对用户不可见）给工单</p>
+<p>每定义一个任务工单，可以传递外部可选变量（用户可选）、内部自定义变量（对用户不可见）、系统内置变量（用户不可见）给工单</p>
 <div class="section" id="id7">
 <h4>2.2.3.1. 可选变量<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h4>
 <blockquote>
@@ -232,17 +232,33 @@
 </div></blockquote>
 </div>
 <div class="section" id="id8">
-<h4>2.2.3.2. 内部变量<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h4>
+<h4>2.2.3.2. 内部自定义变量<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
-<li><p>新增工单时编辑内置变量定义</p></li>
+<li><p>新增工单时编辑内部自定义变量</p></li>
 <li><p>格式为dict 如{“GitProjName”:”app01”} key为变量名，value为值</p></li>
-<li><p>内部变量主要用于静态变量，不会动态更新，默认可为空</p></li>
+<li><p>内部变量主要用于静态变量，不会动态更新，默认可为空，工单配置管理员可以根据需求进行设置。</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="id9">
-<h4>2.2.3.3. 变量传递<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<h4>2.2.3.3. 系统内置变量<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<p>目前skstack只有如下内置变量可使用：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>sk__name 本工单名称</p></li>
+<li><p>sk__env 本工单管理环境名称</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>内置变量以”<a href="#id16"><span class="problematic" id="id17">sk__</span></a>”开头（这里有两个下划线），是skstack系统内置变量 ，便于不同项目相同类型的工单进行快速配置。</p></li>
+</ol>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h4>2.2.3.4. 变量传递<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
 <li><p>内部变量和外部变量都通过”{变量名}” 传递给任务脚本；</p></li>
@@ -252,10 +268,10 @@
 </div>
 </div>
 </div>
-<div class="section" id="id10">
-<h2>2.3. 用户使用手册<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id11">
-<h3>2.3.1. 提单<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<h2>2.3. 用户使用手册<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id12">
+<h3>2.3.1. 提单<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
 <div class="line-block">
 <div class="line">由已授权提单权限用户使用，若工单开启审核，提交工单后，需等待完成审核流定义的各层级完成审核后 才能到执行菜单界面 执行工单，将图1</div>
 <div class="line">若没有开启审核，可以在提单页面直接执行工单,将图2</div>
@@ -277,8 +293,8 @@
 </ol>
 </div>
 </div>
-<div class="section" id="id12">
-<h3>2.3.2. 审核<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id13">
+<h3>2.3.2. 审核<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>由审核人员使用，工单开启审核后，需要通过审核流程中所定义审核流程才能执行。拒绝必须填写拒绝理由，同意可以不填 意见，直接点击同意按钮
 进入审核页面如下：</p>
 <img alt="image not found" src="../_images/audit_index.png" />
@@ -287,16 +303,16 @@
 <p>查看详情</p>
 <img alt="image not found" src="../_images/audit_permit.png" />
 </div>
-<div class="section" id="id13">
-<h3>2.3.3. 执行<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id14">
+<h3>2.3.3. 执行<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <p>审核通过后，已授权提单用户可以到该页面选择提交的工单并执行</p>
 <p>进入执行索引页面：</p>
 <img alt="image not found" src="../_images/deploy_index.png" />
 <p>进入项目执行界面：</p>
 <img alt="image not found" src="../_images/deploy_result.png" />
 </div>
-<div class="section" id="id14">
-<h3>2.3.4. 审计<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id15">
+<h3>2.3.4. 审计<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
 <p>这里记录所有工单执行历史，具有访问该菜单权限的用户，可以查看所有执行记录，包含其他用户的执行记录，以便于进行历史版本查看</p>
 <img alt="image not found" src="../_images/history.png" />
 <div class="admonition note">
@@ -317,7 +333,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../plugins/overview.html" class="btn btn-neutral float-right" title="1. 概述" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../plugins/overview.html" class="btn btn-neutral float-right" title="1. 基础概念" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="skaccounts.html" class="btn btn-neutral float-left" title="1. 用户系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
