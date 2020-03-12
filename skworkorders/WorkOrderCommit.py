@@ -168,7 +168,6 @@ def pretask(request):
             
                 try:
                     message_dic = json.loads(message,object_pairs_hook=my_obj_pairs_hook,strict=False)
-                    print(message_dic)
                     WorkOrder_id = int(message_dic['id'])
                 except:
                     exinfo="ERROR The Job: exited abnormally, Please contact the administrator \n\r"
