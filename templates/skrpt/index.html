@@ -43,8 +43,8 @@
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-warning"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">执行总数</span>
-                        <span class="info-box-number">{{ eventlistnum }}</span>
+                        <span class="info-box-text">工单执行总数</span>
+                        <span class="info-box-number">{{ execworkenum }}</span>
 
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">环境总数</span>
 
-                        <span class="info-box-number">{{ appnum }}</span>
+                        <span class="info-box-number">{{ envnum }}</span>
 
                     </div>
                     <!-- /.info-box-content -->
@@ -112,8 +112,8 @@ var option = {
 	        data:{{ envnamelist |safe }}
 	    },
 	    grid: {
-	        left: '1%',
-	        right: '1%',
+	        left: '2%',
+	        right: '5%',
 	        bottom: '1%',
 	        containLabel: true
 	    },
@@ -274,7 +274,7 @@ myChart.setOption(option);
 
 <script>
 
-var myChart = echarts.init(document.getElementById('echarth3'),);
+var myChart = echarts.init(document.getElementById('echarth3'),'light');
 var option = {
 		title: {
 	        text: '执行统计',
@@ -287,12 +287,12 @@ var option = {
 	    legend: {
 	        orient: 'vertical',
 	        x: 'left',
-	        data:['P0','P1','P2','P3']
-            /* data: {{ eventclasslist |safe }}  */
+	        data:{{ execstatuslist|safe }}
+            {#/* data: {{ eventclasslist |safe }}  #}
 	    },
 	    series: [
 	        {
-	            name:'事件等级',
+	            name:'工单执行状态',
 	            type:'pie',
 	            radius: ['50%', '70%'],
 	            avoidLabelOverlap: false,
@@ -315,7 +315,7 @@ var option = {
 	                }
 	            },
 
-               /*  data: {{ eventclasslistnum | safe }} */
+                data:{{ execstatusnumlist | safe }}
 	        }
 	    ]
 	};
@@ -323,51 +323,58 @@ myChart.setOption(option);
 
 </script>
 
-<script>
-	var myChart = echarts.init(document.getElementById('echarth4'),'light');
-	var option = {
-			title: {
-		        text: '环境统计',
-		        x:'center'
-		    },
-		    tooltip: {
-		        trigger: 'item',
-		        formatter: "{a} <br/>{b}: {c} ({d}%)"
-		    },
-		    legend: {
-		        orient: 'vertical',
-		        x: 'left',
-		        data:{{ idcnamelist |safe }}
-		    },
-		    series: [
-		        {
-		            name:'资产数量',
-		            type:'pie',
-		            radius: ['50%', '70%'],
-		            avoidLabelOverlap: false,
-		            label: {
-		                normal: {
-		                    show: false,
-		                    position: 'center'
-		                },
-		                emphasis: {
-		                    show: true,
-		                    textStyle: {
-		                        fontSize: '30',
-		                        fontWeight: 'bold'
-		                    }
-		                }
-		            },
-		            labelLine: {
-		                normal: {
-		                    show: false
-		                }
-		            },
-	                data:{{ idcnamenumlist | safe }}
-		        }
-		    ]
-		};
-	myChart.setOption(option);
+    <script>
+
+var myChart = echarts.init(document.getElementById('echarth4'),'light');
+var option = {
+		title: {
+	        text: '环境统计',
+	        x:'center'
+	    },
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data:{{ envlist |safe }}
+            {#/* data: {{ eventclasslist |safe }}  #}
+	    },
+	    series: [
+	        {
+	            name:'环境工单数',
+	            type:'pie',
+	            radius: ['50%', '70%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    show: false,
+	                    position: 'center'
+	                },
+	                emphasis: {
+	                    show: true,
+	                    textStyle: {
+	                        fontSize: '30',
+	                        fontWeight: 'bold'
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    show: false
+	                }
+	            },
+
+                data:{{ envnumlist|safe }}
+	        }
+	    ]
+	};
+myChart.setOption(option);
 
 </script>
+
+
+
+
 {% endblock %}

@@ -25,9 +25,75 @@ def index(request):
     temp_name = "skrpt/navi-header.html"
     usernumtotal = UserInfo.objects.filter(is_active=1).count() #激活用户总数
     worklistnum = WorkOrder.objects.filter(status="yes").count() #激活工单总数
+    execworkenum = WorkOrderFlow.objects.filter().count()        #提交工单总数
+    envnum = Environment.objects.filter().count()                #工单环境总数
+
+    #工单执行分类统计
+    #工单执行分类统计列表
+    execstatusnumlist = []
+    #确定工单是否开启审核
+    execstatuslist = ['待审核','审核拒绝','待执行','执行成功','执行失败','已撤销']
+    #待审核
+    onsnum = WorkOrderFlow.objects.filter(audit_level=1,status=0) .count() #审核层级为1级
+    secnum = WorkOrderFlow.objects.filter(audit_level=2,status__in=[0,1]) .count()#审核层级为2级
+    threenum = WorkOrderFlow.objects.filter(audit_level=3,status__in=[0,1,5]).count() #审核层级为3级
+    auditallnum = onsnum + secnum + threenum
+    auditdict = {'value':auditallnum,'name':'待审核'}
+    # execstatusnumlist.append(auditdict)
+    # print(auditallnum)
+
+    #审核拒绝
+    refusenum = WorkOrderFlow.objects.filter(status__in=[2,6,8]).count()
+    refusedict = {'value':refusenum,'name':'审核拒绝'}
+
+    #待执行
+    onsnum = WorkOrderFlow.objects.filter(audit_level=1, status=1).count()  # 审核层级为1级
+    secnum = WorkOrderFlow.objects.filter(audit_level=2, status=5).count()  # 审核层级为2级
+    threenum = WorkOrderFlow.objects.filter(audit_level=3, status=7).count()#审核层级为3级
+    pendallnum = onsnum + secnum + threenum
+    penddict = {'value': pendallnum, 'name':'待执行'}
+    #执行成功
+    sucnum = WorkOrderFlow.objects.filter(status=3).count()
+    sucdict = {'value': sucnum, 'name': '执行成功'}
+    #执行失败
+    failnum = WorkOrderFlow.objects.filter(status=4).count()
+    faildict = {'value': failnum, 'name': '执行失败'}
+    #已撤销
+    revokenum = WorkOrderFlow.objects.filter(status=9).count()
+    revokedict = {'value': revokenum, 'name': '已撤销'}
+    execstatusnumlist.extend([auditdict,refusedict,penddict,sucdict,faildict,revokedict])
+
+    print(execstatusnumlist)
+
+
+    #------------
+    #环境工单分类统计
+    envnameid = Environment.objects.all().values_list('name_english', 'id')
+    envlist = []  # 环境名
+    envnumlist = []  # 存储所有环境名及环境对应的激活工单总数
+    for group in envnameid:
+        envnum_dict = {}   #单个环境及激活工单数
+        envlist.append(group[0])
+        numnum = WorkOrder.objects.filter(env_id=group[1],status='yes').count()
+        envnum_dict['value']=numnum
+        envnum_dict['name']  = group[0]
+        envnumlist.append(envnum_dict)
 
 
 
+
+
+
+    # (str(0), "新建提交"),
+    # (str(1), "l1审核通过"),
+    # (str(2), "l1审核拒绝"),
+    # (str(3), "执行成功"),
+    # (str(4), "执行失败"),
+    # (str(5), "l2审核通过"),
+    # (str(6), "l2审核拒绝"),
+    # (str(7), "l3审核通过"),
+    # (str(8), "l3审核拒绝"),
+    # (str(9), "撤销"),
 
     #获取用户组及所属组用户数量
     usergroupall = UserGroup.objects.all().values_list('name','id')
@@ -43,6 +109,7 @@ def index(request):
         usergroupdict['value'] = usernum
         usergroupdict['name']  = group[0]
         usergroupnumlist.append(usergroupdict)
+
 
 
 
@@ -65,7 +132,7 @@ def index(request):
     datelisttemp = []
     for i in range(5):
         weekstartday = (datetime.datetime.now() - datetime.timedelta(days=weekoffset))
-        print(weekstartday)
+        # print(weekstartday)
         datelist.append(weekstartday.strftime("%Y%m%d"))
         datelisttemp.append(weekstartday.strftime("%Y-%m-%d"))
         weekoffset = weekoffset + 7
