@@ -106,21 +106,20 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">4. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -190,24 +189,34 @@
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>该项目目前处于内测阶段，暂未开源，请其他渠道获取代码的童鞋 暂未投入生产使用</p></li>
-<li><p>SKSTACK主要作为运维服务台，主要提供运维相关事项登记&amp;发布&amp;统计、版本发布、应急预案、自动化任务执行相关功能</p></li>
+<li><p>SKSTACK主要作为运维服务台，主要提供版本发布、自动化任务执行和统计相关功能</p></li>
 <li><p>开发语言：python 3.7 + django2.2</p></li>
 </ol>
 </div></blockquote>
 <div class="section" id="id2">
 <h2>1.1. 功能介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>主要包含功能如下：</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>仪表盘：统计工单、用户、事件、资源相关数据</p></li>
-<li><p>工单系统：版本发布、应急预案管理、标准化运维任务工单执行</p></li>
-<li><p>用户系统：用户和菜单角色管理，工单授权、审核流程管理</p></li>
-<li><p>资源管理：软件和硬件资产管理</p></li>
-<li><p>登记管理：事件登记、FAQ、重要事项通知管理</p></li>
-<li><p>运维导航：运维值班、分工、公告、事件处理流程、相关运维系统超级链接管理</p></li>
-<li><p>ANSIBLE：ansible脚本项目化管理</p></li>
-</ul>
-</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>工单系统：
+        提单：用户可选变量，自定义前端变量表单类型
+        审核：多级审核，支持审核意见
+        执行：websocket实时展示执行结果
+        审计：查看历史执行情况、支持可选动态列展示
+        配置：支持模板配置、支持内置变量、自定义变量、系统变量配置。支持pre main post多重任务配置
+        插件：官方插件有docker项目发布、git项目发布、tar.gz压缩包项目发布等。支持自定义插件
+        其他：支持任务锁避免重复执行、工单根据环境标签分类、支持手机和pad、多配置中心（如ansible）管理
+
+仪表盘：
+        激活工单分类统计
+        激活用户和分组统计
+        执行状态统计
+        激活工单分环境统计
+
+用户系统：
+        用户管理
+        菜单管理
+        角色授权
+        审核流程管理
+</pre></div>
+</div>
 </div>
 <div class="section" id="id3">
 <h2>1.2. 工单系统架构图<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>

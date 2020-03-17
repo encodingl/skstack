@@ -30,7 +30,7 @@
 安装源码和依赖包
 ~~~~~~~~~~~~~~~~~~~~~~
 
-请将服务器端安装在centos7上
+请将服务器端安装在centos7或以上版本
 
  #. git clone $GitUrl/skstack.git
  #. yum install ansible -y
@@ -45,8 +45,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~
 
  #. cd skstack
- #. 生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql数据库等信息
- #. 开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql数据库等信息
+ #. 生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql、redis等信息
+ #. 开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql、redis等信息
  
 .. note::
 	  skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件
