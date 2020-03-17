@@ -29,18 +29,14 @@ def index(request):
     envnum = Environment.objects.filter().count()                #工单环境总数
 
     #工单执行分类统计
-    #工单执行分类统计列表
-    execstatusnumlist = []
-    #确定工单是否开启审核
-    execstatuslist = ['待审核','审核拒绝','待执行','执行成功','执行失败','已撤销']
+    execstatusnumlist = []#工单执行分类统计列表
+    execstatuslist = ['待审核','审核拒绝','待执行','执行成功','执行失败','已撤销'] #统计执行工单状态分类列表
     #待审核
     onsnum = WorkOrderFlow.objects.filter(audit_level=1,status=0) .count() #审核层级为1级
     secnum = WorkOrderFlow.objects.filter(audit_level=2,status__in=[0,1]) .count()#审核层级为2级
     threenum = WorkOrderFlow.objects.filter(audit_level=3,status__in=[0,1,5]).count() #审核层级为3级
     auditallnum = onsnum + secnum + threenum
     auditdict = {'value':auditallnum,'name':'待审核'}
-    # execstatusnumlist.append(auditdict)
-    # print(auditallnum)
 
     #审核拒绝
     refusenum = WorkOrderFlow.objects.filter(status__in=[2,6,8]).count()
@@ -63,10 +59,9 @@ def index(request):
     revokedict = {'value': revokenum, 'name': '已撤销'}
     execstatusnumlist.extend([auditdict,refusedict,penddict,sucdict,faildict,revokedict])
 
-    print(execstatusnumlist)
 
 
-    #------------
+
     #环境工单分类统计
     envnameid = Environment.objects.all().values_list('name_english', 'id')
     envlist = []  # 环境名
@@ -84,16 +79,7 @@ def index(request):
 
 
 
-    # (str(0), "新建提交"),
-    # (str(1), "l1审核通过"),
-    # (str(2), "l1审核拒绝"),
-    # (str(3), "执行成功"),
-    # (str(4), "执行失败"),
-    # (str(5), "l2审核通过"),
-    # (str(6), "l2审核拒绝"),
-    # (str(7), "l3审核通过"),
-    # (str(8), "l3审核拒绝"),
-    # (str(9), "撤销"),
+
 
     #获取用户组及所属组用户数量
     usergroupall = UserGroup.objects.all().values_list('name','id')
@@ -101,7 +87,6 @@ def index(request):
     usergroupnumlist = []#存储所有用户组及用户组的用户数量
     for group in usergroupall:
         usergroupdict = {} #存储单个用户组及用户组的用户数量
-        # print(group[0],group[1])
         #group[0]用户组名称，group[1]用户组对应的id
         usergrouplist.append(group[0])
         b = UserGroup.objects.get(id=group[1])
@@ -132,7 +117,6 @@ def index(request):
     datelisttemp = []
     for i in range(5):
         weekstartday = (datetime.datetime.now() - datetime.timedelta(days=weekoffset))
-        # print(weekstartday)
         datelist.append(weekstartday.strftime("%Y%m%d"))
         datelisttemp.append(weekstartday.strftime("%Y-%m-%d"))
         weekoffset = weekoffset + 7
@@ -154,6 +138,7 @@ def index(request):
             enddate = startdate + datetime.timedelta(days=6)
             numdate = WorkOrderFlow.objects.filter(finished_at__gte=startdate,finished_at__lte=enddate,env=eename).count()
             vauledate.append(numdate)
+        vauledate.reverse()
         envdictnum['data'] = vauledate
         envdictnumlist.append(envdictnum)
     return render(request,"skrpt/index.html", locals())
