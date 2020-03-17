@@ -55,16 +55,14 @@ def index(request):
         tips = "保存成功！"
         display_control = ""
     else:
-        a_path = cfg.get('config', 'ansible_path')
-        pro_path = cfg.get('config', 'project_base_path')
-        git_path = cfg.get('config', 'git_base_path')
+
         engine = cfg.get('db', 'engine')
         host = cfg.get('db', 'host')
         port = cfg.get('db', 'port')
         user = cfg.get('db', 'user')
         password = cfg.get('db', 'password')
         database = cfg.get('db', 'database')
-        token = cfg.get('token', 'token')
+
         log_path = cfg.get('log', 'log_path')
         log_level = cfg.get('log', 'log_level')
     return render(request,'skconfig/index.html', locals())
@@ -75,27 +73,16 @@ def get_dir(args):
 #     dirs = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(configfile, 'r') as cfgfile:
         config.readfp(cfgfile)
-        a_path = config.get('config', 'ansible_path')
-
-        pro_path = config.get('config', 'project_base_path')
-        git_path = config.get('config', 'git_base_path')
-
-        token = config.get('token', 'token')
         log_path = config.get('log', 'log_path')
         log_level = config.get('log', 'log_level')
 
-    if args == "a_path":
-        return a_path
-    if args == "pro_path":
-        return pro_path
-    if args == "token":
-        return token
+ 
+
     if args == "log_path":
         return log_path
     if args == "log_level":
         return log_level
-    if args == "git_path":
-        return git_path
+
 
 
 def get_token(request):

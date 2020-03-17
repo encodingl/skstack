@@ -69,6 +69,7 @@ class WorkOrder_form(forms.ModelForm):
             'audit_flow': forms.Select(attrs={'class': 'form-control'}),
             
             'schedule_enable': forms.CheckboxInput(), 
+            'task_lock_enable': forms.CheckboxInput(),
 #   
             
             'template_enable': forms.CheckboxInput(), 

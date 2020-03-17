@@ -16,7 +16,9 @@ import pytz
 import logging
 # from _mysql import NULL
 from lib.com import get_object
+from lib.lib_redis import RedisLock
 from django.forms.models import model_to_dict
+
 
 log = logging.getLogger('skworkorders')
 
@@ -24,7 +26,7 @@ log = logging.getLogger('skworkorders')
 
     
 
-class WorkOrdkerFlowTask():
+class WorkOrdkerFlowTask(RedisLock):
     def __init__(self,WorkOrderFlow_id,login_user,request):
         self.obj = WorkOrderFlow.objects.get(id=WorkOrderFlow_id) 
         self.obj2 = WorkOrder.objects.get(id = self.obj.workorder_id)
@@ -37,6 +39,10 @@ class WorkOrdkerFlowTask():
        
         self.user = login_user
         self.request = request
+        self.channel_name = str(self.obj2.name) + "_" + str(self.obj2.env) + "_" + str(self.obj2.id) + "_taskcommit_lock"
+      
+        RedisLock.__init__(self, self.channel_name)
+
             
     def celery_task_add(self):
         obj_WorkOrder = WorkOrder.objects.get(id=self.obj.workorder_id)
@@ -94,18 +100,26 @@ class WorkOrdkerFlowTask():
         else:
             return False
     def permission_submit_deny(self):
-        response_data = {}  
-        response_data['result'] = 'failed'  
-        response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
-        self.request.websocket.send(json.dumps(response_data),ensure_ascii=False).encode('utf-8')
-        log.warning(response_data)
+        self.sendmsg("ERROR The Job finished:  failed  \n\r")
+        self.log("error", "WARNING The Job finished:  failed")
+    
+    def task_lock_pass(self):
+        if self.obj2.task_lock_enable == False:
+            return True
+        else:
+            if self.is_locked():
+                self.sendmsg("ERROR  the system have unfinished task for the sanme project\n\r")
+                return False
+            else:
+                self.lock()  
+                return True
+
         
     def permission_audit_pass(self):
           #判断是否通过审核
         obj_audit_level = self.obj.audit_level
         obj_status = self.obj.status
         if obj_status == "PENDING":
-            
             return True
         else:
             if (obj_audit_level == "1" and obj_status != "1") or (obj_audit_level == "2" and obj_status != "5") or (obj_audit_level == "3" and obj_status != "7") :
@@ -114,13 +128,14 @@ class WorkOrdkerFlowTask():
                 return True
         
     def permission_audit_deny(self):
-        response_data = {}  
-        response_data['result'] = 'failed'  
-        response_data['message'] = 'You donot have permisson' 
-        self.request.websocket.send(json.dumps(response_data),ensure_ascii=False).encode('utf-8')
-        log.warning(response_data)
+        content_str = "ERROR You donot have permission\n\r"
+        self.sendmsg(content_str)
+        self.log("error", content_str)
         
-        
+    def sendmsg(self,msg):
+        msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),msg),ensure_ascii=False).encode('utf-8')
+        self.request.websocket.send(msg) 
+           
     def log(self,level,content_str):
         if level == "info":
             log.info("User:%s,Env:%s,WorkOrderName:%s,WorkOrderFlowID:%s,msg:%s" % (self.user,self.obj.env,self.obj2.name,self.obj.id,content_str))
@@ -167,6 +182,8 @@ class WorkOrdkerFlowTask():
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("info", content_str)
+            self.unlock()
+            
 
         else:
             self.obj.status="4"
@@ -176,15 +193,21 @@ class WorkOrdkerFlowTask():
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("error", content_str)
+            self.unlock()
             
 
-class PreTask():
+class PreTask(RedisLock):
     def __init__(self,WorkOrder_id,request,message_dic):
         self.obj = WorkOrder.objects.get(id=WorkOrder_id) 
         self.user = request.user
         self.request = request
         
         self.message_dic_format,self.user_vars_dic = format_to_user_vars(**message_dic)
+        self.channel_name = str(self.obj.name) + "_" + str(self.obj.env) + "_" + str(self.obj.id) + "_taskcommit_lock"
+        try:
+            RedisLock.__init__(self, self.channel_name)
+        except Exception as e:
+            self.sendmsg("ERROR Failed to connect to redis")
 
         
         try:
@@ -231,6 +254,7 @@ class PreTask():
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("info", content_str)
+            self.unlock()
 
         else:
             
@@ -241,6 +265,7 @@ class PreTask():
             msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
             self.request.websocket.send(msg)
             self.log("error", content_str)
+            self.unlock()
             
     def celery_task_add(self):
         content_str = "celery tast commit ..."
@@ -330,26 +355,36 @@ class PreTask():
         self.sendmsg(content_str)
         self.log("info", content_str)
         
+    def task_lock_pass(self):
+        if self.obj.task_lock_enable == False:
+            self.sendmsg("INFO  the task lock function is not enabled \n\r")
+            return True
+        else:
+          
+            if self.is_locked():
+                self.sendmsg("ERROR  There are unfinished task for the sanme project\n\r")
+                return False
+            else:
+                self.lock()
+                self.sendmsg("INFO  the task lock is locked \n\r")
+                return True
+        
     def permission_submit_pass(self):
-         # 判断用户是否有提单权限
+        # 判断用户是否有提单权限
         obj_user = UserInfo.objects.get(username=self.user)
         user_group = obj_user.usergroup_set.all()
         user_WorkOrder = WorkOrder.objects.filter(user_dep__in=user_group,status="yes",template_enable = False)
         if self.obj in user_WorkOrder:
-          
             return True
         else:
-          
             return False  
         
     def permission_submit_deny(self):
-        response_data = {}  
-        response_data['result'] = 'failed'  
-        response_data['message'] = 'Illegal execution, the work order has not yet been approved' 
-        self.request.websocket.send(json.dumps(response_data,ensure_ascii=False).encode('utf-8'))
-        log.warning(response_data)
+        self.sendmsg("ERROR The Job finished:  failed  \n\r")
+        self.log("error", "WARNING The Job finished:  failed")
     
     def pre_task_success(self):
+
         if self.obj.pre_task:
             retcode = custom_task(self.obj, self.user_vars_dic, self.request,taskname="pre_task")
         else:

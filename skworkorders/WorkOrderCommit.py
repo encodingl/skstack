@@ -176,27 +176,30 @@ def pretask(request):
  
                 
                 pt01 = PreTask(WorkOrder_id,request,message_dic)
-                if pt01.permission_submit_pass():
-                    if pt01.pre_task_success():
-                        if pt01.obj.audit_enable == True:
-                            if pt01.obj.schedule_enable == True: 
-                                pt01.celery_task_create()
+                if pt01.permission_submit_pass() == True:
+                    if pt01.task_lock_pass():
+                        if pt01.pre_task_success():
+                            if pt01.obj.audit_enable == True:
+                                if pt01.obj.schedule_enable == True: 
+                                    pt01.celery_task_create()
+                                else:
+                                    pt01.manual_task_add()
                             else:
-                                pt01.manual_task_add()
-                        else:
-                            if  pt01.obj.schedule_enable == True:
-                                pt01.celery_task_add()
-                            elif pt01.obj.back_exe_enable == True:
-                                if "back_exe_enable" in pt01.message_dic_format:
-                                    pt01.celery_bgtask_add()
+                                if  pt01.obj.schedule_enable == True:
+                                    pt01.celery_task_add()
+                                elif pt01.obj.back_exe_enable == True:
+                                    if "back_exe_enable" in pt01.message_dic_format:
+                                        pt01.celery_bgtask_add()
+                                    else:
+                                        pt01.all_task_do()
+                                         
                                 else:
                                     pt01.all_task_do()
-                                     
-                            else:
-                                pt01.all_task_do()
-     
+         
+                        else:
+                            pt01.pre_task_failed()
                     else:
-                        pt01.pre_task_failed()
+                        pt01.permission_submit_deny()
                 else:
                     pt01.permission_submit_deny()
                     

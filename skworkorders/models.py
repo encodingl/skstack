@@ -146,6 +146,7 @@ class WorkOrder(models.Model):
     schedule_enable = models.BooleanField("是否开启定时任务",default=False)
     back_exe_enable = models.BooleanField("是否开启后台执行选择按钮",default=False)
     auto_exe_enable = models.BooleanField("是否开启批准后自动执行选择按钮",default=False)
+    task_lock_enable = models.BooleanField("是否开启任务锁",default=False)
     
     
     created_at = models.DateTimeField('创建时间', auto_now_add=True,null=True)
