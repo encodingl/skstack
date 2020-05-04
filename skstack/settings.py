@@ -246,7 +246,7 @@ LOGIN_URL = '/skaccounts/login/'
 
 #celery config
 
-CELERY_BROKER_URL = 'redis://:redis0619@localhost:6379/0'
+CELERY_BROKER_URL = 'redis://localhost:6389/8'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERY_TASK_RESULT_EXPIRES = 99999
