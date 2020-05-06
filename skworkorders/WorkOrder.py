@@ -120,12 +120,6 @@ def WorkOrder_edit(request):
     if request.method == 'POST':
         tpl_WorkOrder_form = WorkOrder_form(request.POST, instance=obj)
         if tpl_WorkOrder_form.is_valid():
-
-            obj_env_id=request.POST.get('env') 
-            obj_workorder_name = request.POST.get('name')                  
-            obj_env_eng=Environment.objects.get(id=obj_env_id)
-         
-       
             tpl_WorkOrder_form.save()
            
             ret = []
