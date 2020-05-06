@@ -366,7 +366,7 @@ class PreTask(RedisLock):
                 return False
             else:
                 self.lock()
-                self.sendmsg("INFO  the task lock is locked \n\r")
+                self.sendmsg("INFO  the task-lock is enabled \n\r")
                 return True
         
     def permission_submit_pass(self):
