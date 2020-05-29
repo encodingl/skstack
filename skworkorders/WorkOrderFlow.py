@@ -209,7 +209,7 @@ def WorkOrderFlow_background_detail(request):
             
     else:
         obj=obj.as_dict()
-        obj["result"] = obj["result"].decode("unicode_escape")
+        obj["result"] = obj["result"]
         tpl_CeleryTaskResult_form = CeleryTaskResult_form(initial=obj)
         
     return render(request,"skworkorders/WorkOrderFlow_background_detail.html", locals())

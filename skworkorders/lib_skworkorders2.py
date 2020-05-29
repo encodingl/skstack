@@ -304,7 +304,7 @@ class PreTask(RedisLock):
     
     def celery_bgtask_add(self):
         self.sendmsg("开始提交后台任务")
-        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+        time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       
         eta_time = format_celery_eta_time(str(time_now))
         taskname_dic = {"main_task":self.obj.main_task,"post_task":self.obj.post_task}
@@ -316,7 +316,7 @@ class PreTask(RedisLock):
         var_built_in_dic = json.dumps(var_built_in_dic)
         user_vars_dic = json.dumps(self.user_vars_dic)
         try:
-            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
+            task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time,serializer='json')
             self.message_dic_format["celery_task_id"]=task01.id    
             self.message_dic_format["status"] = "PENDING"
             self.message_dic_format["celery_schedule_time"] = time_now

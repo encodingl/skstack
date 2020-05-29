@@ -10,6 +10,7 @@ from celery import shared_task
 from skworkorders.lib_skworkorders import var_change2
 import subprocess
 import json
+import yaml
 import logging
 from lib.lib_fabric import ssh_cmd_back
 log = logging.getLogger('skworkorders')
@@ -36,7 +37,7 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
         if taskvalue:
             task = var_change2(taskvalue,**user_vars_dic) 
             task = var_change2(task,**var_built_in_dic)
-            task_list = task.encode("utf-8").split("\r") 
+            task_list = task.split("\r")
             ret_message="%s:开始执行" % taskname
             log.info(ret_message)   
             if cc_dic is None:    
@@ -44,9 +45,19 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                     try:
                         log.info("cmd_start:%s"  % cmd )
                         pcmd = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
+                        while True:
+                            for line in iter(pcmd.stdout.readline,b''):
+                                line=line.decode().strip('\n')
+                                if line:
+                                    log.info(line)
+                                else:
+                                    break
+                            if pcmd.poll() is not None:
+                                break
                         retcode=pcmd.wait()  
-                        retcode_message=pcmd.communicate()
+                        retcode_message=pcmd.wait()
                         msg_result_dic[taskname]=retcode_message
+                        
                     except Exception as msg:
                         log.error("cmd_result:%s" % msg)
                         raise RuntimeError(str(retcode_message).decode("string_escape"))
@@ -66,8 +77,8 @@ def schedule_task(taskname_dic,var_built_in_dic,user_vars_dic,cc_dic):
                 log.info(ret_message)
             else:
                 ret_message="%s:执行失败" % taskname
-#     msg_result_dic = json.dumps(msg_result_dic,ensure_ascii=False).encode('utf-8')
+    msg_result_dic = json.dumps(msg_result_dic)
 #     print "jsonstrL:%s" % msg_result_dic
-    print("msg_result_dic:%s" % msg_result_dic)
+#     print("msg_result_dic:%s" % msg_result_dic)
     return msg_result_dic
         

@@ -249,7 +249,9 @@ LOGIN_URL = '/skaccounts/login/'
 CELERY_BROKER_URL = 'redis://localhost:6389/8'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TIMEZONE = 'Asia/Shanghai'
+# CELERY_TIMEZONE = 'UTC'
 CELERY_TASK_RESULT_EXPIRES = 99999
+CELERY_ACCEPT_CONTENT = ['json','yaml']
 
 
 log_path = config.get('log', 'log_path')
