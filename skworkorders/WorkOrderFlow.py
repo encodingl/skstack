@@ -54,11 +54,11 @@ def WorkOrderFlow_background_release(request):
     temp_name = "skworkorders/skworkorders-header.html"    
     current_date=timezone.now()
     from_date = current_date + timedelta(days=-7)
-    print(current_date)
+    
 
     tpl_env = Environment.objects.all().order_by("label_sort")
     tpl_dic_obj={}
-
+    
     for e in tpl_env:
 
         obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
@@ -67,29 +67,12 @@ def WorkOrderFlow_background_release(request):
                                             (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
                                             params=[from_date,current_date,request.user,e.name_english]) 
         tpl_dic_obj[e.name_english]=obj
+        
 
+    tpl_today = datetime.now()
     return render(request,'skworkorders/WorkOrderFlow_background_release.html', locals())
 
-# @login_required()
-# @permission_verify()
-# def WorkOrderFlow_foreground_history(request):
-#     temp_name = "skworkorders/skworkorders-header.html"  
-#     current_date=timezone.now()  
-#     tpl_env = Environment.objects.all().order_by("name_english")
-#     tpl_dic_obj={}
-#     tpl_dic_column={}
-#     if request.method == 'POST':
-#         from_date = request.POST.get('from_date', '')
-#         from_date = datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S")
-#         to_date = request.POST.get('to_date', '')
-#         to_date = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-#         date_range = (from_date,to_date)
-#         tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
-#     else:
-#         date_range = (current_date + timedelta(days=-30),current_date)
-#         tpl_dic_column,tpl_dic_obj = dynamic_column_data(tpl_env,WorkOrderFlow,date_range)
-# 
-#     return render(request,'skworkorders/WorkOrderFlow_foreground_history.html', locals())
+
 
 @login_required()
 @permission_verify()
@@ -137,7 +120,12 @@ def WorkOrderFlow_background_history(request):
         
 
         for e in tpl_env:
-            obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=False)
+            #obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=False)
+            obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
+                                            LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
+                                            where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
+                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
+                                            params=[from_date,to_date,request.user,e.name_english])
             tpl_dic_obj[e.name_english]=obj
     else:
 
@@ -151,6 +139,7 @@ def WorkOrderFlow_background_history(request):
                                             where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
                                             (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
                                             params=[from_date,current_date,request.user,e.name_english])
+           
             tpl_dic_obj[e.name_english]=obj
     
 
@@ -196,12 +185,18 @@ def WorkOrderFlow_background_detail(request):
     task_id = request.GET.get('task_id', '')  
     obj = get_object(TaskResult, task_id=task_id) 
     obj2 = get_object(WorkOrderFlow, celery_task_id=task_id)
-    if  obj2:
-            tpl_WorkOrderFlow_form = WorkOrderFlow_detail_form(instance=obj2)
+    time_now = datetime.now()
+    celery_schedule_time = obj2.celery_schedule_time
+    
     if not obj:
         if  obj2:
-            if obj2.status == "PENDING":
-                tpl_celery_task_status = "任务未开始，请等待计划时间执行后再查看"
+            if obj2.back_exe_enable == True:
+                tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
+            elif obj2.status == "CREATED" or obj2.status == "PENDING"  :
+                if time_now > celery_schedule_time:
+                    tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
+                else:
+                    tpl_celery_task_status = "任务未开始，请等待计划时间执行后再查看"
             elif obj2.status == "9":
                 tpl_celery_task_status = "任务已撤销，无执行详情信息"
         else:
@@ -209,9 +204,10 @@ def WorkOrderFlow_background_detail(request):
             
     else:
         obj=obj.as_dict()
-        obj["result"] = obj["result"]
         tpl_CeleryTaskResult_form = CeleryTaskResult_form(initial=obj)
         
+    if  obj2:
+            tpl_WorkOrderFlow_form = WorkOrderFlow_detail_form(instance=obj2)    
     return render(request,"skworkorders/WorkOrderFlow_background_detail.html", locals())
  
 @login_required()

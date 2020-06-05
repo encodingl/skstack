@@ -62,7 +62,7 @@ class WorkOrdkerFlowTask(RedisLock):
         task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
 
         self.obj.celery_task_id = task01.id
-        self.obj.status="PENDING"
+        self.obj.status="CREATED"
         self.obj.save()
         content_str = "添加celery任务成功"
         self.log_celery_id("info", content_str)
@@ -119,7 +119,7 @@ class WorkOrdkerFlowTask(RedisLock):
           #判断是否通过审核
         obj_audit_level = self.obj.audit_level
         obj_status = self.obj.status
-        if obj_status == "PENDING":
+        if obj_status == "CREATED":
             return True
         else:
             if (obj_audit_level == "1" and obj_status != "1") or (obj_audit_level == "2" and obj_status != "5") or (obj_audit_level == "3" and obj_status != "7") :
@@ -268,12 +268,12 @@ class PreTask(RedisLock):
             self.unlock()
             
     def celery_task_add(self):
-        content_str = "celery tast commit ..."
+        content_str = "INFO celery tast commit ... \n\r"
         msg = json.dumps("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),content_str),ensure_ascii=False).encode('utf-8')
         self.request.websocket.send(msg)
         time01 = self.message_dic_format["celery_schedule_time"]
         if time01 == "":
-            self.sendmsg("warning:请输入计划执行时间")
+            self.sendmsg("warning:请输入计划执行时间   \n\r")
         else:
             time01 = datetime.strptime(time01, "%Y-%m-%d-%H:%M:%S")
             local_tz = pytz.timezone(celery_app.conf['CELERY_TIMEZONE'])
@@ -289,21 +289,21 @@ class PreTask(RedisLock):
             try:
                 task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time)
                 self.message_dic_format["celery_task_id"]=task01.id    
-                self.message_dic_format["status"] = "PENDING"
+                self.message_dic_format["status"] = "CREATED"
                 self.message_dic_format["celery_schedule_time"] = time01
                 WorkOrderFlow.objects.create(**self.message_dic_format)
-                content_str = "finished:定时任务添加成功"
+                content_str = "INFO The Job Finished:The scheduled task is created successfully \n\r"
                 self.sendmsg(content_str)
                 self.log("info", content_str)
             except Exception as e:
                 self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),e))
                 self.log("info", e)
-                content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
+                content_str = "ERROR The Job Failed:the scheduled-task created fialed，for more details，pls see the celery log \n\r"
                 self.sendmsg(content_str)
                 self.log("info", content_str)
     
     def celery_bgtask_add(self):
-        self.sendmsg("开始提交后台任务")
+        self.sendmsg("INFO celery tast commit ... \n\r")
         time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       
         eta_time = format_celery_eta_time(str(time_now))
@@ -318,16 +318,16 @@ class PreTask(RedisLock):
         try:
             task01 = schedule_task.apply_async((taskname_dic,var_built_in_dic,user_vars_dic,self.config_center_dic), eta=eta_time,serializer='json')
             self.message_dic_format["celery_task_id"]=task01.id    
-            self.message_dic_format["status"] = "PENDING"
+            self.message_dic_format["status"] = "CREATED"
             self.message_dic_format["celery_schedule_time"] = time_now
             WorkOrderFlow.objects.create(**self.message_dic_format)
-            content_str = "finished:后台任务添加成功"
+            content_str = "INFO The Job Finished:The backgroud-task is created successfully \n\r"
             self.sendmsg(content_str)
             self.log("info", content_str)
         except Exception as e:
             self.request.websocket.send("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),e))
             self.log("info", e)
-            content_str = "finished:后台任务添加失败,更多细节请参考celery后台日志"
+            content_str = "ERROR The Job Failed:the background-task created faled，for more details，pls see the celery log \n\r"
             self.sendmsg(content_str)
             self.log("info", content_str)
         

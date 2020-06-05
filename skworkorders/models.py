@@ -47,7 +47,7 @@ WorkOrderFlow_STATUS = (
     (str(7), "l3审核通过"),
     (str(8), "l3审核拒绝"),
     (str(9), "撤销"),
-    (str("PENDING"), "后台执行"),
+    (str("CREATED"), "任务已创建"),
     (str("REVOKED"), "计划撤销"),
     )
 

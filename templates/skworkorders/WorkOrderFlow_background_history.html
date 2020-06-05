@@ -112,34 +112,39 @@
                                      
                                       <td>{{ x.workorder_group }}</td>
                                        <td>{{ x.user_commit }}</td>
-                                     
                                         <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
-                                       
-                                     
-                                       
-                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}} xbstatus={{ x.b_status }}>
-                                        	  {% if x.b_status == "SUCCESS" %}
+
+                                        <td xstatus={{ x.status }} xlevel={{ x.audit_level }} xbstatus={{ x.b_status }}>
+
+                                        	{% if x.b_status == "SUCCESS" %}
                                                 <span class="label label-success">{{ x.b_status }}</span>
+
                                             {% elif x.b_status == "FAILURE" %}
                                                 <span class="label label-danger">{{ x.b_status }}</span>
-                                            {% elif not x.b_status == "None" and x.status == "PENDING" %}
-                                                <span class="label label-primary">{{ x.status }}</span>
+
+
+                                            {% elif not x.b_status == "None" and x.status == "CREATED" %}
+                                                <span class="label label-primary">WAITING / DONE</span>
+
+											{% elif not x.b_status == "None" and x.status == "PENDING" %}
+                                                <span class="label label-primary">WAITING / DONE</span>
+
                                             {% elif not x.b_status == "None" and x.status == "REVOKED" %}
                                                 <span class="label label-default">{{ x.status }}</span>
                                                 
                                             {% elif x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
+
                                             {% elif x.status == "9" %}
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
+
                                             {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
-                                            {% elif x.status == "10" %}
-                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+
                                             {% else %}
-                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+                                                <span class="label label-primary">{{ x.status }}</span>
+
                                             {% endif %}
-                                        
-                                        
                                         </td>
                                         
                                         

@@ -82,38 +82,46 @@
                                        
                                         <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
                                        
-                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}} xbstatus={{ x.b_status }}>
-                                        	  {% if x.b_status == "SUCCESS" %}
+                                        <td xstatus={{ x.status }} xlevel={{ x.audit_level }} xbstatus={{ x.b_status }} xnow="{{ tpl_today|date:'YmdHis' }}" xtime="{{ x.celery_schedule_time|date:'YmdHis' }}">
+
+                                        	{% if x.b_status == "SUCCESS" %}
                                                 <span class="label label-success">{{ x.b_status }}</span>
+
                                             {% elif x.b_status == "FAILURE" %}
                                                 <span class="label label-danger">{{ x.b_status }}</span>
-                                            {% elif not x.b_status == "None" and x.status == "PENDING" %}
-                                                <span class="label label-primary">{{ x.status }}</span>
+											
+											{% elif x.b_status == "REVOKED" %}
+                                                <span class="label label-default">{{ x.b_status }}</span>
+
+                                            {% elif not x.b_status == "None" and x.celery_schedule_time < tpl_today %}
+                                                <span span_status = "DONE" class="label label-primary">DONE</span>
+
+											{% elif not x.b_status == "None" and x.celery_schedule_time > tpl_today %}
+                                                <span class="label label-primary">WAITING</span>
+
                                             {% elif not x.b_status == "None" and x.status == "REVOKED" %}
                                                 <span class="label label-default">{{ x.status }}</span>
                                                 
                                             {% elif x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
+
                                             {% elif x.status == "9" %}
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
+
                                             {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
-                                            {% elif x.status == "10" %}
-                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+
                                             {% else %}
-                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+                                                <span class="label label-primary">{{ x.status }}</span>
+
                                             {% endif %}
-                                        
-                                        
                                         </td>
-                                        <td class="text-center" id="features" data-editable='false'>
+
+                                       <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail('{{ x.celery_task_id }}')"  id="detail">详情</li></a>
                                         <a value="{% url 'WorkOrderFlow_revoke' %}?id={{ x.id }}" class="btn btn-sm btn-danger x_del" id="revoke">撤销</a>
                                         <a href="{% url 'WorkOrderFlow_release' x.id %}" class="btn btn-sm btn-primary" id="online">执行</a>    
-                                       
-                                   
-                                        
-                                    </td>
+                                      </td>
                                     </tr>
                                 {% endfor %}
                                 {% else %}
@@ -301,36 +309,24 @@ function tanchu_release(n){
 <script type="text/javascript"> 
 
     
-// 发布完成后关闭上线 撤销按钮
-    $("[xstatus=3]").each(function(){   	
-              $(this).next("#features").children("#online,#revoke").remove();    	
-    }); 
 
-    // 撤销关闭按钮
-    $("[xstatus=9]").each(function(){	
-              $(this).next("#features").children("#revoke,#online").remove();	
-    });
-    
+
 
     
- // 关闭上线按钮
- $("[xbstatus!='None']").each(function(){	
-              $(this).next("#features").children("#online").remove();	
+// celery任务执行完毕关闭上线按钮，该任务在django-celery数据库中可查询
+    $("[xbstatus!='None']").each(function(){	
+              $(this).next("#features").children("#online,#revoke").remove();	
     });
-    $("[xstatus!=1][xlevel=1][xbstatus='None']").each(function(){	
-              $(this).next("#features").children("#online").remove();	
-    });
-    $("[xstatus!=5][xlevel=2][xbstatus='None']").each(function(){	
-        $(this).next("#features").children("#online").remove();	
-	});
-    
-    $("[xstatus!=7][xlevel=3][xbstatus='None']").each(function(){	
-        $(this).next("#features").children("#online").remove();	
-	});
+
+// celery任务执行完毕关闭上线按钮，该任务在django-celery数据库中已被清理
+	$("[span_status = 'DONE']").parent().each(function(){	
+	              $(this).next("#features").children("#online,#revoke").remove();	
+	 });
+
  
-    // 关闭撤销按钮
-    $("[xstatus=2],[xstatus=3],[xstatus=4],[xstatus=6],[xstatus=8],[xbstatus='FAILURE'],[xbstatus='SUCCESS']").each(function(){	
-              $(this).next("#features").children("#revoke").remove();	
+// 审核被拒绝、已撤销、执行结束则关闭上线和撤销按钮
+    $("[xstatus=2],[xstatus=3],[xstatus=4],[xstatus=6],[xstatus=8],[xstatus=9]").each(function(){	
+              $(this).next("#features").children("#revoke,#online").remove();	
     });
 </script>  
 <script>
