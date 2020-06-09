@@ -42,7 +42,7 @@ def WorkOrderFlow_foreground_release(request):
     tpl_dic_obj={}
 
     for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(auto_exe_enable=False,user_commit=request.user,env=e.name_english,created_at__range=(current_date + timedelta(days=-7),current_date),celery_task_id__isnull=True)
+        obj = WorkOrderFlow.objects.filter(celery_schedule_time__isnull=True,auto_exe_enable=False,user_commit=request.user,env=e.name_english,created_at__range=(current_date + timedelta(days=-7),current_date),celery_task_id__isnull=True)
         tpl_dic_obj[e.name_english]=obj
 
     return render(request,'skworkorders/WorkOrderFlow_foreground_release.html', locals())
@@ -64,7 +64,7 @@ def WorkOrderFlow_background_release(request):
         obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
                                             LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
                                             where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
-                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
+                                            (a.celery_task_id is not NUll or a.auto_exe_enable=True or a.celery_schedule_time is not NUll)",\
                                             params=[from_date,current_date,request.user,e.name_english]) 
         tpl_dic_obj[e.name_english]=obj
         
@@ -143,7 +143,7 @@ def WorkOrderFlow_background_history(request):
             tpl_dic_obj[e.name_english]=obj
     
 
-    
+    tpl_today = datetime.now()
     return render(request,'skworkorders/WorkOrderFlow_background_history.html', locals())
  
 @login_required()
@@ -279,9 +279,9 @@ def WorkOrderFlow_audit(request):
     tpl_dic_obj={}
 
     for e in tpl_env:
-        obj = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date))
+        obj = WorkOrderFlow.objects.filter(workorder_id__in=obj_workorder,env=e.name_english,created_at__range=(current_date + timedelta(days=-30),current_date)).exclude(status__in=[3,4,9,"CREATED","PENDING"])
         tpl_dic_obj[e.name_english]=obj
-
+    tpl_today = datetime.now()
     return render(request,'skworkorders/WorkOrderFlow_audit.html', locals())
  
 @login_required()

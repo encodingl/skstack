@@ -79,26 +79,49 @@
                                         
                                         <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
                                    
-                                        <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
-                                        	  {% if x.status == "3" %}
+                                         <td xstatus={{ x.status }} xlevel={{ x.audit_level }} xbstatus={{ x.b_status }} xnow="{{ tpl_today|date:'YmdHis' }}" xtime="{{ x.celery_schedule_time|date:'YmdHis' }}">
+
+                                        	{% if x.b_status == "SUCCESS" %}
+                                                <span class="label label-success">{{ x.b_status }}</span>
+
+                                            {% elif x.b_status == "FAILURE" %}
+                                                <span class="label label-danger">{{ x.b_status }}</span>
+											
+											{% elif x.b_status == "REVOKED" %}
+                                                <span class="label label-default">{{ x.b_status }}</span>
+
+                                            
+
+                                            {% elif not x.b_status == "None" and x.status == "REVOKED" %}
+                                                <span class="label label-default">{{ x.status }}</span>
+                                                
+											{% elif x.status == "0" %}
+                                                <span class="label label-primary">{{ x|displayName:'status' }}</span>
+
+                                            {% elif x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
+
                                             {% elif x.status == "9" %}
                                                 <span class="label label-default">{{ x|displayName:'status' }}</span>
-                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8" %}
+
+                                            {% elif x.status == "2" or x.status == "4" or x.status == "6" or x.status == "8"%}
                                                 <span class="label label-danger">{{ x|displayName:'status' }}</span>
-                                            {% elif x.status == "PENDING" %}
-                                                <span class="label label-warning">{{ x|displayName:'status' }}</span>
+
+											{% elif not x.b_status == "None" and x.celery_schedule_time < tpl_today %}
+                                                <span span_status = "DONE" class="label label-primary">DONE</span>
+
+											{% elif not x.b_status == "None" and x.celery_schedule_time > tpl_today %}
+                                                <span class="label label-primary">WAITING</span>
+
                                             {% else %}
                                                 <span class="label label-primary">{{ x|displayName:'status' }}</span>
+
                                             {% endif %}
-                                        
-                                        
-                                        
                                         </td>
                                         <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
-                                      <li class="btn btn-sm btn-primary" onclick="return tanchu_permit(this.value)"value="{{ x.id }}">同意</li>
-                                      <li class="btn btn-sm btn-danger" onclick="return tanchu_deny(this.value)"value="{{ x.id }}">拒绝</li>
+                                      <li id="permit" class="btn btn-sm btn-primary" onclick="return tanchu_permit(this.value)"value="{{ x.id }}">同意</li>
+                                      <li id="deny" class="btn btn-sm btn-danger" onclick="return tanchu_deny(this.value)"value="{{ x.id }}">拒绝</li>
                                       
                                        <!--  <a value="{% url 'WorkOrderFlow_permit' %}?id={{ x.id }}" class="btn btn-sm btn-primary x_audit" id="permit">同意</a> -->
                                         
@@ -332,15 +355,14 @@ function tanchu_detail(n){
     });
     
 // 后台任务审核通过关闭审核按键
-    $("[xstatus='PENDING']").each(function(){	
+    $("[xstatus='CREATED']").each(function(){	
               $(this).siblings("#features").children("#permit,#deny").remove();	
     });
  
- // 新建提单关闭上线按钮
-    $("[xstatus=0][xlevel!=0]").each(function(){
-          $(this).siblings("#features").children("#online").remove();	
-   });
- 
+// celery任务执行完毕关闭上线按钮，该任务在django-celery数据库中已被清理
+	$("[span_status = 'DONE']").parent().each(function(){	
+	              $(this).next("#features").children("#permit,#deny").remove();	
+	 });
 
 
 

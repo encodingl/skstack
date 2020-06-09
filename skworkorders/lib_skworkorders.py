@@ -179,19 +179,18 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
     obj = obj_WorkOrder 
     obj_sk_vars_dic = {}
     obj_sk_vars_dic["sk__name"] = obj.name
-    obj_sk_vars_dic["sk__env"] = obj.env
+    obj_sk_vars_dic["sk__env"] = str(obj.env).lower()
     
     
     obj2 = get_object(ConfigCenter, id=obj.config_center_id)
     taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
     if taskname_dic[taskname]:       
         task = var_change2(taskname_dic[taskname],**user_vars_dic) 
+        task = var_change2(task,**obj_sk_vars_dic)
         if obj.var_built_in:
             var_built_in_dic = eval(obj.var_built_in) 
             task = var_change2(task,**var_built_in_dic)
-            task = var_change2(task,**obj_sk_vars_dic)
         task_list = task.split("\r") 
-        print(task_list)
         ret_message="INFO %s:start \n\r" % taskname
         log.info(ret_message)
         
