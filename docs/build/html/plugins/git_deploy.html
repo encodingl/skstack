@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="../_static/translations.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -176,7 +176,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>3. Git静态文件部署插件使用指南</li>
+      <li><span class="section-number">3. </span>Git静态文件部署插件使用指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -196,9 +196,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="git">
-<h1>3. Git静态文件部署插件使用指南<a class="headerlink" href="#git" title="永久链接至标题">¶</a></h1>
+<h1><span class="section-number">3. </span>Git静态文件部署插件使用指南<a class="headerlink" href="#git" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.1. </span>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <p>git部署插件，主要用于部署git类静态文件项目，版本发布和回滚都基于指定分支的commit id。</p>
 <p><em>版本管理</em></p>
 <ul class="simple">
@@ -206,7 +206,7 @@
 </ul>
 </div>
 <div class="section" id="id2">
-<h2>3.2. 目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.2. </span>目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pl_deploy_git/                          <span class="c1">#插件主目录</span>
 ├── conf                                        <span class="c1">#配置文件目录</span>
 │   ├── demo.json                       <span class="c1">#配置文件模板</span>
@@ -220,7 +220,7 @@
 </div>
 </div>
 <div class="section" id="id3">
-<h2>3.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.3. </span>配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <p>demo.json为例</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 
@@ -262,9 +262,9 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h2>3.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.4. </span>脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id5">
-<h3>3.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.4.1. </span>变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <p>如果使用默认latest标签发布docker项目，一个工单可以只关联一个项目，也可以通过项目变量获取脚本关联多个项目</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python var_git_commit_id.py -h</span>
 usage: var_git_commit_id.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p <span class="o">[</span>git_project_name<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
@@ -292,7 +292,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="id6">
-<h3>3.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.4.2. </span>主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python main_git_deploy.py -h</span>
 usage: main_git_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span> <span class="o">[</span>-p <span class="o">[</span>git_project_name<span class="o">]]</span>
                           <span class="o">[</span>-a <span class="o">[</span>ansible-hosts<span class="o">]]</span>
@@ -320,7 +320,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="web">
-<h2>3.5. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.5. </span>Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
 <p>提单页面如下：</p>
 <img alt="image not found" src="../_images/git_submit.png" />
 <div class="admonition note">
@@ -339,7 +339,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="id7">
-<h2>3.6. 命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.6. </span>命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>项目变量获取</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@ansible pl_deploy_git<span class="o">]</span><span class="c1"># python var_git_commit_id.py -e stage -p skstack_plugins_conf -b master</span>
 <span class="o">[</span><span class="s1">&#39;953f4f1 (2 weeks ago)  demouser@github.com add market config&#39;</span>, <span class="s1">&#39;603b4b9 (2 weeks ago)  demouser@github.com add payment config&#39;</span>, .........<span class="o">]</span>
@@ -391,9 +391,9 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div>
 </div>
 <div class="section" id="id8">
-<h2>3.7. 最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.7. </span>最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id9">
-<h3>3.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.1. </span>步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic">
 <li><p>安装</p></li>
@@ -414,7 +414,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="id10">
-<h3>3.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.2. </span>安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>不同环境单独使用一台ansible服务器作为作为配置管理服务器；如prod一台ansible， stage一台ansible。</p></li>
@@ -424,7 +424,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="id11">
-<h3>3.7.3. 配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.3. </span>配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
 复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
 具体配置参数，参考配置文件说明章节
@@ -432,15 +432,15 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div>
 </div>
 <div class="section" id="id12">
-<h3>3.7.4. Git镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.4. </span>Git镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
 <p>各环境json配置文件指定插件git本地仓库地址 “proj_local_path”:”/opt/gitsource/proj1”, 进入仓库地址，并执行git clone，git pull命令，人工完成到git仓库的认证，保证后续执行git pull无需再次输入密码。</p>
 </div>
 <div class="section" id="id13">
-<h3>3.7.5. 项目变量获取脚本测试<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.5. </span>项目变量获取脚本测试<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
 </div>
 <div class="section" id="id14">
-<h3>3.7.6. 任务脚本功能测试<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.6. </span>任务脚本功能测试<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><p>#.使用前置任务脚本测试，保证指定配置文件的项目可以切换到指定分支
 #.使用主任务脚本保证，可以将发布插件本地仓库的文件同步到目标服务器；
@@ -454,7 +454,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div>
 </div>
 <div class="section" id="skstack-web">
-<h3>3.7.7. Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.7.7. </span>Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
 <p>1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：skstack_conf_git
  变量表单标签名字：Git CommitId

@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="../_static/translations.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -95,10 +95,10 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 说明文档</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz压缩包版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
@@ -187,7 +187,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>3. WEB平台开发指南</li>
+      <li><span class="section-number">3. </span>WEB平台开发指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -207,9 +207,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="web">
-<h1>3. WEB平台开发指南<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h1>
+<h1><span class="section-number">3. </span>WEB平台开发指南<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.1. 环境说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.1. </span>环境说明<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>系统：centos 7 、windows10、macos</p></li>
 <li><p>python环境：python 3.7最新版本。 强烈建议用virtualenv 进行python虚拟机环境管理</p></li>
@@ -225,9 +225,9 @@
 </div>
 </div>
 <div class="section" id="id2">
-<h2>3.2. 目录规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.2. </span>目录规范<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id3">
-<h3>3.2.1. 一级子目录说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.2.1. </span>一级子目录说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>skipper/  #项目主目录
 |-- docs   #文档目录
 |-- lib     #公共库目录
@@ -241,7 +241,7 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h3>3.2.2. 二级子目录-模板目录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.2.2. </span>二级子目录-模板目录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
 <p>用于存放所有app的html文件的目录</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@localhost skipper]# tree -d -L 1 templates/
 templates/
@@ -255,7 +255,7 @@ templates/
 </div>
 </div>
 <div class="section" id="id5">
-<h3>3.2.3. 二级子目录-静态文件目录<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.2.3. </span>二级子目录-静态文件目录<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <p>用于存放所有项目公共静态文件和第三方前端插件的目录</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@localhost skipper]# tree -d -L 1 static/
 static/
@@ -272,9 +272,9 @@ static/
 </div>
 </div>
 <div class="section" id="id6">
-<h2>3.3. 命名规范<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.3. </span>命名规范<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id7">
-<h3>3.3.1. 基本原则<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.3.1. </span>基本原则<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>命名要尽量保证代码的可读性和复用性；</p></li>
@@ -284,29 +284,29 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id8">
-<h3>3.3.2. 代码和文件命名<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.3.2. </span>代码和文件命名<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
 <div class="section" id="django-app">
-<h4>3.3.2.1. django app命名<a class="headerlink" href="#django-app" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.1. </span>django app命名<a class="headerlink" href="#django-app" title="永久链接至标题">¶</a></h4>
 <div class="line-block">
 <div class="line">Django app 命名规则为app名称加上“sk”前缀。如资产管理app命名为skcmdb。</div>
 <div class="line">加sk前缀主要用于区分非django app目录</div>
 </div>
 </div>
 <div class="section" id="models-class">
-<h4>3.3.2.2. Models  class命名<a class="headerlink" href="#models-class" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.2. </span>Models  class命名<a class="headerlink" href="#models-class" title="永久链接至标题">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">第一个字母大写，若class由多个词组组合，每个词第一个字母大写</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ProjectGroup</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="forms-class">
-<h4>3.3.2.3. forms class命名<a class="headerlink" href="#forms-class" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.3. </span>forms class命名<a class="headerlink" href="#forms-class" title="永久链接至标题">¶</a></h4>
 <dl class="field-list">
 <dt class="field-odd">若表单类继承ModelsFrom 命名规范如下</dt>
 <dd class="field-odd"><p>“Models class名称”+下划线+“form”</p>
@@ -319,14 +319,14 @@ static/
 </dl>
 </div>
 <div class="section" id="urls">
-<h4>3.3.2.4. urls命名<a class="headerlink" href="#urls" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.4. </span>urls命名<a class="headerlink" href="#urls" title="永久链接至标题">¶</a></h4>
 <p>url规则:models表对象名称/操作方法/自定义;url别名命名与视图函数一致</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^Project/add/$&#39;</span><span class="p">,</span> <span class="n">Project</span><span class="o">.</span><span class="n">Project_add</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Project_add&#39;</span><span class="p">),</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="views">
-<h4>3.3.2.5. views命名规范<a class="headerlink" href="#views" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.5. </span>views命名规范<a class="headerlink" href="#views" title="永久链接至标题">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">views函数命名规则：对象名称+操作方法</dt>
 <dd class="field-odd"><p></p></dd>
@@ -344,7 +344,7 @@ static/
 </dl>
 </div>
 <div class="section" id="templates">
-<h4>3.3.2.6. templates命名<a class="headerlink" href="#templates" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.6. </span>templates命名<a class="headerlink" href="#templates" title="永久链接至标题">¶</a></h4>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>模板html文件命名规范：视图函数名称.html</p></li>
@@ -353,7 +353,7 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id9">
-<h4>3.3.2.7. 变量命名<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<h4><span class="section-number">3.3.2.7. </span>变量命名<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
 <dl class="simple">
 <dt>变量命名基本原则</dt><dd><ol class="arabic simple">
 <li><p>变量命名要尽量保证代码的可读性和复用性；</p></li>
@@ -371,12 +371,12 @@ static/
 </div>
 </div>
 <div class="section" id="id10">
-<h3>3.3.3. 示例<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.3.3. </span>示例<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <p>参考skworkorders项目命名</p>
 </div>
 </div>
 <div class="section" id="id11">
-<h2>3.4. 私有库文件和脚本使用说明<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.4. </span>私有库文件和脚本使用说明<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ul>
 <li><p>私有库文件命名规范：lib_app名称；私有库文件主要是存放一些app的私有函数和类、私有库文件放到app自身的文件夹里面。如下图</p>
@@ -390,7 +390,7 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id12">
-<h2>3.5. 配置文件规范命<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.5. </span>配置文件规范命<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>所有app牵涉到的配置文件，一律放到”skipper_*.conf”；</p></li>
@@ -400,7 +400,7 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id13">
-<h2>3.6. 日志规范<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.6. </span>日志规范<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>日志格式和规范参考在settings里面LOGGING参数的skworkorders app日志定义 。</p></li>
@@ -410,7 +410,7 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="id14">
-<h2>3.7. 静态文件和前端<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.7. </span>静态文件和前端<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>前端框架使用: <a class="reference external" href="http://adminlte.la998.com/index2.html">AdminLTE</a>; 仪表盘使用: <a class="reference external" href="https://echarts.apache.org/zh/index.html">Echarts</a></p></li>
@@ -422,9 +422,9 @@ static/
 </div></blockquote>
 </div>
 <div class="section" id="resful-api">
-<h2>3.8. Resful api<a class="headerlink" href="#resful-api" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">3.8. </span>Resful api<a class="headerlink" href="#resful-api" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id15">
-<h3>3.8.1. 概述<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.8.1. </span>概述<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
 <p>Resful api 主要用于外部平台获取skstack里面的资产数据，和接口调用。</p>
 <dl class="field-list">
 <dt class="field-odd">格式</dt>
@@ -439,7 +439,7 @@ static/
 </dl>
 </div>
 <div class="section" id="api">
-<h3>3.8.2. api说明<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">3.8.2. </span>api说明<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">api文件命名和目录规范</dt>
 <dd class="field-odd"><p></p></dd>

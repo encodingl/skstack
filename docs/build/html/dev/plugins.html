@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="../_static/translations.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -95,10 +95,10 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 说明文档</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz压缩包版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
@@ -171,7 +171,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>2. 插件开发指南</li>
+      <li><span class="section-number">2. </span>插件开发指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,14 +191,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1>2. 插件开发指南<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<h1><span class="section-number">2. </span>插件开发指南<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
 <div class="line-block">
 <div class="line">skstack平台的插件注册不限制开发语言，理论支持所有能在linux服务器命令行界面直接运行的脚本。</div>
 <div class="line">本文档主要基于python说明，其他语言请尽量遵循示例相关目录、文件命名和日志规范</div>
 <div class="line">优先使用python3.7 开发与skstack版本保持一致。</div>
 </div>
 <div class="section" id="dev-skplugins">
-<span id="id2"></span><h2>2.1. 概述<a class="headerlink" href="#dev-skplugins" title="永久链接至标题">¶</a></h2>
+<span id="id2"></span><h2><span class="section-number">2.1. </span>概述<a class="headerlink" href="#dev-skplugins" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">skstack插件库主要配合skstack web平台的工单系统使用，结合skstack工单系统，可以实现工单审核和自动化执行等功能；插件也可以作为独立的脚本使用。</div>
 <div class="line">skstack官方插件基于python开发，所有官方插件均遵循下文中定义的目录和命名规范</div>
@@ -218,8 +218,8 @@
 </div></blockquote>
 </div>
 <div class="section" id="id3">
-<h2>2.2. 工作原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
-<img alt="image not found" src="../_images/skstack_workflow1.png" />
+<h2><span class="section-number">2.2. </span>工作原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/skstack_workflow.png" />
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
@@ -230,7 +230,7 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h2>2.3. 安装步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.3. </span>安装步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>下载插件库：git clone &lt;skstack_plugins_git_url&gt;</p></li>
 <li><p>安装python 虚拟机：略。tips：若已安装skstack web系统，请忽略该步骤，直接使用skstack web平台的python虚拟机即可</p></li>
@@ -238,7 +238,7 @@
 </ol>
 </div>
 <div class="section" id="id5">
-<h2>2.4. 目录规范<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.4. </span>目录规范<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <p>插件库主目录介绍</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@registry soft<span class="o">]</span><span class="c1"># tree -d skstack_plugins</span>
 skstack_plugins      <span class="c1">#插件库主目录</span>
@@ -259,7 +259,7 @@ skstack_plugins      <span class="c1">#插件库主目录</span>
 </div>
 </div>
 <div class="section" id="id6">
-<h2>2.5. 公共配置文件配置说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.5. </span>公共配置文件配置说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">配置参数通过json文件里面定义的字典方式进行引用</div>
 <div class="line">公共配置文件目前版本只定义所有官方插件的日志根路径</div>
@@ -280,7 +280,7 @@ conf_pub/
 </div>
 </div>
 <div class="section" id="id7">
-<h2>2.6. 功能插件目录和文件说明<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.6. </span>功能插件目录和文件说明<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>以git部署插件为例说明</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@registry skstack_plugins]# tree pl_deploy_git/
 pl_deploy_git/                          #插件主目录
@@ -299,7 +299,7 @@ pl_deploy_git/                          #插件主目录
 </div>
 </div>
 <div class="section" id="id8">
-<h2>2.7. 命名规范<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.7. </span>命名规范<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>插件目录命名：加pl_前缀</p></li>
 <li><p>前置任务脚本：加pre_前缀,</p></li>
@@ -313,7 +313,7 @@ pl_deploy_git/                          #插件主目录
 </ol>
 </div>
 <div class="section" id="id9">
-<h2>2.8. 脚本传参规范<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.8. </span>脚本传参规范<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
 <p>脚本传参：脚步外部参数传递通过argparse模块功能方式实现 ，如下4个通过argparse模块定义的引入参数关键字，为了保持与现有官方插件一致性，请保持命名一致</p>
 <ol class="arabic simple">
 <li><p>-h 帮助文档</p></li>
@@ -323,7 +323,7 @@ pl_deploy_git/                          #插件主目录
 </ol>
 </div>
 <div class="section" id="id10">
-<h2>2.9. 配置文件规范<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.9. </span>配置文件规范<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
 <p>用于python插件开发，其他语言请参考命名规范</p>
 <ol class="arabic simple">
 <li><p>配置参数读取：对于生产、测试、stg相关环境的配置文件变量不能硬编码到变量获取脚本或者任务脚本文件中</p></li>
@@ -332,7 +332,7 @@ pl_deploy_git/                          #插件主目录
 </ol>
 </div>
 <div class="section" id="id11">
-<h2>2.10. 日志规范<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.10. </span>日志规范<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>格式：日期 日志级别 消息，示例：2019-12-23 09:05:31.023 INFO Note: checking out ‘953f4f1’.</p></li>
 <li><p>ansible日志：ansible任务的执行保持与ansible本身日志一致，不用加时间戳和消息级别</p></li>
@@ -348,9 +348,9 @@ pl_deploy_git/                          #插件主目录
 </ol>
 </div>
 <div class="section" id="id12">
-<h2>2.11. 插件特殊情况处理<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.11. </span>插件特殊情况处理<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id13">
-<h3>2.11.1. 复选框模式传参处理<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.11.1. </span>复选框模式传参处理<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1">#! /usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -380,18 +380,18 @@ pl_deploy_git/                          #插件主目录
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">parseOption</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
     <span class="n">inner_var</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">inner</span>
-    <span class="k">print</span> <span class="s2">&quot;inner_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inner_var</span>
+    <span class="nb">print</span> <span class="s2">&quot;inner_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inner_var</span>
     <span class="n">multiple_vars</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">mul</span>
     <span class="c1"># options.mul 为复选框当只选一个的时候传递值为字符串，超过一个选项传递值为list，需要在脚本中做判断</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multiple_vars</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">multiple_vars</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">mul</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">multiple_vars</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span>
+            <span class="nb">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">multiple_vars</span>
+        <span class="nb">print</span> <span class="s2">&quot;multiple_vars:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">multiple_vars</span>
     <span class="n">single_var</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">single</span>
-    <span class="k">print</span> <span class="s2">&quot;single_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">single_var</span>
+    <span class="nb">print</span> <span class="s2">&quot;single_var:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">single_var</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -399,13 +399,13 @@ pl_deploy_git/                          #插件主目录
 </div>
 </div>
 <div class="section" id="id14">
-<h3>2.11.2. 插件返回子进程异常处理<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.11.2. </span>插件返回子进程异常处理<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <div class="line-block">
 <div class="line">如果插件子进程执行异常，且子进程返回给插件父进程的状态吗为非0，但是插件父进程执行完毕返回的状态码为0，这种情况下需要在父进程主动抛出异常，方便sk平台捕获</div>
 <div class="line">获取更准确的执行结果，示例如下：</div>
 </div>
 <p>1 子进程异常但是父进程正常：</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(skipper) [root@localhost scAnsible]# ./ansible_cmd.py -g gtest -c date1</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(skipper)</span> <span class="gp">[root@localhost scAnsible]#</span> ./ansible_cmd.py -g gtest -c date1
 <span class="go">yw108 | FAILED | rc=2 &gt;&gt;</span>
 
 <span class="go">[Errno 2] 没有那个文件或目录</span>
@@ -414,7 +414,7 @@ pl_deploy_git/                          #插件主目录
 
 <span class="go">[Errno 2] 没有那个文件或目录</span>
 
-<span class="go">(skipper) [root@localhost scAnsible]# echo $?</span>
+<span class="gp gp-VirtualEnv">(skipper)</span> <span class="gp">[root@localhost scAnsible]#</span> <span class="nb">echo</span> <span class="nv">$?</span>
 <span class="go">0</span>
 </pre></div>
 </div>
@@ -447,17 +447,17 @@ pl_deploy_git/                          #插件主目录
     <span class="n">ansible_cmd</span> <span class="o">=</span> <span class="s2">&quot;ansible </span><span class="si">%s</span><span class="s2"> -f </span><span class="si">%s</span><span class="s2">  -a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hosts</span><span class="p">,</span><span class="n">forks</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">pcmd</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">ansible_cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">pcmd</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">ansible_cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">pcmd</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1">#获取内容</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
-                <span class="k">print</span> <span class="n">line</span>
+                <span class="nb">print</span> <span class="n">line</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
 
     <span class="k">except</span><span class="p">:</span>
         <span class="n">exinfo</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
-        <span class="k">print</span> <span class="n">exinfo</span>
+        <span class="nb">print</span> <span class="n">exinfo</span>
 
     <span class="n">retcode</span> <span class="o">=</span> <span class="n">pcmd</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">retcode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -479,7 +479,7 @@ pl_deploy_git/                          #插件主目录
 </pre></div>
 </div>
 <p>3 主动抛出异常后执行结果如下：</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(venv-adminset) [root@localhost scAnsible]# ./ansible_cmd.py -g gtest -c date1</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv-adminset)</span> <span class="gp">[root@localhost scAnsible]#</span> ./ansible_cmd.py -g gtest -c date1
 <span class="go">   yw108 | FAILED | rc=2 &gt;&gt;</span>
 <span class="go">   [Errno 2] 没有那个文件或目录</span>
 <span class="go">   yunwei61 | FAILED | rc=2 &gt;&gt;</span>

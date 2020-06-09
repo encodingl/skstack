@@ -10,6 +10,17 @@
  #. `restructuredtext语法参考  <https://3vshej.cn/rstSyntax/index.html>`_
  #. `sphinx官方文档参考  <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
  
+sphinx编译环境安装
+--------------------------------
+
+编辑保存后执行如下命令，会自动生成html文档
+
+ #. cd ./docs 
+ #. workon skstack 切换到skstack python虚拟机环境，若无情先按照python虚拟机
+ #. pip install -U sphinx  安装sphinx软件
+ #. pip install sphinx_rtd_theme  安装sphinx文档主题
+ #. make html  文档编译测试，没有报错则通过
+ 
 sphinx文档更新命令
 --------------------------------
 

@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="../_static/translations.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -163,7 +163,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>1. 基础概念</li>
+      <li><span class="section-number">1. </span>基础概念</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,9 +183,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1>1. 基础概念<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<h1><span class="section-number">1. </span>基础概念<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id2">
-<h2>1.1. 概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.1. </span>概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">skstack插件库主要配合skstack web平台的工单系统使用，结合skstack工单系统，可以实现工单审核和自动化执行等功能；插件也可以作为独立的脚本使用。</div>
 <div class="line">skstack官方插件基于python开发，所有官方插件均遵循下文中定义的目录和命名规范</div>
@@ -205,8 +205,8 @@
 </div></blockquote>
 </div>
 <div class="section" id="id3">
-<h2>1.2. 工作原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
-<img alt="image not found" src="../_images/skstack_workflow1.png" />
+<h2><span class="section-number">1.2. </span>工作原理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<img alt="image not found" src="../_images/skstack_workflow.png" />
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
@@ -217,7 +217,7 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h2>1.3. 安装步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.3. </span>安装步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>下载插件库：git clone &lt;skstack_plugins_git_url&gt;</p></li>
 <li><p>安装python 虚拟机：略。tips：若已安装skstack web系统，请忽略该步骤，直接使用skstack web平台的python虚拟机即可</p></li>
@@ -225,7 +225,7 @@
 </ol>
 </div>
 <div class="section" id="id5">
-<h2>1.4. 目录规范<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.4. </span>目录规范<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <p>目录介绍</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(skstack) [root@registry soft]# tree -d skstack_plugins
 skstack_plugins      #插件库主目录
@@ -246,7 +246,7 @@ skstack_plugins      #插件库主目录
 </div>
 </div>
 <div class="section" id="id6">
-<h2>1.5. 公共配置文件配置说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.5. </span>公共配置文件配置说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <div class="line-block">
 <div class="line">配置参数通过json文件里面定义的字典方式进行引用</div>
 <div class="line">公共配置文件目前版本只定义所有官方插件的日志根路径</div>
@@ -267,7 +267,7 @@ conf_pub/
 </div>
 </div>
 <div class="section" id="id7">
-<h2>1.6. 功能插件目录和文件说明<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.6. </span>功能插件目录和文件说明<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>以git部署插件为例说明</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@registry skstack_plugins]# tree pl_deploy_git/
 pl_deploy_git/                          #插件主目录
@@ -286,7 +286,7 @@ pl_deploy_git/                          #插件主目录
 </div>
 </div>
 <div class="section" id="id8">
-<h2>1.7. 命名规范<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">1.7. </span>命名规范<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li><p>插件目录命名：加pl_前缀</p></li>
 <li><p>前置任务脚本：加pre_前缀,</p></li>

@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="../_static/translations.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -37,7 +37,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="3. Git静态文件部署插件使用指南" href="git_deploy.html" />
-    <link rel="prev" title="1. 概述" href="overview.html" /> 
+    <link rel="prev" title="1. 基础概念" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -95,7 +95,7 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 基础概念</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. Docker部署插件使用指南</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">2.1. 概述</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">2.2. 目录说明</a></li>
@@ -120,18 +120,17 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. tar压缩包版本部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html">2. 插件开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/skplugins3.html#id2">3. 概述</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">4. WEB平台开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">5. Git开发和版本管理指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">6. 开发人员介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">7. 加入我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">4. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -177,7 +176,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>2. Docker部署插件使用指南</li>
+      <li><span class="section-number">2. </span>Docker部署插件使用指南</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -197,9 +196,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="docker">
-<h1>2. Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
+<h1><span class="section-number">2. </span>Docker部署插件使用指南<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id1">
-<h2>2.1. 概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.1. </span>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <p>docker部署插件，主要用于docker类项目部署、回滚、重启和版本查询</p>
 <p><em>docker部署插件支持如下几种执行模式</em></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>update：版本更新优雅模式，过程如下：
@@ -247,7 +246,7 @@ f289e56dc36f        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest    
 </div>
 </div>
 <div class="section" id="id2">
-<h2>2.2. 目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.2. </span>目录说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pl_deploy_docker/                       <span class="c1">#docker部署插件主目录</span>
 ├── conf                                        <span class="c1">#配置文件目录</span>
 │   ├── demo.json                       <span class="c1">#配置文件参考模板</span>
@@ -265,7 +264,7 @@ f289e56dc36f        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest    
 </div>
 </div>
 <div class="section" id="id3">
-<h2>2.3. 配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.3. </span>配置文件说明<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <p>demo.json为例</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 
@@ -301,9 +300,9 @@ f289e56dc36f        registry.cn-hongkong.aliyuncs.com/namespace/demo1:latest    
 </div>
 </div>
 <div class="section" id="id4">
-<h2>2.4. 脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.4. </span>脚本说明<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id5">
-<h3>2.4.1. 变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.4.1. </span>变量获取脚本<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <p>如果使用默认latest标签发布docker项目，一个工单可以只关联一个项目，也可以通过项目变量获取脚本关联多个项目</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -h</span>
 usage: var_json_keys.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-k <span class="o">[</span>keyword1<span class="p">|</span>keyword2<span class="o">]]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev<span class="o">]]</span>
@@ -327,7 +326,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="id6">
-<h3>2.4.2. 主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.4.2. </span>主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
 usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
                              <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
@@ -369,7 +368,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="web">
-<h2>2.5. Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.5. </span>Web模式效果演示<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h2>
 <p>提单页面如下：</p>
 <img alt="image not found" src="../_images/docker_submit.png" />
 <div class="admonition note">
@@ -389,7 +388,7 @@ optional arguments:
 </div>
 </div>
 <div class="section" id="id7">
-<h2>2.6. 命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.6. </span>命令行模式脚本效果演示<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>项目变量获取</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python var_json_keys.py -e prod -k demo</span>
 <span class="o">[</span><span class="s1">&#39;demo1&#39;</span>, <span class="s1">&#39;demo2&#39;</span><span class="o">]</span>
@@ -441,9 +440,9 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div>
 </div>
 <div class="section" id="id8">
-<h2>2.7. 最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.7. </span>最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
 <div class="section" id="id9">
-<h3>2.7.1. 步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.1. </span>步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic">
 <li><p>安装</p></li>
@@ -464,7 +463,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="id10">
-<h3>2.7.2. 安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.2. </span>安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>官方插件与ansible服务器安装在同一台服务器上；</p></li>
@@ -474,7 +473,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="id11">
-<h3>2.7.3. 配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.3. </span>配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
 复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
 具体配置参数，参考配置文件说明章节
@@ -482,15 +481,15 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div>
 </div>
 <div class="section" id="id12">
-<h3>2.7.4. docker镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.4. </span>docker镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
 <p>完成目标服务器到docker镜像仓库认证</p>
 </div>
 <div class="section" id="id13">
-<h3>2.7.5. 项目变量获取脚本检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.5. </span>项目变量获取脚本检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
 </div>
 <div class="section" id="id14">
-<h3>2.7.6. 主任务脚本功能检查<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.6. </span>主任务脚本功能检查<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><p>#.使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。
 #.依次使用update inquiry restart rollback 简易模式验证其他模式是否工作正常
@@ -498,7 +497,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="skstack-web">
-<h3>2.7.7. Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.7.7. </span>Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
 <p id="user-vars">1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：group1
  变量表单标签名字：Project
@@ -562,7 +561,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
         <a href="git_deploy.html" class="btn btn-neutral float-right" title="3. Git静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview.html" class="btn btn-neutral float-left" title="1. 概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="1. 基础概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
