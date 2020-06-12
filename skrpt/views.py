@@ -112,12 +112,13 @@ def index(request):
 
 
     #工单执行数统计
-    weekoffset = datetime.datetime.now().weekday()
+    weekoffset = datetime.datetime.now().weekday() + 2
     datelist = []
     datelisttemp = []
     for i in range(5):
         weekstartday = (datetime.datetime.now() - datetime.timedelta(days=weekoffset))
-        datelist.append(weekstartday.strftime("%Y%m%d"))
+        weekendday = weekstartday + datetime.timedelta(days=6)
+        datelist.append(weekendday.strftime("%Y%m%d"))
         datelisttemp.append(weekstartday.strftime("%Y-%m-%d"))
         weekoffset = weekoffset + 7
     datelist.reverse()
@@ -136,6 +137,7 @@ def index(request):
             envdictnum['name'] = eename
             startdate = datetime.datetime.strptime(start,"%Y-%m-%d").date()
             enddate = startdate + datetime.timedelta(days=6)
+
             numdate = WorkOrderFlow.objects.filter(finished_at__gte=startdate,finished_at__lte=enddate,env=eename).count()
             vauledate.append(numdate)
         vauledate.reverse()
