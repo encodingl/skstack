@@ -75,6 +75,7 @@ def get_dir(args):
         config.readfp(cfgfile)
         log_path = config.get('log', 'log_path')
         log_level = config.get('log', 'log_level')
+        a_path = config.get('config', 'ansible_path')
 
  
 
@@ -82,6 +83,8 @@ def get_dir(args):
         return log_path
     if args == "log_level":
         return log_level
+    if args == "a_path":
+        return a_path
 
 
 

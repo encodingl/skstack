@@ -135,17 +135,20 @@
  			 </li>		
           
 
- 			
- 			 
-          
-            <li  id = "config" style="display: none">
-	          <a href="{% url 'config' %}">
-	            <i class="fa fa-cog"></i> <span>系统配置</span>
-	          </a>
- 			 </li>
-
         
+			<li class="treeview"  id = "skaccounts" style="display: none">
+	          <a href="#">
+	            <i class="fa fa-cog"></i> <span>系统配置</span>
+	            <span class="pull-right-container">
+	              <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
 
+				<ul class="treeview-menu" >
+		            <li style="display: none"><a href="{% url 'config' %}">  <i class="fa fa-circle-o"></i> 日志配置</a></li>
+		            <li style="display: none"><a href="{% url 'inventories' %}">  <i class="fa fa-circle-o"></i> ANSIBLE</a></li>
+	 			</ul>
+             </li>
         </ul>
     </section>
     

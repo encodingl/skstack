@@ -185,14 +185,18 @@ def WorkOrderFlow_background_detail(request):
     task_id = request.GET.get('task_id', '')  
     obj = get_object(TaskResult, task_id=task_id) 
     obj2 = get_object(WorkOrderFlow, celery_task_id=task_id)
-    time_now = datetime.now()
-    celery_schedule_time = obj2.celery_schedule_time
+    
+    
     
     if not obj:
         if  obj2:
             if obj2.back_exe_enable == True:
                 tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
+            elif obj2.auto_exe_enable == True:
+                tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
             elif obj2.status == "CREATED" or obj2.status == "PENDING"  :
+                celery_schedule_time = obj2.celery_schedule_time
+                time_now = datetime.now()
                 if time_now > celery_schedule_time:
                     tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
                 else:
