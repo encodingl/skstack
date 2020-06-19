@@ -123,9 +123,9 @@ def WorkOrderFlow_background_history(request):
             #obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=False)
             obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
                                             LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
-                                            where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
+                                            where a.created_at between %s and %s and a.env=%s and \
                                             (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
-                                            params=[from_date,to_date,request.user,e.name_english])
+                                            params=[from_date,to_date,e.name_english])
             tpl_dic_obj[e.name_english]=obj
     else:
 
