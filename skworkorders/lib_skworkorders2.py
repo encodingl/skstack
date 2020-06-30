@@ -194,6 +194,13 @@ class WorkOrdkerFlowTask(RedisLock):
             self.request.websocket.send(msg)
             self.log("error", content_str)
             self.unlock()
+    
+    def manual_task_revoke(self):
+        obj_finished_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+        self.obj.status="9"
+        self.obj.finished_at = obj_finished_at
+        self.obj.save()
+        self.unlock()
             
 
 class PreTask(RedisLock):

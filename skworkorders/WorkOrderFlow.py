@@ -154,13 +154,11 @@ def WorkOrderFlow_revoke(request):
     login_user = request.user
     WorkOrderFlow_id = request.GET.get('id', '')
     t01 =  WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
-    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
     if WorkOrderFlow_id:
         if t01.obj.celery_task_id:
             t01.celery_task_revoke()
         else:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="9",finished_at=time_now)
+            t01.manual_task_revoke()
         return HttpResponse('successful')
     else:
         return HttpResponse('the WorkOrderFlow_id didnot exist')
