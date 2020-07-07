@@ -10,7 +10,6 @@ from celery import shared_task
 from skworkorders.lib_skworkorders import var_change2
 import subprocess
 import json
-import yaml
 import logging
 from lib.lib_fabric import ssh_cmd_back
 log = logging.getLogger('skworkorders')

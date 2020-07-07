@@ -123,9 +123,9 @@ def WorkOrderFlow_background_history(request):
             #obj = WorkOrderFlow.objects.filter(env=e.name_english,created_at__range=(from_date,to_date),celery_task_id__isnull=False)
             obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
                                             LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
-                                            where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
+                                            where a.created_at between %s and %s and a.env=%s and \
                                             (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
-                                            params=[from_date,to_date,request.user,e.name_english])
+                                            params=[from_date,to_date,e.name_english])
             tpl_dic_obj[e.name_english]=obj
     else:
 
@@ -136,9 +136,9 @@ def WorkOrderFlow_background_history(request):
         for e in tpl_env:
             obj = WorkOrderFlow.objects.raw("select a.id,a.title,a.status,b.status as b_status from skworkorders_workorderflow as a \
                                             LEFT JOIN django_celery_results_taskresult as b ON a.celery_task_id = b.task_id \
-                                            where a.created_at between %s and %s and a.user_commit=%s and a.env=%s and \
+                                            where a.created_at between %s and %s and a.env=%s and \
                                             (a.celery_task_id is not NUll or a.auto_exe_enable=True)",\
-                                            params=[from_date,current_date,request.user,e.name_english])
+                                            params=[from_date,current_date,e.name_english])
            
             tpl_dic_obj[e.name_english]=obj
     
@@ -154,13 +154,11 @@ def WorkOrderFlow_revoke(request):
     login_user = request.user
     WorkOrderFlow_id = request.GET.get('id', '')
     t01 =  WorkOrdkerFlowTask(WorkOrderFlow_id,login_user,request)
-    time_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
     if WorkOrderFlow_id:
         if t01.obj.celery_task_id:
             t01.celery_task_revoke()
         else:
-            WorkOrderFlow.objects.filter(id=WorkOrderFlow_id).update(status="9",finished_at=time_now)
+            t01.manual_task_revoke()
         return HttpResponse('successful')
     else:
         return HttpResponse('the WorkOrderFlow_id didnot exist')
@@ -185,14 +183,18 @@ def WorkOrderFlow_background_detail(request):
     task_id = request.GET.get('task_id', '')  
     obj = get_object(TaskResult, task_id=task_id) 
     obj2 = get_object(WorkOrderFlow, celery_task_id=task_id)
-    time_now = datetime.now()
-    celery_schedule_time = obj2.celery_schedule_time
+    
+    
     
     if not obj:
         if  obj2:
             if obj2.back_exe_enable == True:
                 tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
+            elif obj2.auto_exe_enable == True:
+                tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
             elif obj2.status == "CREATED" or obj2.status == "PENDING"  :
+                celery_schedule_time = obj2.celery_schedule_time
+                time_now = datetime.now()
                 if time_now > celery_schedule_time:
                     tpl_celery_task_status = "任务已结束，任务队列结果已清理，执行结果日志请查看celery日志"
                 else:

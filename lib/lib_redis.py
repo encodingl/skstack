@@ -3,6 +3,7 @@
 import os
 import redis
 from lib.lib_config import get_redis_config
+
 def redis_subscribe():
     rc = redis.Redis(host='127.0.0.1',password='redis0619')
     ps = rc.pubsub()
@@ -31,7 +32,7 @@ class RedisLock():
             else:
                 return False
         except:
-            return Error
+            return "redis.conn.get error"
         
     def test(self,tchn):
         return self.conn.get(tchn)
