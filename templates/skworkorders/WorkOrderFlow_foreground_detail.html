@@ -54,17 +54,7 @@ $(document).ready(function(){
 </script>
 
 
-<script type="text/javascript">
-        var index = parent.layer.getFrameIndex(window.name);
-        var success = {{ status }};
-        if ( success == '1' ) {
-            parent.$("#handle_status").val('1');
-            parent.layer.close(index);
-        } else if( success == '2' ) {
-            parent.$("#handle_status").val('2');
-            parent.layer.close(index);
-        }
-</script>
+
 <script>
 var demo1 = $('select[name="user_dep"]').bootstrapDualListbox({
       nonSelectedListLabel: '可选',

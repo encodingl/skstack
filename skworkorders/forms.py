@@ -143,6 +143,7 @@ class WorkOrderFlow_detail_form(forms.ModelForm):
             'env': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'desc': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
             'user_vars': forms.Textarea(attrs={'class': 'form-control','readonly':True}),
+            'created_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'audit_level': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'user_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'comment_l1': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
@@ -156,7 +157,6 @@ class WorkOrderFlow_detail_form(forms.ModelForm):
             'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'celery_task_id': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'celery_schedule_time': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
-            'finished_at': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'back_exe_enable': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
             'auto_exe_enable': forms.TextInput(attrs={'class': 'form-control','readonly':True}),
 
