@@ -86,7 +86,7 @@
 					<a class="toggle-vis" data-column="2">参数</a> - 
 					<a class="toggle-vis" data-column="3">分类</a> - 
 					<a class="toggle-vis" data-column="4">申请人</a> - 
-					<a class="toggle-vis" data-column="5">完成时间</a>
+					<a class="toggle-vis" data-column="5">提单时间</a>
 				</div> 
                       </tr>
                         <tr>
@@ -101,7 +101,7 @@
                                    
                                  
                                  
-                                    <th>完成时间</th> 
+                                    <th>提单时间</th> 
                                     <th>当前状态</th>       
                                     <th class="text-center">功能</th>                            
                                 </tr>
@@ -121,7 +121,7 @@
                                        <td>{{ x.user_commit }}</td>
                                      
                                      
-                                        <td>{{ x.finished_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ x.created_at|date:"Y-m-d H:i:s" }}</td>
                                         <td xstatus={{ x.status }} xlevel={{x.audit_level}}>
                                         	  {% if x.status == "3" %}
                                                 <span class="label label-success">{{ x|displayName:'status' }}</span>
