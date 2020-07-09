@@ -106,3 +106,7 @@ def get_ansible_config(args):
 
     if args == "inventory":
         return inventory
+def flower(request):
+    flower_url = settings.FLOWER_URL
+    #print(flower_url)
+    return render(request, "skconfig/flower.html", {'flower_url':flower_url},locals())
