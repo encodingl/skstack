@@ -10,6 +10,8 @@ from django.contrib.auth import get_user_model
 import logging
 from lib.log import dic
 from lib.com import config, configfile
+from django.conf import settings
+
 
 
 @login_required()
