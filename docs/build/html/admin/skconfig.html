@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6. 加入我们 &mdash; SKSTACK v202006 文档</title>
+  <title>3. 系统管理 &mdash; SKSTACK v202006 文档</title>
   
 
   
@@ -36,7 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="prev" title="5. 开发人员介绍" href="author_info.html" /> 
+    <link rel="next" title="1. 基础概念" href="../plugins/overview.html" />
+    <link rel="prev" title="2. 工单系统" href="skworkorder.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,10 +89,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/release_info.html">4. 版本更新说明</a></li>
 </ul>
 <p class="caption"><span class="caption-text">用户手册</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin/skconfig.html">3. 系统管理</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="skaccounts.html">1. 用户系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skworkorder.html">2. 工单系统</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. 系统管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ansible-hosts">3.1. ansible hosts索引页</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#celery-flower">3.2. celery flower嵌套页</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
@@ -102,18 +107,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="demodoc.html">1. 文档编写说明和示例</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">2. 插件开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">3. WEB平台开发指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="git_guidelines.html">4. Git开发和版本管理指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="author_info.html">5. 开发人员介绍</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">6. 加入我们</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">6.1. 使用者群</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">6.2. 加入研发项目组</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">6.3. 第三方插件提交</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/demodoc.html">1. 文档编写说明和示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/plugins.html">2. 插件开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/web.html">3. WEB平台开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/git_guidelines.html">4. Git开发和版本管理指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/author_info.html">5. 开发人员介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/join_us.html">6. 加入我们</a></li>
 </ul>
 
             
@@ -159,13 +159,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li><span class="section-number">6. </span>加入我们</li>
+      <li><span class="section-number">3. </span>系统管理</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/dev/join_us.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/admin/skconfig.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -179,18 +179,39 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">6. </span>加入我们<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<div class="section" id="id2">
-<h2><span class="section-number">6.1. </span>使用者群<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<p>暂未开放</p>
+<h1><span class="section-number">3. </span>系统管理<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="ansible-hosts">
+<h2><span class="section-number">3.1. </span>ansible hosts索引页<a class="headerlink" href="#ansible-hosts" title="永久链接至标题">¶</a></h2>
+<p>配置文件：skstack_$evn.conf   配置参数如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">config</span><span class="p">]</span>
+<span class="n">ansible_path</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ansible</span><span class="o">/</span>
+</pre></div>
 </div>
-<div class="section" id="id3">
-<h2><span class="section-number">6.2. </span>加入研发项目组<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
-<p>暂未开放</p>
+<img alt="image not found" src="../_images/skconfig_ansible.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>该页面会显示skstack web系统所在服务器 ansible目录下 所有以hosts字符串命名的文件主机索引，如hosts、hosts-prod这种命名</p></li>
+<li><p>快速索引，便于快速跳转到以某个字母开头的ansible hosts group位置。</p></li>
+<li><p>展开ansible group折叠页面，可以看到改ansible hosts group下的主机清单</p></li>
+</ol>
 </div>
-<div class="section" id="id4">
-<h2><span class="section-number">6.3. </span>第三方插件提交<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
-<p>暂未开放</p>
+</div>
+<div class="section" id="celery-flower">
+<h2><span class="section-number">3.2. </span>celery flower嵌套页<a class="headerlink" href="#celery-flower" title="永久链接至标题">¶</a></h2>
+<p>配置：skstack_$evn.conf  配置参数如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">flower</span><span class="p">]</span>
+<span class="n">flower_url</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ip</span><span class="p">:</span><span class="mi">5555</span><span class="o">/</span><span class="n">dashboard</span>
+</pre></div>
+</div>
+<img alt="image not found" src="../_images/skconfig_flower.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>#flower初始启动地址和端口 详见skstack/start_celery.sh脚本</p></li>
+<li><p>该url必须浏览器可以直接访问，skstack web通过嵌套页面访问flower</p></li>
+</ol>
+</div>
 </div>
 </div>
 
@@ -202,8 +223,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../plugins/overview.html" class="btn btn-neutral float-right" title="1. 基础概念" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="author_info.html" class="btn btn-neutral float-left" title="5. 开发人员介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="skworkorder.html" class="btn btn-neutral float-left" title="2. 工单系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

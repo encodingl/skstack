@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. Docker部署插件使用指南 &mdash; SKSTACK v0.1 文档</title>
+  <title>2. Docker部署插件使用指南 &mdash; SKSTACK v202006 文档</title>
   
 
   
@@ -92,6 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../admin/skaccounts.html">1. 用户系统</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin/skworkorder.html">2. 工单系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/skconfig.html">3. 系统管理</a></li>
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul class="current">
@@ -107,14 +108,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#web">2.5. Web模式效果演示</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id7">2.6. 命令行模式脚本效果演示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">2.7. 最佳实践</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">2.7.1. 步骤概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">2.7.2. 安装</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">2.7.3. 配置文件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">2.7.4. docker镜像仓库认证</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">2.7.5. 项目变量获取脚本检查</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">2.7.6. 主任务脚本功能检查</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#skstack-web">2.7.7. Skstack Web工单系统配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">2.7. 日志文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">2.8. 最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.8.1. 步骤概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">2.8.2. 安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.8.3. 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.8.4. docker镜像仓库认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">2.8.5. 项目变量获取脚本检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">2.8.6. 主任务脚本功能检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#skstack-web">2.8.7. Skstack Web工单系统配置</a></li>
 </ul>
 </li>
 </ul>
@@ -221,6 +223,12 @@ update_hard：版本更新强制模式，过程如下：
         1. 下载镜像
         2. 停止服务
         3. 启动新镜像；hard模式用于常规update模式无法更新或者第一次发布服务的情况。
+
+stop_soft：优雅停服模式，过程如下：
+
+        1. 从eureka注销服务（未使用eureka则跳过该步骤）；
+        2. 等待eureka刷新缓存（未使用eureka则跳过该步骤） ；
+        3. 停止服务 ；
 </pre></div>
 </div>
 <div class="admonition note">
@@ -329,10 +337,11 @@ optional arguments:
 <h3><span class="section-number">2.4.2. </span>主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
 usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
-                             <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
-                             <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
-                             <span class="o">[</span>-w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]]</span>
-                             <span class="o">[</span>-m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]]</span>
+                     <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
+                     <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
+                     <span class="o">[</span>-w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]]</span>
+                     <span class="o">[</span>-m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]]</span>
+                     <span class="o">[</span>-c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]]</span>
 
 version <span class="m">2</span>.0.0
 
@@ -350,8 +359,11 @@ optional arguments:
   -w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>, --WaitTimes <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>
                         input securyty <span class="nb">wait</span> <span class="nb">times</span> <span class="k">for</span> rolling update
                         <span class="nv">default</span><span class="o">=</span>60s
-  -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="o">]</span>
+  -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>
                         input the execution mode you need
+  -c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>, --CheckTime <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>
+                        input the max check time<span class="o">(</span>Unit:seconds<span class="o">)</span> you need,the
+                        default is <span class="m">120</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -363,6 +375,7 @@ optional arguments:
 <li><p>-a 指定项目所在的目标主机，若为空则读取ansbile hosts文件中 与项目名一致的group。</p></li>
 <li><p>-w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用</p></li>
 <li><p>-m 指定执行模式，执行模式描述详见概述部分内容</p></li>
+<li><p>-c 指定健康监测最大等待时间，超时未监测到eureka中服务注册将会报错，并提示任务执行失败。</p></li>
 </ol>
 </div>
 </div>
@@ -435,14 +448,24 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 <li><p>restart简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m restart</p></li>
 <li><p>inquiry简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m inquiry</p></li>
 <li><p>rollback简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m rollback</p></li>
-<li><p>update_hard]简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update_hard]</p></li>
+<li><p>update_hard简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update_hard</p></li>
+<li><p>stop_soft简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m stop_soft</p></li>
 </ol>
 </div>
 </div>
 <div class="section" id="id8">
-<h2><span class="section-number">2.7. </span>最佳实践<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<h2><span class="section-number">2.7. </span>日志文件说明<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>日志路径：详见skstack_plugins/conf_pub/$env.json log_path key定义</p></li>
+<li><p>志文件命名规范：一个任务产生一个日志文件:插件名称.log.任务开始执行的时间戳。  例如： pl_deploy_docker.log.20200707.190245.412792</p></li>
+</ol>
+</div></blockquote>
+</div>
 <div class="section" id="id9">
-<h3><span class="section-number">2.7.1. </span>步骤概述<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<h2><span class="section-number">2.8. </span>最佳实践<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id10">
+<h3><span class="section-number">2.8.1. </span>步骤概述<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic">
 <li><p>安装</p></li>
@@ -462,8 +485,8 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="id10">
-<h3><span class="section-number">2.7.2. </span>安装<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id11">
+<h3><span class="section-number">2.8.2. </span>安装<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>官方插件与ansible服务器安装在同一台服务器上；</p></li>
@@ -472,24 +495,24 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="id11">
-<h3><span class="section-number">2.7.3. </span>配置文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id12">
+<h3><span class="section-number">2.8.3. </span>配置文件<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如生产环境代号prod 准生产环境为stage，可以为每个环境单独准备一份配置文件；
 复制demo.json生成两个配置文件：prod_conf.json  stage_conf.json。配置文件必须以_conf.json 结尾，否则插件库中的脚本不会识别
 具体配置参数，参考配置文件说明章节
 </pre></div>
 </div>
 </div>
-<div class="section" id="id12">
-<h3><span class="section-number">2.7.4. </span>docker镜像仓库认证<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id13">
+<h3><span class="section-number">2.8.4. </span>docker镜像仓库认证<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
 <p>完成目标服务器到docker镜像仓库认证</p>
 </div>
-<div class="section" id="id13">
-<h3><span class="section-number">2.7.5. </span>项目变量获取脚本检查<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id14">
+<h3><span class="section-number">2.8.5. </span>项目变量获取脚本检查<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
 <p>使用项目变量获取脚本检查是否可以获取到指定关键字项目列表，详见命令行模式脚本效果演示章节</p>
 </div>
-<div class="section" id="id14">
-<h3><span class="section-number">2.7.6. </span>主任务脚本功能检查<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id15">
+<h3><span class="section-number">2.8.6. </span>主任务脚本功能检查<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
 <blockquote>
 <div><p>#.使用主任务脚本update_hard简易执行模式验证是否可以正常发布，第一次发布必须使用update_hard模式，以跳过eureka健康检查和优雅关闭步骤。
 #.依次使用update inquiry restart rollback 简易模式验证其他模式是否工作正常
@@ -497,7 +520,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 </div></blockquote>
 </div>
 <div class="section" id="skstack-web">
-<h3><span class="section-number">2.7.7. </span>Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.8.7. </span>Skstack Web工单系统配置<a class="headerlink" href="#skstack-web" title="永久链接至标题">¶</a></h3>
 <p id="user-vars">1 注册工单可选变量并校验，需要配置两个可选变量，参数配置如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 变量名：group1
  变量表单标签名字：Project
@@ -542,7 +565,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 后置任务：留空
 是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
 审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
-其余选项：暂未上线，不勾选
+其余选项：参考用户手册》工单配置；选择是否使用开启其他附加功能
 配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
 </pre></div>
 </div>

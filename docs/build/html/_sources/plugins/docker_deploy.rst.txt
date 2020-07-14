@@ -31,6 +31,12 @@ docker部署插件，主要用于docker类项目部署、回滚、重启和版�
 		1. 下载镜像   
 		2. 停止服务 
 		3. 启动新镜像；hard模式用于常规update模式无法更新或者第一次发布服务的情况。
+		
+	stop_soft：优雅停服模式，过程如下：
+	
+		1. 从eureka注销服务（未使用eureka则跳过该步骤）；
+		2. 等待eureka刷新缓存（未使用eureka则跳过该步骤） ；
+		3. 停止服务 ；
 
 .. note::
 	  #. 部署方式：多个节点情况下为滚动更新；
@@ -146,11 +152,12 @@ demo.json为例
 
 	(skstack) [root@localhost pl_deploy_docker]# python main_docker_deploy.py -h
 	usage: main_docker_deploy.py [-h] [-e [prod|stage|dev...]]
-	                             [-p [proj01|proj02|...]] [-t [v0.1.0|latest|...]]
-	                             [-a [192.168.1.22|AnsbileHostsName|...]]
-	                             [-w [3s|1m|...]]
-	                             [-m [update|restart|inquiry|rollback|update_hard]]
-	
+                             [-p [proj01|proj02|...]] [-t [v0.1.0|latest|...]]
+                             [-a [192.168.1.22|AnsbileHostsName|...]]
+                             [-w [3s|1m|...]]
+                             [-m [update|restart|inquiry|rollback|update_hard|stop_soft]]
+                             [-c [10|60]]
+
 	version 2.0.0
 	
 	optional arguments:
@@ -167,8 +174,12 @@ demo.json为例
 	  -w [3s|1m|...], --WaitTimes [3s|1m|...]
 	                        input securyty wait times for rolling update
 	                        default=60s
-	  -m [update|restart|inquiry|rollback|update_hard], --ExecMode [update|restart|inquiry|rollback|update_hard]
+	  -m [update|restart|inquiry|rollback|update_hard|stop_soft], --ExecMode [update|restart|inquiry|rollback|update_hard|stop_soft]
 	                        input the execution mode you need
+	  -c [10|60], --CheckTime [10|60]
+	                        input the max check time(Unit:seconds) you need,the
+	                        default is 120
+	
 	
 .. note::
 	  #. -e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例
@@ -177,6 +188,7 @@ demo.json为例
 	  #. -a 指定项目所在的目标主机，若为空则读取ansbile hosts文件中 与项目名一致的group。
 	  #. -w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用
 	  #. -m 指定执行模式，执行模式描述详见概述部分内容
+	  #. -c 指定健康监测最大等待时间，超时未监测到eureka中服务注册将会报错，并提示任务执行失败。
 ..	
 
 
@@ -254,7 +266,14 @@ Web模式效果演示
 	  #. restart简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m restart
 	  #. inquiry简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m inquiry
 	  #. rollback简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m rollback
-	  #. update_hard]简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update_hard]
+	  #. update_hard简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m update_hard
+	  #. stop_soft简易执行模式：python main_docker_deploy.py -e stage -p demo1 -m stop_soft
+
+日志文件说明
+--------------------------------
+
+ #. 日志路径：详见skstack_plugins/conf_pub/$env.json log_path key定义
+ #. 志文件命名规范：一个任务产生一个日志文件:插件名称.log.任务开始执行的时间戳。  例如： pl_deploy_docker.log.20200707.190245.412792
 
 
 最佳实践
@@ -364,7 +383,7 @@ Skstack Web工单系统配置
 	后置任务：留空
 	是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
 	审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
-	其余选项：暂未上线，不勾选
+	其余选项：参考用户手册》工单配置；选择是否使用开启其他附加功能
 	配置中心：若skstack_plugins插件库和skstack web平台不在同一台服务器此处需要选择插件库所在的服务器，默认为空表示，插件库和skstack web工单系统共用一个操作系统实例
 
 	 
