@@ -22,7 +22,7 @@ copyright = '2019, encodingl@sina.com'
 author = 'encodingl@sina.com'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.1'
+release = 'v202006'
 
 
 # -- General configuration ---------------------------------------------------

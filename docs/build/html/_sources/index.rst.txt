@@ -65,6 +65,7 @@ SKSTACK |version| documentation
 	
 	admin/skaccounts
 	admin/skworkorder
+	admin/skconfig
 
    
 :doc:`admin/skaccounts`
@@ -73,10 +74,12 @@ SKSTACK |version| documentation
 
 :doc:`admin/skworkorder`
 
-    | 工单系统针对管理员介绍版本发布管理，工单插件、变量、交互界面配置；
+    | 工单系统针针对管理员角色介绍版本发布管理，工单插件、变量、交互界面配置等；
     | 针对使用者介绍提单、审核、执行、历史查看各环节使用说明
 
+:doc:`admin/skconfig`
 
+    系统配置模块介绍ansible hosts索引页面、celery-flower定时任务监控页面配置和查看
 
 插件使用手册
 ====================================

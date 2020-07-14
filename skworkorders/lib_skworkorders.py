@@ -204,6 +204,7 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     while True:
                         for line in iter(pcmd.stdout.readline,b''):
                             line = str(line, encoding='utf-8').replace('\n', "\n\r");
+                            log.info("cmd_result:%s" % line)
                             request.websocket.send(json.dumps(line,ensure_ascii=False).encode('utf-8'))
                         if pcmd.poll() is not None:
                             break  

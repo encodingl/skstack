@@ -375,3 +375,5 @@ LOGGING = {
 #     },
 # }
 
+# FLOWER URL GET
+FLOWER_URL = config.get('flower', 'flower_url')
