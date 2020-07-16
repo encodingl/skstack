@@ -216,6 +216,7 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
                     return 1
 
                 retcode=pcmd.wait()
+                log.info("pcmd.retcode:%s"  % retcode )
                
                 if retcode==0:
                     ret_message="INFO %s: succesfull \n\r" % taskname
