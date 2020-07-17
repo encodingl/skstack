@@ -1,4 +1,4 @@
-基础概念
+概述和安装
 ==============================
 
 概述
@@ -32,7 +32,8 @@
 
 安装步骤
 --------------------------------
-#. 下载插件库：git clone <skstack_plugins_git_url>
+#. 插件地址：https://github.com/encodingl/skstack_plugins
+#. 下载插件库：git clone git@github.com:encodingl/skstack_plugins.git
 #. 安装python 虚拟机：略。tips：若已安装skstack web系统，请忽略该步骤，直接使用skstack web平台的python虚拟机即可
 #. 安装依赖库：切换到skstack python虚拟机执行 pip install -r requirements.txt
 

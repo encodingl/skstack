@@ -35,6 +35,7 @@ SKSTACK |version| documentation
  * 仪表盘：统计工单、用户相关数据统计
  * 工单系统：工单提交、审核、发布、审计
  * 用户系统：用户和菜单角色管理，工单授权、审核流程管理
+ * 系统管理：管理员使用ansible hosts索引、后台任务监控
 
 
 :doc:`intro/install`
@@ -115,7 +116,7 @@ SKSTACK |version| documentation
 
 :doc:`plugins/the_third`
 
-    第三方插件索引,暂未收录
+    第三方插件索引，暂未收录
    
 
 开发者指南
