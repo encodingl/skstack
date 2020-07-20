@@ -175,6 +175,8 @@ def pretask(request):
                     request.websocket.send(msg)
  
                 
+                created_at = datetime.now()
+                message_dic['created_at'] = created_at
                 pt01 = PreTask(WorkOrder_id,request,message_dic)
                 if pt01.permission_submit_pass() == True:
                     if pt01.task_lock_pass():

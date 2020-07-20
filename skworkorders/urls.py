@@ -67,6 +67,7 @@ urlpatterns = [
      url(r'^WorkOrderFlow/history/background/$', WorkOrderFlow.WorkOrderFlow_background_history, name='WorkOrderFlow_background_history'),
      url(r'^WorkOrderFlow/history/detail/background/$', WorkOrderFlow.WorkOrderFlow_background_detail, name='WorkOrderFlow_background_detail'),
      url(r'^WorkOrderFlow/history/detail/foreground/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_foreground_detail, name='WorkOrderFlow_foreground_detail'),
+     url(r'^WorkOrderFlow/history/detail/log/foreground/(?P<ids>\d+)/$', WorkOrderFlow.WorkOrderFlow_foreground_detail_log, name='WorkOrderFlow_foreground_detail_log'),
      
      
 #      url(r'^websocket/$', test_websocket.websocket_index, name='websocket_index'),
