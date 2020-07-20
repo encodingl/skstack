@@ -189,6 +189,7 @@ def WorkOrderFlow_foreground_detail_log(request, ids):
     created_at = obj.created_at.strftime("%Y%m%d.%H%M%S")
     task_name_created = obj.title + '.' + created_at
     logPath = settings.LOG_PATH
+    logPath = settings.SKSTACK_PLUGINS_LOGS_PATH
     workorder_group = obj.workorder_group
     tpl_WorkOrderFlow_form_log = showLog(created_at, task_name_created, logPath, workorder_group)
 
