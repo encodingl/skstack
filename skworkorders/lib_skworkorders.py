@@ -182,6 +182,7 @@ def custom_task(obj_WorkOrder,user_vars_dic,request,taskname):
     obj_sk_vars_dic["sk__env"] = str(obj.env).lower()
     
     
+    obj_sk_vars_dic["sk__task_name_created"] = obj.name + '.'+ user_vars_dic['task_name_created']
     obj2 = get_object(ConfigCenter, id=obj.config_center_id)
     taskname_dic = {"pre_task":obj.pre_task,"main_task":obj.main_task,"post_task":obj.post_task} 
     if taskname_dic[taskname]:       

@@ -254,7 +254,7 @@ CELERY_RESULT_EXPIRES = 99999
 CELERY_ACCEPT_CONTENT = ['json','yaml']
 
 
-log_path = config.get('log', 'log_path')
+LOG_PATH = config.get('log', 'log_path')
    
 LOGGING = {
     'version': 1,
@@ -295,7 +295,7 @@ LOGGING = {
         'default': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skstack.log'),  
+            'filename': os.path.join(LOG_PATH,'skstack.log'),
             'maxBytes': 1024 * 1024 * 5,  
             'backupCount': 5,  
             'formatter': 'standard',  
@@ -311,7 +311,7 @@ LOGGING = {
          'skworkorders_log': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path,'skworkorders.log'),
+            'filename': os.path.join(LOG_PATH,'skworkorders.log'),
             'formatter': 'standard'
         },
             

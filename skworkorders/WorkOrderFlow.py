@@ -29,6 +29,8 @@ from skworkorders.lib_skworkorders2 import WorkOrdkerFlowTask
 from skworkorders.lib_skworkorders import dynamic_column_data
 import logging
 
+from django.conf import settings
+from lib.log import showLog
 
 log = logging.getLogger('skworkorders')
 
@@ -177,6 +179,28 @@ def WorkOrderFlow_foreground_detail(request,ids):
     tpl_WorkOrderFlow_form = WorkOrderFlow_detail_form(instance=obj) 
     return render(request,"skworkorders/WorkOrderFlow_foreground_detail.html", locals())
  
+
+
+@login_required()
+@permission_verify()
+def WorkOrderFlow_foreground_detail_log(request, ids):
+    obj = get_object(WorkOrderFlow, id=ids)
+
+    created_at = obj.created_at.strftime("%Y%m%d.%H%M%S")
+    task_name_created = obj.title + '.' + created_at
+    logPath = settings.LOG_PATH
+    workorder_group = obj.workorder_group
+    tpl_WorkOrderFlow_form_log = showLog(created_at, task_name_created, logPath, workorder_group)
+
+
+    # print(tpl_WorkOrderFlow_form)
+    return render(request, "skworkorders/WorkOrderFlow_foreground_detail_log.html", locals())
+
+
+
+
+
+
 @login_required()
 @permission_verify()
 def WorkOrderFlow_background_detail(request): 

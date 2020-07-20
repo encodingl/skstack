@@ -87,6 +87,8 @@
 					<a class="toggle-vis" data-column="3">分类</a> - 
 					<a class="toggle-vis" data-column="4">申请人</a> - 
 					<a class="toggle-vis" data-column="5">提单时间</a>
+                    <a class="toggle-vis" data-column="6"> 当前状态</a> -
+                    <a class="toggle-vis" data-column="7">日志详情</a>
 				</div> 
                       </tr>
                         <tr>
@@ -104,6 +106,7 @@
                                     <th>提单时间</th> 
                                     <th>当前状态</th>       
                                     <th class="text-center">功能</th>                            
+                                    <th class="id_log">日志详情</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,6 +143,10 @@
                                         </td>
                                         <td class="text-center" id="features" data-editable='false'>
                                         <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail(this.value)" value="{{ x.id }}" id="detail">详情</li></a>
+
+                                        <td class="id_log" id="log" data-editable='false'>
+                                        <a href="#"><li class="btn btn-sm btn-info" onclick="return tanchu_detail_log(this.value)"  value="{{ x.id }} " id="detail">日志</li></a>
+
                     
                                    
                                         
@@ -283,7 +290,19 @@ function tanchu_detail(n){
 }
 </script>
 
+<script>
+function tanchu_detail_log(n){
+    layer.open({
+    type: 2,
+    title: '日志详情',
+    closeBtn: 1,
+    area: ['1000px', '550px'],
+    shadeClose: false, //点击遮罩关闭
+    content: ['/skworkorders/WorkOrderFlow/history/detail/log/foreground/' + n,],
 
+  });
+}
+</script>
 
 
 <script>
