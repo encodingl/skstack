@@ -377,3 +377,7 @@ LOGGING = {
 
 # FLOWER URL GET
 FLOWER_URL = config.get('flower', 'flower_url')
+
+# skstack_plugins logs path
+SKSTACK_PLUGINS_LOGS_PATH = config.get('skstack_plugins', 'log_path')
+print(SKSTACK_PLUGINS_LOGS_PATH)

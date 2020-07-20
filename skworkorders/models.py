@@ -166,7 +166,7 @@ class WorkOrderFlow(models.Model):
     env = models.CharField("环境",max_length=50,null=True,blank=True)
     status = models.CharField("状态", choices=WorkOrderFlow_STATUS, max_length=30, null=True, blank=True)
     user_vars = models.CharField("选定参数",max_length=300,null=True,blank=True)
-    created_at = models.DateTimeField('提单时间', auto_now=True, null=True)
+    created_at = models.DateTimeField('提单时间', null=True)
     audit_level = models.CharField("审核层级",max_length=50,null=True,blank=True)
     user_l1 = models.CharField("l1审核用户",max_length=50,null=True,blank=True)
     comment_l1 = models.CharField("l1审核意见",max_length=100,null=True,blank=True)

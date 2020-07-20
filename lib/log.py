@@ -28,7 +28,7 @@ def log(log_name, level="info", path=None):
     return logging.basicConfig
 
 def showLog(created_at, task_name_created, logPath, workorder_group):
-    if workorder_group== 'DeployDocker':
+    if workorder_group == 'DeployDocker':
         dockerLogPath = logPath + '/pl_deploy_docker.log.' + task_name_created
         dockerLogPathBak = logPath + 'bak' + '/pl_deploy_docker.log.' + task_name_created
         if os.path.exists(dockerLogPath):
