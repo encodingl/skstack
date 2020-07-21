@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from skstack.settings import BASE_DIR
+import os
 
 dic = {"debug": logging.DEBUG,
        "warning": logging.WARNING,
@@ -25,3 +26,22 @@ def log(log_name, level="info", path=None):
                 filename=log_path+log_name,
                 filemode='a+')
     return logging.basicConfig
+
+def showLog(created_at, task_name_created, logPath, workorder_group):
+    if workorder_group == 'DeployDocker':
+        dockerLogPath = logPath + '/pl_deploy_docker.log.' + task_name_created
+        dockerLogPathBak = logPath + 'bak' + '/pl_deploy_docker.log.' + task_name_created
+        if os.path.exists(dockerLogPath):
+            with open(dockerLogPath, 'r', encoding='UTF-8') as f:
+                # print(f.read())
+                tpl_WorkOrderFlow_form_log = f.read()
+                # print(tpl_WorkOrderFlow_form_log)
+        elif os.path.exists(dockerLogPathBak):
+            with open(dockerLogPathBak, 'r', encoding='UTF-8') as f:
+                tpl_WorkOrderFlow_form_log = f.read()
+        else:
+            tpl_WorkOrderFlow_form_log = "日志文件不存在！！！"
+    else:
+        tpl_WorkOrderFlow_form_log = "非 docker 类型暂时不支持查看日志功能"
+
+    return tpl_WorkOrderFlow_form_log

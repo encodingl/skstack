@@ -210,6 +210,8 @@ class PreTask(RedisLock):
         self.request = request
         
         self.message_dic_format,self.user_vars_dic = format_to_user_vars(**message_dic)
+        task_name_created_str = self.message_dic_format['created_at'].strftime('%Y%m%d.%H%M%S')
+        self.user_vars_dic['task_name_created'] = task_name_created_str
         self.channel_name = str(self.obj.name) + "_" + str(self.obj.env) + "_" + str(self.obj.id) + "_taskcommit_lock"
         try:
             RedisLock.__init__(self, self.channel_name)
