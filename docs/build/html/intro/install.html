@@ -301,12 +301,14 @@
 
 <span class="p">[</span><span class="n">config</span><span class="p">]</span>
 <span class="n">ansible_path</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ansible</span><span class="o">/</span>  <span class="c1">#ansible配置主目录</span>
+
+<span class="p">[</span><span class="n">celery</span><span class="p">]</span> <span class="c1">#celery任务配置项 用于定时任务</span>
+<span class="n">celery_broker_url</span> <span class="o">=</span> <span class="n">redis</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">6389</span><span class="o">/</span><span class="mi">5</span>  <span class="c1">#celery使用redis，可以和任务锁使用同一个redis实例的不同db</span>
+
+<span class="p">[</span><span class="n">flower</span><span class="p">]</span> <span class="c1">#celery flower外链地址，后续release版本将整合到[celery]下</span>
+<span class="n">flower_url</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ip</span><span class="p">:</span><span class="mi">5555</span><span class="o">/</span><span class="n">dashboard</span>
 </pre></div>
 </div>
-<p>[celery] #celery任务配置项 用于定时任务
-celery_broker_url = redis://localhost:6389/5  #celery使用redis，可以和任务锁使用同一个redis实例的不同db</p>
-<p>[flower] #celery flower外链地址，后续release版本将整合到[celery]下
-flower_url = <a class="reference external" href="http://ip:5555/dashboard">http://ip:5555/dashboard</a></p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <p>skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件</p>
