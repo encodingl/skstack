@@ -109,11 +109,11 @@
 	[config]
 	ansible_path = /etc/ansible/  #ansible配置主目录
 
-[celery] #celery任务配置项 用于定时任务
-celery_broker_url = redis://localhost:6389/5  #celery使用redis，可以和任务锁使用同一个redis实例的不同db
-
-[flower] #celery flower外链地址，后续release版本将整合到[celery]下
-flower_url = http://ip:5555/dashboard
+	[celery] #celery任务配置项 用于定时任务
+	celery_broker_url = redis://localhost:6389/5  #celery使用redis，可以和任务锁使用同一个redis实例的不同db
+	
+	[flower] #celery flower外链地址，后续release版本将整合到[celery]下
+	flower_url = http://ip:5555/dashboard
 
 
 .. note::
