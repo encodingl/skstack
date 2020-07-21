@@ -89,10 +89,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#id3">2.2. 安装步骤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#python">2.2.1. 安装python虚拟机</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">2.2.2. 安装源码和依赖包</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">2.2.3. 配置文件修改</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">2.2.4. 建库和初始化数据</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#web">2.2.5. 运行web平台和登录</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">2.2.6. 安装工单系统插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.2.3. 建库和初始化数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#redis">2.2.4. 安装redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.2.5. 配置文件修改</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web">2.2.6. 运行web平台和登录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">2.2.7. 停止web平台</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.2.8. 安装工单系统插件</a></li>
 </ul>
 </li>
 </ul>
@@ -108,7 +110,7 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述和安装</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
@@ -193,7 +195,7 @@
 <ul class="simple">
 <li><p>Python3.7.4</p></li>
 <li><p>Django2.2.5</p></li>
-<li><p>system：windows or linux</p></li>
+<li><p>system：linux、macos、windows</p></li>
 <li><p>生产环境建议：Centos7或以上版本（suggested ）</p></li>
 </ul>
 </div>
@@ -217,10 +219,11 @@
 </div>
 <div class="section" id="id4">
 <h3><span class="section-number">2.2.2. </span>安装源码和依赖包<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>项目地址：<a class="reference external" href="https://github.com/encodingl/skstack">https://github.com/encodingl/skstack</a></p>
 <p>请将服务器端安装在centos7或以上版本</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>git clone $GitUrl/skstack.git</p></li>
+<li><p>git clone <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:encodingl/skstack.git</p></li>
 <li><p>yum install ansible -y</p></li>
 <li><p>yum install smartmontools -y</p></li>
 <li><p>yum install mysql-devel gcc gcc-devel python-devel</p></li>
@@ -231,21 +234,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">2.2.3. </span>配置文件修改<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>cd skstack</p></li>
-<li><p>生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql、redis等信息</p></li>
-<li><p>开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql、redis等信息</p></li>
-</ol>
-</div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">注解</p>
-<p>skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件</p>
-</div>
-</div>
-<div class="section" id="id6">
-<h3><span class="section-number">2.2.4. </span>建库和初始化数据<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.2.3. </span>建库和初始化数据<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
 <p>安装数据库</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -264,6 +253,64 @@
 <li><p>workon skstack 切换到python虚拟机环境</p></li>
 </ol>
 </div></blockquote>
+</div>
+<div class="section" id="redis">
+<h3><span class="section-number">2.2.4. </span>安装redis<a class="headerlink" href="#redis" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>yum install redis</p></li>
+<li><p>systemctl start redis</p></li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>定时任务和任务锁需要使用到redis功能</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">2.2.5. </span>配置文件修改<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>cd skstack</p></li>
+<li><p>生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql、redis等信息</p></li>
+<li><p>开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql、redis等信息</p></li>
+</ol>
+</div></blockquote>
+<p>配置文件说明</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="p">[</span><span class="n">db</span><span class="p">]</span>   <span class="c1">#数据库配置信息</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">mysql</span>
+<span class="n">host</span> <span class="o">=</span> <span class="n">localhost</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">3306</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">ser_skstack</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">IacjV</span><span class="o">+</span><span class="n">HJpQcskqaW1</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">skstack</span>
+
+<span class="p">[</span><span class="n">redis</span><span class="p">]</span>  <span class="c1">#redis配置信息，任务锁功能使用</span>
+<span class="n">host</span> <span class="o">=</span> <span class="n">localhost</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">6389</span>
+<span class="n">db</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">password</span> <span class="o">=</span>
+
+<span class="p">[</span><span class="n">log</span><span class="p">]</span>  <span class="c1">#日志路径和级别配置</span>
+<span class="n">log_path</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">sklogs</span><span class="o">/</span><span class="n">skstack</span><span class="o">/</span>
+<span class="n">log_level</span> <span class="o">=</span> <span class="n">info</span>
+
+<span class="p">[</span><span class="n">setup</span><span class="p">]</span>
+<span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># 是否打开debug模式，建议生产环境设置False，开发者环境使用True</span>
+<span class="n">allowed_hosts</span> <span class="o">=</span> <span class="o">*</span>  <span class="c1">#允许访问web的客户端主机</span>
+
+<span class="p">[</span><span class="n">config</span><span class="p">]</span>
+<span class="n">ansible_path</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ansible</span><span class="o">/</span>  <span class="c1">#ansible配置主目录</span>
+</pre></div>
+</div>
+<p>[celery] #celery任务配置项 用于定时任务
+celery_broker_url = redis://localhost:6389/5  #celery使用redis，可以和任务锁使用同一个redis实例的不同db</p>
+<p>[flower] #celery flower外链地址，后续release版本将整合到[celery]下
+flower_url = <a class="reference external" href="http://ip:5555/dashboard">http://ip:5555/dashboard</a></p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件</p>
+</div>
 <p>初始化数据：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -274,13 +321,28 @@
 </div></blockquote>
 </div>
 <div class="section" id="web">
-<h3><span class="section-number">2.2.5. </span>运行web平台和登录<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h3>
-<p>python manage.py runserver 0.0.0.0:8000</p>
+<h3><span class="section-number">2.2.6. </span>运行web平台和登录<a class="headerlink" href="#web" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>workon skstack #切换python虚拟机环境</p></li>
+<li><p>./start_web.sh #启动web</p></li>
+<li><p>./start_celery.sh #启动celery相关任务 ，若不使用定时任务功能，该脚本不需要执行</p></li>
+</ol>
+</div></blockquote>
 <p>登录页面</p>
 <a class="reference internal image-reference" href="../_images/login.png"><img alt="image not found" src="../_images/login.png" style="width: 800px; height: 450px;" /></a>
 </div>
 <div class="section" id="id7">
-<h3><span class="section-number">2.2.6. </span>安装工单系统插件<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<h3><span class="section-number">2.2.7. </span>停止web平台<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>./stop_web.sh #停止web</p></li>
+<li><p>./stop_celery.sh #停止celery相关任务</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">2.2.8. </span>安装工单系统插件<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
 <p>详见各插件安装使用说明文档</p>
 </div>
 </div>

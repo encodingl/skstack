@@ -7,7 +7,7 @@
 
 * Python3.7.4
 * Django2.2.5 
-* system：windows or linux 
+* system：linux、macos、windows
 * 生产环境建议：Centos7或以上版本（suggested ）
 
  
@@ -30,9 +30,11 @@
 安装源码和依赖包
 ~~~~~~~~~~~~~~~~~~~~~~
 
+项目地址：https://github.com/encodingl/skstack
+
 请将服务器端安装在centos7或以上版本
 
- #. git clone $GitUrl/skstack.git
+ #. git clone git@github.com:encodingl/skstack.git
  #. yum install ansible -y
  #. yum install smartmontools -y
  #. yum install mysql-devel gcc gcc-devel python-devel
@@ -41,16 +43,7 @@
  #. pip install -r requirements.txt
 
 
-配置文件修改
-~~~~~~~~~~~~~~~~~~~~~~
 
- #. cd skstack
- #. 生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql、redis等信息
- #. 开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql、redis等信息
- 
-.. note::
-	  skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件
-..
 
 建库和初始化数据
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -71,6 +64,62 @@
 
  #. workon skstack 切换到python虚拟机环境
 
+安装redis
+~~~~~~~~~~~~~~~~~~~~~~
+
+ #. yum install redis
+ #. systemctl start redis
+
+.. note::
+	  定时任务和任务锁需要使用到redis功能
+..
+
+配置文件修改
+~~~~~~~~~~~~~~~~~~~~~~
+
+ #. cd skstack
+ #. 生产环境：cp skstack_demo.conf skstack_prod.conf;编辑skstack_prod.conf文件填写mysql、redis等信息
+ #. 开发环境：cp skstack_demo.conf skstack_dev.conf;编辑skstack_dev.conf文件填写mysql、redis等信息
+ 
+配置文件说明 
+::
+
+	 [db]   #数据库配置信息
+	engine = mysql
+	host = localhost
+	port = 3306
+	user = ser_skstack
+	password = IacjV+HJpQcskqaW1
+	database = skstack
+	
+	[redis]  #redis配置信息，任务锁功能使用
+	host = localhost
+	port = 6389
+	db = 7
+	password =
+	
+	[log]  #日志路径和级别配置
+	log_path = /opt/sklogs/skstack/
+	log_level = info
+	
+	[setup]
+	debug = False  # 是否打开debug模式，建议生产环境设置False，开发者环境使用True
+	allowed_hosts = *  #允许访问web的客户端主机
+	
+	[config]
+	ansible_path = /etc/ansible/  #ansible配置主目录
+
+[celery] #celery任务配置项 用于定时任务
+celery_broker_url = redis://localhost:6389/5  #celery使用redis，可以和任务锁使用同一个redis实例的不同db
+
+[flower] #celery flower外链地址，后续release版本将整合到[celery]下
+flower_url = http://ip:5555/dashboard
+
+
+.. note::
+	  skstack_dev.conf skstack_prod.conf两个文件同时存在，会优先读取skstack_dev.conf配置文件
+..
+
 初始化数据：
 
  #. python manage.py makemigrations
@@ -80,7 +129,10 @@
 运行web平台和登录
 ~~~~~~~~~~~~~~~~~~~~~~
 
-python manage.py runserver 0.0.0.0:8000
+ #. workon skstack #切换python虚拟机环境
+ #. ./start_web.sh #启动web
+ #. ./start_celery.sh #启动celery相关任务 ，若不使用定时任务功能，该脚本不需要执行
+
 
 登录页面
 
@@ -89,6 +141,12 @@ python manage.py runserver 0.0.0.0:8000
    :height: 450
    :alt: image not found
 
+停止web平台
+~~~~~~~~~~~~~~~~~~~~~~
+
+ #. ./stop_web.sh #停止web
+ #. ./stop_celery.sh #停止celery相关任务 
+ 
 安装工单系统插件
 ~~~~~~~~~~~~~~~~~~~~~~
 
