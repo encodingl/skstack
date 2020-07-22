@@ -95,6 +95,7 @@ SKSTACK |version| documentation
 	plugins/docker_deploy
 	plugins/git_deploy
 	plugins/package_deploy
+	plugins/ansible_deploy
 	plugins/the_third
    
    
@@ -114,10 +115,15 @@ SKSTACK |version| documentation
 
     介绍基于nginx作为仓库静态文件版本部署插件的使用方式
 
+:doc:`plugins/ansible_deploy`
+
+    介绍基于 ansible 部署 shell 和 playbook 插件的使用方式
+
 :doc:`plugins/the_third`
 
     第三方插件索引，暂未收录
-   
+
+
 
 开发者指南
 ====================================

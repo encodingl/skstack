@@ -133,7 +133,7 @@ demo.json为例
 	  -a [ansible-hosts], --ansible-hosts [ansible-hosts]
 	                        the destination hosts you want to depoly
 
-	(skstack) [root@ansible pl_deploy_package]#
+
 		
 .. note::
 	  #. -e 指定配置文件，一般每个环境单独使用一个配置文件，详见最佳实例

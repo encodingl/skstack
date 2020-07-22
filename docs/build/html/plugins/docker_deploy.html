@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<html class="writer-html5" lang="zh-CN" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -30,14 +35,10 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="3. Git静态文件部署插件使用指南" href="git_deploy.html" />
-    <link rel="prev" title="1. 基础概念" href="overview.html" /> 
+    <link rel="prev" title="1. 概述和安装" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -51,7 +52,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> SKSTACK
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> SKSTACK
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,7 +98,7 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 基础概念</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. 概述和安装</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. Docker部署插件使用指南</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">2.1. 概述</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">2.2. 目录说明</a></li>
@@ -123,7 +125,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="the_third.html">5. 第三方插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ansible_deploy.html">5. Ansible 部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="the_third.html">6. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -138,6 +141,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -176,7 +180,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">2. </span>Docker部署插件使用指南</li>
     
@@ -335,35 +339,37 @@ optional arguments:
 </div>
 <div class="section" id="id6">
 <h3><span class="section-number">2.4.2. </span>主任务脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
-usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
-                     <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
-                     <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
-                     <span class="o">[</span>-w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]]</span>
-                     <span class="o">[</span>-m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]]</span>
-                     <span class="o">[</span>-c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>  <span class="o">(</span>skstack<span class="o">)</span> <span class="o">[</span>root@localhost pl_deploy_docker<span class="o">]</span><span class="c1"># python main_docker_deploy.py -h</span>
+  usage: main_docker_deploy.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]]</span>
+                       <span class="o">[</span>-p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]]</span> <span class="o">[</span>-t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]]</span>
+                       <span class="o">[</span>-a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]]</span>
+                       <span class="o">[</span>-w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]]</span>
+                       <span class="o">[</span>-m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]]</span>
+                       <span class="o">[</span>-c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]]</span>
 
-version <span class="m">2</span>.0.0
+  version <span class="m">2</span>.0.0
 
-optional arguments:
-  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>, --Environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>
-                        input the environment in which the script needs to be
-                        executed
-  -p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>, --proj-docker <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>
-                        the docker project you want to depoly
-  -t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>, --DockerImageTag <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>
-                        input the docker image tag <span class="nv">default</span><span class="o">=</span>latest
-  -a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>, --AnsibleHosts <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>
-                        input AnsibleHosts,default is the same as -p parameter
-  -w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>, --WaitTimes <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>
-                        input securyty <span class="nb">wait</span> <span class="nb">times</span> <span class="k">for</span> rolling update
-                        <span class="nv">default</span><span class="o">=</span>60s
-  -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>
-                        input the execution mode you need
-  -c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>, --CheckTime <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>
-                        input the max check time<span class="o">(</span>Unit:seconds<span class="o">)</span> you need,the
-                        default is <span class="m">120</span>
+  optional arguments:
+    -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+    -e <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>, --Environment <span class="o">[</span>prod<span class="p">|</span>stage<span class="p">|</span>dev...<span class="o">]</span>
+                          input the environment in which the script needs to be
+                          executed
+    -p <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>, --proj-docker <span class="o">[</span>proj01<span class="p">|</span>proj02<span class="p">|</span>...<span class="o">]</span>
+                          the docker project you want to depoly
+    -t <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>, --DockerImageTag <span class="o">[</span>v0.1.0<span class="p">|</span>latest<span class="p">|</span>...<span class="o">]</span>
+                          input the docker image tag <span class="nv">default</span><span class="o">=</span>latest
+    -a <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>, --AnsibleHosts <span class="o">[</span><span class="m">192</span>.168.1.22<span class="p">|</span>AnsbileHostsName<span class="p">|</span>...<span class="o">]</span>
+                          input AnsibleHosts,default is the same as -p parameter
+    -w <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>, --WaitTimes <span class="o">[</span>3s<span class="p">|</span>1m<span class="p">|</span>...<span class="o">]</span>
+                          input securyty <span class="nb">wait</span> <span class="nb">times</span> <span class="k">for</span> rolling update
+                          <span class="nv">default</span><span class="o">=</span>60s
+    -m <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>, --ExecMode <span class="o">[</span>update<span class="p">|</span>restart<span class="p">|</span>inquiry<span class="p">|</span>rollback<span class="p">|</span>update_hard<span class="p">|</span>stop_soft<span class="o">]</span>
+                          input the execution mode you need
+    -c <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>, --CheckTime <span class="o">[</span><span class="m">10</span><span class="p">|</span><span class="m">60</span><span class="o">]</span>
+                          input the max check time<span class="o">(</span>Unit:seconds<span class="o">)</span> you need,the
+                          default is <span class="m">120</span>
+-tnc <span class="o">[</span>proj01.20200718.213030<span class="p">|</span>proj.20200718.213030<span class="p">|</span>...<span class="o">]</span>, --task-name-created <span class="o">[</span>proj01.20200718.213030<span class="p">|</span>proj.20200718.213030<span class="p">|</span>...<span class="o">]</span>
+                  the docker project you want to depoly
 </pre></div>
 </div>
 <div class="admonition note">
@@ -376,6 +382,7 @@ optional arguments:
 <li><p>-w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用</p></li>
 <li><p>-m 指定执行模式，执行模式描述详见概述部分内容</p></li>
 <li><p>-c 指定健康监测最大等待时间，超时未监测到eureka中服务注册将会报错，并提示任务执行失败。</p></li>
+<li><p>-tnc 指定 taskid，主要是 web 端用来记录日志详情使用，使用工单名称和提单时间传递给插件作为日志文件尾缀，如果没有提供，则使用 none 为默认 。</p></li>
 </ol>
 </div>
 </div>
@@ -561,7 +568,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 内置变量：留空
 可选参数组：docker_deploy_group1
 前置任务：留空
-主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}
+主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}  -tnc {sk__task_name_created}
 后置任务：留空
 是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
 审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节
@@ -584,7 +591,7 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
         <a href="git_deploy.html" class="btn btn-neutral float-right" title="3. Git静态文件部署插件使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview.html" class="btn btn-neutral float-left" title="1. 基础概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="1. 概述和安装" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -593,11 +600,19 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, encodingl@sina.com
+        
+        &copy; 版权所有 2019, encodingl@sina.com
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -608,7 +623,6 @@ localhost                  : <span class="nv">ok</span><span class="o">=</span><
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

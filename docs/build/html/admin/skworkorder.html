@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<html class="writer-html5" lang="zh-CN" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -30,10 +35,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="3. 系统管理" href="skconfig.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> SKSTACK
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> SKSTACK
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,11 +112,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#id13">2.3.1. 提单</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id14">2.3.2. 审核</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id15">2.3.3. 执行</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id16">2.3.4. 审计</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id17">2.3.5. 状态码说明</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id18">2.3.6. 定时任务执行说明</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id19">2.3.7. 审批通过自动执行</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id20">2.3.8. 任务锁功能</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">2.3.4. 审计</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">2.3.4.1. 审计：日志详情</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">2.3.5. 状态码说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">2.3.6. 定时任务执行说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">2.3.7. 审批通过自动执行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">2.3.8. 任务锁功能</a></li>
 </ul>
 </li>
 </ul>
@@ -123,11 +128,12 @@
 </ul>
 <p class="caption"><span class="caption-text">插件使用手册</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 基础概念</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/overview.html">1. 概述和安装</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">5. 第三方插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/ansible_deploy.html">5. Ansible 部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/the_third.html">6. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -142,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -180,7 +187,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">2. </span>工单系统</li>
     
@@ -260,11 +267,12 @@
 <div><ul class="simple">
 <li><p>sk__name 本工单名称</p></li>
 <li><p>sk__env 本工单管理环境名称</p></li>
+<li><p>sk__task_name_created 此变量有工单名称和工单提单时间组合而成，目前用于传递给 docker 插件用于日志文件尾缀，用于审计的日志详情</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
-<li><p>内置变量以”<a href="#id21"><span class="problematic" id="id22">sk__</span></a>”开头（这里有两个下划线），是skstack系统内置变量 ，便于不同项目相同类型的工单进行快速配置。</p></li>
+<li><p>内置变量以”<a href="#id22"><span class="problematic" id="id23">sk__</span></a>”开头（这里有两个下划线），是skstack系统内置变量 ，便于不同项目相同类型的工单进行快速配置。</p></li>
 </ol>
 </div>
 </div></blockquote>
@@ -359,32 +367,41 @@
 <li><p>历史记录审计页面当前所有提交记录都记录在前台任务页面，后台任务模块暂未release。</p></li>
 </ol>
 </div>
-</div>
 <div class="section" id="id17">
-<h3><span class="section-number">2.3.5. </span>状态码说明<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<h4><span class="section-number">2.3.4.1. </span>审计：日志详情<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h4>
+<p>目前在 Docker 部署功能设计了日志详情，便于发现问题后进行跟踪查看日志。</p>
+<img alt="image not found" src="../_images/history_log.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ol class="arabic simple">
+<li><p>需要配合 Docker 插件模块一起使用方可。一个是在 web 的配置文件配置插件的日志地址，如果日志备份在地址下面的 bak 目录也可以。第二是要配置主任务时添加 -tnc {sk__task_name_created}</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="id18">
+<h3><span class="section-number">2.3.5. </span>状态码说明<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>前台任务和后台任务共用状态码如下
+(str(0), &quot;新建提交&quot;),
+(str(1), &quot;l1审核通过&quot;),
+(str(2), &quot;l1审核拒绝&quot;),
+(str(3), &quot;执行成功&quot;),
+(str(4), &quot;执行失败&quot;),
+(str(5), &quot;l2审核通过&quot;),
+(str(6), &quot;l2审核拒绝&quot;),
+(str(7), &quot;l3审核通过&quot;),
+(str(8), &quot;l3审核拒绝&quot;),
+(str(9), &quot;撤销&quot;),
+
+后台任务专用状态码如下：
+(str(&quot;CREATED&quot;), &quot;后台任务已创建&quot;),
+(str(&quot;REVOKED&quot;), &quot;后台任务已撤销&quot;),
+(str(&quot;WAITING&quot;), &quot;后台任务等待执行&quot;),
+(str(&quot;SUCCESS&quot;), &quot;后台任务执行成功&quot;),
+(str(&quot;FAILURE&quot;), &quot;后台任务执行失败&quot;),
+(str(&quot;DONE&quot;), &quot;后台任务已执行完毕，并已清理任务队列结果数据库数据&quot;),
 </pre></div>
 </div>
-<dl>
-<dt>前台任务和后台任务共用状态码如下</dt><dd><p>(str(0), “新建提交”),
-(str(1), “l1审核通过”),
-(str(2), “l1审核拒绝”),
-(str(3), “执行成功”),
-(str(4), “执行失败”),
-(str(5), “l2审核通过”),
-(str(6), “l2审核拒绝”),
-(str(7), “l3审核通过”),
-(str(8), “l3审核拒绝”),
-(str(9), “撤销”),</p>
-<p>后台任务专用状态码如下：
-(str(“CREATED”), “后台任务已创建”),
-(str(“REVOKED”), “后台任务已撤销”),
-(str(“WAITING”), “后台任务等待执行”),
-(str(“SUCCESS”), “后台任务执行成功”),
-(str(“FAILURE”), “后台任务执行失败”),
-(str(“DONE”), “后台任务已执行完毕，并已清理任务队列结果数据库数据”),</p>
-</dd>
-</dl>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <ol class="arabic simple">
@@ -392,20 +409,20 @@
 </ol>
 </div>
 </div>
-<div class="section" id="id18">
-<h3><span class="section-number">2.3.6. </span>定时任务执行说明<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id19">
+<h3><span class="section-number">2.3.6. </span>定时任务执行说明<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
 <p>管理员在对应工单配置中开启定时任务功能后，用户提单的时候可以选择执行时间</p>
 <img alt="image not found" src="../_images/submit_plan_task.png" />
 <p>计划任务属于后台执行任务，用户也可以在执行页面选择提前手动执行，如下图</p>
 <img alt="image not found" src="../_images/deploy_back_task.png" />
 </div>
-<div class="section" id="id19">
-<h3><span class="section-number">2.3.7. </span>审批通过自动执行<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id20">
+<h3><span class="section-number">2.3.7. </span>审批通过自动执行<a class="headerlink" href="#id20" title="永久链接至标题">¶</a></h3>
 <p>管理员在对应工单配置中开启审核通过自动执行选择按钮功能后，用户提单时可以选择审批通过后是否由系统自动执行任务</p>
 <img alt="image not found" src="../_images/submit_auto_exe.png" />
 </div>
-<div class="section" id="id20">
-<h3><span class="section-number">2.3.8. </span>任务锁功能<a class="headerlink" href="#id20" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id21">
+<h3><span class="section-number">2.3.8. </span>任务锁功能<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h3>
 <p>管理员对应的工单开启任务锁以后，同一个工单同一个时间，只能由一个人提交，任务执行完毕或者撤销 其他人才能新建任务工单,否则会报如下错误 提示有未完成的任务。</p>
 <img alt="image not found" src="../_images/submit_task_lock.png" />
 </div>
@@ -432,11 +449,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, encodingl@sina.com
+        
+        &copy; 版权所有 2019, encodingl@sina.com
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -447,7 +472,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
