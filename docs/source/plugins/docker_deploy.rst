@@ -179,6 +179,8 @@ demo.json为例
 	  -c [10|60], --CheckTime [10|60]
 	                        input the max check time(Unit:seconds) you need,the
 	                        default is 120
+      -tnc [proj01.20200718.213030|proj.20200718.213030|...], --task-name-created [proj01.20200718.213030|proj.20200718.213030|...]
+                        the docker project you want to depoly
 	
 	
 .. note::
@@ -189,6 +191,7 @@ demo.json为例
 	  #. -w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用
 	  #. -m 指定执行模式，执行模式描述详见概述部分内容
 	  #. -c 指定健康监测最大等待时间，超时未监测到eureka中服务注册将会报错，并提示任务执行失败。
+	  #. -tnc 指定 taskid，主要是 web 端用来记录日志详情使用，使用工单名称和提单时间传递给插件作为日志文件尾缀，如果没有提供，则使用 none 为默认 。
 ..	
 
 
@@ -379,7 +382,7 @@ Skstack Web工单系统配置
 	内置变量：留空
 	可选参数组：docker_deploy_group1
 	前置任务：留空
-	主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}  
+	主任务：python   /opt/soft/skstack_plugins/pl_deploy_docker/main_docker_deploy.py -e prod -m {DockerDeployMode} -p {group1}  -tnc {sk__task_name_created}
 	后置任务：留空
 	是否开启审核：此处不勾选，若需使用审核流程，可参考用户系统，审核流程配置环节
 	审核流程：若需使用审核流程，可参考用户系统，审核流程配置环节

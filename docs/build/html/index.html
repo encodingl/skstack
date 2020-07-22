@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<html class="writer-html5" lang="zh-CN" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -30,10 +35,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="1. 概述" href="intro/overview.html" /> 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> SKSTACK
+            <a href="#" class="icon icon-home" alt="Documentation Home"> SKSTACK
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -99,7 +101,8 @@
 <li class="toctree-l1"><a class="reference internal" href="plugins/docker_deploy.html">2. Docker部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/git_deploy.html">3. Git静态文件部署插件使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/package_deploy.html">4. Tar.gz文件部署插件使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins/the_third.html">5. 第三方插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/ansible_deploy.html">5. Ansible 部署插件使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/the_third.html">6. 第三方插件</a></li>
 </ul>
 <p class="caption"><span class="caption-text">开发者指南</span></p>
 <ul>
@@ -114,6 +117,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -152,7 +156,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
       <li>SKSTACK  documentation</li>
     
@@ -247,6 +251,10 @@
 <blockquote>
 <div><p>介绍基于nginx作为仓库静态文件版本部署插件的使用方式</p>
 </div></blockquote>
+<p><a class="reference internal" href="plugins/ansible_deploy.html"><span class="doc">Ansible 部署插件使用指南</span></a></p>
+<blockquote>
+<div><p>介绍基于 ansible 部署 shell 和 playbook 插件的使用方式</p>
+</div></blockquote>
 <p><a class="reference internal" href="plugins/the_third.html"><span class="doc">第三方插件</span></a></p>
 <blockquote>
 <div><p>第三方插件索引，暂未收录</p>
@@ -301,11 +309,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, encodingl@sina.com
+        
+        &copy; 版权所有 2019, encodingl@sina.com
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -316,7 +332,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
