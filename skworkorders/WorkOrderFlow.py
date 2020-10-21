@@ -355,7 +355,7 @@ def WorkOrderFlow_permit(request):
                     elif t01.obj.auto_exe_enable:
                         t01.celery_task_add()
         
-            elif obj_level == "3" and (obj_status == "0" or obj_status == "2" or obj_status == "6" or obj_status == "8"): 
+            elif obj_level == "3": 
                 obj_l1 = UserGroup.objects.get(name=obj_AuditFlow.l1)
                 obj_l2 = UserGroup.objects.get(name=obj_AuditFlow.l2)
                 obj_l3 = UserGroup.objects.get(name=obj_AuditFlow.l3)  
