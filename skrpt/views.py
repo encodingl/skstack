@@ -132,7 +132,7 @@ def index(request):
 
     for eename in envnamelist:
         vauledate = []
-        envdictnum =  {'type': 'line', 'stack': '总量'}
+        envdictnum =  {'type': 'line'}
         for start in datelisttemp:
             envdictnum['name'] = eename
             startdate = datetime.datetime.strptime(start,"%Y-%m-%d").date()
