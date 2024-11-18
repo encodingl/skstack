@@ -179,8 +179,12 @@ demo.json为例
 	  -c [10|60], --CheckTime [10|60]
 	                        input the max check time(Unit:seconds) you need,the
 	                        default is 120
+          -s [1|2|3|...], --serial [1|2|3|...] 
+                                ansible playbook yml serial;Used to specify the concurrency coefficient for version releases
+                                default=1
       -tnc [proj01.20200718.213030|proj.20200718.213030|...], --task-name-created [proj01.20200718.213030|proj.20200718.213030|...]
                         the docker project you want to depoly
+
 	
 	
 .. note::
@@ -191,6 +195,7 @@ demo.json为例
 	  #. -w 指定安全等待时间，只在update 和rollback模式下使用了eureka的项目用于健康检测和优雅关闭服务使用
 	  #. -m 指定执行模式，执行模式描述详见概述部分内容
 	  #. -c 指定健康监测最大等待时间，超时未监测到eureka中服务注册将会报错，并提示任务执行失败。
+          #. -s 用于指定版本发布的并发系数，默认为1；多节点部署的项目，建议调整并发系数，节省发布时间；建议最多设置为节点数的一半;最低为1；
 	  #. -tnc 指定 taskid，主要是 web 端用来记录日志详情使用，使用工单名称和提单时间传递给插件作为日志文件尾缀，如果没有提供，则使用 none 为默认 。
 ..	
 
