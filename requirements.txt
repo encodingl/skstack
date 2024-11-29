@@ -6,7 +6,7 @@ pytest==3.0.7
 redis==3.5.2
 pillow==6.2.1
 django-ckeditor==5.4.0
-celery==4.4.2
+celery==5.2.2
 flower==0.9.3
 django-celery-results==1.2.1
 requests==2.19.1
